@@ -2,6 +2,8 @@ import "../styles/globals.css";
 import "@rainbow-me/rainbowkit/styles.css";
 
 import { getDefaultWallets, RainbowKitProvider } from "@rainbow-me/rainbowkit";
+import { RainbowKitSiweNextAuthProvider } from '@rainbow-me/rainbowkit-siwe-next-auth';
+import { SessionProvider } from "next-auth/react"
 import { configureChains, createClient, useAccount, WagmiConfig } from "wagmi";
 import {
 	mainnet,
@@ -58,15 +60,19 @@ function MyApp({ Component, pageProps }) {
 	});
 	return (
 		<WagmiConfig client={wagmiClient}>
-			<RainbowKitProvider
-				modalSize="compact"
-				initialChain={process.env.NEXT_PUBLIC_DEFAULT_CHAIN}
-				chains={chains}
-			>
-				<MainLayout>
-					<Component {...pageProps} />
-				</MainLayout>
-			</RainbowKitProvider>
+			<SessionProvider session={pageProps.session} refetchInterval={0}>
+				<RainbowKitSiweNextAuthProvider>
+					<RainbowKitProvider
+						modalSize="compact"
+						initialChain={process.env.NEXT_PUBLIC_DEFAULT_CHAIN}
+						chains={chains}
+					>
+						<MainLayout>
+							<Component {...pageProps} />
+						</MainLayout>
+					</RainbowKitProvider>
+				</RainbowKitSiweNextAuthProvider>
+			</SessionProvider>
 		</WagmiConfig>
 	);
 }

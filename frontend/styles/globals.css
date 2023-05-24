@@ -2,41 +2,37 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300;0,500;1,400&display=swap');
 
-html,
-body {
-	background-color: black;
-	font-family: 'Rubik';
-	font-weight: normal;
-}
-h1{
-	margin-bottom: 1rem;
-}
-h2{
-	margin-bottom: .5rem;
-	font-weight: normal;
-
+/* Text "Trust" in components/hp/IntroSection.tsx */
+.linear-blue-green-gradient {
+  background: linear-gradient(100.74deg, #2563eb 36%, #00ff19 104%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-fill-color: transparent;
 }
 
-p{
-	line-height: 1.5rem;
-	font-weight: lighter;
-
+/* WalkthroughCard in components/hp/Walkthrough.tsx */
+.blue-transparent-green-gradient {
+  background: linear-gradient(45deg, #2563eb 0%, transparent 50%, #00ffff 100%);
 }
 
-a {
-	color: inherit;
-	text-decoration: none;
+/* DemoVideo in components/hp/Walkthrough.tsx */
+.green-transparent-blue-gradient {
+  background: linear-gradient(
+    135deg,
+    #00ffff 0%,
+    transparent 50%,
+    #2563eb 100%
+  );
 }
 
-* {
-	box-sizing: border-box;
-	padding: 0;
-	margin: 0;
-}
-
-@media (prefers-color-scheme: dark) {
-	html {
-	}
+/* Feature Card in components/hp/Features.tsx */
+.blue-transparent-green-gradient-vertical {
+  background: linear-gradient(
+    180deg,
+    #2563eb 0%,
+    transparent 50%,
+    #00ffff 100%
+  );
 }

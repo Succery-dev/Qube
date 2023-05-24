@@ -3,7 +3,9 @@ import "@rainbow-me/rainbowkit/styles.css";
 
 import { getDefaultWallets, RainbowKitProvider } from "@rainbow-me/rainbowkit";
 import { RainbowKitSiweNextAuthProvider } from '@rainbow-me/rainbowkit-siwe-next-auth';
+import { Session } from "next-auth"
 import { SessionProvider } from "next-auth/react"
+import type { AppProps } from "next/app"
 import { configureChains, createClient, useAccount, WagmiConfig } from "wagmi";
 import {
 	mainnet,
@@ -21,6 +23,7 @@ import { alchemyProvider } from "wagmi/providers/alchemy";
 import { publicProvider } from "wagmi/providers/public";
 import MainLayout from "../layout/mainLayout";
 import { useRouter } from "next/router";
+import { RainbowKitChain } from "@rainbow-me/rainbowkit/dist/components/RainbowKitProvider/RainbowKitChainContext";
 
 const { chains, provider } = configureChains(
 	[
@@ -51,7 +54,12 @@ const wagmiClient = createClient({
 
 export { WagmiConfig, RainbowKitProvider };
 
-function MyApp({ Component, pageProps }) {
+function MyApp({ 
+	Component, 
+	pageProps, 
+}: AppProps<{
+	session: Session;
+}>) {
 	const router = useRouter();
 	const account = useAccount({
 		onConnect({ address, connector, isReconnected }) {
@@ -64,7 +72,7 @@ function MyApp({ Component, pageProps }) {
 				<RainbowKitSiweNextAuthProvider>
 					<RainbowKitProvider
 						modalSize="compact"
-						initialChain={process.env.NEXT_PUBLIC_DEFAULT_CHAIN}
+						initialChain={process.env.NEXT_PUBLIC_DEFAULT_CHAIN as unknown as RainbowKitChain}
 						chains={chains}
 					>
 						<MainLayout>

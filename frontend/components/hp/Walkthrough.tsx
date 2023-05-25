@@ -2,7 +2,7 @@ import React from "react";
 import Image from "next/image";
 
 // Interfaces Imports
-import { WalthroughInterface } from "../../interfaces/walkthrough";
+import { WalkthroughInterface } from "../../interfaces";
 
 // Image Imports
 import { GradientBlueGreenArrow } from "../../assets";
@@ -12,13 +12,13 @@ import { walkthrough } from "../../constants";
 
 // Framer-Motion Imports
 import { motion } from "framer-motion";
-import { fadeIn, textVariant } from "../../utils/motion";
+import { fadeIn, textVariant } from "../../utils";
 
 const WalkthroughCard = ({
   walkthroughStep,
   index,
 }: {
-  walkthroughStep: WalthroughInterface;
+  walkthroughStep: WalkthroughInterface;
   index: number;
 }): JSX.Element => {
   return (

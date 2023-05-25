@@ -10,7 +10,7 @@ import { footerLinks } from "../../constants";
 
 // Framer-Motion Imports
 import { motion } from "framer-motion";
-import { fadeIn } from "../../utils/motion";
+import { fadeIn } from "../../utils";
 
 const FooterSocial = (): JSX.Element => {
   return (

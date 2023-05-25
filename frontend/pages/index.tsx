@@ -1,6 +1,6 @@
 import React from "react";
-import Head from "next/head";
 
+// Components Imports
 import {
   CurrentSystemProblems,
   Features,
@@ -17,7 +17,7 @@ import { motion } from "framer-motion";
 import { aesthetics } from "../constants";
 
 // Inteface Imports
-import { SectionWrapperPropsInterface } from "../interfaces/sectionWrapper";
+import { SectionWrapperPropsInterface } from "../interfaces";
 
 const SectionWrapper: React.FC<SectionWrapperPropsInterface> = ({
   children,
@@ -39,15 +39,6 @@ const SectionWrapper: React.FC<SectionWrapperPropsInterface> = ({
 export default function Home() {
   return (
     <div className="font-nunito text-secondary">
-      <Head>
-        <title>QubePay</title>
-        <meta
-          name="description"
-          content="Empowering relation between Freelancers and Organizations"
-        />
-        <link rel="icon" href="/images/logo.png" />
-      </Head>
-
       {/* IntroSection */}
       <SectionWrapper
         bgColor="bg-bg_primary"

@@ -7,7 +7,7 @@ import { features } from "../../constants";
 
 // Framer-Motion Imports
 import { motion } from "framer-motion";
-import { fadeIn, textVariant } from "../../utils/motion";
+import { fadeIn, textVariant } from "../../utils";
 
 const Features = () => {
   return (

@@ -3,7 +3,7 @@ import Link from "next/link";
 
 // Framer-Motion Imports
 import { motion } from "framer-motion";
-import { fadeIn } from "../utils/motion";
+import { fadeIn } from "../utils";
 
 const CustomButton = ({
   text,

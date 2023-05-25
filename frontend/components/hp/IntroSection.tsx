@@ -5,7 +5,7 @@ import CustomButton from "../CustomButton";
 
 // Framer-Motion Imports
 import { motion } from "framer-motion";
-import { textVariant } from "../../utils/motion";
+import { textVariant } from "../../utils";
 
 const IntroHeaderSection = (): JSX.Element => (
   <motion.h1
@@ -13,7 +13,7 @@ const IntroHeaderSection = (): JSX.Element => (
     initial="hidden"
     whileInView="visible"
     viewport={{ once: true, amount: 0.25 }}
-    className=" xl:text-7xl lg:text-6xl md:text-5xl sm:text-5xl text-4xl font-extrabold"
+    className="xl:text-7xl lg:text-6xl md:text-5xl sm:text-5xl text-4xl font-extrabold"
   >
     <p className="block">
       Build <span className="linear-blue-green-gradient">Trust</span> between
@@ -23,7 +23,7 @@ const IntroHeaderSection = (): JSX.Element => (
 );
 
 const IntroFooterSection = (): JSX.Element => (
-  <div className=" w-[90%] sm:w-full ">
+  <div className="w-[90%] sm:w-full ">
     <motion.h3
       variants={textVariant()}
       initial="hidden"

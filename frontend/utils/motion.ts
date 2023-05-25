@@ -1,4 +1,4 @@
-export const hoverVariant = () => {
+const hoverVariant = () => {
   return {
     hover: {
       scale: 1.025,
@@ -10,7 +10,7 @@ export const hoverVariant = () => {
   };
 };
   
-export const glowVariant = () => {
+const glowVariant = () => {
   return {
     hidden: {
       opacity: 0,
@@ -26,7 +26,7 @@ export const glowVariant = () => {
   };
 };
   
-export const modalVariant = () => {
+const modalVariant = () => {
   return {
     hidden: {
       x: "-100vw",
@@ -44,7 +44,7 @@ export const modalVariant = () => {
   };
 };
   
-export const modalLinksVariant = (index: number) => {
+const modalLinksVariant = (index: number) => {
   return {
     hidden: {
       opacity: 0,
@@ -60,7 +60,7 @@ export const modalLinksVariant = (index: number) => {
   };
 };
   
-export const textVariant = () => {
+const textVariant = () => {
   return {
     hidden: {
       y: -50,
@@ -77,7 +77,7 @@ export const textVariant = () => {
   };
 };
   
-export const fadeIn = (direction: string, duration: number, index?: number) => {
+const fadeIn = (direction: string, duration: number, index?: number) => {
   return {
     hidden: {
       x: direction === "left" ? 50 : direction === "right" ? -50 : 0,
@@ -97,3 +97,12 @@ export const fadeIn = (direction: string, duration: number, index?: number) => {
     },
   };
 };
+
+export { 
+  hoverVariant,
+  glowVariant,
+  modalVariant,
+  modalLinksVariant,
+  textVariant,
+  fadeIn
+}

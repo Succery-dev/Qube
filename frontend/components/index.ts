@@ -1,4 +1,5 @@
 import Navbar from "./Navbar";
+import CustomButton from "./CustomButton";
 
 // Aesthetic Imports
 import { Glow } from "./aesthetics";
@@ -12,6 +13,13 @@ import {
   Footer
 } from "./hp";
 
+// Dashboard Imports
+import {
+  DoughnutChart,
+  LineChart,
+  Table
+} from "./dashboard";
+
 export {
   IntroSection,
   Footer,
@@ -19,5 +27,9 @@ export {
   Walkthrough,
   CurrentSystemProblems,
   Glow,
-  Navbar
+  Navbar,
+  CustomButton,
+  DoughnutChart,
+  LineChart,
+  Table
 };

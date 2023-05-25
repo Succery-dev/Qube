@@ -7,14 +7,13 @@ import { Glow } from "../aesthetics";
 
 // Framer-Motion Imports
 import { motion } from "framer-motion";
-import { fadeIn, textVariant } from "../../utils/motion";
+import { fadeIn, textVariant } from "../../utils";
 
 // Content Imports
-import { currentSystemProblems } from "../../constants";
-import { aesthetics } from "../../constants";
+import { currentSystemProblems, aesthetics } from "../../constants";
 
-// Inteface Imports
-import { ProblemsInterface } from "../../interfaces/currentSystemProblems";
+// Interface Imports
+import { ProblemsInterface } from "../../interfaces";
 
 const CurrentSystemProblemsCard = ({
   problem,
@@ -61,7 +60,7 @@ const CurrentSystemProblems = (): JSX.Element => {
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, amount: 0.25 }}
-        className=" xl:text-7xl lg:text-6xl md:text-4xl sm:text-4xl text-4xl font-extrabold"
+        className="xl:text-7xl lg:text-6xl md:text-4xl sm:text-4xl text-4xl font-extrabold"
       >
         Why QubePay
       </motion.h1>

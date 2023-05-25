@@ -11,7 +11,7 @@ import { Glow } from "./aesthetics";
 
 // Framer-Motion Imports
 import { motion, AnimatePresence } from "framer-motion";
-import { hoverVariant, modalVariant, modalLinksVariant } from "../utils/motion";
+import { hoverVariant, modalVariant, modalLinksVariant } from "../utils";
 
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 
@@ -91,7 +91,7 @@ const Navbar = (): JSX.Element => {
                 <Tilt className="w-full">
                   <div className="w-full blue-transparent-green-gradient rounded-xl p-[2px] flex flex-row items-center shadow-lg">
                     <div className="w-full bg-bg_primary rounded-xl px-8 relative">
-                      <Glow styles={aesthetics.glow.mobileNavbar} />
+                      <Glow styles={aesthetics.glow.mobileNavbarGlowStyles} />
                       <div className="flex flex-row w-full justify-between items-center absolute top-0 right-0 z-[99] px-8 mt-8">
                         <h2 className="text-3xl font-bold">Explore</h2>
                         <Image

@@ -1,5 +1,7 @@
 import { convertSeconds } from "./convertSeconds";
 
+import { firebaseApp } from "./firebase";
+
 import { 
   getDoughnutChartConfig,
   getLineChartConfig
@@ -23,5 +25,6 @@ export {
   modalVariant,
   modalLinksVariant,
   textVariant,
-  fadeIn
+  fadeIn,
+  firebaseApp
 };

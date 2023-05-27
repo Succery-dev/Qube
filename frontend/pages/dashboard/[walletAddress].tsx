@@ -81,6 +81,7 @@ const Dashboard: NextPage = () => {
                 Active Projects
               </motion.h1>
               <CustomButton
+                link="/createProject"
                 text="+ Create"
                 styles="bg-[#3E8ECC] lg:text-2xl sm:text-lg rounded-md text-center text-white px-3 py-2 md:px-6 md:py-3"
               />

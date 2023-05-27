@@ -36,6 +36,7 @@ const IntroFooterSection = (): JSX.Element => (
       <p className="block">freelance work using smart contract</p>
     </motion.h3>
     <CustomButton
+      link="https://docs.google.com/forms/d/e/1FAIpQLSfe3r7ia_OTCHU8tHEtNG_aPY6OpLDsLPl3RDj-wQLutXNTKg/viewform"
       text="Join Waitlist"
       styles="border-none xs:text-lg sm:text-xl lg:text-xl xl:text-2xl sm:text-sm text-xl font-semibold text-primary bg-white lg:px-8 lg:py-4 px-4 py-2 rounded-md lg:mt-12 sm:mt-8 mt-16"
     />

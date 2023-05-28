@@ -25,6 +25,8 @@ import { mockData } from "./mockData";
 
 export { mockData }
 
+export const waitlistUrl: string = "https://docs.google.com/forms/d/e/1FAIpQLSfe3r7ia_OTCHU8tHEtNG_aPY6OpLDsLPl3RDj-wQLutXNTKg/viewform";
+
 export const navLinks = [
   {
     id: "product",

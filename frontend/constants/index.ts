@@ -14,6 +14,7 @@ import {
   WalkthroughInterface,
   ProblemsInterface,
   FeaturesInterface,
+  CreateProjectFieldInterface,
 } from "../interfaces";
 
 // Types Imports
@@ -309,6 +310,26 @@ export const aesthetics = {
         filter: "blur(500px)",
       },
     ],
+    createProjectGlowStyles: [
+      {
+        backgroundColor: "#00FFFF",
+        top: "50%",
+        right: "10%",
+        width: "200px",
+        height: "200px",
+        filter: "blur(200px)",
+        transform: "translateY(-50%)",
+      },
+      {
+        backgroundColor: "#2563EB",
+        top: "50%",
+        left: "0%",
+        width: "200px",
+        height: "200px",
+        filter: "blur(200px)",
+        transform: "translateY(-50%)",
+      },
+    ],
   },
 };
 
@@ -325,4 +346,32 @@ export const projectDetailsInterfaceKeys: ProjectDetailInterfaceKeysType = [
   "deadline",
   "amount",
   "status",
+];
+
+export const createProjectFields: CreateProjectFieldInterface[] = [
+  {
+    title: "Title",
+    placeholder: "E-Commerce Website",
+    type: "text",
+  },
+  {
+    title: "Detail",
+    placeholder: "Description and Features",
+    type: "textArea",
+  },
+  {
+    title: "Deadline(UTC)",
+    placeholder: "",
+    type: "datetime-local",
+  },
+  {
+    title: "Reward(USDC)",
+    placeholder: "500",
+    type: "number",
+  },
+  {
+    title: "Lancer's Wallet Address",
+    placeholder: "0x71C7656EC7ab88b098defB751B7401B5f6d8976F",
+    type: "string",
+  },
 ];

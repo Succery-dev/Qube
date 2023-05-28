@@ -1,33 +1,34 @@
 import React from "react";
-import Link from "next/link";
 
 // Framer-Motion Imports
 import { motion } from "framer-motion";
 import { fadeIn } from "../utils";
 
+// Type Imports
+import { buttonType } from "../types";
+
 const CustomButton = ({
-  link,
   text,
   styles,
+  onClick,
+  type,
 }: {
-  link: string;
   text: string;
   styles: string;
+  onClick: (e: React.MouseEvent<HTMLElement>) => void;
+  type: buttonType;
 }): JSX.Element => {
   return (
-    <Link
-      href={link}
-      target={text=="Join Waitlist" ? "_blank" : null}
+    <motion.button
+      variants={fadeIn("down", 1.25)}
+      initial="hidden"
+      animate="visible"
+      className={styles}
+      type={type}
+      onClick={(e) => onClick(e)}
     >
-      <motion.button
-        variants={fadeIn("down", 1.25)}
-        initial="hidden"
-        animate="visible"
-        className={styles}
-      >
-        {text}
-      </motion.button>
-    </Link>
+      {text}
+    </motion.button>
   );
 };
 

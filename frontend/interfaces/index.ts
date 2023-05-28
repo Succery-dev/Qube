@@ -1,13 +1,24 @@
 import { SectionWrapperPropsInterface } from "./sectionWrapper";
+
+// Dashboard Imports
 import { 
   ProjectDataInterface,
   ProjectDetailInterface
 } from "./dashboard";
+
+// HP Imports
 import { 
   ProblemsInterface,
   FeaturesInterface,
   WalkthroughInterface
 } from "./hp";
+
+// Project Imports
+import {
+  CreateProjectFieldInterface,
+  CreateProjectFormInterface,
+  CreateProjectFormContextInterface,
+} from "./project";
 
 export type { 
   ProjectDataInterface, 
@@ -15,5 +26,8 @@ export type {
   WalkthroughInterface,
   ProblemsInterface,
   FeaturesInterface,
-  SectionWrapperPropsInterface
+  SectionWrapperPropsInterface,
+  CreateProjectFieldInterface,
+  CreateProjectFormInterface,
+  CreateProjectFormContextInterface
 }

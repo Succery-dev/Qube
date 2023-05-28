@@ -12,6 +12,8 @@
 	"dependencies": {
 		"@rainbow-me/rainbowkit": "^0.12.4",
 		"@rainbow-me/rainbowkit-siwe-next-auth": "^0.2.0",
+		"@react-three/drei": "^9.70.0",
+		"@react-three/fiber": "^8.13.0",
 		"alchemy-sdk": "^2.6.2",
 		"chart.js": "^4.3.0",
 		"ethers": "^5.7.2",
@@ -24,6 +26,7 @@
 		"react-dom": "18.2.0",
 		"react-parallax-tilt": "^1.7.141",
 		"siwe": "^2.1.4",
+		"three": "^0.152.2",
 		"wagmi": "^0.12.6"
 	},
 	"devDependencies": {

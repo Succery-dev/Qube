@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
 import { NextPage } from "next";
+import { useRouter } from "next/router";
 
 // Custom Components Imports
 import {
   DoughnutChart,
   LineChart,
-  Navbar,
   CustomButton,
   Glow,
   Table,
@@ -49,6 +49,7 @@ const SectionWrapper: React.FC<SectionWrapperPropsInterface> = ({
 };
 
 const Dashboard: NextPage = () => {
+  const router = useRouter();
   const [data, setData] = useState({} as ProjectDataInterface);
 
   useEffect(() => {
@@ -83,6 +84,8 @@ const Dashboard: NextPage = () => {
               <CustomButton
                 text="+ Create"
                 styles="bg-[#3E8ECC] lg:text-2xl sm:text-lg rounded-md text-center text-white px-3 py-2 md:px-6 md:py-3"
+                type="button"
+                onClick={() => router.push("/createProject")}
               />
             </div>
             {/* Charts */}

@@ -20,6 +20,9 @@ import {
   Table
 } from "./dashboard";
 
+// Project Import
+import { ProjectScaffold } from "./project";
+
 export {
   IntroSection,
   Footer,
@@ -31,5 +34,6 @@ export {
   CustomButton,
   DoughnutChart,
   LineChart,
-  Table
+  Table,
+  ProjectScaffold
 };

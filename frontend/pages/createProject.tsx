@@ -1,8 +1,10 @@
 import React from "react";
 import type { NextPage } from "next";
 
+import { ProjectScaffold } from "../components";
+
 const CreateProject: NextPage = () => {
-  return <p className="text-5xl flex items-center justify-center h-screen">create project</p>;
+  return <ProjectScaffold />;
 }
 
 export default CreateProject;

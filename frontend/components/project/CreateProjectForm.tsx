@@ -117,8 +117,8 @@ const CreateProjectForm = ({
           {
             pathname === "/createProject"
               ? "Create Project"
-              : pathname === "/contract-details"
-                ? "Contract Details"
+              : pathname === "/projectDetail"
+                ? "Project Detail"
                 : null
           }
         </motion.h1>
@@ -137,7 +137,7 @@ const CreateProjectForm = ({
                   />
                 )
               );
-            } else if (pathname === "/contract-details") {
+            } else if (pathname === "/projectDetail") {
               return (
                 <FormFields
                   formField={formField}
@@ -160,10 +160,10 @@ const CreateProjectForm = ({
               type="submit"
               onClick={(e) => {
                 e.preventDefault();
-                router.push("/contract-details");
+                router.push("/projectDetail");
               }}
             />
-          ) : pathname === "/contract-details" ? (
+          ) : pathname === "/projectDetail" ? (
             <div className="w-full flex flex-col gap-6 mt-12 justify-between">
               {/* Prepay Escrow Button */}
               <CustomButton

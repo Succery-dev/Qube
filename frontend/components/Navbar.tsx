@@ -38,7 +38,7 @@ const Navbar = (): JSX.Element => {
 
         {/* Logo/Icon */}
         <motion.div variants={hoverVariant()} whileHover={"hover"}>
-          <Link href="/" className="flex items-center sm:gap-2 gap-4">
+          <div className="flex items-center sm:gap-2 gap-4">
             <Image
               src="/images/logo.png"
 							width="100"
@@ -49,11 +49,11 @@ const Navbar = (): JSX.Element => {
             <h1 className="xl:text-2xl lg:text-xl sm:text-lg text-2xl text-primary font-extrabold lg:ml-4 sm:ml-0">
               QubePay
             </h1>
-          </Link>
+          </div>
         </motion.div>
 
         {/* Navbar Links */}
-        <ul className="list-none hidden sm:flex flex-row sm:gap-6 md:gap-10 lg:gap-24 grow">
+        <ul className={`list-none flex-row sm:gap-6 md:gap-10 lg:gap-24 grow ${router.pathname === "/" ? "hidden sm:flex" : "hidden"}`}>
           {navLinks.map((link) => {
             return (
               <motion.li
@@ -85,7 +85,7 @@ const Navbar = (): JSX.Element => {
               initial="hidden"
               animate="visible"
               exit="hidden"
-              className="fixed w-screen h-screen top-0 left-0 backdrop-blur-md z-50 sm:hidden grid grid-cols-12"
+              className={`fixed w-screen h-screen top-0 left-0 backdrop-blur-md z-50 grid-cols-12 ${router.pathname === "/" ? "sm:hidden grid" : "hidden"}`}
             >
               <div className="col-start-2 col-end-12 grid place-items-center">
                 <Tilt className="w-full">
@@ -135,7 +135,7 @@ const Navbar = (): JSX.Element => {
         <Image
           src={MenuIcon}
           alt="Menu"
-          className="w-auto h-[20px] block sm:hidden cursor-pointer"
+          className={`w-auto h-[20px] cursor-pointer ${router.pathname === "/" ? "block sm:hidden" : "hidden"}`}
           onClick={toggleMobileNav}
         />
 

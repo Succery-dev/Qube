@@ -25,7 +25,10 @@ contract Controller is ReentrancyGuard, Ownable {
 
     // # GENERAL CONFIGURATION
     using Counters for Counters.Counter;
-    Counters.Counter private _workIds;
+
+    Counters.Counter private _projectIds;
+    Counters.Counter private _bidIds;
+
     // The token used to pay the workers
     IERC20 public depositToken;
     error EtherNotAccepted();
@@ -34,123 +37,134 @@ contract Controller is ReentrancyGuard, Ownable {
         // workers errors:
         error WorkerAlreadyExists();
         // workers event
-        event WorkerRegistered(uint id, address indexed worker, string name);
+        event WorkerRegistered(address indexed worker, string name);
 
         // store info about workers
-        struct Worker {
+        struct WorkerInfo {
             string name;
             address paymentAddress;
             uint256 since;
             uint256 projectsCount;
         }
 
-        mapping(uint => Worker) public _workersInfo;
+        mapping(address => WorkerInfo) public workerInfo;
         // map of works by name, just to check if exists
-        mapping(string => address) public workersNames;
-        // map of workers id by address
-        mapping(address => uint256) public _workersIdByAddress;
-        // map of workers id by string name
-        mapping(string => uint256) public _workersIdByName;
-        // map of works by address, just to check if exists
-        mapping(address => uint256) public workersByAddress;
+        mapping(string => bool) private workersNames;
+
         // array of workers:
-        address[] private _workersList;
+        address[] public workerByAddress;
 
     // # CLIENT MANAGEMENT
         // clients errors:
         error ClientAlreadyExists();
         // clients event
-        event ClientRegistered(address indexed client, string name);
+        event ClientRegistered(address indexed clientAddress, string name);
 
         // store info about clients
-        struct Client {
+        struct ClientInfo {
             string name;
-            address paymentAddress;
+            address clientAddress;
             uint256 since;
             uint256 projectsCount;
         }
 
-        mapping(address => Client) public _clientsInfo;
-        // map of clients by name, just to check if exists
-        mapping(string => address) public clientsNames;
+        // map of clients by address:
+        mapping(address => ClientInfo) public clientInfo;
 
-        // map of clients by address, just to check if exists
-        mapping(address => uint256) public clientsByAddress;
+        // map of clients by name, just to check if exists
+        mapping(string => bool) private clientByName;
+
         // array of clients:
-        address[] private _clientsList;
-        address[] private _workersList;
+        address[] private clientAddress;
 
     // # PROJECTS MANAGEMENT
 
 
-        // project stages
-        struct ProjectStage {
-            bool openToBids;
-            bool bidAccepted
+        // enum of project stages
+        enum ProjectStage {
+            OpenToBids,
+            BidAccepted
         }
 
         // project events
         event ProjectCreated(
-            uint256 indexed id,
-            address indexed customer,
-            uint256 proposedAmount,
-            uint256 deadline,
-            string description,
-            ProjectStage stage
+            address indexed clientAddress,
+            uint256 indexed projectId,
+            uint256 maxAcceptableAmount,
+            uint256 maxAcceptableDeadline,
+            string description
         );
 
         event BidToProject(
             uint256 indexed projectId,
             address indexed worker,
-            uint256 proposedAmount,
+            uint256 proposedBudget,
             uint256 proposedDeadline
         );
-        // error messages
 
+        // error messages
         error ProjectAlreadyExists();
         error TooHighProposedBudget();
         error BidsAreClosed();
+        error BidDoesNotBelongToProject();
+        error ProjectNotOpenToBids();
+        error ProjectDoesNotExist();
 
         // store info about projects
-        struct Project {
-            uint id;
-            address customer;
-            uint256 MaxAcceptableAmount;
-            uint256 acceptedAmount;
+        struct ProjectInfo {
+            address clientAddress;
+            uint256 maxAcceptableAmount;
             uint256 maxAcceptableDeadline;
             string description;
             ProjectStage stage;
+            uint addedAt;
             uint bidAccepted;
             uint bidAcceptedAt;
+            uint bidAcceptedAmount;
+            uint bidAcceptedDeadline;
         }
-        mapping(uint256 => Project) public projects;
-        // array of projects by owner:
+
+        // map of projects info:
+        mapping(uint => ProjectInfo) public projects;
+
+        // map of array of projects by owner:
         mapping(address => uint256[]) public projectsByOwner;
 
-
         // control projects creation by description and by client:
-        mapping(address => mapping(string=>bool)) public projectsByClientByDescription;
+        mapping(address => mapping(string=>bool)) private projectsNameByClient;
 
-        // map of bids by bid id
-        struct BidInfo {
-            uint projectId,
-            uint bidId,
-            uint workerId
-            uint256 proposedAmount;
-            uint256 proposedDeadline;
-            bool accepted;
-            uint addedAt;
-        }
-        mapping(uint256 => BidInfo[]) privae _bidsByProject;
+    // # BIDS MANAGEMENT
+
+        error OnlyProjectOwnerCanAcceptBids();
+        error TooHighProposedDeadline();
 
         // event about an accepted bid
         event BidAccepted(
             uint256 indexed projectId,
             uint256 indexed bidId,
-            uint256 proposedAmount,
-            uint256 proposedDeadline
+            uint256 proposedBudget,
+            uint256 proposedDeadline,
             uint acceptedIn
         );
+
+        // map of bids by bid id
+        struct BidInfo {
+            uint projectId;
+            uint bidId;
+            address worker;
+            uint256 proposedBudget;
+            uint256 proposedDeadline;
+            bool accepted;
+            uint addedAt;
+            uint acceptedAt;
+        }
+
+        // map of bids by project id
+        mapping(uint256 => uint256[]) public bidsByProjectId;
+
+        // map of bid for easy access:
+        mapping(uint256 => BidInfo) private bidsById;
+
 
     constructor(address payable _depositToken) {
         depositToken = IERC20(_depositToken);
@@ -158,49 +172,49 @@ contract Controller is ReentrancyGuard, Ownable {
 
     // # CLIENT MANAGEMENT
     function registerAsClient(string memory _name) external nonReentrant {
-        address = _paymentAddress = msg.sender;
+
         // check if client already exists
-        if (clientsNames[_name]) {
+        if (clientByName[_name]) {
             revert ClientAlreadyExists();
         }
-        if (clientsByAddress[_paymentAddress]) {
-            revert ClientAlreadyExists();
-        }
+        clientByName[_name] = true;
 
-        // create a new client
-        clientsNames[_name] = _paymentAddress;
-        Client memory client = Client(_name, _paymentAddress, block.timestamp, 0);
-        _clientsList.push(_paymentAddress);
-        _clientsInfo[_paymentAddress] = client;
+        ClientInfo memory client = ClientInfo(
+            _name,
+            msg.sender,
+            block.timestamp, 
+            0);
 
-        emit ClientRegistered(_paymentAddress, _name);
+        // add client to list of clients to allow iteration
+        clientAddress.push(msg.sender);
+
+        clientInfo[msg.sender] = client;
+
+        emit ClientRegistered(msg.sender, _name);
 
     }
 
     // # WORKER MANAGEMENT
 
     function registerAsWorker(string memory _name) external nonReentrant {
-        address = _paymentAddress = msg.sender;
+
         // check if work already exists
         if (workersNames[_name]) {
             revert WorkerAlreadyExists();
         }
-        if (workersByAddress[_paymentAddress]) {
-            revert WorkerAlreadyExists();
-        }
-
 
         // create a new work
-        workersNames[_name] = _paymentAddress;
-        Worker memory worker = Worker(_name, _paymentAddress, block.timestamp, 0);
-        _workersList.push(_paymentAddress);
-        _workersIdByAddress[_paymentAddress] = _workerId;
-        _workersIdByName[_name] = _workerId;
-        // next worker id
-        uint256 _workerId = _workIds.current();
-        _workersInfo[_workerId] = worker;
+        workersNames[_name] = true;
+        WorkerInfo memory worker = WorkerInfo(
+            _name,
+            msg.sender,
+            block.timestamp,
+            0
+        );
+        workerByAddress.push(msg.sender);
+        workerInfo[msg.sender] = worker;
 
-        emit WorkerRegistered(_workerId, _paymentAddress, _name);
+        emit WorkerRegistered(msg.sender, _name);
 
     }
 
@@ -220,66 +234,74 @@ contract Controller is ReentrancyGuard, Ownable {
         string memory _description
     ) external nonReentrant {
 
-        address _customer = msg.sender;
-
-        // check if project already exists by projectsByClientByDescription
-        if (projectsByClientByDescription[_customer][_description]) {
+        // check if project already exists by projectsNameByClient
+        if (projectsNameByClient[msg.sender][_description]) {
             revert ProjectAlreadyExists();
         }
+        projectsNameByClient[msg.sender][_description] = true;
 
         // create a project id
-        uint256 _projectId = _workIds.current();
+        uint256 _projectId = _projectIds.current();
+
+        // add this project id to the list of projects of owner:
+        projectsByOwner[msg.sender].push(_projectId);
+
+        // increment owner projects count
+        clientInfo[msg.sender].projectsCount++;
 
         // create a new project
-        Project memory project = Project(
-            _projectId,
-            _customer,
+        ProjectInfo memory project = ProjectInfo(
+            msg.sender,
             _maxAcceptableAmount,
             _maxAcceptableDeadline,
             _description,
-            ProjectStage.openToBids
+            ProjectStage.OpenToBids, // stage
+            block.timestamp, // addedAt
+            0, // bidAccepted
+            0, // bidAcceptedAt
+            0, // bidAcceptedAmount
+            0 // bidAcceptedDeadline
         );
 
         projects[_projectId] = project;
+
         emit ProjectCreated(
-            project.id,
-            project.customer,
-            project.MaxAcceptableAmount,
+            msg.sender,
+            _projectId,
+            project.maxAcceptableAmount,
             project.maxAcceptableDeadline,
-            project.description,
-            project.stage
+            project.description
         );
-
-        // transfer asset to this contract for safekeeping:
-        depositToken.safeTransferFrom(msg.sender, address(this), _maxAcceptableAmount);
-
     }
 
     // # PUBLIC WORKERS FUNCTIONS
+
+    // allow any worker to bid to a project:
     function bidToProject(uint projectId, uint proposedBudget, uint proposedDeadline) external nonReentrant {
+
+        // get project info
+        ProjectInfo storage project = projects[projectId];
+
         // check if project exists
-        if (!projects[projectId]) {
+        if ( project.clientAddress == address(0) ) {
             revert ProjectDoesNotExist();
         }
 
-        // get project info
-        Project memory project = projects[projectId];
-
-
         // check if bids are open:
-        if (!project.stage == ProjectStage.openToBids) {
+        if (project.stage != ProjectStage.OpenToBids) {
             revert BidsAreClosed();
         }
-        // get worker by address from global storage
-        Worker memory worker = _workersInfo[msg.sender];
 
-        // check if proposed budget is greater than minimum project budget:
-        if (proposedBudget < project.proposedAmount) {
+        // get worker by address from global storage
+        //WorkerInfo memory worker = workerInfo[msg.sender];
+
+        // check if proposed budget is not greater than project budget:
+        if (proposedBudget < project.maxAcceptableAmount) {
             revert TooHighProposedBudget();
         }
 
-        // check deadline is not greater than project deadline
-        if (proposedDeadline > projects[projectId].maxAcceptableDeadline) {
+        // check deadline is not greater than project deadline:
+        if (proposedDeadline > project.maxAcceptableDeadline) {
             revert TooHighProposedDeadline();
         }
 
@@ -290,15 +312,19 @@ contract Controller is ReentrancyGuard, Ownable {
         BidInfo memory bidInfo = BidInfo(
             projectId,
             _bidId,
-            worker.id,
+            msg.sender,
             proposedBudget,
             proposedDeadline,
             false,
-            block.timestamp
+            block.timestamp,
+            0
         );
 
-        // add this bid to global bid storage
-        _bidsByProject[projectId].push(bidInfo);
+        // add this bid id to the list of bids of project:
+        bidsByProjectId[projectId].push(_bidId);
+
+        // store this bid info in a map for easy access:
+        bidsById[_bidId] = bidInfo;
 
         emit BidToProject(
             projectId,
@@ -307,33 +333,61 @@ contract Controller is ReentrancyGuard, Ownable {
             proposedDeadline);
     }
 
-    function acceptBid(uint bidId) external nonReentrant{
+    function acceptBid(uint bidId) external nonReentrant {
 
-        // get project id from bid:
-        uint projectId = _bidsInfo[bidId].projectId;
+        // get bid info:
+        BidInfo storage bidInfo = bidsById[bidId];
 
-        // check if project exists
-        if (!projects[projectId]) {
+        // get project info from bid:
+        ProjectInfo storage project = projects[bidInfo.projectId];
+
+        // get client info from project:
+        ClientInfo storage client = clientInfo[msg.sender];
+
+        // get worker info by bid id
+        WorkerInfo storage worker = workerInfo[bidInfo.worker];
+
+        // check if project exists and is owned by client:
+        if(project.clientAddress != msg.sender) {
             revert ProjectDoesNotExist();
         }
-        // get project info
-        Project storage project = projects[projectId];
 
-        // check project stage
-        if (!project.stage == ProjectStage.OpenToBids) {
+        // check project stage is open for bids:
+        if (project.stage == ProjectStage.OpenToBids) {
             revert ProjectNotOpenToBids();
         }
+
+        // make sure only project owner can accept bids:
+        if (client.clientAddress != msg.sender) {
+            revert OnlyProjectOwnerCanAcceptBids();
+        }
+
+        // set project stage to bid accepted, to prevent
+        // new bids to be accepted:
         project.stage = ProjectStage.BidAccepted;
 
         // set bid info in the current project from the following worker:
         project.bidAccepted = bidId;
         project.bidAcceptedAt = block.timestamp;
+        project.bidAcceptedAmount = bidInfo.proposedBudget;
+        project.bidAcceptedDeadline = bidInfo.proposedDeadline;
 
-        // get bid info
-        BidInfo memory bidInfo = _bidsInfo[bidId];
+        // set bid accepted info:
+        bidInfo.accepted = true;
+        bidInfo.acceptedAt = block.timestamp;
+
+        // increment worker projects count
+        worker.projectsCount++;
+
+        // transfer deposit from client to this contract to pay worker:
+        depositToken.safeTransferFrom(
+            msg.sender,
+            address(this),
+            bidInfo.proposedBudget
+        );
 
         emit BidAccepted(
-            projectId,
+            bidInfo.projectId,
             bidId,
             bidInfo.proposedBudget,
             bidInfo.proposedDeadline,
@@ -342,53 +396,34 @@ contract Controller is ReentrancyGuard, Ownable {
 
     }
 
+    // # PUBLIC PROJECT INTERACTION FUNCTIONS
+
     // # PUBLIC VIEWS
-    function getCurrentWorkId() external view returns (uint256) {
-        return _workIds.current();
-    }
-    function getCurrentWorkerId() external view returns (uint256) {
-        return _workerIds.current();
-    }
-    function getWorkerByAddress(address _workerAddress)
+    function getWorkerInfoByAddress(address _workerAddress)
         external
         view
-        returns (Worker memory worker)
+        returns (WorkerInfo memory worker)
     {
-        return _worksInfo[_workerAddress];
+        return workerInfo[_workerAddress];
     }
 
-    function getWorkerByName(Worker memory worker)
+
+    function getClientInfoByAddress(address _clientAddress)
         external
         view
-        returns (Worker memory)
+        returns (ClientInfo memory client)
     {
-        return _worksInfo[workersNames[_name]];
+        return clientInfo[_clientAddress];
     }
 
-    function getClientByAddress(address _clientAddress)
-        external
-        view
-        returns (Client memory client)
-    {
-        return _clientsInfo[_clientAddress];
-    }
-
-    function getClientByName(Client memory client)
-        external
-        view
-        returns (Client memory)
-    {
-        return _clientsInfo[clientsNames[_name]];
-    }
-
-    function getMyProjects(address owner) external view returns (Project[] memory) {
+    function getProjectIdsByOwner(address owner) external view returns (uint256[] memory) {
         return projectsByOwner[owner];
     }
 
-    function getProjectById(uint256 _projectId)
+    function getProjectInfoById(uint256 _projectId)
         external
         view
-        returns (Project memory)
+        returns (ProjectInfo memory)
     {
         return projects[_projectId];
     }
@@ -396,9 +431,9 @@ contract Controller is ReentrancyGuard, Ownable {
     function getProjectBids(uint256 _projectId)
         external
         view
-        returns (BidInfo[] memory)
+        returns (uint256[] memory)
     {
-        return _bidsByProject[_projectId];
+        return  bidsByProjectId[_projectId];
     }
 
     // get info about the accepted bid by project id:
@@ -407,6 +442,6 @@ contract Controller is ReentrancyGuard, Ownable {
         view
         returns (BidInfo memory)
     {
-        return _bidsByProject[_projectId][projects[_projectId].bidAccepted];
+        return bidsById[projects[_projectId].bidAccepted];
     }
 }

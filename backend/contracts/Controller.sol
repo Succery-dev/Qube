@@ -102,13 +102,30 @@ contract Controller is ReentrancyGuard, Ownable {
             uint256 proposedDeadline
         );
 
+        event ProposalExtension(
+            uint256 indexed projectId,
+            uint256 proposedBudget,
+            uint256 proposedDeadline,
+            uint256 proposedAt
+        );
+
+        event AcceptProposedExtension(
+            uint256 indexed projectId,
+            uint256 proposedBudget,
+            uint256 proposedDeadline,
+            uint256 proposedAt
+        );
+
         // error messages
         error ProjectAlreadyExists();
-        error TooHighProposedBudget();
         error BidsAreClosed();
         error BidDoesNotBelongToProject();
         error ProjectNotOpenToBids();
         error ProjectDoesNotExist();
+        error ProjectNotStarted();
+        error OnlyWorkerCanProposeExtension();
+        error OnlyProjectOwnerCanProcessExtension();
+        error ProposalExtensionDoesNotExist();
 
         // store info about projects
         struct ProjectInfo {
@@ -133,10 +150,20 @@ contract Controller is ReentrancyGuard, Ownable {
         // control projects creation by description and by client:
         mapping(address => mapping(string=>bool)) private projectsNameByClient;
 
+        // struct to hold proposed extension:
+        struct ProjectExtensionProposal {
+            uint256 proposedBudget;
+            uint256 proposedDeadline;
+            uint256 proposedAt;
+        }
+        // map of proposed extensions by project:
+        mapping(uint256 => ProjectExtensionProposal) private proposedExtensionByProject;
+
     // # BIDS MANAGEMENT
 
         error OnlyProjectOwnerCanAcceptBids();
         error TooHighProposedDeadline();
+        error TooHighProposedBudget();
 
         // event about an accepted bid
         event BidAccepted(
@@ -182,7 +209,7 @@ contract Controller is ReentrancyGuard, Ownable {
         ClientInfo memory client = ClientInfo(
             _name,
             msg.sender,
-            block.timestamp, 
+            block.timestamp,
             0);
 
         // add client to list of clients to allow iteration
@@ -395,6 +422,124 @@ contract Controller is ReentrancyGuard, Ownable {
         );
 
     }
+
+    // @dev a worker can propose a extension in deadline and/or budget:
+    function requestExtension( uint projectId, uint proposedNewDeadLine, uint proposedNewBudget ) external nonReentrant{
+        // get project project info
+        ProjectInfo storage project = projects[projectId];
+
+        // get bid info
+        BidInfo storage bidInfo = bidsById[project.bidAccepted];
+
+        // check if project exists
+        if ( project.clientAddress == address(0) ) {
+            revert ProjectDoesNotExist();
+        }
+
+        // check if project state is accepted bid
+        if ( project.stage != ProjectStage.BidAccepted ) {
+            revert ProjectNotStarted();
+        }
+
+        // check if the user proposing this extension is the worker
+        if ( bidInfo.worker != msg.sender ) {
+            revert OnlyWorkerCanProposeExtension();
+        }
+
+        // check if proposed budget is greater than max project budget:
+        if ( proposedNewBudget > project.maxAcceptableAmount ) {
+            revert TooHighProposedBudget();
+        }
+
+        // check if proposed deadline is greater than max project deadline:
+        if ( proposedNewDeadLine > project.maxAcceptableDeadline ) {
+            revert TooHighProposedDeadline();
+        }
+
+        // add this proposal to the map:
+        proposedExtensionByProject[projectId] = ProjectExtensionProposal(
+            proposedNewBudget,
+            proposedNewDeadLine,
+            block.timestamp
+        );
+
+        emit ProposalExtension(
+            projectId,
+            proposedNewBudget,
+            proposedNewDeadLine,
+            block.timestamp
+        );
+
+    }
+
+    // @dev: project owner should call this function to accept a extension proposal
+    function processExtension( uint projectId ) external nonReentrant{
+
+        // get project info:
+        ProjectInfo storage project = projects[projectId];
+
+        // get client info:
+        ClientInfo storage client = clientInfo[msg.sender];
+
+        // check if the user calling this is the owner of this project:
+        if ( client.clientAddress != msg.sender ) {
+            revert OnlyProjectOwnerCanProcessExtension();
+        }
+
+        // check if project state is accepted bid
+        if ( project.stage != ProjectStage.BidAccepted ) {
+            revert ProjectNotStarted();
+        }
+
+        // get proposal extension info:
+        ProjectExtensionProposal storage proposal = proposedExtensionByProject[projectId];
+
+        // check if proposal extension is valid:
+        if ( proposal.proposedBudget==0 && proposal.proposedDeadline==0 ) {
+            revert ProposalExtensionDoesNotExist();
+        }
+
+        // set the new project deadline:
+        if( proposal.proposedDeadline > 0 ){
+            project.bidAcceptedDeadline = proposal.proposedDeadline;
+        }
+
+        // we reset the bid accepted at to the current time
+        // so that the worker has the full time to complete the project
+        project.bidAcceptedAt = block.timestamp;
+
+        // transfer any additional funds to this contract to pay worker:
+        if( proposal.proposedBudget > 0 ){
+            // check if proposed budget is greater than the current payment:
+            if ( proposal.proposedBudget < project.bidAcceptedAmount ) {
+                uint payment = project.bidAcceptedAmount - proposal.proposedBudget;
+                // refund the difference to the client:
+                depositToken.safeTransfer(msg.sender, payment);
+            }else{
+                uint payment = proposal.proposedBudget - project.bidAcceptedAmount;
+                // transfer the difference to this contract to pay worker:
+                depositToken.safeTransferFrom(msg.sender, address(this), payment);
+            }
+        }
+
+        // set proposal values to 0 to prevent re-entry attacks
+        proposal.proposedBudget = 0;
+        proposal.proposedDeadline = 0;
+        proposal.proposedAt = 0;
+
+        emit AcceptProposedExtension(
+            projectId,
+            project.bidAcceptedAmount,
+            project.bidAcceptedDeadline,
+            block.timestamp
+        );
+
+    }
+
+    // TODO: implement a request delivery function
+
+    // TODO: implement an accept delivery function
+    
 
     // # PUBLIC PROJECT INTERACTION FUNCTIONS
 

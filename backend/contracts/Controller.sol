@@ -33,6 +33,10 @@ contract Controller is ReentrancyGuard, Ownable {
     IERC20 public depositToken;
     error EtherNotAccepted();
 
+    // map of arbitrators by address:
+    mapping(address => bool) public arbitrators;
+    event ArbitratorStatusChanged(address indexed arbitrator, bool status);
+
     // # WORKERS MANAGEMENT
         // workers errors:
         error WorkerAlreadyExists();
@@ -83,7 +87,15 @@ contract Controller is ReentrancyGuard, Ownable {
         // enum of project stages
         enum ProjectStage {
             OpenToBids,
-            BidAccepted
+            BidAccepted,
+            InProgress,
+            DeliveryRequested,
+            DeliveryAccepted,
+            DeliveryRejected,
+            DisputeOpened,
+            InDispute,
+            DisputeResolved,
+            Completed
         }
 
         // project events
@@ -116,6 +128,37 @@ contract Controller is ReentrancyGuard, Ownable {
             uint256 proposedAt
         );
 
+        event ProjectStarted(
+            uint256 indexed projectId,
+            uint256 startedAt
+        );
+
+        event DeliveryRequested(
+            uint256 indexed projectId,
+            uint256 requestedAt
+        );
+
+        event DeliveryAccepted(
+            uint256 indexed projectId,
+            uint256 acceptedAt
+        );
+
+        event DeliveryDenied(
+            uint256 indexed projectId,
+            uint256 acceptedAt
+        );
+
+        event DisputeOpened(
+            uint256 indexed projectId,
+            uint256 openedAt
+        );
+
+        event DisputeResolved(
+            uint256 indexed projectId,
+            uint256 resolvedAt,
+            bool inWorkersFavor
+        );
+
         // error messages
         error ProjectAlreadyExists();
         error BidsAreClosed();
@@ -126,6 +169,13 @@ contract Controller is ReentrancyGuard, Ownable {
         error OnlyWorkerCanProposeExtension();
         error OnlyProjectOwnerCanProcessExtension();
         error ProposalExtensionDoesNotExist();
+        error OnlyWorkerCanStartProject();
+        error OnlyWorkerCanRequestDelivery();
+        error OnlyProjectOwnerCanAcceptDelivery();
+        error OnlyWorkerCanOpenDispute();
+        error ProjectNotInDispute();
+        error OnlyAdminCanResolveDispute();
+        error OnlyProjectOwnerCanDenyDelivery();
 
         // store info about projects
         struct ProjectInfo {
@@ -423,6 +473,40 @@ contract Controller is ReentrancyGuard, Ownable {
 
     }
 
+    // @dev: worker should call this function to start working on a project:
+    function startWork( uint projectId ) external nonReentrant {
+
+        // get project info
+        ProjectInfo storage project = projects[projectId];
+
+        // get bid info
+        BidInfo storage bidInfo = bidsById[project.bidAccepted];
+
+        // check if project exists
+        if ( project.clientAddress == address(0) ) {
+            revert ProjectDoesNotExist();
+        }
+
+        // check if project state is accepted bid
+        if ( project.stage != ProjectStage.BidAccepted ) {
+            revert ProjectNotStarted();
+        }
+
+        // check if the user starting this project is the worker of accepted bid:
+        if ( bidInfo.worker != msg.sender ) {
+            revert OnlyWorkerCanStartProject();
+        }
+
+        // set project stage to in progress:
+        project.stage = ProjectStage.InProgress;
+
+        emit ProjectStarted(
+            projectId,
+            block.timestamp
+        );
+
+    }
+
     // @dev a worker can propose a extension in deadline and/or budget:
     function requestExtension( uint projectId, uint proposedNewDeadLine, uint proposedNewBudget ) external nonReentrant{
         // get project project info
@@ -473,7 +557,7 @@ contract Controller is ReentrancyGuard, Ownable {
     }
 
     // @dev: project owner should call this function to accept a extension proposal
-    function processExtension( uint projectId ) external nonReentrant{
+    function acceptExtension( uint projectId ) external nonReentrant{
 
         // get project info:
         ProjectInfo storage project = projects[projectId];
@@ -536,10 +620,168 @@ contract Controller is ReentrancyGuard, Ownable {
 
     }
 
-    // TODO: implement a request delivery function
+    // @dev: worker should call this function to propose a delivery of the project:
+    function requestDelivery(uint projectId) external nonReentrant{
 
-    // TODO: implement an accept delivery function
-    
+        // get project info
+        ProjectInfo storage project = projects[projectId];
+
+        // get bid info
+        BidInfo storage bidInfo = bidsById[project.bidAccepted];
+
+        //check if project exists
+        if (project.clientAddress == address(0)) {
+            revert ProjectDoesNotExist();
+        }
+
+        // check if user requesting this delivery is the project worker:
+        if ( bidInfo.worker != msg.sender ) {
+            revert OnlyWorkerCanRequestDelivery();
+        }
+
+        // change project state to delivery requested
+        project.stage = ProjectStage.DeliveryRequested;
+
+        emit DeliveryRequested(
+            projectId,
+            block.timestamp
+        );
+
+    }
+
+    // @dev: project owner should call this function to accept a delivery proposal
+    function acceptDelivery(uint projectId) external nonReentrant{
+
+        // get project info:
+        ProjectInfo storage project = projects[projectId];
+
+        // check if caller is the owner of this project:
+        if ( project.clientAddress != msg.sender ) {
+            revert OnlyProjectOwnerCanAcceptDelivery();
+        }
+
+        // set project state to delivery accepted
+        project.stage = ProjectStage.DeliveryAccepted;
+
+        emit DeliveryAccepted(
+            projectId,
+            block.timestamp
+        );
+
+    }
+
+    // @dev: project owner can call this function to deny a delivery proposal:
+    function denyDelivery(uint projectId) external nonReentrant{
+
+        // get project info:
+        ProjectInfo storage project = projects[projectId];
+
+        // check if caller is the owner of this project:
+        if ( project.clientAddress != msg.sender ) {
+            revert OnlyProjectOwnerCanDenyDelivery();
+        }
+
+        // set project state to delivery accepted
+        project.stage = ProjectStage.DeliveryRejected;
+
+        emit DeliveryDenied(
+            projectId,
+            block.timestamp
+        );
+
+    }
+
+    // @dev: worker can call this function to open a dispute after project is not accepted:
+    function openDispute(uint projectId) external nonReentrant{
+
+        // get project info:
+        ProjectInfo storage project = projects[projectId];
+
+        // get bid info
+        BidInfo storage bidInfo = bidsById[project.bidAccepted];
+
+        // check if caller is the worker of this project:
+        if ( bidInfo.worker != msg.sender ) {
+            revert OnlyWorkerCanOpenDispute();
+        }
+
+        // check if project state is delivery rejected
+        if ( project.stage != ProjectStage.DeliveryRejected ) {
+            revert ProjectNotInDispute();
+        }
+
+        // set project state to dispute opened
+        project.stage = ProjectStage.DisputeOpened;
+
+        emit DisputeOpened(
+            projectId,
+            block.timestamp
+        );
+
+    }
+
+    // @dev: admin can call this function to resolve a dispute in worker's favor:
+    function resolveDisputeInWorkersFavor(uint projectId) external nonReentrant{
+
+        // get project info:
+        ProjectInfo storage project = projects[projectId];
+
+        // check if caller is an arbitrator:
+        if ( arbitrators[msg.sender] == false ) {
+            revert OnlyAdminCanResolveDispute();
+        }
+
+        // check if project state is dispute opened
+        if ( project.stage != ProjectStage.DisputeOpened ) {
+            revert ProjectNotInDispute();
+        }
+
+        // get bid info
+        BidInfo storage bidInfo = bidsById[project.bidAccepted];
+
+        // transfer the bid amount to the worker:
+        depositToken.safeTransfer(bidInfo.worker, project.bidAcceptedAmount);
+
+        // set project state to dispute resolved
+        project.stage = ProjectStage.DisputeResolved;
+
+        emit DisputeResolved(
+            projectId,
+            block.timestamp,
+            true
+        );
+
+    }
+
+    // @dev: admin can call this function to resolve a dispute in client's favor:
+    function resolveDisputeInClientsFavor(uint projectId) external nonReentrant{
+
+        // get project info:
+        ProjectInfo storage project = projects[projectId];
+
+        // check if caller is an arbitrator:
+        if ( arbitrators[msg.sender] == false ) {
+            revert OnlyAdminCanResolveDispute();
+        }
+
+        // check if project state is dispute opened
+        if ( project.stage != ProjectStage.DisputeOpened ) {
+            revert ProjectNotInDispute();
+        }
+
+        // transfer the bid amount to the client:
+        depositToken.safeTransfer(project.clientAddress, project.bidAcceptedAmount);
+
+        // set project state to dispute resolved
+        project.stage = ProjectStage.DisputeResolved;
+
+        emit DisputeResolved(
+            projectId,
+            block.timestamp,
+            false
+        );
+
+    }
 
     // # PUBLIC PROJECT INTERACTION FUNCTIONS
 
@@ -589,4 +831,11 @@ contract Controller is ReentrancyGuard, Ownable {
     {
         return bidsById[projects[_projectId].bidAccepted];
     }
+
+    // @dev manage arbitrators status:
+    function setArbitrator(address _arbitratorAddress, bool _status) external onlyOwner {
+        arbitrators[_arbitratorAddress] = _status;
+        emit ArbitratorStatusChanged(_arbitratorAddress, _status);
+    }
+
 }

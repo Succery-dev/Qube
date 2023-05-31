@@ -26,8 +26,8 @@ contract Controller is ReentrancyGuard, Ownable {
     // # GENERAL CONFIGURATION
     using Counters for Counters.Counter;
 
-    Counters.Counter private _projectIds;
-    Counters.Counter private _bidIds;
+    Counters.Counter private projectIdCounter;
+    Counters.Counter private bidIdsCounter;
 
     // The token used to pay the workers
     IERC20 public depositToken;
@@ -89,7 +89,7 @@ contract Controller is ReentrancyGuard, Ownable {
             OpenToBids,
             BidAccepted,
             InProgress,
-            DeliveryRequested,
+            DeliveryProposed,
             DeliveryAccepted,
             DeliveryRejected,
             DisputeOpened,
@@ -133,7 +133,7 @@ contract Controller is ReentrancyGuard, Ownable {
             uint256 startedAt
         );
 
-        event DeliveryRequested(
+        event DeliveryProposed(
             uint256 indexed projectId,
             uint256 requestedAt
         );
@@ -143,20 +143,23 @@ contract Controller is ReentrancyGuard, Ownable {
             uint256 acceptedAt
         );
 
-        event DeliveryDenied(
+        event DeliveryRejected(
             uint256 indexed projectId,
-            uint256 acceptedAt
+            uint256 acceptedAt,
+            string reason
         );
 
         event DisputeOpened(
             uint256 indexed projectId,
-            uint256 openedAt
+            uint256 openedAt,
+            string reason
         );
 
         event DisputeResolved(
             uint256 indexed projectId,
             uint256 resolvedAt,
-            bool inWorkersFavor
+            bool inWorkersFavor,
+            string reason
         );
 
         // error messages
@@ -176,6 +179,7 @@ contract Controller is ReentrancyGuard, Ownable {
         error ProjectNotInDispute();
         error OnlyAdminCanResolveDispute();
         error OnlyProjectOwnerCanDenyDelivery();
+        error ProjectNotInDeliveryProposed();
 
         // store info about projects
         struct ProjectInfo {
@@ -205,6 +209,7 @@ contract Controller is ReentrancyGuard, Ownable {
             uint256 proposedBudget;
             uint256 proposedDeadline;
             uint256 proposedAt;
+            string reason;
         }
         // map of proposed extensions by project:
         mapping(uint256 => ProjectExtensionProposal) private proposedExtensionByProject;
@@ -318,10 +323,10 @@ contract Controller is ReentrancyGuard, Ownable {
         projectsNameByClient[msg.sender][_description] = true;
 
         // create a project id
-        uint256 _projectId = _projectIds.current();
+        uint256 projectId  = projectIdCounter.current();
 
         // add this project id to the list of projects of owner:
-        projectsByOwner[msg.sender].push(_projectId);
+        projectsByOwner[msg.sender].push(projectId);
 
         // increment owner projects count
         clientInfo[msg.sender].projectsCount++;
@@ -340,11 +345,11 @@ contract Controller is ReentrancyGuard, Ownable {
             0 // bidAcceptedDeadline
         );
 
-        projects[_projectId] = project;
+        projects[projectId ] = project;
 
         emit ProjectCreated(
             msg.sender,
-            _projectId,
+            projectId ,
             project.maxAcceptableAmount,
             project.maxAcceptableDeadline,
             project.description
@@ -383,7 +388,7 @@ contract Controller is ReentrancyGuard, Ownable {
         }
 
         // get next bid id
-        uint256 _bidId = _bidIds.current();
+        uint256 _bidId = bidIdsCounter.current();
 
         // build info
         BidInfo memory bidInfo = BidInfo(
@@ -487,8 +492,10 @@ contract Controller is ReentrancyGuard, Ownable {
             revert ProjectDoesNotExist();
         }
 
-        // check if project state is accepted bid
-        if ( project.stage != ProjectStage.BidAccepted ) {
+        // check if project state is BidAccepted or DeliveryRejected:
+        // BidAccepted: indicates that the project is ready to start.
+        // DeliveryRejected: indicates that the project was delivered but rejected by client.
+        if ( project.stage != ProjectStage.BidAccepted && project.stage != ProjectStage.DeliveryRejected ) {
             revert ProjectNotStarted();
         }
 
@@ -508,7 +515,7 @@ contract Controller is ReentrancyGuard, Ownable {
     }
 
     // @dev a worker can propose a extension in deadline and/or budget:
-    function requestExtension( uint projectId, uint proposedNewDeadLine, uint proposedNewBudget ) external nonReentrant{
+    function proposeExtension( uint projectId, uint proposedNewDeadLine, uint proposedNewBudget, string memory reason ) external nonReentrant{
         // get project project info
         ProjectInfo storage project = projects[projectId];
 
@@ -521,7 +528,7 @@ contract Controller is ReentrancyGuard, Ownable {
         }
 
         // check if project state is accepted bid
-        if ( project.stage != ProjectStage.BidAccepted ) {
+        if ( project.stage != ProjectStage.InProgress ) {
             revert ProjectNotStarted();
         }
 
@@ -544,7 +551,8 @@ contract Controller is ReentrancyGuard, Ownable {
         proposedExtensionByProject[projectId] = ProjectExtensionProposal(
             proposedNewBudget,
             proposedNewDeadLine,
-            block.timestamp
+            block.timestamp,
+            reason
         );
 
         emit ProposalExtension(
@@ -557,7 +565,7 @@ contract Controller is ReentrancyGuard, Ownable {
     }
 
     // @dev: project owner should call this function to accept a extension proposal
-    function acceptExtension( uint projectId ) external nonReentrant{
+    function acceptProposal( uint projectId ) external nonReentrant{
 
         // get project info:
         ProjectInfo storage project = projects[projectId];
@@ -571,7 +579,7 @@ contract Controller is ReentrancyGuard, Ownable {
         }
 
         // check if project state is accepted bid
-        if ( project.stage != ProjectStage.BidAccepted ) {
+        if ( project.stage != ProjectStage.InProgress ) {
             revert ProjectNotStarted();
         }
 
@@ -621,7 +629,7 @@ contract Controller is ReentrancyGuard, Ownable {
     }
 
     // @dev: worker should call this function to propose a delivery of the project:
-    function requestDelivery(uint projectId) external nonReentrant{
+    function proposeDelivery(uint projectId) external nonReentrant{
 
         // get project info
         ProjectInfo storage project = projects[projectId];
@@ -639,10 +647,15 @@ contract Controller is ReentrancyGuard, Ownable {
             revert OnlyWorkerCanRequestDelivery();
         }
 
-        // change project state to delivery requested
-        project.stage = ProjectStage.DeliveryRequested;
+        // project stage must be in progress to accept a delivery
+        if ( project.stage != ProjectStage.InProgress ) {
+            revert ProjectNotStarted();
+        }
 
-        emit DeliveryRequested(
+        // change project state to delivery requested
+        project.stage = ProjectStage.DeliveryProposed;
+
+        emit DeliveryProposed(
             projectId,
             block.timestamp
         );
@@ -650,7 +663,7 @@ contract Controller is ReentrancyGuard, Ownable {
     }
 
     // @dev: project owner should call this function to accept a delivery proposal
-    function acceptDelivery(uint projectId) external nonReentrant{
+    function acceptDeliveryAndPay(uint projectId) external nonReentrant{
 
         // get project info:
         ProjectInfo storage project = projects[projectId];
@@ -660,8 +673,17 @@ contract Controller is ReentrancyGuard, Ownable {
             revert OnlyProjectOwnerCanAcceptDelivery();
         }
 
+        // project must be in tage delivery proposed to accept a delivery
+        if ( project.stage != ProjectStage.DeliveryProposed ) {
+            revert ProjectNotInDeliveryProposed();
+        }
+
         // set project state to delivery accepted
         project.stage = ProjectStage.DeliveryAccepted;
+
+        // now we pay the worker:
+        BidInfo storage bidInfo = bidsById[project.bidAccepted];
+        depositToken.safeTransfer(bidInfo.worker, project.bidAcceptedAmount);
 
         emit DeliveryAccepted(
             projectId,
@@ -671,7 +693,7 @@ contract Controller is ReentrancyGuard, Ownable {
     }
 
     // @dev: project owner can call this function to deny a delivery proposal:
-    function denyDelivery(uint projectId) external nonReentrant{
+    function declineDelivery(uint projectId, string memory reason) external nonReentrant{
 
         // get project info:
         ProjectInfo storage project = projects[projectId];
@@ -681,18 +703,24 @@ contract Controller is ReentrancyGuard, Ownable {
             revert OnlyProjectOwnerCanDenyDelivery();
         }
 
-        // set project state to delivery accepted
+        // project must be in stage delivery proposed to deny a delivery
+        if ( project.stage != ProjectStage.DeliveryProposed ) {
+            revert ProjectNotInDeliveryProposed();
+        }
+
+        // set project state to delivery rejected
         project.stage = ProjectStage.DeliveryRejected;
 
-        emit DeliveryDenied(
+        emit DeliveryRejected(
             projectId,
-            block.timestamp
+            block.timestamp,
+            reason
         );
 
     }
 
     // @dev: worker can call this function to open a dispute after project is not accepted:
-    function openDispute(uint projectId) external nonReentrant{
+    function openDispute(uint projectId, string memory reason) external nonReentrant{
 
         // get project info:
         ProjectInfo storage project = projects[projectId];
@@ -715,13 +743,14 @@ contract Controller is ReentrancyGuard, Ownable {
 
         emit DisputeOpened(
             projectId,
-            block.timestamp
+            block.timestamp,
+            reason
         );
 
     }
 
     // @dev: admin can call this function to resolve a dispute in worker's favor:
-    function resolveDisputeInWorkersFavor(uint projectId) external nonReentrant{
+    function resolveDisputeInWorkerFavor(uint projectId, string memory reason) external nonReentrant{
 
         // get project info:
         ProjectInfo storage project = projects[projectId];
@@ -748,13 +777,15 @@ contract Controller is ReentrancyGuard, Ownable {
         emit DisputeResolved(
             projectId,
             block.timestamp,
-            true
+            true,
+            reason
         );
 
     }
 
     // @dev: admin can call this function to resolve a dispute in client's favor:
-    function resolveDisputeInClientsFavor(uint projectId) external nonReentrant{
+    function resolveDisputeInClientFavor(uint projectId, string memory reason) external nonReentrant{
+        // TODO: we may add an % of the bid amount to be paid to the worker?
 
         // get project info:
         ProjectInfo storage project = projects[projectId];
@@ -778,7 +809,8 @@ contract Controller is ReentrancyGuard, Ownable {
         emit DisputeResolved(
             projectId,
             block.timestamp,
-            false
+            false,
+            reason
         );
 
     }
@@ -803,33 +835,34 @@ contract Controller is ReentrancyGuard, Ownable {
         return clientInfo[_clientAddress];
     }
 
+    function getProjectInfoById(uint256 projectId ) external view returns (ProjectInfo memory){
+        return projects[projectId];
+    }
+
+    // get bid info by bid id
+    function getBidInfoById(uint256 bidId ) external view returns (BidInfo memory){
+        return bidsById[bidId];
+    }
+
     function getProjectIdsByOwner(address owner) external view returns (uint256[] memory) {
         return projectsByOwner[owner];
     }
 
-    function getProjectInfoById(uint256 _projectId)
-        external
-        view
-        returns (ProjectInfo memory)
-    {
-        return projects[_projectId];
-    }
-
-    function getProjectBids(uint256 _projectId)
+    function getProjectBids(uint256 projectId )
         external
         view
         returns (uint256[] memory)
     {
-        return  bidsByProjectId[_projectId];
+        return  bidsByProjectId[projectId ];
     }
 
     // get info about the accepted bid by project id:
-    function getAcceptedBidInfo(uint256 _projectId)
+    function getAcceptedBidInfo(uint256 projectId )
         external
         view
         returns (BidInfo memory)
     {
-        return bidsById[projects[_projectId].bidAccepted];
+        return bidsById[projects[projectId ].bidAccepted];
     }
 
     // @dev manage arbitrators status:

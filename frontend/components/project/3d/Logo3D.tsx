@@ -36,7 +36,7 @@ const LogoCanvas = (): JSX.Element => {
   return (
     <Canvas camera={{ position: [10, 0, 0], fov: 25 }}>
       {/* Lighting */}
-      <ambientLight color="#4d7ee9" intensity={1} />
+      <ambientLight color={new THREE.Color("#4d7ee9")} intensity={1} />
       <directionalLight color="#2563EB" position={[0, 0, 5]} />
       <directionalLight color="#00FFFF" position={[0, 0, -5]} />
       <directionalLight color="#00FFFF" position={[0, 5, 0]} />

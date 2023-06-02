@@ -21,7 +21,7 @@ const ProjectContext = createContext<CreateProjectFormContextInterface>({
 });
 
 // Create the context provider component
-export const ProjectProvider = ({ children }: { children: ReactNode }) => {
+const ProjectProvider = ({ children }: { children: ReactNode }) => {
   // State to store the form values
   const [form, setForm]: [
     form: CreateProjectFormInterface,
@@ -36,6 +36,8 @@ export const ProjectProvider = ({ children }: { children: ReactNode }) => {
 };
 
 // Use the context
-export function useProjectContext() {
+function useProjectContext() {
   return useContext(ProjectContext);
 }
+
+export { ProjectProvider, useProjectContext }

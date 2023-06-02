@@ -10,6 +10,9 @@ import SmartContractIcon from "./Smartcontract-Icon.svg";
 import TwitterIcon from "./Twitter-Icon.svg";
 import MenuIcon from "./Icon-Hamburger-Menu.svg";
 import CrossIcon from "./Icon-Cross.svg";
+import IconNotificationSuccess from "./Icon-Notification-Success.svg";
+import IconNotificationWarning from "./Icon-Notification-Warning.svg";
+import IconNotificationError from "./Icon-Notification-Error.svg";
 
 export {
   arrow,
@@ -24,4 +27,7 @@ export {
   TwitterIcon,
   MenuIcon,
   CrossIcon,
+  IconNotificationSuccess,
+  IconNotificationWarning,
+  IconNotificationError,
 };

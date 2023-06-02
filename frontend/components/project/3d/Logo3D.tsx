@@ -48,13 +48,13 @@ const LogoCanvas = (): JSX.Element => {
       {/* <directionalLight color="#00FFFF" position={[0, 0, -5]} /> */}
       {/* <directionalLight color="#00FFFF" position={[0, 5, 0]} /> */}
       {/* <directionalLight color="#00FFFF" position={[0, -5, 0]} /> */}
-      <rectAreaLight
+      {/* <rectAreaLight
         width={5}
         height={5}
         color="#fff"
         intensity={2}
         position={[5, 0, 1]}
-      />
+      /> */}
 
       {/* 3D Model */}
       <Suspense fallback={<CanvasLoader />}>

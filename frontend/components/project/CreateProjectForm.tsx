@@ -11,11 +11,24 @@ import {
 import CustomButton from "../CustomButton";
 
 // Constants Imports
-import { createProjectFields } from "../../constants";
+import { createProjectFields, signProjectEip712 } from "../../constants";
 
 // Framer Motion Imports
 import { motion } from "framer-motion";
 import { fadeIn, textVariant } from "../../utils";
+
+// Ethers/Wagmi Imports
+import { useSignTypedData } from "wagmi";
+
+// Notification Context Import
+import { useNotificationContext } from "../../context";
+
+// Assets/Image Imports
+import {
+  IconNotificationSuccess,
+  IconNotificationWarning,
+  IconNotificationError,
+} from "../../assets";
 
 const FormFields = ({
   formField,
@@ -80,6 +93,24 @@ const CreateProjectForm = ({
   form: CreateProjectFormInterface;
   setForm: React.Dispatch<React.SetStateAction<CreateProjectFormInterface>>;
 }): JSX.Element => {
+  // Notification Context
+  const context = useNotificationContext();
+  const setShowNotification = context.setShowNotification;
+  const setNotificationConfiguration = context.setNotificationConfiguration;
+
+  const { signTypedDataAsync } = useSignTypedData({
+    domain: signProjectEip712.domain,
+    types: signProjectEip712.types,
+    value: {
+      title: form.Title,
+      detail: form.Detail,
+      deadline: form["Deadline(UTC)"],
+      reward: form["Reward(USDC)"],
+      lancerAddress: form["Lancer's Wallet Address"],
+    },
+  });
+
+  // Next Router
   const router = useRouter();
   const { pathname } = router;
 
@@ -94,6 +125,43 @@ const CreateProjectForm = ({
       ...form,
       [formFieldtitle as keyof typeof form]: e.target.value,
     });
+  };
+
+  const signProjectDetail = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    try {
+      await signTypedDataAsync();
+      setNotificationConfiguration({
+        modalColor: "#62d140",
+        title: "Success",
+        message: "Project Verified!",
+        icon: IconNotificationSuccess,
+      });
+    } catch (error) {
+      if (String(error).includes("invalid address")) {
+        setNotificationConfiguration({
+          modalColor: "#d1d140",
+          title: "Invalid Address",
+          message: "Invalid Address for signing Project Detail!",
+          icon: IconNotificationWarning,
+        });
+      } else if (String(error).includes("UserRejectedRequestError")) {
+        setNotificationConfiguration({
+          modalColor: "#d14040",
+          title: "Rejected",
+          message: "Rejected Signing Project Detail",
+          icon: IconNotificationError,
+        });
+      } else {
+        setNotificationConfiguration({
+          modalColor: "#d14040",
+          title: "Error",
+          message: "Some error signing the Project Detail",
+          icon: IconNotificationError,
+        });
+      }
+    }
+    setShowNotification(true);
   };
 
   return (
@@ -134,6 +202,7 @@ const CreateProjectForm = ({
                     index={index}
                     form={form}
                     updateFormField={updateFormField}
+                    key={index}
                   />
                 )
               );
@@ -144,6 +213,7 @@ const CreateProjectForm = ({
                   index={index}
                   form={form}
                   updateFormField={updateFormField}
+                  key={index}
                 />
               );
             } else return null;
@@ -182,6 +252,13 @@ const CreateProjectForm = ({
                 onClick={(e) => {
                   e.preventDefault();
                 }}
+              />
+              {/* Verify and Confirm Button */}
+              <CustomButton
+                text="Confirm"
+                styles="bg-[#d14040] rounded-md text-center text-lg font-semibold text-white py-[4px] px-7 hover:bg-[#d13131]"
+                type="submit"
+                onClick={(e) => signProjectDetail(e)}
               />
             </div>
           ) : null}

@@ -44,10 +44,10 @@ const LogoCanvas = (): JSX.Element => {
       {/* <ambientLight color="#4d7ee9" intensity={1} /> */}
       {/* <ambientLight color={0x4d7ee9} intensity={1} /> */}
       {/* <ambientLight intensity={1} /> */}
-      <directionalLight color="#2563EB" position={[0, 0, 5]} />
-      <directionalLight color="#00FFFF" position={[0, 0, -5]} />
-      <directionalLight color="#00FFFF" position={[0, 5, 0]} />
-      <directionalLight color="#00FFFF" position={[0, -5, 0]} />
+      {/* <directionalLight color="#2563EB" position={[0, 0, 5]} /> */}
+      {/* <directionalLight color="#00FFFF" position={[0, 0, -5]} /> */}
+      {/* <directionalLight color="#00FFFF" position={[0, 5, 0]} /> */}
+      {/* <directionalLight color="#00FFFF" position={[0, -5, 0]} /> */}
       <rectAreaLight
         width={5}
         height={5}

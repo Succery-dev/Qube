@@ -1,5 +1,6 @@
 import Navbar from "./Navbar";
 import CustomButton from "./CustomButton";
+import Notification from "./Notification";
 
 // Aesthetic Imports
 import { Glow } from "./aesthetics";
@@ -35,5 +36,6 @@ export {
   DoughnutChart,
   LineChart,
   Table,
-  ProjectScaffold
+  ProjectScaffold,
+  Notification
 };

@@ -6,7 +6,7 @@ import { LogoCanvas } from "./3d"
 import CreateProjectForm from "./CreateProjectForm";
 
 // Context Imports
-import { useProjectContext } from "../../context/Project";
+import { useProjectContext } from "../../context";
 
 // Constants Imports
 import { aesthetics } from "../../constants";

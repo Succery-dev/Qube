@@ -25,11 +25,16 @@ const glowVariant = () => {
     },
   };
 };
-  
-const modalVariant = () => {
+
+const modalVariant = (direction?: string) => {
   return {
     hidden: {
-      x: "-100vw",
+      x:
+        direction === "left"
+          ? "100vw"
+          : direction === "right"
+          ? "-100vw"
+          : "-100vw",
       transition: {
         duration: 0.2,
       },

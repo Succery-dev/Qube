@@ -15,6 +15,7 @@ import {
   ProblemsInterface,
   FeaturesInterface,
   CreateProjectFieldInterface,
+  TypeDataDomainInterface
 } from "../interfaces";
 
 // Types Imports
@@ -377,3 +378,19 @@ export const createProjectFields: CreateProjectFieldInterface[] = [
     type: "string",
   },
 ];
+
+export const signProjectEip712: TypeDataDomainInterface = {
+  domain: {
+    name: "QubePay-Sign-Project",
+    chainId: 80001,
+  },
+  types: {
+    ProjectDetail: [
+      { name: "title", type: "string" },
+      { name: "detail", type: "string" },
+      { name: "deadline", type: "string" },
+      { name: "reward", type: "uint256" },
+      { name: "lancerAddress", type: "address" },
+    ],
+  },
+};

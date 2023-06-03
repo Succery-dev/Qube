@@ -18,7 +18,14 @@ import {
   CreateProjectFieldInterface,
   CreateProjectFormInterface,
   CreateProjectFormContextInterface,
+  TypeDataDomainInterface
 } from "./project";
+
+// Notification Imports
+import {
+  NotificationContextInterface,
+  NotificationConfigurationInterface,
+} from "./notificationContextInterface";
 
 export type { 
   ProjectDataInterface, 
@@ -29,5 +36,8 @@ export type {
   SectionWrapperPropsInterface,
   CreateProjectFieldInterface,
   CreateProjectFormInterface,
-  CreateProjectFormContextInterface
+  CreateProjectFormContextInterface,
+  TypeDataDomainInterface,
+  NotificationContextInterface,
+  NotificationConfigurationInterface
 }

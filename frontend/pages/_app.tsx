@@ -24,7 +24,7 @@ import { publicProvider } from "wagmi/providers/public";
 import MainLayout from "../layout/mainLayout";
 import { useRouter } from "next/router";
 import { RainbowKitChain } from "@rainbow-me/rainbowkit/dist/components/RainbowKitProvider/RainbowKitChainContext";
-import { ProjectProvider } from "../context/Project";
+import { ProjectProvider, NotificationProvider } from "../context";
 
 const { chains, provider } = configureChains(
 	[
@@ -77,9 +77,11 @@ function MyApp({
 						chains={chains}
 					>
 						<ProjectProvider>
-							<MainLayout>
-								<Component {...pageProps} />
-							</MainLayout>
+							<NotificationProvider>
+								<MainLayout>
+									<Component {...pageProps} />
+								</MainLayout>
+							</NotificationProvider>
 						</ProjectProvider>
 					</RainbowKitProvider>
 				</RainbowKitSiweNextAuthProvider>

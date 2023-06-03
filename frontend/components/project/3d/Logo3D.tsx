@@ -7,7 +7,6 @@ import CanvasLoader from "./CanvasLoader";
 import * as THREE from "three";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { OrbitControls, useGLTF } from "@react-three/drei";
-import { AmbientLight, DirectionalLightShadow, Camera } from "three";
 
 // 3D Logo Aesthetics
 const Logo = (): JSX.Element => {
@@ -32,29 +31,43 @@ const Logo = (): JSX.Element => {
   );
 };
 
-// var scene = new THREE.Scene();
-// scene.add(new AmbientLight(0x4d7ee9, 1));
-// var light = new THREE.DirectionalLight(0x2563EB, 1);
-// const light = new THREE.DirectionalLightShadow();
-// light.position.set(0, 0, 5); //default; light shining from top
-// light.castShadow = true; // default false
-// scene.add(light);
-
-// const { scene } = useThree();
-// scene.add(new AmbientLight(0x4d7ee9, 1));
-// var light = new THREE.DirectionalLight(0x2563EB, 1);
-// light.position.set(0, 0, 5);
-// scene.add(light)
-
+// Create Custom Scene
 const CustomScene = () => {
+  // This is related to Issue#65.
+
   const { scene } = useThree();
-  scene.add(new AmbientLight(0x4d7ee9, 1));
-  const light = new THREE.DirectionalLight(0x2563EB, 1);
-  light.position.set(0, 0, 5);
-  scene.add(light)
+
+  // AmbientLight
+  const ambientLight = new THREE.AmbientLight(0x4d7ee9, 1);
+  scene.add(ambientLight);
+
+  // Light1
+  const light1 = new THREE.DirectionalLight(0x2563EB, 1);
+  light1.position.set(0, 0, 5);
+  scene.add(light1);
+
+  // Light2
+  const light2 = new THREE.DirectionalLight(0x00FFFF, 1);
+  light2.position.set(0, 0, -5);
+  scene.add(light2);
+
+  // Light3
+  const light3 = new THREE.DirectionalLight(0x00FFFF, 1);
+  light3.position.set(0, 5, 0);
+  scene.add(light3);
+
+  // Light4
+  const light4 = new THREE.DirectionalLight(0x00FFFF, 1);
+  light4.position.set(0, -5, 0);
+  scene.add(light4);
+
+  // RectAreaLight
+  const rectAreaLight = new THREE.RectAreaLight(0xfff, 2, 5, 5);
+  rectAreaLight.position.set(5, 0, 1);
+  scene.add(rectAreaLight);
+
   return null;
 };
-
 
 // 3D Scene Configurations
 const LogoCanvas = (): JSX.Element => {
@@ -62,21 +75,6 @@ const LogoCanvas = (): JSX.Element => {
     <Canvas camera={{ position: [10, 0, 0], fov: 25 }}>
       {/* Lighting */}
       <CustomScene />
-      {/* TODO: An error occurs with this below on Vercel. (Issue: #65) */}
-      {/* <ambientLight color="#4d7ee9" intensity={1} /> */}
-      {/* <ambientLight color={0x4d7ee9} intensity={1} /> */}
-      {/* <ambientLight intensity={1} /> */}
-      {/* <directionalLight color="#2563EB" position={[0, 0, 5]} /> */}
-      {/* <directionalLight color="#00FFFF" position={[0, 0, -5]} /> */}
-      {/* <directionalLight color="#00FFFF" position={[0, 5, 0]} /> */}
-      {/* <directionalLight color="#00FFFF" position={[0, -5, 0]} /> */}
-      {/* <rectAreaLight
-        width={5}
-        height={5}
-        color="#fff"
-        intensity={2}
-        position={[5, 0, 1]}
-      /> */}
 
       {/* 3D Model */}
       <Suspense fallback={<CanvasLoader />}>

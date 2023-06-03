@@ -1,10 +1,15 @@
 import React from "react";
 import type { NextPage } from "next";
 
-import { ProjectScaffold } from "../components";
+import { ProjectScaffold, Notification } from "../components";
 
 const CreateProject: NextPage = () => {
-  return <ProjectScaffold />;
+  return (
+    <div>
+      <Notification />
+      <ProjectScaffold />
+    </div>
+  )
 }
 
 export default CreateProject;

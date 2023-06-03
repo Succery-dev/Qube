@@ -61,22 +61,22 @@ const LogoCanvas = (): JSX.Element => {
   return (
     <Canvas camera={{ position: [10, 0, 0], fov: 25 }}>
       {/* Lighting */}
-      {/* <CustomScene /> */}
+      <CustomScene />
       {/* TODO: An error occurs with this below on Vercel. (Issue: #65) */}
-      <ambientLight color="#4d7ee9" intensity={1} />
+      {/* <ambientLight color="#4d7ee9" intensity={1} /> */}
       {/* <ambientLight color={0x4d7ee9} intensity={1} /> */}
       {/* <ambientLight intensity={1} /> */}
-      <directionalLight color="#2563EB" position={[0, 0, 5]} />
-      <directionalLight color="#00FFFF" position={[0, 0, -5]} />
-      <directionalLight color="#00FFFF" position={[0, 5, 0]} />
-      <directionalLight color="#00FFFF" position={[0, -5, 0]} />
-      <rectAreaLight
+      {/* <directionalLight color="#2563EB" position={[0, 0, 5]} /> */}
+      {/* <directionalLight color="#00FFFF" position={[0, 0, -5]} /> */}
+      {/* <directionalLight color="#00FFFF" position={[0, 5, 0]} /> */}
+      {/* <directionalLight color="#00FFFF" position={[0, -5, 0]} /> */}
+      {/* <rectAreaLight
         width={5}
         height={5}
         color="#fff"
         intensity={2}
         position={[5, 0, 1]}
-      />
+      /> */}
 
       {/* 3D Model */}
       <Suspense fallback={<CanvasLoader />}>

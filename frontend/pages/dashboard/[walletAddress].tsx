@@ -89,12 +89,13 @@ const Dashboard: NextPage = () => {
               />
             </div>
             {/* Charts */}
-            <div className="flex sm:flex-row flex-col gap-8 w-full">
+            {/* TODO: Remove the charts temporarily for the final pitch (Issue#67) */}
+            {/* <div className="flex sm:flex-row flex-col gap-8 w-full">
               {data.data?.length > 0 && (
                 <DoughnutChart mockData={data.data} chartColors={chartColors} />
               )}
               {data.data?.length > 0 && <LineChart mockData={data.data} />}
-            </div>
+            </div> */}
           </div>
           {/* Table */}
           <motion.div

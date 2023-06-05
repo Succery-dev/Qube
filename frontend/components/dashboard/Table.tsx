@@ -57,7 +57,9 @@ const TableContents = ({
                   </span>
                   {projectKey === "deadline"
                     ? convertSeconds(project.deadline)
-                    : project[projectKey as keyof typeof project]}
+                    : projectKey === "amount"
+                      ? project.amount.toLocaleString()
+                      : project[projectKey as keyof typeof project]}
                 </p>
               );
             })}

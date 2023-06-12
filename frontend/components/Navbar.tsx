@@ -15,6 +15,12 @@ import { hoverVariant, modalVariant, modalLinksVariant } from "../utils";
 
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 
+// This is temporal for the whitelist and will be removed in the future.
+// TODO: Remove this.
+import { useAccount } from 'wagmi'
+import { disconnect } from '@wagmi/core'
+import { whitelist } from "../constants";
+
 const Navbar = (): JSX.Element => {
 	const [showMenuModal, setShowMenuModal] = useState(false);
   const toggleMobileNav = () => {
@@ -31,6 +37,20 @@ const Navbar = (): JSX.Element => {
 			router.push('/')
 		}
 	}, [session])
+
+  // This is temporal for the whitelist and will be removed in the future.
+  // TODO: Remove this.
+  // TODO: Remove the comment out right before the deployment.
+  // const { address, isConnected} = useAccount()
+  // useEffect(() => {
+  //   const checkWhitelist = async () => {
+  //     console.log(`The address trying to connect: ${address}`)
+  //     if (!whitelist.includes(address)) {
+  //       await disconnect()
+  //     }
+  //   }
+  //   checkWhitelist()
+  // }, [isConnected])
 
 	return (
 		<nav className="w-full grid grid-cols-12 absolute text-secondary z-50">

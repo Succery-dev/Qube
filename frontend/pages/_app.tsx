@@ -75,6 +75,7 @@ function MyApp({
 						modalSize="compact"
 						initialChain={process.env.NEXT_PUBLIC_DEFAULT_CHAIN as unknown as RainbowKitChain}
 						chains={chains}
+						coolMode
 					>
 						<ProjectProvider>
 							<NotificationProvider>

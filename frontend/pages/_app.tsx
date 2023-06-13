@@ -1,7 +1,7 @@
 import "../styles/globals.css";
 import "@rainbow-me/rainbowkit/styles.css";
 
-import { getDefaultWallets, RainbowKitProvider } from "@rainbow-me/rainbowkit";
+import { getDefaultWallets, RainbowKitProvider, Theme, darkTheme } from "@rainbow-me/rainbowkit";
 import { RainbowKitSiweNextAuthProvider } from '@rainbow-me/rainbowkit-siwe-next-auth';
 import { Session } from "next-auth"
 import { SessionProvider } from "next-auth/react"
@@ -25,6 +25,7 @@ import MainLayout from "../layout/mainLayout";
 import { useRouter } from "next/router";
 import { RainbowKitChain } from "@rainbow-me/rainbowkit/dist/components/RainbowKitProvider/RainbowKitChainContext";
 import { ProjectProvider, NotificationProvider } from "../context";
+import merge from "lodash.merge";
 
 const { chains, provider } = configureChains(
 	[
@@ -55,6 +56,17 @@ const wagmiClient = createClient({
 
 export { WagmiConfig, RainbowKitProvider };
 
+// Ref: https://www.rainbowkit.com/docs/custom-theme#extending-a-built-in-theme
+const customWalletTheme: Theme = merge(darkTheme(), {
+  colors: {
+    accentColor: "#3E8EEC",
+    connectButtonBackground: "black",
+    connectButtonBackgroundError: "black",
+    connectButtonInnerBackground: "black",
+    modalBackground: "black",
+  },
+} as Theme);
+
 function MyApp({ 
 	Component, 
 	pageProps, 
@@ -75,6 +87,8 @@ function MyApp({
 						modalSize="compact"
 						initialChain={process.env.NEXT_PUBLIC_DEFAULT_CHAIN as unknown as RainbowKitChain}
 						chains={chains}
+						coolMode
+						theme={customWalletTheme}
 					>
 						<ProjectProvider>
 							<NotificationProvider>

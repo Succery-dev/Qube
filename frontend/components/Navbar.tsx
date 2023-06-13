@@ -160,7 +160,7 @@ const Navbar = (): JSX.Element => {
         />
 
         {/* Connect Button */}
-        <ConnectButton />
+        <ConnectButton accountStatus={{ smallScreen: "avatar" }} />
       </div>
     </nav>
 	);

@@ -19,6 +19,7 @@
 		"ethers": "^5.7.2",
 		"firebase": "^9.22.1",
 		"framer-motion": "^10.12.12",
+		"lodash.merge": "^4.6.2",
 		"next": "13.1.2",
 		"next-auth": "^4.22.1",
 		"react": "18.2.0",

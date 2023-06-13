@@ -56,6 +56,7 @@ const wagmiClient = createClient({
 
 export { WagmiConfig, RainbowKitProvider };
 
+// Ref: https://www.rainbowkit.com/docs/custom-theme#extending-a-built-in-theme
 const customWalletTheme: Theme = merge(darkTheme(), {
   colors: {
     accentColor: "#3E8EEC",

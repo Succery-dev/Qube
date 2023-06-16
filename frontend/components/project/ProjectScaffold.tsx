@@ -2,7 +2,7 @@ import React from "react";
 
 // Custom components Imports
 import { Glow } from "../";
-import { LogoCanvas } from "./3d"
+import { LogoCanvas } from "./3d";
 import CreateProjectForm from "./CreateProjectForm";
 
 // Context Imports
@@ -34,7 +34,11 @@ const SectionWrapper: React.FC<SectionWrapperPropsInterface> = ({
   );
 };
 
-const ProjectScaffold = (): JSX.Element => {
+const ProjectScaffold = ({
+  setShowSubmitModal,
+}: {
+  setShowSubmitModal: React.Dispatch<React.SetStateAction<boolean>>;
+}): JSX.Element => {
   const context = useProjectContext();
   const form = context.form;
   const setForm = context.setForm;
@@ -49,7 +53,11 @@ const ProjectScaffold = (): JSX.Element => {
         {/* Create Project Form */}
         <div className="block lg:flex flex-row items-center gap-16">
           {/* Form */}
-          <CreateProjectForm form={form} setForm={setForm} />
+          <CreateProjectForm
+            form={form}
+            setForm={setForm}
+            setShowSubmitModal={setShowSubmitModal}
+          />
           {/* 3D Logo */}
           <div className="w-1/2 h-[500px] lg:block hidden">
             <LogoCanvas />

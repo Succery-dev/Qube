@@ -89,9 +89,11 @@ const FormFields = ({
 const CreateProjectForm = ({
   form,
   setForm,
+  setShowSubmitModal,
 }: {
   form: CreateProjectFormInterface;
   setForm: React.Dispatch<React.SetStateAction<CreateProjectFormInterface>>;
+  setShowSubmitModal: React.Dispatch<React.SetStateAction<boolean>>;
 }): JSX.Element => {
   // Notification Context
   const context = useNotificationContext();
@@ -182,13 +184,11 @@ const CreateProjectForm = ({
           viewport={{ once: true, amount: 0.25 }}
           className="xl:text-4xl lg:text-3xl md:text-4xl sm:text-xl text-3xl font-extrabold"
         >
-          {
-            pathname === "/createProject"
-              ? "Create Project"
-              : pathname === "/projectDetail"
-                ? "Project Detail"
-                : null
-          }
+          {pathname === "/createProject"
+            ? "Create Project"
+            : pathname === "/projectDetail"
+            ? "Project Detail"
+            : null}
         </motion.h1>
 
         {/* Form Fields */}
@@ -260,6 +260,19 @@ const CreateProjectForm = ({
                 type="submit"
                 onClick={(e) => signProjectDetail(e)}
               />
+
+              {/* Submit Project Button */}
+              {pathname === "/projectDetail" && (
+                <CustomButton
+                  text="Submit"
+                  styles="bg-[#40d1d1] rounded-md text-center text-lg font-semibold text-white py-[4px] px-7 hover:bg-[#31d1d1]"
+                  type="submit"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setShowSubmitModal(true);
+                  }}
+                />
+              )}
             </div>
           ) : null}
         </div>

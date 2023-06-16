@@ -1,16 +1,13 @@
 import { SectionWrapperPropsInterface } from "./sectionWrapper";
 
 // Dashboard Imports
-import { 
-  ProjectDataInterface,
-  ProjectDetailInterface
-} from "./dashboard";
+import { ProjectDataInterface, ProjectDetailInterface } from "./dashboard";
 
 // HP Imports
-import { 
+import {
   ProblemsInterface,
   FeaturesInterface,
-  WalkthroughInterface
+  WalkthroughInterface,
 } from "./hp";
 
 // Project Imports
@@ -18,7 +15,9 @@ import {
   CreateProjectFieldInterface,
   CreateProjectFormInterface,
   CreateProjectFormContextInterface,
-  TypeDataDomainInterface
+  TypeDataDomainInterface,
+  SubmitDeliverablesInterface,
+  SumbitFileInterface,
 } from "./project";
 
 // Notification Imports
@@ -27,8 +26,8 @@ import {
   NotificationConfigurationInterface,
 } from "./notificationContextInterface";
 
-export type { 
-  ProjectDataInterface, 
+export type {
+  ProjectDataInterface,
   ProjectDetailInterface,
   WalkthroughInterface,
   ProblemsInterface,
@@ -39,5 +38,7 @@ export type {
   CreateProjectFormContextInterface,
   TypeDataDomainInterface,
   NotificationContextInterface,
-  NotificationConfigurationInterface
-}
+  NotificationConfigurationInterface,
+  SubmitDeliverablesInterface,
+  SumbitFileInterface,
+};

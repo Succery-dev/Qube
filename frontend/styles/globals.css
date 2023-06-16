@@ -2,7 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-
 /* Text "Trust" in components/hp/IntroSection.tsx */
 .linear-blue-green-gradient {
   background: linear-gradient(100.74deg, #2563eb 36%, #00ff19 104%);
@@ -10,6 +9,10 @@
   -webkit-text-fill-color: transparent;
   background-clip: text;
   text-fill-color: transparent;
+}
+
+.progressBar {
+  background: linear-gradient(to right, #2563eb, #00ffff);
 }
 
 /* WalkthroughCard in components/hp/Walkthrough.tsx */
@@ -35,4 +38,15 @@
     transparent 50%,
     #00ffff 100%
   );
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.srollbar-hidden::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.srollbar-hidden {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
 }

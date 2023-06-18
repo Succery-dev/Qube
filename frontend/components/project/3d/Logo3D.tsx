@@ -31,50 +31,23 @@ const Logo = (): JSX.Element => {
   );
 };
 
-// Create Custom Scene
-const CustomScene = () => {
-  // This is related to Issue#65.
-
-  const { scene } = useThree();
-
-  // AmbientLight
-  const ambientLight = new THREE.AmbientLight(0x4d7ee9, 1);
-  scene.add(ambientLight);
-
-  // Light1
-  const light1 = new THREE.DirectionalLight(0x2563EB, 1);
-  light1.position.set(0, 0, 5);
-  scene.add(light1);
-
-  // Light2
-  const light2 = new THREE.DirectionalLight(0x00FFFF, 1);
-  light2.position.set(0, 0, -5);
-  scene.add(light2);
-
-  // Light3
-  const light3 = new THREE.DirectionalLight(0x00FFFF, 1);
-  light3.position.set(0, 5, 0);
-  scene.add(light3);
-
-  // Light4
-  const light4 = new THREE.DirectionalLight(0x00FFFF, 1);
-  light4.position.set(0, -5, 0);
-  scene.add(light4);
-
-  // RectAreaLight
-  const rectAreaLight = new THREE.RectAreaLight(0xfff, 2, 5, 5);
-  rectAreaLight.position.set(5, 0, 1);
-  scene.add(rectAreaLight);
-
-  return null;
-};
-
 // 3D Scene Configurations
 const LogoCanvas = (): JSX.Element => {
   return (
     <Canvas camera={{ position: [10, 0, 0], fov: 25 }}>
       {/* Lighting */}
-      <CustomScene />
+      <ambientLight color="#4d7ee9" intensity={1} />
+      <directionalLight color="#2563EB" position={[0, 0, 5]} />
+      <directionalLight color="#00FFFF" position={[0, 0, -5]} />
+      <directionalLight color="#00FFFF" position={[0, 5, 0]} />
+      <directionalLight color="#00FFFF" position={[0, -5, 0]} />
+      <rectAreaLight
+        width={5}
+        height={5}
+        color="#fff"
+        intensity={2}
+        position={[5, 0, 1]}
+      />
 
       {/* 3D Model */}
       <Suspense fallback={<CanvasLoader />}>

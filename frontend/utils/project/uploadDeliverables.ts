@@ -1,5 +1,5 @@
 // Axios Imports
-import axios, { AxiosResponse } from "axios";
+import axios, { AxiosResponse, AxiosProgressEvent} from "axios";
 
 import {
   NotificationConfigurationInterface,
@@ -28,7 +28,7 @@ const uploadFiles = (
           headers: {
             "Content-Type": "multipart/form-data",
           },
-          onUploadProgress(progressEvent: ProgressEvent) {
+          onUploadProgress(progressEvent: AxiosProgressEvent) {
             if (progressEvent.total) {
               const percentCompleted = Math.round(
                 (progressEvent.loaded * 100) / progressEvent.total

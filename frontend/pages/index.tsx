@@ -7,6 +7,7 @@ import {
   Footer,
   IntroSection,
   Walkthrough,
+  Support,
   Glow,
 } from "../components";
 
@@ -48,13 +49,13 @@ export default function Home() {
       </SectionWrapper>
 
       {/* Why QubePay */}
-      <SectionWrapper bgColor=" bg-black" glowStyles={[]}>
+      <SectionWrapper bgColor="bg-black" glowStyles={[]}>
         <CurrentSystemProblems />
       </SectionWrapper>
 
       {/* User Friendly and Secure */}
       <SectionWrapper
-        bgColor=" bg-bg_primary"
+        bgColor="bg-bg_primary"
         glowStyles={aesthetics.glow.walkthroughGlowStyles}
       >
         <Walkthrough />
@@ -62,10 +63,15 @@ export default function Home() {
 
       {/* Features */}
       <SectionWrapper
-        bgColor=" bg-black"
+        bgColor="bg-black"
         glowStyles={aesthetics.glow.featuresGlowStyles}
       >
         <Features />
+      </SectionWrapper>
+
+      {/* Support */}
+      <SectionWrapper bgColor="bg-bg_primary" glowStyles={[]}>
+        <Support />
         {/* Footer */}
         <Footer />
       </SectionWrapper>

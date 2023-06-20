@@ -3,9 +3,9 @@ import Head from "next/head";
 import { Navbar } from "../components";
 
 export default function MainLayout({ children }) {
-	return (
-		<div>
-			<Head>
+  return (
+    <div>
+      <Head>
         <title>QubePay</title>
         <meta
           name="description"
@@ -13,8 +13,8 @@ export default function MainLayout({ children }) {
         />
         <link rel="icon" href="/images/logo.png" />
       </Head>
-			<Navbar />
-			{children}
-		</div>
-	);
+      <Navbar />
+      {children}
+    </div>
+  );
 }

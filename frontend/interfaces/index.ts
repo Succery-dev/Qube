@@ -10,7 +10,8 @@ import {
 import { 
   ProblemsInterface,
   FeaturesInterface,
-  WalkthroughInterface
+  WalkthroughInterface,
+  SupportInterface,
 } from "./hp";
 
 // Project Imports
@@ -31,6 +32,7 @@ export type {
   ProjectDataInterface, 
   ProjectDetailInterface,
   WalkthroughInterface,
+  SupportInterface,
   ProblemsInterface,
   FeaturesInterface,
   SectionWrapperPropsInterface,

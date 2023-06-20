@@ -10,6 +10,7 @@ import {
   IntroSection,
   Features,
   Walkthrough,
+  Support,
   CurrentSystemProblems,
   Footer
 } from "./hp";
@@ -29,6 +30,7 @@ export {
   Footer,
   Features,
   Walkthrough,
+  Support,
   CurrentSystemProblems,
   Glow,
   Navbar,

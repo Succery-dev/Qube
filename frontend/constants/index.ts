@@ -14,6 +14,7 @@ import {
   WalkthroughInterface,
   ProblemsInterface,
   FeaturesInterface,
+  SupportInterface,
   CreateProjectFieldInterface,
   TypeDataDomainInterface
 } from "../interfaces";
@@ -41,6 +42,10 @@ export const navLinks = [
     id: "features",
     title: "Features",
   },
+  {
+    id: "support",
+    title: "Support",
+  }
 ];
 
 export const currentSystemProblems: ProblemsInterface[] = [
@@ -124,6 +129,21 @@ export const features: FeaturesInterface[] = [
     image: SmartContractIcon,
     description:
       "Qubepay has a protocol stored in the blockchain. Thus it's transparent and trustworthy. No middleman is involved.",
+  },
+];
+
+export const support: SupportInterface[] = [
+  {
+    id: "DJT",
+    name: "doublejump.tokyo",
+    image: "/images/djt.jpg",
+    twitter: "https://twitter.com/doublejumptokyo",
+  },
+  {
+    id: "gumi",
+    name: "gumi",
+    image: "/images/gumi.jpg",
+    twitter: "https://twitter.com/gumi_pr",
   },
 ];
 

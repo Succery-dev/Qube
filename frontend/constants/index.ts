@@ -135,15 +135,15 @@ export const features: FeaturesInterface[] = [
 export const support: SupportInterface[] = [
   {
     id: "DJT",
-    name: "doublejump.tokyo",
+    name: "doublejump.tokyo Inc.",
     image: "/images/djt.jpg",
-    twitter: "https://twitter.com/doublejumptokyo",
+    hp: "https://www.doublejump.tokyo/en",
   },
   {
     id: "gumi",
-    name: "gumi",
+    name: "gumi Inc.",
     image: "/images/gumi.jpg",
-    twitter: "https://twitter.com/gumi_pr",
+    hp: "https://gu3.co.jp/en/",
   },
 ];
 

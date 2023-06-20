@@ -21,7 +21,7 @@ const SupportCard = ({
   index: number;
 }): JSX.Element => {
   return (
-    <Link href={support.twitter} target="_blank">
+    <Link href={support.hp} target="_blank">
       <motion.div
         variants={fadeIn("right", 1.25, index)}
         initial="hidden"

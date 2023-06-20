@@ -2,7 +2,7 @@ interface SupportInterface {
   id: string;
   name: string;
   image: string;
-  twitter: string;
+  hp: string;
 }
 
 export type { SupportInterface }

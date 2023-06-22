@@ -15,7 +15,7 @@ import { fadeIn } from "../../utils";
 const FooterSocial = (): JSX.Element => {
   return (
     <Link
-      href="https://twitter.com/0xQubePay"
+      href="https://twitter.com/0xQube"
       className="flex flex-row items-center gap-4"
       target="_blank"
     >

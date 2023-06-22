@@ -107,7 +107,7 @@ export const features: FeaturesInterface[] = [
     title: "Escrow",
     image: EscrowIcon,
     description:
-      "Qubepay will hold the hiring company’s money until the company get satisfied with the work and pay the freelancer ",
+      "Qube will hold the hiring company’s money until the company get satisfied with the work and pay the freelancer ",
   },
   {
     id: "Arbitration",
@@ -128,7 +128,7 @@ export const features: FeaturesInterface[] = [
     title: "Smart Contract",
     image: SmartContractIcon,
     description:
-      "Qubepay has a protocol stored in the blockchain. Thus it's transparent and trustworthy. No middleman is involved.",
+      "Qube has a protocol stored in the blockchain. Thus it's transparent and trustworthy. No middleman is involved.",
   },
 ];
 
@@ -159,8 +159,8 @@ export const footerLinks = [
     link: "https://veroo.notion.site/Terms-and-Conditions-e56f60533a834abbbd1213c6bf0cd36f",
   },
   {
-    id: "2023_QubePay_org",
-    title: "© 2023 QubePay org",
+    id: "2023_Qube_org",
+    title: "© 2023 Qube org",
     link: "/",
   },
 ];

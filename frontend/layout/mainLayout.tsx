@@ -6,7 +6,7 @@ export default function MainLayout({ children }) {
   return (
     <div>
       <Head>
-        <title>QubePay</title>
+        <title>Qube</title>
         <meta
           name="description"
           content="Empowering relation between Freelancers and Organizations"

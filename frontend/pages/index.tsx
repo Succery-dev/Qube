@@ -47,8 +47,6 @@ export default function Home() {
       >
         <IntroSection />
       </SectionWrapper>
-      <p>test</p>
-      <IntroSection />
 
       {/* Why QubePay */}
       <SectionWrapper bgColor="bg-black" glowStyles={[]}>

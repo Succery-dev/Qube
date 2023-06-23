@@ -43,7 +43,7 @@ export default function Home() {
       {/* IntroSection */}
       <SectionWrapper
         // bgColor="bg-bg_primary"
-        bgColor=""
+        bgColor="bg-gray-500"
         glowStyles={aesthetics.glow.introSectionGlowStyles}
       >
         <IntroSection />

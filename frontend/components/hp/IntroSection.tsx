@@ -51,7 +51,7 @@ const IntroFooterSection = (): JSX.Element => (
 
 const IntroSection = (): JSX.Element => {
   return (
-    <div className="h-full flex flex-col justify-center lg:gap-12 sm:gap-8 sm:pt-20 lg:pt-0 gap-16 sm:mt-0 py-12 text-white">
+    <div className="h-full flex flex-col justify-center lg:gap-12 sm:gap-8 sm:pt-20 lg:pt-0 gap-16 sm:mt-0 py-12 text-black">
       <IntroHeaderSection />
       <IntroFooterSection />
     </div>

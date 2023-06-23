@@ -39,7 +39,8 @@ const SectionWrapper: React.FC<SectionWrapperPropsInterface> = ({
 
 export default function Home() {
   return (
-    <div className="font-nunito text-secondary">
+    <div className="font-nunito">
+      <p className="text-black">test</p>
       {/* IntroSection */}
       <SectionWrapper
         bgColor="bg-bg_primary"

@@ -55,7 +55,6 @@ const Navbar = (): JSX.Element => {
   return (
     <nav className="w-full grid grid-cols-12 absolute text-secondary z-50">
       <div className="top-0 col-start-2 col-end-12 xl:h-20 sm:h-14 h-20 flex flex-row xl:gap-40 lg:gap-20 sm:gap-16 w-full justify-between items-center bg-transparent">
-        <p>test</p>
         {/* Logo/Icon */}
         <motion.div variants={hoverVariant()} whileHover={"hover"}>
           <div className="flex items-center sm:gap-2 gap-4">

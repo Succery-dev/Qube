@@ -14,6 +14,7 @@ export default function MainLayout({ children }) {
         <link rel="icon" href="/images/logo.png" />
       </Head>
       <Navbar />
+      <p>test</p>
       {children}
     </div>
   );

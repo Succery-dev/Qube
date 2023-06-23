@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/router";
 
 // Interfaces Imports
@@ -29,6 +29,9 @@ import {
   IconNotificationWarning,
   IconNotificationError,
 } from "../../assets";
+
+// Utils Imports
+import { isNftContract } from "../../utils";
 
 const FormFields = ({
   formField,
@@ -97,6 +100,11 @@ const CreateProjectForm = ({
   const context = useNotificationContext();
   const setShowNotification = context.setShowNotification;
   const setNotificationConfiguration = context.setNotificationConfiguration;
+  // State
+  const [isNftAddress, setIsNftAddress]: [
+    isNftAddress: boolean,
+    setIsNftAddress: React.Dispatch<React.SetStateAction<boolean>>
+  ] = useState(false);
 
   const { signTypedDataAsync } = useSignTypedData({
     domain: signProjectEip712.domain,
@@ -106,6 +114,7 @@ const CreateProjectForm = ({
       detail: form.Detail,
       deadline: form["Deadline(UTC)"],
       reward: form["Reward(USDC)"],
+      "NFT Address": form["NFT(Contract Address)"],
       lancerAddress: form["Lancer's Wallet Address"],
     },
   });
@@ -182,13 +191,11 @@ const CreateProjectForm = ({
           viewport={{ once: true, amount: 0.25 }}
           className="xl:text-4xl lg:text-3xl md:text-4xl sm:text-xl text-3xl font-extrabold"
         >
-          {
-            pathname === "/createProject"
-              ? "Create Project"
-              : pathname === "/projectDetail"
-                ? "Project Detail"
-                : null
-          }
+          {pathname === "/createProject"
+            ? "Create Project"
+            : pathname === "/projectDetail"
+            ? "Project Detail"
+            : null}
         </motion.h1>
 
         {/* Form Fields */}
@@ -208,13 +215,15 @@ const CreateProjectForm = ({
               );
             } else if (pathname === "/projectDetail") {
               return (
-                <FormFields
-                  formField={formField}
-                  index={index}
-                  form={form}
-                  updateFormField={updateFormField}
-                  key={index}
-                />
+                formField.title != "NFT(Contract Address)" && (
+                  <FormFields
+                    formField={formField}
+                    index={index}
+                    form={form}
+                    updateFormField={updateFormField}
+                    key={index}
+                  />
+                )
               );
             } else return null;
           })}
@@ -224,15 +233,32 @@ const CreateProjectForm = ({
         <div className="w-full flex flex-row justify-end">
           {pathname === "/createProject" ? (
             // "Create Project Button"
-            <CustomButton
-              text="Create"
-              styles="w-full bg-[#3E8ECC] rounded-md text-center text-lg font-semibold text-white py-[4px] px-7 hover:bg-[#377eb5] mt-12"
-              type="submit"
-              onClick={(e) => {
-                e.preventDefault();
-                router.push("/projectDetail");
-              }}
-            />
+            isNftAddress === false ? (
+              <CustomButton
+                text="1/2 Verify NFT Address"
+                styles="w-full bg-[#3E8ECC] rounded-md text-center text-lg font-semibold text-white py-[4px] px-7 hover:bg-[#377eb5] mt-12"
+                type="button"
+                onClick={(e) => {
+                  e.preventDefault();
+                  isNftContract(
+                    form["NFT(Contract Address)"],
+                    setNotificationConfiguration,
+                    setShowNotification,
+                    setIsNftAddress
+                  );
+                }}
+              />
+            ) : (
+              <CustomButton
+                text="2/2 Create Project"
+                styles="w-full bg-[#3E8ECC] rounded-md text-center text-lg font-semibold text-white py-[4px] px-7 hover:bg-[#377eb5] mt-12"
+                type="submit"
+                onClick={(e) => {
+                  e.preventDefault();
+                  router.push("/projectDetail");
+                }}
+              />
+            )
           ) : pathname === "/projectDetail" ? (
             <div className="w-full flex flex-col gap-6 mt-12 justify-between">
               {/* Prepay Escrow Button */}

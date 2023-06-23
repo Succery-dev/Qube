@@ -11,6 +11,7 @@ const initialFormValue = {
   Detail: "",
   "Deadline(UTC)": "",
   "Reward(USDC)": 0,
+  "NFT(Contract Address)": "" as `0x${string}`,
   "Lancer's Wallet Address": "",
 };
 
@@ -40,4 +41,4 @@ function useProjectContext() {
   return useContext(ProjectContext);
 }
 
-export { ProjectProvider, useProjectContext }
+export { ProjectProvider, useProjectContext };

@@ -16,7 +16,7 @@ import {
   FeaturesInterface,
   SupportInterface,
   CreateProjectFieldInterface,
-  TypeDataDomainInterface
+  TypeDataDomainInterface,
 } from "../interfaces";
 
 // Types Imports
@@ -25,9 +25,10 @@ import { ProjectDetailInterfaceKeysType } from "../types";
 // Mock Data Import
 import { mockData } from "./mockData";
 
-export { mockData }
+export { mockData };
 
-export const waitlistUrl: string = "https://docs.google.com/forms/d/e/1FAIpQLSfe3r7ia_OTCHU8tHEtNG_aPY6OpLDsLPl3RDj-wQLutXNTKg/viewform";
+export const waitlistUrl: string =
+  "https://docs.google.com/forms/d/e/1FAIpQLSfe3r7ia_OTCHU8tHEtNG_aPY6OpLDsLPl3RDj-wQLutXNTKg/viewform";
 
 export const navLinks = [
   {
@@ -45,7 +46,7 @@ export const navLinks = [
   {
     id: "support",
     title: "Support",
-  }
+  },
 ];
 
 export const currentSystemProblems: ProblemsInterface[] = [
@@ -391,6 +392,11 @@ export const createProjectFields: CreateProjectFieldInterface[] = [
     title: "Reward(USDC)",
     placeholder: "500",
     type: "number",
+  },
+  {
+    title: "NFT(Contract Address)",
+    placeholder: "0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d",
+    type: "string",
   },
   {
     title: "Lancer's Wallet Address",

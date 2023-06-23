@@ -39,15 +39,15 @@ const SectionWrapper: React.FC<SectionWrapperPropsInterface> = ({
 
 export default function Home() {
   return (
-    <div className="font-nunito">
+    <div className="font-nunito text-secondary">
       {/* IntroSection */}
       <SectionWrapper
-        // bgColor="bg-bg_primary"
-        bgColor="bg-gray-500"
+        bgColor="bg-bg_primary"
         glowStyles={aesthetics.glow.introSectionGlowStyles}
       >
         <IntroSection />
       </SectionWrapper>
+      <p>test</p>
 
       {/* Why QubePay */}
       <SectionWrapper bgColor="bg-black" glowStyles={[]}>

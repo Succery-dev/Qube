@@ -42,7 +42,8 @@ export default function Home() {
     <div className="font-nunito text-secondary">
       {/* IntroSection */}
       <SectionWrapper
-        bgColor=" bg-bg_primary"
+        // bgColor="bg-bg_primary"
+        bgColor=""
         glowStyles={aesthetics.glow.introSectionGlowStyles}
       >
         <IntroSection />

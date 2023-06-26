@@ -19,9 +19,8 @@ const IntroHeaderSection = (): JSX.Element => (
     className="xl:text-7xl lg:text-6xl md:text-5xl sm:text-5xl text-4xl font-extrabold"
   >
     <p className="block">
-      Build <span className="linear-blue-green-gradient">Trust</span> between
+      Streamlining <span className="linear-blue-green-gradient">Collaborative Potential</span>
     </p>
-    <p className="block">Freelancers and Clients</p>
   </motion.h1>
 );
 

@@ -3,10 +3,10 @@ import {
   EscrowIcon,
   JuryIcon,
   LinkIcon,
-  SmartContractIcon,
   Escrow,
   Community,
   API,
+  NftGateway,
 } from "../assets";
 
 // Interfaces Imports
@@ -117,7 +117,7 @@ export const features: FeaturesInterface[] = [
   {
     id: "NFTGateway",
     title: "NFT Gateway",
-    image: SmartContractIcon,
+    image: NftGateway,
     description:
       "With the gateway function provided by nfts, only specific individuals, such as NFT holder, can undertake the tasks.",
   },

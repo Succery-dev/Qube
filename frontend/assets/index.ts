@@ -3,7 +3,6 @@ import GradientBlueGreenArrow from "./arrow-gradient-blue-green.svg";
 import EscrowIcon from "./Escrow-Icon.svg";
 import JuryIcon from "./Jury-Icon.svg";
 import LinkIcon from "./Link-Icon.svg";
-import SmartContractIcon from "./Smartcontract-Icon.svg";
 import TwitterIcon from "./Twitter-Icon.svg";
 import MenuIcon from "./Icon-Hamburger-Menu.svg";
 import CrossIcon from "./Icon-Cross.svg";
@@ -13,6 +12,7 @@ import IconNotificationError from "./Icon-Notification-Error.svg";
 import Escrow from "./Escrow.svg";
 import Community from "./Community.svg";
 import API from "./API.svg";
+import NftGateway from "./NFT-Gated.svg";
 
 export {
   arrow,
@@ -20,7 +20,6 @@ export {
   EscrowIcon,
   JuryIcon,
   LinkIcon,
-  SmartContractIcon,
   TwitterIcon,
   MenuIcon,
   CrossIcon,
@@ -30,4 +29,5 @@ export {
   Escrow,
   Community,
   API,
+  NftGateway,
 };

@@ -1,5 +1,4 @@
 import arrow from "./arrow.svg";
-import Ellipse25_17 from "./Ellipse-25-17.svg";
 import GradientBlueGreenArrow from "./arrow-gradient-blue-green.svg";
 import EscrowIcon from "./Escrow-Icon.svg";
 import JuryIcon from "./Jury-Icon.svg";
@@ -11,12 +10,12 @@ import CrossIcon from "./Icon-Cross.svg";
 import IconNotificationSuccess from "./Icon-Notification-Success.svg";
 import IconNotificationWarning from "./Icon-Notification-Warning.svg";
 import IconNotificationError from "./Icon-Notification-Error.svg";
-import Escrow from "./Escrow.svg"
-import Community from "./Community.svg"
+import Escrow from "./Escrow.svg";
+import Community from "./Community.svg";
+import API from "./API.svg";
 
 export {
   arrow,
-  Ellipse25_17,
   GradientBlueGreenArrow,
   EscrowIcon,
   JuryIcon,
@@ -30,4 +29,5 @@ export {
   IconNotificationError,
   Escrow,
   Community,
+  API,
 };

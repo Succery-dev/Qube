@@ -1,12 +1,12 @@
 // Assets Imports
 import {
-  Ellipse25_17,
   EscrowIcon,
   JuryIcon,
   LinkIcon,
   SmartContractIcon,
   Escrow,
   Community,
+  API,
 } from "../assets";
 
 // Interfaces Imports
@@ -60,9 +60,9 @@ export const currentSystemProblems: ProblemsInterface[] = [
     description: "Not only can Qube be used for one-on-one transactions, but it is also suitable for assigning tasks to community members.",
   },
   {
-    id: "25%-17%Scam",
-    image: Ellipse25_17,
-    description: "25% freelancers and 17% clients reported that they had been scammed",
+    id: "API",
+    image: API,
+    description: "With Qube's developer tools, anyone will be able to easily build applications similar to Qube. (Coming soon)",
   },
 ];
 

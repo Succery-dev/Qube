@@ -35,7 +35,7 @@ const IntroFooterSection = (): JSX.Element => (
     >
       <p className="block">The ultimate DApp enabling</p>
       <p className="block">payments and delivery of</p>
-      <p className="block">freelance work using smart contract</p>
+      <p className="block">work using smart contract</p>
     </motion.h3>
     <CustomButton
       text="Join Waitlist"

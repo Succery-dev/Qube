@@ -115,11 +115,11 @@ export const features: FeaturesInterface[] = [
       "Generate a direct link of a contract describing the project and its payment details to share on any platform.",
   },
   {
-    id: "SmartContract",
-    title: "Smart Contract",
+    id: "NFTGateway",
+    title: "NFT Gateway",
     image: SmartContractIcon,
     description:
-      "Qube has a protocol stored in the blockchain. Thus it's transparent and trustworthy. No middleman is involved.",
+      "With the gateway function provided by nfts, only specific individuals, such as NFT holder, can undertake the tasks.",
   },
 ];
 

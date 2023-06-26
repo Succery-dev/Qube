@@ -1,12 +1,12 @@
 // Assets Imports
 import {
-  DollarDownArrow,
   Ellipse25_17,
   EscrowIcon,
   JuryIcon,
   LinkIcon,
   SmartContractIcon,
   Escrow,
+  Community,
 } from "../assets";
 
 // Interfaces Imports
@@ -55,9 +55,9 @@ export const currentSystemProblems: ProblemsInterface[] = [
     description: "You can securely conduct transactions using Qube, even when dealing with anonymous individuals.",
   },
   {
-    id: "$5985Loss",
-    image: DollarDownArrow,
-    description: "An Average freelancer loses $5,968 per year due to nonpayment or late payment",
+    id: "Community",
+    image: Community,
+    description: "Not only can Qube be used for one-on-one transactions, but it is also suitable for assigning tasks to community members.",
   },
   {
     id: "25%-17%Scam",

@@ -1,5 +1,4 @@
 import arrow from "./arrow.svg";
-import DollarDownArrow from "./DollarDownArrow.svg";
 import Ellipse25_17 from "./Ellipse-25-17.svg";
 import GradientBlueGreenArrow from "./arrow-gradient-blue-green.svg";
 import EscrowIcon from "./Escrow-Icon.svg";
@@ -13,10 +12,10 @@ import IconNotificationSuccess from "./Icon-Notification-Success.svg";
 import IconNotificationWarning from "./Icon-Notification-Warning.svg";
 import IconNotificationError from "./Icon-Notification-Error.svg";
 import Escrow from "./Escrow.svg"
+import Community from "./Community.svg"
 
 export {
   arrow,
-  DollarDownArrow,
   Ellipse25_17,
   GradientBlueGreenArrow,
   EscrowIcon,
@@ -30,4 +29,5 @@ export {
   IconNotificationWarning,
   IconNotificationError,
   Escrow,
+  Community,
 };

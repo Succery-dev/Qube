@@ -1,5 +1,4 @@
 import React from "react";
-import Link from "next/link";
 import Image from "next/image";
 
 // Custom Component Imports
@@ -35,19 +34,14 @@ const CurrentSystemProblemsCard = ({
         <Glow styles={aesthetics.glow.currentSystemProblemsStyles} />
         <Image
           src={problem.image}
-          alt="70%"
+          alt="Image"
+          width="200"
           className="xl:h-[200px] lg:h-[150px] sm:h-[100px] h-[150px]"
         />
       </div>
       <p className="font-extrabold xl:text-3xl lg:text-2xl sm:text-xl text-xl grow sm:w-full w-2/3">
-        {problem.description.main}
+        {problem.description}
       </p>
-      {/* TODO: edit links */}
-      <Link href="/">
-        <p className="font-normal xl:text-xl lg:text-lg md:text-sm">
-          {problem.description.footer}
-        </p>
-      </Link>
     </motion.div>
   );
 };

@@ -98,21 +98,21 @@ export const features: FeaturesInterface[] = [
     title: "Escrow",
     image: EscrowIcon,
     description:
-      "Qube will hold the hiring company’s money until the company get satisfied with the work and pay the freelancer ",
+      "Qube will hold the hiring company’s money until the company get satisfied with the work and pay the freelancer using smart contract.",
   },
   {
     id: "Arbitration",
     title: "Arbitration",
     image: JuryIcon,
     description:
-      "If there is any disagreement between the hiring party and lancers, we will provide dispute resolution",
+      "If there is any disagreement between the hiring party and lancers, we will provide dispute resolution.",
   },
   {
     id: "LinkBased",
     title: "Link based",
     image: LinkIcon,
     description:
-      "Generate a direct link of a contract describing the project and its payment details to share on any platform",
+      "Generate a direct link of a contract describing the project and its payment details to share on any platform.",
   },
   {
     id: "SmartContract",

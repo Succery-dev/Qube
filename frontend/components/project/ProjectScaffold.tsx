@@ -1,8 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 
 // Custom components Imports
 import { Glow } from "../";
-import { LogoCanvas } from "./3d"
+import { LogoCanvas } from "./3d";
 import CreateProjectForm from "./CreateProjectForm";
 
 // Context Imports
@@ -15,7 +15,10 @@ import { aesthetics } from "../../constants";
 import { motion } from "framer-motion";
 
 // Interface Imports
-import { SectionWrapperPropsInterface } from "../../interfaces";
+import {
+  SectionWrapperPropsInterface,
+  NftAddressDetailsInterface,
+} from "../../interfaces";
 
 const SectionWrapper: React.FC<SectionWrapperPropsInterface> = ({
   children,
@@ -39,6 +42,16 @@ const ProjectScaffold = (): JSX.Element => {
   const form = context.form;
   const setForm = context.setForm;
 
+  const [nftAddressDetails, setnftAddressDetails]: [
+    nftAddressDetails: NftAddressDetailsInterface,
+    setnftAddressDetails: React.Dispatch<
+      React.SetStateAction<NftAddressDetailsInterface>
+    >
+  ] = useState({
+    isNftAddress: false,
+    nftCollectionImageUrl: "",
+  });
+
   return (
     <div className="font-nunito text-secondary">
       {/* Create Project Section */}
@@ -49,10 +62,17 @@ const ProjectScaffold = (): JSX.Element => {
         {/* Create Project Form */}
         <div className="block lg:flex flex-row items-center gap-16">
           {/* Form */}
-          <CreateProjectForm form={form} setForm={setForm} />
+          <CreateProjectForm
+            form={form}
+            setForm={setForm}
+            nftAddressDetails={nftAddressDetails}
+            setnftAddressDetails={setnftAddressDetails}
+          />
           {/* 3D Logo */}
           <div className="w-1/2 h-[500px] lg:block hidden">
-            <LogoCanvas />
+            <LogoCanvas
+              nftCollectionImageUrl={nftAddressDetails.nftCollectionImageUrl}
+            />
           </div>
         </div>
       </SectionWrapper>

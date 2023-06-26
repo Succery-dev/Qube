@@ -5,6 +5,7 @@ import { useRouter } from "next/router";
 import {
   CreateProjectFieldInterface,
   CreateProjectFormInterface,
+  NftAddressDetailsInterface,
 } from "../../interfaces";
 
 // Custom Components Imports
@@ -92,19 +93,20 @@ const FormFields = ({
 const CreateProjectForm = ({
   form,
   setForm,
+  nftAddressDetails,
+  setnftAddressDetails,
 }: {
   form: CreateProjectFormInterface;
   setForm: React.Dispatch<React.SetStateAction<CreateProjectFormInterface>>;
+  nftAddressDetails: NftAddressDetailsInterface;
+  setnftAddressDetails: React.Dispatch<
+    React.SetStateAction<NftAddressDetailsInterface>
+  >;
 }): JSX.Element => {
   // Notification Context
   const context = useNotificationContext();
   const setShowNotification = context.setShowNotification;
   const setNotificationConfiguration = context.setNotificationConfiguration;
-  // State
-  const [isNftAddress, setIsNftAddress]: [
-    isNftAddress: boolean,
-    setIsNftAddress: React.Dispatch<React.SetStateAction<boolean>>
-  ] = useState(false);
 
   const { signTypedDataAsync } = useSignTypedData({
     domain: signProjectEip712.domain,
@@ -233,7 +235,7 @@ const CreateProjectForm = ({
         <div className="w-full flex flex-row justify-end">
           {pathname === "/createProject" ? (
             // "Create Project Button"
-            isNftAddress === false ? (
+            nftAddressDetails.isNftAddress === false ? (
               <CustomButton
                 text="1/2 Verify NFT Address"
                 styles="w-full bg-[#3E8ECC] rounded-md text-center text-lg font-semibold text-white py-[4px] px-7 hover:bg-[#377eb5] mt-12"
@@ -244,7 +246,7 @@ const CreateProjectForm = ({
                     form["NFT(Contract Address)"],
                     setNotificationConfiguration,
                     setShowNotification,
-                    setIsNftAddress
+                    setnftAddressDetails
                   );
                 }}
               />

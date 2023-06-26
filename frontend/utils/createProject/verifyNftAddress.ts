@@ -2,10 +2,16 @@
 import { readContract } from "@wagmi/core";
 
 // Interface Imports
-import { NotificationConfigurationInterface } from "../../interfaces";
+import {
+  NftAddressDetailsInterface,
+  NotificationConfigurationInterface,
+} from "../../interfaces";
 
 // Asset Imports
 import { IconNotificationError, IconNotificationSuccess } from "../../assets";
+
+// Axios Imports
+import axios from "axios";
 
 /**
  * @dev Checking if the entered NFT Address is in Valid Ethereum Address format
@@ -17,7 +23,54 @@ export const isValidEthereumContractAddress = (nftAddress: `0x${string}`) => {
 };
 
 /**
+ * @dev Getting NFT Collection image url from opensea
+ */
+const fetchNftCollectionImage = async (
+  nftAddress: `0x${string}`,
+  setNotificationConfiguration: React.Dispatch<
+    React.SetStateAction<NotificationConfigurationInterface>
+  >,
+  setShowNotification: React.Dispatch<React.SetStateAction<boolean>>,
+  setnftAddressDetails: React.Dispatch<
+    React.SetStateAction<NftAddressDetailsInterface>
+  >
+) => {
+  try {
+    const DEMO_OPENSEA_API_KEY = "66b773e28182408fabf7adfc20518f27";
+    const baseUrl = "https://api.opensea.io";
+    const config = {
+      headers: {
+        "X-API-KEY": DEMO_OPENSEA_API_KEY,
+      },
+    };
+    /**
+     * @dev fetching the collection details ASSUMING tokenId "1" exists for now.
+     */
+    const response = await axios.get(
+      `${baseUrl}/api/v1/asset_contract/${nftAddress}`,
+      config
+    );
+    const collectionImageUrl = response.data.collection.image_url;
+    console.log(collectionImageUrl);
+    setnftAddressDetails({
+      isNftAddress: true,
+      nftCollectionImageUrl: collectionImageUrl,
+    });
+    return collectionImageUrl;
+  } catch (error) {
+    setnftAddressDetails({
+      isNftAddress: true,
+      nftCollectionImageUrl: undefined as string,
+    });
+  }
+};
+
+/**
  * @dev Using EIP-165 to determine wether a contract DECLARE itself as an NFT contract. Word DECLARE here is important as any arbitrary contract wheter it follows any EIP for NFTs or not can declare itself as an NFT contract by mistake or maliciously. This test does NOT guarantees that the entered contract address belongs to an NFT. There is no 100% sure way to determine if the contract adheres to a particular spec. So, we shift the risk to client creating the contract that he/she are using contract address that belongs to NFT. More Info here: https://github.com/ethers-io/ethers.js/discussions/2941
+ * @param nftAddress: Address of the NFT contract entered by the client
+ * @param setNotificationConfiguration: It will set the Notification aesthetics
+ * @param setShowNotification: It is used to render the Notification
+ * @param setIsNftAddress: It is used to set if the @param nftAddress entered by client DECLARE itself as an NFT contract.
  */
 //
 export const isNftContract = async (
@@ -26,7 +79,9 @@ export const isNftContract = async (
     React.SetStateAction<NotificationConfigurationInterface>
   >,
   setShowNotification: React.Dispatch<React.SetStateAction<boolean>>,
-  setIsNftAddress: React.Dispatch<React.SetStateAction<boolean>>
+  setnftAddressDetails: React.Dispatch<
+    React.SetStateAction<NftAddressDetailsInterface>
+  >
 ) => {
   const isValidAddress = isValidEthereumContractAddress(nftAddress);
   console.log(nftAddress);
@@ -71,7 +126,6 @@ export const isNftContract = async (
       console.log("Data:: ", data);
 
       if (data === true) {
-        setIsNftAddress(true);
         setNotificationConfiguration({
           modalColor: "#62d140",
           title: "Success",
@@ -79,12 +133,22 @@ export const isNftContract = async (
           icon: IconNotificationSuccess,
         });
         setShowNotification(true);
+        // Getting the collection Image
+        await fetchNftCollectionImage(
+          nftAddress,
+          setNotificationConfiguration,
+          setShowNotification,
+          setnftAddressDetails
+        );
       } else {
         throw new Error("Failed to Verify NFT Address");
       }
     } catch (error) {
       console.log(error);
-      setIsNftAddress(false);
+      setnftAddressDetails((prevNftDetails) => ({
+        ...prevNftDetails,
+        isNftAddress: false,
+      }));
       setNotificationConfiguration({
         modalColor: "#d14040",
         title: "Failed",

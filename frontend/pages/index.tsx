@@ -48,7 +48,7 @@ export default function Home() {
         <IntroSection />
       </SectionWrapper>
 
-      {/* Why QubePay */}
+      {/* With Qube */}
       <SectionWrapper bgColor="bg-black" glowStyles={[]}>
         <CurrentSystemProblems />
       </SectionWrapper>

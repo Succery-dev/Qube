@@ -62,7 +62,7 @@ const CurrentSystemProblems = (): JSX.Element => {
         viewport={{ once: true, amount: 0.25 }}
         className="xl:text-7xl lg:text-6xl md:text-4xl sm:text-4xl text-4xl font-extrabold"
       >
-        Why Qube
+        With Qube
       </motion.h1>
       <div className="sm:flex sm:flex-row justify-between lg:mt-32 sm:mt-16">
         {currentSystemProblems.map(

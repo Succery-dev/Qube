@@ -159,8 +159,8 @@ export const footerLinks = [
     link: "https://veroo.notion.site/Terms-and-Conditions-e56f60533a834abbbd1213c6bf0cd36f",
   },
   {
-    id: "2023_Qube_org",
-    title: "© 2023 Qube org",
+    id: "2023_SUCCERY_FZCO",
+    title: "© 2023 SUCCERY FZCO",
     link: "/",
   },
 ];

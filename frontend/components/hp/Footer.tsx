@@ -33,7 +33,7 @@ const FooterLegal = (): JSX.Element => {
           <Link
             href={footerLink.link}
             key={footerLink.id}
-            target={footerLink.id != "2023_QubePay_org" ? "_blank" : ""}
+            target={footerLink.id != "2023_SUCCERY_FZCO" ? "_blank" : ""}
           >
             <p>{footerLink.title}</p>
           </Link>

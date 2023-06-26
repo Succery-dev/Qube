@@ -2,11 +2,11 @@
 import {
   DollarDownArrow,
   Ellipse25_17,
-  Ellipse70,
   EscrowIcon,
   JuryIcon,
   LinkIcon,
   SmartContractIcon,
+  Escrow,
 } from "../assets";
 
 // Interfaces Imports
@@ -50,28 +50,19 @@ export const navLinks = [
 
 export const currentSystemProblems: ProblemsInterface[] = [
   {
-    id: "70%nonPayment",
-    image: Ellipse70,
-    description: {
-      main: "70% of freelancers have experienced nonpayment or late payment at some point",
-      footer: "study by the Freelancers Union",
-    },
+    id: "Escrow",
+    image: Escrow,
+    description: "You can securely conduct transactions using Qube, even when dealing with anonymous individuals.",
   },
   {
     id: "$5985Loss",
     image: DollarDownArrow,
-    description: {
-      main: "An Average freelancer loses $5,968 per year due to nonpayment or late payment",
-      footer: "study by the Freelancers Union",
-    },
+    description: "An Average freelancer loses $5,968 per year due to nonpayment or late payment",
   },
   {
     id: "25%-17%Scam",
     image: Ellipse25_17,
-    description: {
-      main: "25% freelancers and 17% clients reported that they had been scammed",
-      footer: "Report by freelancer.com 2019",
-    },
+    description: "25% freelancers and 17% clients reported that they had been scammed",
   },
 ];
 

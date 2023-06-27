@@ -43,11 +43,11 @@ const { chains, provider } = configureChains(
 	[alchemyProvider({ apiKey: process.env.ALCHEMY_API_KEY }), publicProvider()]
 );
 
-const { connectors } = getDefaultWallets({
-	appName: "My Alchemy DApp",
-	projectId: process.env.WALLETCONNECT_PROJECT_ID,
-	chains: chains,
-});
+// const { connectors } = getDefaultWallets({
+// 	appName: "My Alchemy DApp",
+// 	projectId: process.env.WALLETCONNECT_PROJECT_ID,
+// 	chains: chains,
+// });
 
 // const wagmiClient = createClient({
 // 	autoConnect: true,

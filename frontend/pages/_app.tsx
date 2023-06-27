@@ -55,7 +55,7 @@ const { connectors } = getDefaultWallets({
 // 	provider,
 // });
 
-export { WagmiConfig, RainbowKitProvider };
+// export { WagmiConfig, RainbowKitProvider };
 
 // Ref: https://www.rainbowkit.com/docs/custom-theme#extending-a-built-in-theme
 const customWalletTheme: Theme = merge(darkTheme(), {
@@ -75,22 +75,22 @@ function MyApp({
 	session: Session;
 }>) {
 	const router = useRouter();
-	const account = useAccount({
-		onConnect({ address, connector, isReconnected }) {
-			if (!isReconnected) router.reload();
-		},
-	});
+	// const account = useAccount({
+	// 	onConnect({ address, connector, isReconnected }) {
+	// 		if (!isReconnected) router.reload();
+	// 	},
+	// });
 	return (
 		// <WagmiConfig client={wagmiClient}>
-			<SessionProvider session={pageProps.session} refetchInterval={0}>
-				<RainbowKitSiweNextAuthProvider>
-					<RainbowKitProvider
-						modalSize="compact"
-						initialChain={process.env.NEXT_PUBLIC_DEFAULT_CHAIN as unknown as RainbowKitChain}
-						chains={chains}
-						coolMode
-						theme={customWalletTheme}
-					>
+		// 	<SessionProvider session={pageProps.session} refetchInterval={0}>
+		// 		<RainbowKitSiweNextAuthProvider>
+		// 			<RainbowKitProvider
+		// 				modalSize="compact"
+		// 				initialChain={process.env.NEXT_PUBLIC_DEFAULT_CHAIN as unknown as RainbowKitChain}
+		// 				chains={chains}
+		// 				coolMode
+		// 				theme={customWalletTheme}
+		// 			>
 						<ProjectProvider>
 							<NotificationProvider>
 								<MainLayout>
@@ -98,9 +98,9 @@ function MyApp({
 								</MainLayout>
 							</NotificationProvider>
 						</ProjectProvider>
-					</RainbowKitProvider>
-				</RainbowKitSiweNextAuthProvider>
-			</SessionProvider>
+		// 			</RainbowKitProvider>
+		// 		</RainbowKitSiweNextAuthProvider>
+		// 	</SessionProvider>
 		// </WagmiConfig>
 	);
 }

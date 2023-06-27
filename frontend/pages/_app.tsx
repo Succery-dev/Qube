@@ -45,8 +45,8 @@ const { chains, provider } = configureChains(
 
 const { connectors } = getDefaultWallets({
 	appName: "My Alchemy DApp",
-	// projectId: process.env.WALLETCONNECT_PROJECT_ID,
-	projectId: "test",
+	projectId: process.env.WALLETCONNECT_PROJECT_ID,
+	// projectId: "test",
 	chains: chains,
 });
 

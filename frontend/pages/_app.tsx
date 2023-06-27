@@ -49,11 +49,11 @@ const { connectors } = getDefaultWallets({
 	chains: chains,
 });
 
-const wagmiClient = createClient({
-	autoConnect: true,
-	connectors,
-	provider,
-});
+// const wagmiClient = createClient({
+// 	autoConnect: true,
+// 	connectors,
+// 	provider,
+// });
 
 export { WagmiConfig, RainbowKitProvider };
 
@@ -81,7 +81,7 @@ function MyApp({
 		},
 	});
 	return (
-		<WagmiConfig client={wagmiClient}>
+		// <WagmiConfig client={wagmiClient}>
 			<SessionProvider session={pageProps.session} refetchInterval={0}>
 				<RainbowKitSiweNextAuthProvider>
 					<RainbowKitProvider
@@ -101,7 +101,7 @@ function MyApp({
 					</RainbowKitProvider>
 				</RainbowKitSiweNextAuthProvider>
 			</SessionProvider>
-		</WagmiConfig>
+		// </WagmiConfig>
 	);
 }
 

@@ -43,19 +43,19 @@ const { chains, provider } = configureChains(
 	[alchemyProvider({ apiKey: process.env.ALCHEMY_API_KEY }), publicProvider()]
 );
 
-// const { connectors } = getDefaultWallets({
-// 	appName: "My Alchemy DApp",
-// 	projectId: process.env.WALLETCONNECT_PROJECT_ID,
-// 	chains: chains,
-// });
+const { connectors } = getDefaultWallets({
+	appName: "My Alchemy DApp",
+	projectId: process.env.WALLETCONNECT_PROJECT_ID,
+	chains: chains,
+});
 
-// const wagmiClient = createClient({
-// 	autoConnect: true,
-// 	connectors,
-// 	provider,
-// });
+const wagmiClient = createClient({
+	autoConnect: true,
+	connectors,
+	provider,
+});
 
-// export { WagmiConfig, RainbowKitProvider };
+export { WagmiConfig, RainbowKitProvider };
 
 // Ref: https://www.rainbowkit.com/docs/custom-theme#extending-a-built-in-theme
 const customWalletTheme: Theme = merge(darkTheme(), {
@@ -75,22 +75,22 @@ function MyApp({
 	session: Session;
 }>) {
 	const router = useRouter();
-	// const account = useAccount({
-	// 	onConnect({ address, connector, isReconnected }) {
-	// 		if (!isReconnected) router.reload();
-	// 	},
-	// });
+	const account = useAccount({
+		onConnect({ address, connector, isReconnected }) {
+			if (!isReconnected) router.reload();
+		},
+	});
 	return (
-		// <WagmiConfig client={wagmiClient}>
-		// 	<SessionProvider session={pageProps.session} refetchInterval={0}>
-		// 		<RainbowKitSiweNextAuthProvider>
-		// 			<RainbowKitProvider
-		// 				modalSize="compact"
-		// 				initialChain={process.env.NEXT_PUBLIC_DEFAULT_CHAIN as unknown as RainbowKitChain}
-		// 				chains={chains}
-		// 				coolMode
-		// 				theme={customWalletTheme}
-		// 			>
+		<WagmiConfig client={wagmiClient}>
+			<SessionProvider session={pageProps.session} refetchInterval={0}>
+				<RainbowKitSiweNextAuthProvider>
+					<RainbowKitProvider
+						modalSize="compact"
+						initialChain={process.env.NEXT_PUBLIC_DEFAULT_CHAIN as unknown as RainbowKitChain}
+						chains={chains}
+						coolMode
+						theme={customWalletTheme}
+					>
 						<ProjectProvider>
 							<NotificationProvider>
 								<MainLayout>
@@ -98,10 +98,10 @@ function MyApp({
 								</MainLayout>
 							</NotificationProvider>
 						</ProjectProvider>
-		// 			</RainbowKitProvider>
-		// 		</RainbowKitSiweNextAuthProvider>
-		// 	</SessionProvider>
-		// </WagmiConfig>
+					</RainbowKitProvider>
+				</RainbowKitSiweNextAuthProvider>
+			</SessionProvider>
+		</WagmiConfig>
 	);
 }
 

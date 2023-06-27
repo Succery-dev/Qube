@@ -27,16 +27,16 @@ const Navbar = (): JSX.Element => {
     setShowMenuModal((prevShowMenuModal) => !prevShowMenuModal);
   };
 
-  // const { data: session } = useSession();
+  const { data: session } = useSession();
   const router = useRouter();
 
-  // useEffect(() => {
-  //   if (session) {
-  //     router.push(`/dashboard/${session.user.name}`);
-  //   } else {
-  //     router.push("/");
-  //   }
-  // }, [session]);
+  useEffect(() => {
+    if (session) {
+      router.push(`/dashboard/${session.user.name}`);
+    } else {
+      router.push("/");
+    }
+  }, [session]);
 
   // This is temporal for the whitelist and will be removed in the future.
   // TODO: Remove this.

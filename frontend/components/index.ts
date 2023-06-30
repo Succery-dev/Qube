@@ -12,18 +12,14 @@ import {
   Walkthrough,
   Support,
   CurrentSystemProblems,
-  Footer
+  Footer,
 } from "./hp";
 
 // Dashboard Imports
-import {
-  DoughnutChart,
-  LineChart,
-  Table
-} from "./dashboard";
+import { DoughnutChart, LineChart, Table } from "./dashboard";
 
 // Project Import
-import { ProjectScaffold } from "./project";
+import { ProjectScaffold, Dropbox, SubmitProjectModal } from "./project";
 
 export {
   IntroSection,
@@ -39,5 +35,7 @@ export {
   LineChart,
   Table,
   ProjectScaffold,
-  Notification
+  Notification,
+  Dropbox,
+  SubmitProjectModal,
 };

@@ -2,10 +2,7 @@ import { convertSeconds } from "./convertSeconds";
 
 import { firebaseApp } from "./firebase";
 
-import { 
-  getDoughnutChartConfig,
-  getLineChartConfig
-} from "./dashboard/charts";
+import { getDoughnutChartConfig, getLineChartConfig } from "./dashboard/charts";
 
 import {
   hoverVariant,
@@ -13,10 +10,12 @@ import {
   modalVariant,
   modalLinksVariant,
   textVariant,
-  fadeIn
-} from "./motion"
+  fadeIn,
+} from "./motion";
 
-export { 
+import { uploadDeliverables } from "./project/uploadDeliverables";
+
+export {
   convertSeconds,
   getDoughnutChartConfig,
   getLineChartConfig,
@@ -26,5 +25,6 @@ export {
   modalLinksVariant,
   textVariant,
   fadeIn,
-  firebaseApp
+  firebaseApp,
+  uploadDeliverables,
 };

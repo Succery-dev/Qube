@@ -62,11 +62,11 @@ const Navbar = (): JSX.Element => {
               src="/images/logo.png"
               width="100"
               height="100"
-              alt="QP"
+              alt="Q"
               className="rounded-md xl:h-[50px] lg:h-[45px] sm:h-[40px] h-[40px] w-auto"
             />
             <h1 className="xl:text-2xl lg:text-xl sm:text-lg text-2xl text-primary font-extrabold lg:ml-4 sm:ml-0">
-              QubePay
+              Qube
             </h1>
           </div>
         </motion.div>

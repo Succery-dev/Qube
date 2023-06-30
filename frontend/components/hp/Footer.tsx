@@ -15,7 +15,7 @@ import { fadeIn } from "../../utils";
 const FooterSocial = (): JSX.Element => {
   return (
     <Link
-      href="https://twitter.com/0xQubePay"
+      href="https://twitter.com/0xQube"
       className="flex flex-row items-center gap-4"
       target="_blank"
     >
@@ -33,7 +33,7 @@ const FooterLegal = (): JSX.Element => {
           <Link
             href={footerLink.link}
             key={footerLink.id}
-            target={footerLink.id != "2023_QubePay_org" ? "_blank" : ""}
+            target={footerLink.id != "2023_SUCCERY_FZCO" ? "_blank" : ""}
           >
             <p>{footerLink.title}</p>
           </Link>

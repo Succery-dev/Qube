@@ -72,5 +72,5 @@ yarn.lock
 
 templates/evm/core/pages/api
 
-vercel.json
 .vercel
+vercel.json

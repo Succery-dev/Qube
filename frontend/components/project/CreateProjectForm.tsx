@@ -1,5 +1,6 @@
 import React from "react";
 import { useRouter } from "next/router";
+import axios from "axios";
 
 // Interfaces Imports
 import {
@@ -18,7 +19,7 @@ import { motion } from "framer-motion";
 import { fadeIn, textVariant } from "../../utils";
 
 // Ethers/Wagmi Imports
-import { useSignTypedData } from "wagmi";
+import { useSignTypedData, useAccount } from "wagmi";
 
 // Notification Context Import
 import { useNotificationContext } from "../../context";
@@ -29,6 +30,9 @@ import {
   IconNotificationWarning,
   IconNotificationError,
 } from "../../assets";
+
+// Status Enum Import
+import { StatusEnum } from "../../enums";
 
 const FormFields = ({
   formField,
@@ -166,6 +170,22 @@ const CreateProjectForm = ({
     setShowNotification(true);
   };
 
+  const { address } = useAccount();
+
+  const onSubmit = async() => {
+    console.log("Storing project data...");
+
+    const projectData = {
+      ...form,
+      Created: new Date().toISOString(),
+      Client: address,
+      Status: StatusEnum.WaitingForConnectingLancersWallet,
+    }
+    const id = await axios.post("/api/project", projectData);
+
+    console.log(`status: ${id.status}, id: ${id.data["id"]}`);
+  }
+
   return (
     // Form Wrapper
     <motion.div
@@ -228,9 +248,10 @@ const CreateProjectForm = ({
               text="Create"
               styles="w-full bg-[#3E8ECC] rounded-md text-center text-lg font-semibold text-white py-[4px] px-7 hover:bg-[#377eb5] mt-12"
               type="submit"
-              onClick={(e) => {
+              onClick={async (e) => {
                 e.preventDefault();
-                router.push("/projectDetail");
+                await onSubmit();
+                // router.push("/projectDetail");
               }}
             />
           ) : pathname === "/projectDetail" ? (

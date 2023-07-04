@@ -6,20 +6,23 @@ import {
   CreateProjectFieldInterface,
   CreateProjectFormInterface,
   NftAddressDetailsInterface,
+  StoreProjectDetailsInterface,
 } from "../../interfaces";
 
 // Custom Components Imports
 import CustomButton from "../CustomButton";
 
 // Constants Imports
-import { createProjectFields, signProjectEip712 } from "../../constants";
+import { createProjectFields, addressZero } from "../../constants";
 
 // Framer Motion Imports
 import { motion } from "framer-motion";
 import { fadeIn, textVariant } from "../../utils";
 
 // Ethers/Wagmi Imports
-import { useSignTypedData } from "wagmi";
+import { useAccount, useSignTypedData } from "wagmi";
+// Rainbowkit Imports
+import { useConnectModal } from "@rainbow-me/rainbowkit";
 
 // Notification Context Import
 import { useNotificationContext } from "../../context";
@@ -33,6 +36,10 @@ import {
 
 // Utils Imports
 import { isNftContract } from "../../utils";
+
+// Firebase Imports
+import { collection, addDoc } from "firebase/firestore";
+import { app, database } from "../../utils";
 
 const FormFields = ({
   formField,
@@ -95,6 +102,8 @@ const CreateProjectForm = ({
   setForm,
   nftAddressDetails,
   setnftAddressDetails,
+  setShowProjectModal,
+  setProjectDetailLink,
 }: {
   form: CreateProjectFormInterface;
   setForm: React.Dispatch<React.SetStateAction<CreateProjectFormInterface>>;
@@ -102,28 +111,22 @@ const CreateProjectForm = ({
   setnftAddressDetails: React.Dispatch<
     React.SetStateAction<NftAddressDetailsInterface>
   >;
+  setShowProjectModal: React.Dispatch<React.SetStateAction<boolean>>;
+  setProjectDetailLink: React.Dispatch<React.SetStateAction<string>>;
 }): JSX.Element => {
   // Notification Context
   const context = useNotificationContext();
   const setShowNotification = context.setShowNotification;
   const setNotificationConfiguration = context.setNotificationConfiguration;
 
-  const { signTypedDataAsync } = useSignTypedData({
-    domain: signProjectEip712.domain,
-    types: signProjectEip712.types,
-    value: {
-      title: form.Title,
-      detail: form.Detail,
-      deadline: form["Deadline(UTC)"],
-      reward: form["Reward(USDC)"],
-      "NFT Address": form["NFT(Contract Address)"],
-      lancerAddress: form["Lancer's Wallet Address"],
-    },
-  });
-
   // Next Router
   const router = useRouter();
   const { pathname } = router;
+
+  // Wagmi
+  const { isDisconnected, address, isConnected, isConnecting } = useAccount();
+  // Rainbowkit
+  const { openConnectModal } = useConnectModal();
 
   // Function Update Form Field
   const updateFormField = (
@@ -138,41 +141,61 @@ const CreateProjectForm = ({
     });
   };
 
-  const signProjectDetail = async (e: React.MouseEvent) => {
-    e.preventDefault();
-    try {
-      await signTypedDataAsync();
-      setNotificationConfiguration({
-        modalColor: "#62d140",
-        title: "Success",
-        message: "Project Verified!",
-        icon: IconNotificationSuccess,
-      });
-    } catch (error) {
-      if (String(error).includes("invalid address")) {
+  /**
+   * @dev DEMO firebase functions
+   */
+  const databaseRef = collection(database, "project-details");
+  const addDataToFirestore = async (form: StoreProjectDetailsInterface) => {
+    if (isConnected) {
+      try {
+        form["Client's Wallet Address"] = address;
+        form["Lancer's Wallet Address"] = addressZero;
+        form.approveProof = "";
+
+        console.log("form: ", form);
+
+        const response = await addDoc(databaseRef, form);
+        const projectDetailLink =
+          /**
+           * @Todo use https:// for production
+           */
+          // `https://${window.location.host}/ProjectDetail/${response.id}`;
+          `http://${window.location.host}/projectDetails/${response.id}`;
+
+        console.log("projectDetailLink: ", projectDetailLink);
+
+        setProjectDetailLink(projectDetailLink);
+
         setNotificationConfiguration({
-          modalColor: "#d1d140",
-          title: "Invalid Address",
-          message: "Invalid Address for signing Project Detail!",
-          icon: IconNotificationWarning,
+          modalColor: "#62d140",
+          title: "Success",
+          message: "Sucessfully created the project",
+          icon: IconNotificationSuccess,
         });
-      } else if (String(error).includes("UserRejectedRequestError")) {
-        setNotificationConfiguration({
-          modalColor: "#d14040",
-          title: "Rejected",
-          message: "Rejected Signing Project Detail",
-          icon: IconNotificationError,
-        });
-      } else {
+
+        setShowProjectModal(true);
+      } catch (error) {
+        console.log(error);
         setNotificationConfiguration({
           modalColor: "#d14040",
           title: "Error",
-          message: "Some error signing the Project Detail",
+          message: "Error occured creating the project",
           icon: IconNotificationError,
         });
+      } finally {
+        setShowNotification(true);
       }
+    } else {
+      setNotificationConfiguration({
+        modalColor: "#d1d140",
+        title: "Address not Found",
+        message: "Please connect Wallet and try again",
+        icon: IconNotificationWarning,
+      });
+      setShowNotification(true);
+
+      openConnectModal();
     }
-    setShowNotification(true);
   };
 
   return (
@@ -193,103 +216,52 @@ const CreateProjectForm = ({
           viewport={{ once: true, amount: 0.25 }}
           className="xl:text-4xl lg:text-3xl md:text-4xl sm:text-xl text-3xl font-extrabold"
         >
-          {pathname === "/createProject"
-            ? "Create Project"
-            : pathname === "/projectDetail"
-            ? "Project Detail"
-            : null}
+          Create Project
         </motion.h1>
 
         {/* Form Fields */}
         <div className="flex flex-col gap-6 pt-8">
           {createProjectFields.map((formField, index) => {
-            if (pathname === "/createProject") {
-              return (
-                formField.title != "Lancer's Wallet Address" && (
-                  <FormFields
-                    formField={formField}
-                    index={index}
-                    form={form}
-                    updateFormField={updateFormField}
-                    key={index}
-                  />
-                )
-              );
-            } else if (pathname === "/projectDetail") {
-              return (
-                formField.title != "NFT(Contract Address)" && (
-                  <FormFields
-                    formField={formField}
-                    index={index}
-                    form={form}
-                    updateFormField={updateFormField}
-                    key={index}
-                  />
-                )
-              );
-            } else return null;
+            return (
+              formField.title != "Lancer's Wallet Address" && (
+                <FormFields
+                  formField={formField}
+                  index={index}
+                  form={form}
+                  updateFormField={updateFormField}
+                  key={index}
+                />
+              )
+            );
           })}
         </div>
 
         {/* Buttons */}
         <div className="w-full flex flex-row justify-end">
-          {pathname === "/createProject" ? (
-            // "Create Project Button"
-            nftAddressDetails.isNftAddress === false ? (
-              <CustomButton
-                text="1/2 Verify NFT Address"
-                styles="w-full bg-[#3E8ECC] rounded-md text-center text-lg font-semibold text-white py-[4px] px-7 hover:bg-[#377eb5] mt-12"
-                type="button"
-                onClick={(e) => {
-                  e.preventDefault();
-                  isNftContract(
-                    form["NFT(Contract Address)"],
-                    setNotificationConfiguration,
-                    setShowNotification,
-                    setnftAddressDetails
-                  );
-                }}
-              />
-            ) : (
-              <CustomButton
-                text="2/2 Create Project"
-                styles="w-full bg-[#3E8ECC] rounded-md text-center text-lg font-semibold text-white py-[4px] px-7 hover:bg-[#377eb5] mt-12"
-                type="submit"
-                onClick={(e) => {
-                  e.preventDefault();
-                  router.push("/projectDetail");
-                }}
-              />
-            )
-          ) : pathname === "/projectDetail" ? (
-            <div className="w-full flex flex-col gap-6 mt-12 justify-between">
-              {/* Prepay Escrow Button */}
-              <CustomButton
-                text="Prepay Escrow"
-                styles="bg-[#3E8ECC] rounded-md text-center text-lg font-semibold text-white py-[4px] px-7 hover:bg-[#377eb5]"
-                type="submit"
-                onClick={(e) => {
-                  e.preventDefault();
-                }}
-              />
-              {/* Pay Lancer Button */}
-              <CustomButton
-                text="Pay Lancer"
-                styles="bg-[#40d1d1] rounded-md text-center text-lg font-semibold text-white py-[4px] px-7 hover:bg-[#31d1d1]"
-                type="submit"
-                onClick={(e) => {
-                  e.preventDefault();
-                }}
-              />
-              {/* Verify and Confirm Button */}
-              <CustomButton
-                text="Confirm"
-                styles="bg-[#d14040] rounded-md text-center text-lg font-semibold text-white py-[4px] px-7 hover:bg-[#d13131]"
-                type="submit"
-                onClick={(e) => signProjectDetail(e)}
-              />
-            </div>
-          ) : null}
+          {/* Create Project Button */}
+          <CustomButton
+            text={
+              nftAddressDetails.isNftAddress
+                ? "2/2 Create Project"
+                : "1/2 Verify NFT Address"
+            }
+            styles="w-full bg-[#3E8ECC] rounded-md text-center text-lg font-semibold text-white py-[4px] px-7 hover:bg-[#377eb5] mt-12"
+            type="button"
+            onClick={(e) => {
+              e.preventDefault();
+
+              if (nftAddressDetails.isNftAddress) {
+                addDataToFirestore(form as StoreProjectDetailsInterface);
+              } else {
+                isNftContract(
+                  form["NFT(Contract Address)"],
+                  setNotificationConfiguration,
+                  setShowNotification,
+                  setnftAddressDetails
+                );
+              }
+            }}
+          />
         </div>
       </div>
     </motion.div>

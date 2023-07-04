@@ -20,6 +20,12 @@ import {
   NftAddressDetailsInterface,
 } from "./project";
 
+// projectDetails Imports
+import {
+  StoreProjectDetailsInterface,
+  DisplayProjectDetailsInterface,
+} from "./projectDetails";
+
 // Notification Imports
 import {
   NotificationContextInterface,
@@ -41,4 +47,6 @@ export type {
   NotificationContextInterface,
   NotificationConfigurationInterface,
   NftAddressDetailsInterface,
+  StoreProjectDetailsInterface,
+  DisplayProjectDetailsInterface,
 };

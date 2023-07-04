@@ -90,7 +90,10 @@ function MyApp({
   const router = useRouter();
   const account = useAccount({
     onConnect({ address, connector, isReconnected }) {
-      if (!isReconnected) router.reload();
+      /**
+       * @dev check if this line is required. When wallet is connected, it cause the site to reload
+       */
+      // if (!isReconnected) router.reload();
     },
   });
   return (

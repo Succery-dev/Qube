@@ -13,6 +13,7 @@ import CrossIcon from "./Icon-Cross.svg";
 import IconNotificationSuccess from "./Icon-Notification-Success.svg";
 import IconNotificationWarning from "./Icon-Notification-Warning.svg";
 import IconNotificationError from "./Icon-Notification-Error.svg";
+import IconCopy from "./Icon-Copy.svg";
 
 export {
   arrow,
@@ -30,4 +31,5 @@ export {
   IconNotificationSuccess,
   IconNotificationWarning,
   IconNotificationError,
+  IconCopy,
 };

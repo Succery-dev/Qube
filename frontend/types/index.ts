@@ -1,18 +1,23 @@
-import { 
-  ProjectDetailInterfaceKeysType,
-  LineDataType,
-  LineOptionsType,
-  DoughnutDataType,
-  DoughnutOptionsType
-} from "./dashboard";
-
 import { buttonType } from "./buttonType";
 
-export type { 
+// Dashboard Imports
+import {
   ProjectDetailInterfaceKeysType,
   LineDataType,
   LineOptionsType,
   DoughnutDataType,
   DoughnutOptionsType,
-  buttonType
-}
+} from "./dashboard";
+
+// ProjectDetails Improts
+import { DisplayProjectDetailsInterfaceKeysType } from "./projectDetails";
+
+export type {
+  ProjectDetailInterfaceKeysType,
+  LineDataType,
+  LineOptionsType,
+  DoughnutDataType,
+  DoughnutOptionsType,
+  buttonType,
+  DisplayProjectDetailsInterfaceKeysType,
+};

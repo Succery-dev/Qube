@@ -20,7 +20,10 @@ import {
 } from "../interfaces";
 
 // Types Imports
-import { ProjectDetailInterfaceKeysType } from "../types";
+import {
+  ProjectDetailInterfaceKeysType,
+  DisplayProjectDetailsInterfaceKeysType,
+} from "../types";
 
 // Mock Data Import
 import { mockData } from "./mockData";
@@ -337,6 +340,27 @@ export const aesthetics = {
     createProjectGlowStyles: [
       {
         backgroundColor: "#00FFFF",
+        bottom: "20%",
+        left: "45%",
+        width: "200px",
+        height: "200px",
+        filter: "blur(200px)",
+        transform: "translateY(-50%) translateX(-50%)",
+      },
+      {
+        backgroundColor: "#2563EB",
+        top: "20%",
+        left: "45%",
+        width: "200px",
+        height: "200px",
+        filter: "blur(200px)",
+        transform: "translateY(-50%) translateX(-50%)",
+      },
+    ],
+
+    projectDetailsGlowStyles: [
+      {
+        backgroundColor: "#00FFFF",
         top: "50%",
         right: "10%",
         width: "200px",
@@ -372,6 +396,17 @@ export const projectDetailsInterfaceKeys: ProjectDetailInterfaceKeysType = [
   "status",
 ];
 
+export const DisplayProjectDetailsInterfaceKeys: DisplayProjectDetailsInterfaceKeysType[] =
+  [
+    "Title",
+    "Detail",
+    "Deadline(UTC)",
+    "Reward(USDC)",
+    "NFT(Contract Address)",
+    "Client's Wallet Address",
+    "Lancer's Wallet Address",
+  ];
+
 export const createProjectFields: CreateProjectFieldInterface[] = [
   {
     title: "Title",
@@ -398,25 +433,23 @@ export const createProjectFields: CreateProjectFieldInterface[] = [
     placeholder: "0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d",
     type: "string",
   },
-  {
-    title: "Lancer's Wallet Address",
-    placeholder: "0x71C7656EC7ab88b098defB751B7401B5f6d8976F",
-    type: "string",
-  },
 ];
 
 export const signProjectEip712: TypeDataDomainInterface = {
   domain: {
     name: "QubePay-Sign-Project",
-    chainId: 80001,
+    // @TODO make this chain agnostic BEFORE PR
+    chainId: 1,
   },
   types: {
     ProjectDetail: [
-      { name: "title", type: "string" },
-      { name: "detail", type: "string" },
-      { name: "deadline", type: "string" },
-      { name: "reward", type: "uint256" },
-      { name: "lancerAddress", type: "address" },
+      { name: "Title", type: "string" },
+      { name: "Detail", type: "string" },
+      { name: "Deadline(UTC)", type: "string" },
+      { name: "Reward(USDC)", type: "uint256" },
+      { name: "NFT(Contract Address)", type: "address" },
+      { name: "Client's Wallet Address", type: "address" },
+      { name: "Lancer's Wallet Address", type: "address" },
     ],
   },
 };
@@ -424,3 +457,5 @@ export const signProjectEip712: TypeDataDomainInterface = {
 // export const whitelist: string[] = [
 //   "0x329980D088Ba66B3d459AE3d396a722437801689",
 // ]
+
+export const addressZero = "0x0000000000000000000000000000000000000000";

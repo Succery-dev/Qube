@@ -1,6 +1,11 @@
 import { convertSeconds } from "./convertSeconds";
 
-import { firebaseApp } from "./firebase";
+/**
+ * @dev TEMPORARILY commenting this firebase app
+ * @todo use this app for production
+ */
+// import { firebaseApp } from "./firebase";
+import { app, database } from "./firebase";
 
 import { getDoughnutChartConfig, getLineChartConfig } from "./dashboard/charts";
 
@@ -15,6 +20,13 @@ import {
 
 import { isValidEthereumContractAddress, isNftContract } from "./createProject";
 
+import {
+  checkNftOwnership,
+  approveProjectDetails,
+  updateProjectDetails,
+  getDataFromFireStore,
+} from "./projectDetail";
+
 export {
   convertSeconds,
   getDoughnutChartConfig,
@@ -25,7 +37,13 @@ export {
   modalLinksVariant,
   textVariant,
   fadeIn,
-  firebaseApp,
+  // firebaseApp,
+  app,
+  database,
   isValidEthereumContractAddress,
   isNftContract,
+  checkNftOwnership,
+  approveProjectDetails,
+  updateProjectDetails,
+  getDataFromFireStore,
 };

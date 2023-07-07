@@ -36,8 +36,10 @@ const SectionWrapper: React.FC<SectionWrapperPropsInterface> = ({
 
 const ProjectScaffold = ({
   setShowSubmitModal,
+  projectId,
 }: {
   setShowSubmitModal: React.Dispatch<React.SetStateAction<boolean>>;
+  projectId?: string;
 }): JSX.Element => {
   const context = useProjectContext();
   const form = context.form;
@@ -57,6 +59,7 @@ const ProjectScaffold = ({
             form={form}
             setForm={setForm}
             setShowSubmitModal={setShowSubmitModal}
+            projectId={projectId}
           />
           {/* 3D Logo */}
           <div className="w-1/2 h-[500px] lg:block hidden">

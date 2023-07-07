@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
+import axios from "axios";
 
 // Custom Components Imports
 import {
@@ -53,7 +54,28 @@ const Dashboard: NextPage = () => {
   const [data, setData] = useState({} as ProjectDataInterface);
 
   useEffect(() => {
-    setData(mockData);
+    const fetchData = async () => {
+      try {
+        console.log("Fetching project data...");
+        const res = await axios.get(`/api/project/${router.query.walletAddress}`);
+        const projects = [];
+        res.data.map((project: any) => {
+          projects.push({
+            project: project["Title"],
+            deadline: project["Deadline(UTC)"],
+            amount: parseInt(project["Reward(USDC)"]),  // string -> number
+            status: project["Status"],
+            id: project["id"],
+          });
+        });
+        mockData.data = projects;
+        setData(mockData);
+      } catch (error) {
+        console.log("Error has occured with /api/project/[walletAddress].ts");
+      }
+    };
+  
+    fetchData();
   }, []);
 
   if (!data) {
@@ -105,7 +127,11 @@ const Dashboard: NextPage = () => {
             viewport={{ once: true, amount: 0.25 }}
             className="lg:col-start-2 lg:col-end-12 col-start-1 col-end-13 my-8 bg-black rounded-lg xs:grid grid-rows-10 lg:p-[3px] p-[2px] blue-transparent-green-gradient-vertical"
           >
-            {data.data?.length > 0 && <Table mockData={data} />}
+            {
+              data.data?.length > 0 
+                ? <Table projectData={data} />
+                : <p className="m-5 text-center text-3xl">No Project Yet</p>
+            }
           </motion.div>
         </div>
       </SectionWrapper>

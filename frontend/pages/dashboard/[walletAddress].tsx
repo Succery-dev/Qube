@@ -22,6 +22,7 @@ import {
 // Interfaces Imports
 import {
   ProjectDataInterface,
+  ProjectDetailInterface,
   SectionWrapperPropsInterface,
 } from "../../interfaces";
 
@@ -31,6 +32,9 @@ import {
   fadeIn,
   textVariant
 } from "../../utils";
+
+// StatusEnum Import
+import { StatusEnum } from "../../enums";
 
 const SectionWrapper: React.FC<SectionWrapperPropsInterface> = ({
   children,
@@ -58,13 +62,13 @@ const Dashboard: NextPage = () => {
       try {
         console.log("Fetching project data...");
         const res = await axios.get(`/api/project/${router.query.walletAddress}`);
-        const projects = [];
+        const projects: ProjectDetailInterface[] = [];
         res.data.map((project: any) => {
           projects.push({
             project: project["Title"],
             deadline: project["Deadline(UTC)"],
             amount: parseInt(project["Reward(USDC)"]),  // string -> number
-            status: project["Status"],
+            status: Object.entries(StatusEnum).find(([key, value]) => value === project["Status"])[1] as StatusEnum,
             id: project["id"],
           });
         });

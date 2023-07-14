@@ -151,8 +151,8 @@ const CreateProjectForm = ({
         form["Client's Wallet Address"] = address;
         form["Lancer's Wallet Address"] = addressZero;
         form.approveProof = "";
-
-        console.log("form: ", form);
+        form.fileDeliverable = [];
+        form.textDeliverable = [];
 
         const response = await addDoc(databaseRef, form);
         const projectDetailLink =
@@ -161,8 +161,6 @@ const CreateProjectForm = ({
            */
           // `https://${window.location.host}/ProjectDetail/${response.id}`;
           `http://${window.location.host}/projectDetails/${response.id}`;
-
-        console.log("projectDetailLink: ", projectDetailLink);
 
         setProjectDetailLink(projectDetailLink);
 
@@ -175,7 +173,6 @@ const CreateProjectForm = ({
 
         setShowProjectModal(true);
       } catch (error) {
-        console.log(error);
         setNotificationConfiguration({
           modalColor: "#d14040",
           title: "Error",

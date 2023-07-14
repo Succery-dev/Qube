@@ -1,3 +1,7 @@
 import { DisplayProjectDetailsInterfaceKeysType } from "./displayProjectDetailsInterfaceKeys";
+import { DescriptionProjectDetailsInterfaceKeysType } from "./descriptionProjectDetailsInterfaceKeys";
 
-export type { DisplayProjectDetailsInterfaceKeysType };
+export type {
+  DisplayProjectDetailsInterfaceKeysType,
+  DescriptionProjectDetailsInterfaceKeysType,
+};

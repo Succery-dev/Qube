@@ -5,7 +5,9 @@ import { convertSeconds } from "./convertSeconds";
  * @todo use this app for production
  */
 // import { firebaseApp } from "./firebase";
-import { app, database } from "./firebase";
+import { app, database, storage } from "./firebase";
+
+import { formatBytes } from "./formatBytes";
 
 import { getDoughnutChartConfig, getLineChartConfig } from "./dashboard/charts";
 
@@ -25,6 +27,8 @@ import {
   approveProjectDetails,
   updateProjectDetails,
   getDataFromFireStore,
+  assingProject,
+  populateStates,
 } from "./projectDetail";
 
 export {
@@ -40,10 +44,14 @@ export {
   // firebaseApp,
   app,
   database,
+  storage,
   isValidEthereumContractAddress,
   isNftContract,
   checkNftOwnership,
   approveProjectDetails,
   updateProjectDetails,
   getDataFromFireStore,
+  assingProject,
+  populateStates,
+  formatBytes,
 };

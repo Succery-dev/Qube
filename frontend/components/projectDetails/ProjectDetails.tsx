@@ -2,15 +2,24 @@ import React, { useState, useEffect } from "react";
 
 // Interface Imports
 import {
+  DisplayFileDeliverableInterface,
   DisplayProjectDetailsInterface,
+  DisplayTextDeliverableInterface,
   SectionWrapperPropsInterface,
+  StoreFileDeliverableInterface,
 } from "../../interfaces";
 
 // Framer-Motion Imports
 import { motion } from "framer-motion";
 
 // Custom Component Imports
-import { CustomButton, Glow, ProjectDetailsDescription } from "../index";
+import {
+  CustomButton,
+  Glow,
+  ProjectDetailsDescription,
+  Dropbox,
+  SubmitTextArea,
+} from "../index";
 
 // Constant Imports
 import { aesthetics, signProjectEip712 } from "../../constants";
@@ -26,6 +35,8 @@ import { useNotificationContext } from "../../context";
 
 // utils Imports
 import { checkNftOwnership, getDataFromFireStore } from "../../utils";
+import { assingProject, populateStates } from "../../utils/projectDetail";
+import { IconNotificationWarning } from "../../assets";
 
 const SectionWrapper: React.FC<SectionWrapperPropsInterface> = ({
   children,
@@ -55,7 +66,11 @@ const ProjectDetails = ({ projectId }: { projectId: string }): JSX.Element => {
   const [projectDetails, setProjectDetails] = useState(
     {} as DisplayProjectDetailsInterface
   );
-  const [isAssigned, setIsAssigned] = useState(true);
+  const [isAssigned, setIsAssigned] = useState(false);
+  const [fileDeliverables, setFileDeliverables] =
+    useState<DisplayFileDeliverableInterface[]>();
+  const [textDeliverables, setTextDeliverables] =
+    useState<DisplayTextDeliverableInterface[]>();
 
   // Wagmi
   const { address } = useAccount();
@@ -76,12 +91,14 @@ const ProjectDetails = ({ projectId }: { projectId: string }): JSX.Element => {
 
   useEffect(() => {
     if (projectId) {
-      getDataFromFireStore(
+      populateStates(
         projectId,
+        setIsAssigned,
         setProjectDetails,
+        setFileDeliverables,
         setNotificationConfiguration,
         setShowNotification,
-        setIsAssigned
+        setTextDeliverables
       );
     }
   }, [projectId]);
@@ -96,23 +113,38 @@ const ProjectDetails = ({ projectId }: { projectId: string }): JSX.Element => {
           <div className="w-full xl:px-8 xl:py-12 px-6 sm:py-10 py-6 text-[#959595]">
             {/* Header */}
             <div className="w-full text-white">
-              <h1 className="sm:text-4xl xs:text-3xl text-2xl">
-                Project for{" "}
-                {projectDetails["Client's Wallet Address"] != undefined
-                  ? `${projectDetails["Client's Wallet Address"].slice(
-                      0,
-                      7
-                    )}...${projectDetails["Client's Wallet Address"].slice(-4)}`
-                  : ""}
-              </h1>
+              {section === "description" && (
+                <h1 className="sm:text-4xl xs:text-3xl text-3xl">
+                  Project for{" "}
+                  {projectDetails["Client's Wallet Address"] != undefined
+                    ? `${projectDetails["Client's Wallet Address"].slice(
+                        0,
+                        7
+                      )}...${projectDetails["Client's Wallet Address"].slice(
+                        -4
+                      )}`
+                    : ""}
+                </h1>
+              )}
+
+              {section === "files" && (
+                <h1 className="sm:text-4xl xs:text-3xl text-3xl">
+                  Submit Files
+                </h1>
+              )}
+              {section === "text" && (
+                <h1 className="sm:text-4xl xs:text-3xl text-3xl">
+                  Submit Text
+                </h1>
+              )}
 
               {/* Detail Sections */}
-              <div className="flex flex-row sm:gap-8 xs:gap-4 gap-0 xs:mt-6 mt-4">
+              <div className="flex flex-row xs:justify-start justify-between sm:gap-8 xs:gap-4 gap-0 xs:mt-6 mt-6">
                 <CustomButton
                   text="Description"
                   styles={`${
                     section === "description" ? "bg-[#3E8ECC]" : ""
-                  } rounded-md text-center xs:text-md text-sm text-white py-[2px] px-4 hover:bg-[#377eb5]`}
+                  } rounded-md text-center xs:text-base text-sm text-white py-[2px] px-4 hover:bg-[#377eb5]`}
                   onClick={() => {
                     setSection("description");
                   }}
@@ -122,7 +154,7 @@ const ProjectDetails = ({ projectId }: { projectId: string }): JSX.Element => {
                   text="Files"
                   styles={`${
                     section === "files" ? "bg-[#3E8ECC]" : ""
-                  } rounded-md text-center xs:text-md text-sm text-white py-[2px] px-4 hover:bg-[#377eb5]`}
+                  } rounded-md text-center xs:text-base text-sm text-white py-[2px] px-4 hover:bg-[#377eb5]`}
                   onClick={() => {
                     setSection("files");
                   }}
@@ -144,34 +176,47 @@ const ProjectDetails = ({ projectId }: { projectId: string }): JSX.Element => {
             </div>
             {/* Main */}
             {section === "description" && (
-              <ProjectDetailsDescription projectDetails={projectDetails} />
+              <ProjectDetailsDescription
+                isAssigned={isAssigned}
+                openConnectModal={openConnectModal}
+                signTypedDataAsync={signTypedDataAsync}
+                nftOwnerAddress={address}
+                setFileDeliverables={setFileDeliverables}
+                projectId={projectId}
+                setIsAssigned={setIsAssigned}
+                setProjectDetails={setProjectDetails}
+                setNotificationConfiguration={setNotificationConfiguration}
+                setShowNotification={setShowNotification}
+                projectDetails={projectDetails}
+                setTextDeliverables={setTextDeliverables}
+              />
             )}
             {section === "files" && (
-              <ProjectDetailsDescription projectDetails={projectDetails} />
+              <Dropbox
+                fileDeliverables={fileDeliverables}
+                setFileDeliverables={setFileDeliverables}
+                projectId={projectId}
+                setIsAssigned={setIsAssigned}
+                isAssigned={isAssigned}
+                setProjectDetails={setProjectDetails}
+                setNotificationConfiguration={setNotificationConfiguration}
+                setShowNotification={setShowNotification}
+                projectDetails={projectDetails}
+                setTextDeliverables={setTextDeliverables}
+              />
             )}
             {section === "text" && (
-              <ProjectDetailsDescription projectDetails={projectDetails} />
-            )}
-            {/* Footer/Approve Button */}
-            {/* Approve Project Button */}
-            {!isAssigned && (
-              <CustomButton
-                text="Approve Project"
-                styles="mt-4 w-full bg-[#3E8ECC] rounded-md text-center text-md text-white py-[2px] px-4 hover:bg-[#377eb5]"
-                onClick={() => {
-                  checkNftOwnership(
-                    projectDetails["NFT(Contract Address)"],
-                    address,
-                    setNotificationConfiguration,
-                    setShowNotification,
-                    signTypedDataAsync,
-                    openConnectModal,
-                    projectId,
-                    setProjectDetails,
-                    setIsAssigned
-                  );
-                }}
-                type={"button"}
+              <SubmitTextArea
+                textDeliverables={textDeliverables}
+                setFileDeliverables={setFileDeliverables}
+                projectId={projectId}
+                setIsAssigned={setIsAssigned}
+                isAssigned={isAssigned}
+                setProjectDetails={setProjectDetails}
+                setNotificationConfiguration={setNotificationConfiguration}
+                setShowNotification={setShowNotification}
+                projectDetails={projectDetails}
+                setTextDeliverables={setTextDeliverables}
               />
             )}
           </div>

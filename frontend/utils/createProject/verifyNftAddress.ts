@@ -42,6 +42,9 @@ const fetchNftCollectionImage = async (
       headers: {
         "X-API-KEY": DEMO_OPENSEA_API_KEY,
       },
+      params: {
+        chain_id: 137,
+      },
     };
     /**
      * @dev fetching the collection details ASSUMING tokenId "1" exists for now.
@@ -51,7 +54,6 @@ const fetchNftCollectionImage = async (
       config
     );
     const collectionImageUrl = response.data.collection.image_url;
-    console.log(collectionImageUrl);
     setnftAddressDetails({
       isNftAddress: true,
       nftCollectionImageUrl: collectionImageUrl,
@@ -84,7 +86,6 @@ export const isNftContract = async (
   >
 ) => {
   const isValidAddress = isValidEthereumContractAddress(nftAddress);
-  console.log(nftAddress);
   if (isValidAddress) {
     try {
       const contractABI = [
@@ -110,20 +111,14 @@ export const isNftContract = async (
       ];
 
       const erc721InterfaceId = "0x80ac58cd";
-      console.log({
-        address: nftAddress,
-        abi: contractABI,
-        functionName: "supportsInterface",
-        args: [erc721InterfaceId],
-      });
+
       const data = await readContract({
         address: nftAddress,
         abi: contractABI,
         functionName: "supportsInterface",
         args: [erc721InterfaceId],
+        chainId: 137,
       });
-
-      console.log("Data:: ", data);
 
       if (data === true) {
         setNotificationConfiguration({
@@ -144,7 +139,6 @@ export const isNftContract = async (
         throw new Error("Failed to Verify NFT Address");
       }
     } catch (error) {
-      console.log(error);
       setnftAddressDetails((prevNftDetails) => ({
         ...prevNftDetails,
         isNftAddress: false,

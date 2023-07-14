@@ -2,7 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-
 /* Text "Trust" in components/hp/IntroSection.tsx */
 .linear-blue-green-gradient {
   background: linear-gradient(100.74deg, #2563eb 36%, #00ff19 104%);
@@ -35,4 +34,17 @@
     transparent 50%,
     #00ffff 100%
   );
+}
+
+.progressBar {
+  background: linear-gradient(to right, #2563eb, #00ffff);
+}
+
+.hideScrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.hideScrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }

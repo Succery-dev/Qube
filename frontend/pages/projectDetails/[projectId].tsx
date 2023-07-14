@@ -12,8 +12,6 @@ const ContractDetails: NextPage = () => {
   const router = useRouter();
   const projectId = router.query.projectId as string;
 
-  console.log("projectId: ", projectId);
-
   return (
     <div>
       <Notification />

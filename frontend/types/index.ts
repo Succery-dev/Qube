@@ -10,7 +10,10 @@ import {
 } from "./dashboard";
 
 // ProjectDetails Improts
-import { DisplayProjectDetailsInterfaceKeysType } from "./projectDetails";
+import {
+  DisplayProjectDetailsInterfaceKeysType,
+  DescriptionProjectDetailsInterfaceKeysType,
+} from "./projectDetails";
 
 export type {
   ProjectDetailInterfaceKeysType,
@@ -20,4 +23,5 @@ export type {
   DoughnutOptionsType,
   buttonType,
   DisplayProjectDetailsInterfaceKeysType,
+  DescriptionProjectDetailsInterfaceKeysType,
 };

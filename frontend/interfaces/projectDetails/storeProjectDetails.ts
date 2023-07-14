@@ -1,8 +1,6 @@
-import { CreateProjectFormInterface } from "../index";
+import { DisplayProjectDetailsInterface } from "../index";
 
-interface StoreProjectDetailsInterface extends CreateProjectFormInterface {
-  "Client's Wallet Address": `0x${string}`;
-  "Lancer's Wallet Address": `0x${string}`;
+interface StoreProjectDetailsInterface extends DisplayProjectDetailsInterface {
   approveProof: string;
 }
 

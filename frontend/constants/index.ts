@@ -23,6 +23,7 @@ import {
 import {
   ProjectDetailInterfaceKeysType,
   DisplayProjectDetailsInterfaceKeysType,
+  DescriptionProjectDetailsInterfaceKeysType,
 } from "../types";
 
 // Mock Data Import
@@ -405,6 +406,19 @@ export const DisplayProjectDetailsInterfaceKeys: DisplayProjectDetailsInterfaceK
     "NFT(Contract Address)",
     "Client's Wallet Address",
     "Lancer's Wallet Address",
+    "fileDeliverable",
+    "textDeliverable",
+  ];
+
+export const DescriptionProjectDetailsInterfaceKeys: DescriptionProjectDetailsInterfaceKeysType[] =
+  [
+    "Title",
+    "Detail",
+    "Deadline(UTC)",
+    "Reward(USDC)",
+    "NFT(Contract Address)",
+    "Client's Wallet Address",
+    "Lancer's Wallet Address",
   ];
 
 export const createProjectFields: CreateProjectFieldInterface[] = [
@@ -438,8 +452,7 @@ export const createProjectFields: CreateProjectFieldInterface[] = [
 export const signProjectEip712: TypeDataDomainInterface = {
   domain: {
     name: "QubePay-Sign-Project",
-    // @TODO make this chain agnostic BEFORE PR
-    chainId: 1,
+    chainId: 137,
   },
   types: {
     ProjectDetail: [

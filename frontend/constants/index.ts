@@ -16,7 +16,7 @@ import {
   FeaturesInterface,
   SupportInterface,
   CreateProjectFieldInterface,
-  TypeDataDomainInterface
+  TypeDataDomainInterface,
 } from "../interfaces";
 
 // Types Imports
@@ -25,9 +25,10 @@ import { ProjectDetailInterfaceKeysType } from "../types";
 // Mock Data Import
 import { mockData } from "./mockData";
 
-export { mockData }
+export { mockData };
 
-export const waitlistUrl: string = "https://docs.google.com/forms/d/e/1FAIpQLSfe3r7ia_OTCHU8tHEtNG_aPY6OpLDsLPl3RDj-wQLutXNTKg/viewform";
+export const waitlistUrl: string =
+  "https://docs.google.com/forms/d/e/1FAIpQLSfe3r7ia_OTCHU8tHEtNG_aPY6OpLDsLPl3RDj-wQLutXNTKg/viewform";
 
 export const navLinks = [
   {
@@ -45,24 +46,27 @@ export const navLinks = [
   {
     id: "support",
     title: "Support",
-  }
+  },
 ];
 
 export const currentSystemProblems: ProblemsInterface[] = [
   {
     id: "Escrow",
     image: Escrow,
-    description: "You can securely conduct transactions using Qube, even when dealing with anonymous individuals.",
+    description:
+      "You can securely conduct transactions using Qube, even when dealing with anonymous individuals.",
   },
   {
     id: "Community",
     image: Community,
-    description: "Not only can Qube be used for one-on-one transactions, but it is also suitable for assigning tasks to community members.",
+    description:
+      "Not only can Qube be used for one-on-one transactions, but it is also suitable for assigning tasks to community members.",
   },
   {
     id: "API",
     image: API,
-    description: "With Qube's developer tools, anyone will be able to easily build applications similar to Qube. (Coming soon)",
+    description:
+      "With Qube's developer tools, anyone will be able to easily build applications similar to Qube. (Coming soon)",
   },
 ];
 
@@ -341,6 +345,27 @@ export const aesthetics = {
         width: "200px",
         height: "200px",
         filter: "blur(200px)",
+        transform: "translateY(-50%)",
+      },
+    ],
+
+    pageNotFoundStyles: [
+      {
+        backgroundColor: "#00FFFF",
+        top: "50%",
+        left: "17%",
+        width: "250px",
+        height: "250px",
+        filter: "blur(250px)",
+        transform: "translateY(-50%)",
+      },
+      {
+        backgroundColor: "#2563EB",
+        top: "50%",
+        right: "35%",
+        width: "250px",
+        height: "250px",
+        filter: "blur(250px)",
         transform: "translateY(-50%)",
       },
     ],

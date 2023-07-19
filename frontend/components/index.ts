@@ -19,7 +19,12 @@ import {
 import { DoughnutChart, LineChart, Table } from "./dashboard";
 
 // Project Import
-import { ProjectScaffold, Dropbox, SubmitProjectModal } from "./project";
+import {
+  ProjectScaffold,
+  Dropbox,
+  SubmitProjectModal,
+  LogoCanvas,
+} from "./project";
 
 export {
   IntroSection,
@@ -38,4 +43,5 @@ export {
   Notification,
   Dropbox,
   SubmitProjectModal,
+  LogoCanvas,
 };

@@ -3,7 +3,7 @@ interface CreateProjectFormInterface {
   Detail: string;
   "Deadline(UTC)": string;
   "Reward(USDC)": number;
-  "Lancer's Wallet Address": string;
+  "NFT(Contract Address)": `0x${string}`;
 }
 
 export type { CreateProjectFormInterface };

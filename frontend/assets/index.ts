@@ -9,6 +9,9 @@ import CrossIcon from "./Icon-Cross.svg";
 import IconNotificationSuccess from "./Icon-Notification-Success.svg";
 import IconNotificationWarning from "./Icon-Notification-Warning.svg";
 import IconNotificationError from "./Icon-Notification-Error.svg";
+import IconCopy from "./Icon-Copy.svg";
+import IconUploadFile from "./Icon-Upload-File.svg";
+import IconDropdown from "./Icon-Dropdown.svg";
 import IconUploadFile from "./Icon-Upload-File.svg";
 import Escrow from "./Escrow.svg";
 import Community from "./Community.svg";
@@ -27,6 +30,9 @@ export {
   IconNotificationSuccess,
   IconNotificationWarning,
   IconNotificationError,
+  IconCopy,
+  IconUploadFile,
+  IconDropdown,
   IconUploadFile,
   Escrow,
   Community,

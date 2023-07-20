@@ -226,8 +226,6 @@ const CreateProjectForm = ({
     }
   };
 
-  const { address } = useAccount();
-
   const onSubmit = async() => {
     console.log("Storing project data...");
 

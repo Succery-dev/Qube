@@ -30,28 +30,6 @@ const Navbar = (): JSX.Element => {
   const { data: session } = useSession();
   const router = useRouter();
 
-  useEffect(() => {
-    if (session) {
-      router.push(`/dashboard/${session.user.name}`);
-    } else {
-      router.push("/");
-    }
-  }, [session]);
-
-  // This is temporal for the whitelist and will be removed in the future.
-  // TODO: Remove this.
-  // TODO: Remove the comment out right before the deployment.
-  // const { address, isConnected} = useAccount()
-  // useEffect(() => {
-  //   const checkWhitelist = async () => {
-  //     console.log(`The address trying to connect: ${address}`)
-  //     if (!whitelist.includes(address)) {
-  //       await disconnect()
-  //     }
-  //   }
-  //   checkWhitelist()
-  // }, [isConnected])
-
   return (
     <nav className="w-full grid grid-cols-12 absolute text-secondary z-50">
       <div className="top-0 col-start-2 col-end-12 xl:h-20 sm:h-14 h-20 flex flex-row xl:gap-40 lg:gap-20 sm:gap-16 w-full justify-between items-center bg-transparent">

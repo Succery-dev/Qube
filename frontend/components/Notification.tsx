@@ -31,7 +31,7 @@ const Notification = (): JSX.Element | null => {
           initial="hidden"
           animate="visible"
           exit="hidden"
-          className="fixed top-8 right-8 z-[99] text-white p-4 shadow-card min-w-[300px] rounded-lg"
+          className="fixed top-8 right-8 z-[101] text-white p-4 shadow-card min-w-[300px] rounded-lg"
           style={{ background: notificationConfiguration.modalColor }}
         >
           {/* Notification-Wrapper */}

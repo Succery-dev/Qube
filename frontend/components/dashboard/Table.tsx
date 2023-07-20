@@ -14,6 +14,7 @@ import {
   ProjectDetailInterface,
   ProjectDataInterface,
 } from "../../interfaces";
+import Link from "next/link";
 
 const TableHeader = (): JSX.Element => {
   return (
@@ -42,35 +43,37 @@ const TableContents = ({
     <div>
       {projectData.data.map((project: ProjectDetailInterface, index: number) => {
         return (
-          <div
-            className="grid grid-cols-4 items-center border-t-[1px] border-b-[1px] border-[#CFCFCF] xs:min-h-[60px] min-h-[50px] xs:text-base text-[0.65rem] cursor-pointer bg-bg_primary hover:bg-primary text-[#CFCFCF] font-normal"
-            key={`${project.project}`}
-          >
-            {Object.keys(project).map((projectKey, index) => {
-              return (
-                <p
-                  className="lg:mx-5 sm:mx-3 mx-1"
-                  key={`table-data-${projectKey}-${index}`}
-                >
-                  <span
-                    className={`${
-                      projectKey === "amount" ? "inline" : "hidden"
-                    }`}
+          <Link href={`/project/${project["id"]}`}>
+            <div
+              className="grid grid-cols-4 items-center border-t-[1px] border-b-[1px] border-[#CFCFCF] xs:min-h-[60px] min-h-[50px] xs:text-base text-[0.65rem] cursor-pointer bg-bg_primary hover:bg-primary text-[#CFCFCF] font-normal"
+              key={`${project.project}`}
+            >
+              {Object.keys(project).map((projectKey, index) => {
+                return (
+                  <p
+                    className="lg:mx-5 sm:mx-3 mx-1"
+                    key={`table-data-${projectKey}-${index}`}
                   >
-                    ${" "}
-                  </span>
-                  {projectKey === "deadline"
-                    // ? convertSeconds(project.deadline)
-                    ? project.deadline
-                    : projectKey === "amount"
-                      ? project.amount.toLocaleString()
-                      : projectKey === "id"
-                        ? null
-                        : project[projectKey as keyof typeof project]}
-                </p>
-              );
-            })}
-          </div>
+                    <span
+                      className={`${
+                        projectKey === "amount" ? "inline" : "hidden"
+                      }`}
+                    >
+                      ${" "}
+                    </span>
+                    {projectKey === "deadline"
+                      // ? convertSeconds(project.deadline)
+                      ? project.deadline
+                      : projectKey === "amount"
+                        ? project.amount.toLocaleString()
+                        : projectKey === "id"
+                          ? null
+                          : project[projectKey as keyof typeof project]}
+                  </p>
+                );
+              })}
+            </div>
+          </Link>
         );
       })}
     </div>

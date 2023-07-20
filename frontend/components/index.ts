@@ -24,7 +24,16 @@ import {
   Dropbox,
   SubmitProjectModal,
   LogoCanvas,
+  CreateProjectModal,
 } from "./project";
+
+// ProjectDetails Imports
+import {
+  ProjectDetails,
+  ProjectDetailsDescription,
+  Dropbox,
+  SubmitTextArea,
+} from "./projectDetails";
 
 export {
   IntroSection,
@@ -41,7 +50,10 @@ export {
   Table,
   ProjectScaffold,
   Notification,
+  ProjectDetails,
+  ProjectDetailsDescription,
   Dropbox,
   SubmitProjectModal,
   LogoCanvas,
+  SubmitTextArea,
 };

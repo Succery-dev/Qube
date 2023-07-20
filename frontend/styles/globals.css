@@ -59,6 +59,7 @@
 .hideScrollbar {
   -ms-overflow-style: none;
   scrollbar-width: none;
+}
 
 /* Hide scrollbar for Chrome, Safari and Opera */
 .srollbar-hidden::-webkit-scrollbar {

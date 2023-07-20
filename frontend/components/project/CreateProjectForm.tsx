@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useRouter } from "next/router";
 import axios from "axios";
 
@@ -94,11 +94,36 @@ const CreateProjectForm = ({
   form,
   setForm,
   setShowSubmitModal,
+  projectId,
 }: {
   form: CreateProjectFormInterface;
   setForm: React.Dispatch<React.SetStateAction<CreateProjectFormInterface>>;
   setShowSubmitModal: React.Dispatch<React.SetStateAction<boolean>>;
+  projectId?: string;
 }): JSX.Element => {
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        console.log("Fetching project data...");
+        const res = await axios.get(`/api/projectDetail/${projectId}`);
+        const projectData = res.data;
+
+        setForm((prevForm) => ({
+          ...prevForm,
+          Title: projectData.Title,
+          Detail: projectData.Detail,
+          "Deadline(UTC)": projectData.Deadline,
+          "Reward(USDC)": projectData.Reward,
+          "Lancer's Wallet Address": projectData.LancerAddress,
+        }));
+      } catch (error) {
+        console.log("Error has occured with /api/project/[walletAddress].ts");
+      }
+    };
+  
+    fetchData();
+  }, []);
+
   // Notification Context
   const context = useNotificationContext();
   const setShowNotification = context.setShowNotification;
@@ -184,6 +209,8 @@ const CreateProjectForm = ({
     const id = await axios.post("/api/project", projectData);
 
     console.log(`status: ${id.status}, id: ${id.data["id"]}`);
+
+    router.push(`/project/${id.data["id"]}`);
   }
 
   return (
@@ -206,7 +233,7 @@ const CreateProjectForm = ({
         >
           {pathname === "/createProject"
             ? "Create Project"
-            : pathname === "/projectDetail"
+            : pathname === "/project/[projectId]"
             ? "Project Detail"
             : null}
         </motion.h1>
@@ -226,7 +253,7 @@ const CreateProjectForm = ({
                   />
                 )
               );
-            } else if (pathname === "/projectDetail") {
+            } else if (pathname === "/project/[projectId]") {
               return (
                 <FormFields
                   formField={formField}
@@ -254,7 +281,7 @@ const CreateProjectForm = ({
                 // router.push("/projectDetail");
               }}
             />
-          ) : pathname === "/projectDetail" ? (
+          ) : pathname === "/project/[projectId]" ? (
             <div className="w-full flex flex-col gap-6 mt-12 justify-between">
               {/* Prepay Escrow Button */}
               <CustomButton
@@ -283,7 +310,7 @@ const CreateProjectForm = ({
               />
 
               {/* Submit Project Button */}
-              {pathname === "/projectDetail" && (
+              {pathname === "/project/[projectId]" && (
                 <CustomButton
                   text="Submit"
                   styles="bg-[#40d1d1] rounded-md text-center text-lg font-semibold text-white py-[4px] px-7 hover:bg-[#31d1d1]"

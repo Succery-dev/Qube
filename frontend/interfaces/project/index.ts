@@ -3,6 +3,10 @@ import { CreateProjectFormInterface } from "./createProjectFormInterface";
 import { CreateProjectFormContextInterface } from "./createProjectFormContextInterface";
 import { TypeDataDomainInterface } from "./typeDataDomainInterface";
 import { NftAddressDetailsInterface } from "./nftAddressDetailsInterface";
+import {
+  SubmitDeliverablesInterface,
+  SumbitFileInterface,
+} from "./submitDeliverablesInterface";
 
 export type {
   CreateProjectFieldInterface,
@@ -10,4 +14,6 @@ export type {
   CreateProjectFormContextInterface,
   TypeDataDomainInterface,
   NftAddressDetailsInterface,
+  SubmitDeliverablesInterface,
+  SumbitFileInterface,
 };

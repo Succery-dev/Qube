@@ -38,7 +38,13 @@ const SectionWrapper: React.FC<SectionWrapperPropsInterface> = ({
   );
 };
 
-const ProjectScaffold = (): JSX.Element => {
+const ProjectScaffold = ({
+  setShowSubmitModal,
+  projectId,
+}: {
+  setShowSubmitModal: React.Dispatch<React.SetStateAction<boolean>>;
+  projectId?: string;
+}): JSX.Element => {
   const context = useProjectContext();
   const form = context.form;
   const setForm = context.setForm;
@@ -80,6 +86,8 @@ const ProjectScaffold = (): JSX.Element => {
             setnftAddressDetails={setnftAddressDetails}
             setShowProjectModal={setShowProjectModal}
             setProjectDetailLink={setProjectDetailLink}
+            setShowSubmitModal={setShowSubmitModal}
+            projectId={projectId}
           />
           {/* 3D Logo */}
           <div className="w-1/2 h-[500px] lg:block hidden">

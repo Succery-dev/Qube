@@ -31,6 +31,8 @@ import {
   populateStates,
 } from "./projectDetail";
 
+import { uploadDeliverables } from "./project/uploadDeliverables";
+
 export {
   convertSeconds,
   getDoughnutChartConfig,
@@ -41,6 +43,7 @@ export {
   modalLinksVariant,
   textVariant,
   fadeIn,
+  
   // firebaseApp,
   app,
   database,
@@ -54,4 +57,7 @@ export {
   assingProject,
   populateStates,
   formatBytes,
+
+  firebaseApp,
+  uploadDeliverables,
 };

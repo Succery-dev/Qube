@@ -18,6 +18,8 @@ import {
   CreateProjectFormContextInterface,
   TypeDataDomainInterface,
   NftAddressDetailsInterface,
+  SubmitDeliverablesInterface,
+  SumbitFileInterface,
 } from "./project";
 
 // projectDetails Imports
@@ -57,4 +59,6 @@ export type {
   DisplayFileDeliverableInterface,
   DescriptionProjectDetailsInterface,
   DisplayTextDeliverableInterface,
+  SubmitDeliverablesInterface,
+  SumbitFileInterface,
 };

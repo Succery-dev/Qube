@@ -1,12 +1,12 @@
 // Assets Imports
 import {
-  DollarDownArrow,
-  Ellipse25_17,
-  Ellipse70,
   EscrowIcon,
   JuryIcon,
   LinkIcon,
-  SmartContractIcon,
+  Escrow,
+  Community,
+  API,
+  NftGateway,
 } from "../assets";
 
 // Interfaces Imports
@@ -55,28 +55,19 @@ export const navLinks = [
 
 export const currentSystemProblems: ProblemsInterface[] = [
   {
-    id: "70%nonPayment",
-    image: Ellipse70,
-    description: {
-      main: "70% of freelancers have experienced nonpayment or late payment at some point",
-      footer: "study by the Freelancers Union",
-    },
+    id: "Escrow",
+    image: Escrow,
+    description: "You can securely conduct transactions using Qube, even when dealing with anonymous individuals.",
   },
   {
-    id: "$5985Loss",
-    image: DollarDownArrow,
-    description: {
-      main: "An Average freelancer loses $5,968 per year due to nonpayment or late payment",
-      footer: "study by the Freelancers Union",
-    },
+    id: "Community",
+    image: Community,
+    description: "Not only can Qube be used for one-on-one transactions, but it is also suitable for assigning tasks to community members.",
   },
   {
-    id: "25%-17%Scam",
-    image: Ellipse25_17,
-    description: {
-      main: "25% freelancers and 17% clients reported that they had been scammed",
-      footer: "Report by freelancer.com 2019",
-    },
+    id: "API",
+    image: API,
+    description: "With Qube's developer tools, anyone will be able to easily build applications similar to Qube. (Coming soon)",
   },
 ];
 
@@ -84,25 +75,25 @@ export const walkthrough: WalkthroughInterface[] = [
   {
     id: "walkthrough-1",
     description:
-      "Clients easily create custom smart contracts with the lancer’s wallet address",
+      "Clients easily create custom smart contracts with the freelancer’s wallet address",
   },
   {
     id: "walkthrough-2",
-    description: "Lancer reviews and signs the contract",
+    description: "Freelancer reviews and signs the contract",
   },
   {
     id: "walkthrough-3",
     description:
-      "Client sends the amount to an Escrow account mutually owned by lancer and Client",
+      "Client sends the amount to an Escrow account mutually owned by freelancer and client",
   },
   {
     id: "walkthrough-4",
-    description: "Auto payment to lancer on completing the task",
+    description: "Auto payment to freelancer on completing the task",
   },
   {
     id: "walkthrough-5",
     description:
-      "Fair dispute resolution by neutral  third party using Kleros, if there is any",
+      "Fair dispute resolution by neutral third party using Kleros, if there is any",
   },
 ];
 
@@ -112,28 +103,28 @@ export const features: FeaturesInterface[] = [
     title: "Escrow",
     image: EscrowIcon,
     description:
-      "Qube will hold the hiring company’s money until the company get satisfied with the work and pay the freelancer ",
+      "Qube will hold the hiring company’s money until the company get satisfied with the work and pay the freelancer using smart contract.",
   },
   {
     id: "Arbitration",
     title: "Arbitration",
     image: JuryIcon,
     description:
-      "If there is any disagreement between the hiring party and lancers, we will provide dispute resolution",
+      "If there is any disagreement between the hiring party and freelancers, we will provide dispute resolution.",
   },
   {
     id: "LinkBased",
     title: "Link based",
     image: LinkIcon,
     description:
-      "Generate a direct link of a contract describing the project and its payment details to share on any platform",
+      "Generate a direct link of a contract describing the project and its payment details to share on any platform.",
   },
   {
-    id: "SmartContract",
-    title: "Smart Contract",
-    image: SmartContractIcon,
+    id: "NFTGateway",
+    title: "NFT Gateway",
+    image: NftGateway,
     description:
-      "Qube has a protocol stored in the blockchain. Thus it's transparent and trustworthy. No middleman is involved.",
+      "With the gateway function provided by nfts, only specific individuals, such as NFT holder, can undertake the tasks.",
   },
 ];
 
@@ -164,8 +155,8 @@ export const footerLinks = [
     link: "https://veroo.notion.site/Terms-and-Conditions-e56f60533a834abbbd1213c6bf0cd36f",
   },
   {
-    id: "2023_Qube_org",
-    title: "© 2023 Qube org",
+    id: "2023_SUCCERY_FZCO",
+    title: "© 2023 SUCCERY FZCO",
     link: "/",
   },
 ];

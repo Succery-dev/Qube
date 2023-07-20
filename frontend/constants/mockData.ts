@@ -2,9 +2,9 @@ import { StatusEnum } from "../enums";
 import { ProjectDataInterface } from "../interfaces";
 
 const mockData: ProjectDataInterface = {
-  total: 50,
-  page: 1,
-  per_page: 10,
+  // total: 50,
+  // page: 1,
+  // per_page: 10,
   data: [
     // TODO: Remove the charts temporarily for the final pitch (Issue#67)
     // {
@@ -67,30 +67,34 @@ const mockData: ProjectDataInterface = {
     //   amount: 1000,
     //   status: StatusEnum.notApproved,
     // },
-    {
-      project: "大会の開催",
-      deadline: 7900,
-      amount: 50000000,
-      status: StatusEnum.onGoing,
-    },
-    {
-      project: "オンボーディング記事",
-      deadline: 1036801,
-      amount: 12500000,
-      status: StatusEnum.onGoing,
-    },
-    {
-      project: "千人以上で配信",
-      deadline: 5260300,
-      amount: 12500000,
-      status: StatusEnum.onGoing,
-    },
-    {
-      project: "多言語での動画制作",
-      deadline: 5260500,
-      amount: 25000000,
-      status: StatusEnum.onGoing,
-    },
+    // {
+    //   id: "1",
+    //   project: "大会の開催",
+    //   deadline: "2023-10-20T10:00",
+    //   amount: 50000000,
+    //   status: StatusEnum.onGoing,
+    // },
+    // {
+    //   id: "2",
+    //   project: "オンボーディング記事",
+    //   deadline: "2023-10-20T10:00",
+    //   amount: 12500000,
+    //   status: StatusEnum.onGoing,
+    // },
+    // {
+    //   id: "3",
+    //   project: "千人以上で配信",
+    //   deadline: "2023-10-20T10:00",
+    //   amount: 12500000,
+    //   status: StatusEnum.onGoing,
+    // },
+    // {
+    //   id: "4",
+    //   project: "多言語での動画制作",
+    //   deadline: "2023-10-20T10:00",
+    //   amount: 25000000,
+    //   status: StatusEnum.onGoing,
+    // },
   ],
 };
 

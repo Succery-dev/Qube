@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
+import axios from "axios";
 
 // Interfaces Imports
 import {
@@ -40,6 +41,9 @@ import { isNftContract } from "../../utils";
 // Firebase Imports
 import { collection, addDoc } from "firebase/firestore";
 import { app, database } from "../../utils";
+
+// Status Enum Import
+import { StatusEnum } from "../../enums";
 
 const FormFields = ({
   formField,
@@ -104,6 +108,8 @@ const CreateProjectForm = ({
   setnftAddressDetails,
   setShowProjectModal,
   setProjectDetailLink,
+  setShowSubmitModal,
+  projectId,
 }: {
   form: CreateProjectFormInterface;
   setForm: React.Dispatch<React.SetStateAction<CreateProjectFormInterface>>;
@@ -113,7 +119,32 @@ const CreateProjectForm = ({
   >;
   setShowProjectModal: React.Dispatch<React.SetStateAction<boolean>>;
   setProjectDetailLink: React.Dispatch<React.SetStateAction<string>>;
+  setShowSubmitModal: React.Dispatch<React.SetStateAction<boolean>>;
+  projectId?: string;
 }): JSX.Element => {
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        console.log("Fetching project data...");
+        const res = await axios.get(`/api/projectDetail/${projectId}`);
+        const projectData = res.data;
+
+        setForm((prevForm) => ({
+          ...prevForm,
+          Title: projectData.Title,
+          Detail: projectData.Detail,
+          "Deadline(UTC)": projectData.Deadline,
+          "Reward(USDC)": projectData.Reward,
+          "Lancer's Wallet Address": projectData.LancerAddress,
+        }));
+      } catch (error) {
+        console.log("Error has occured with /api/project/[walletAddress].ts");
+      }
+    };
+  
+    fetchData();
+  }, []);
+
   // Notification Context
   const context = useNotificationContext();
   const setShowNotification = context.setShowNotification;
@@ -195,6 +226,24 @@ const CreateProjectForm = ({
     }
   };
 
+  const { address } = useAccount();
+
+  const onSubmit = async() => {
+    console.log("Storing project data...");
+
+    const projectData = {
+      ...form,
+      Created: new Date().toISOString(),
+      Client: address,
+      Status: StatusEnum.WaitingForConnectingLancersWallet,
+    }
+    const id = await axios.post("/api/project", projectData);
+
+    console.log(`status: ${id.status}, id: ${id.data["id"]}`);
+
+    router.push(`/project/${id.data["id"]}`);
+  }
+
   return (
     // Form Wrapper
     <motion.div
@@ -214,6 +263,11 @@ const CreateProjectForm = ({
           className="xl:text-4xl lg:text-3xl md:text-4xl sm:text-xl text-3xl font-extrabold"
         >
           Create Project
+<!--           {pathname === "/createProject"
+            ? "Create Project"
+            : pathname === "/project/[projectId]"
+            ? "Project Detail"
+            : null} -->
         </motion.h1>
 
         {/* Form Fields */}
@@ -221,6 +275,20 @@ const CreateProjectForm = ({
           {createProjectFields.map((formField, index) => {
             return (
               formField.title != "Lancer's Wallet Address" && (
+<!--             if (pathname === "/createProject") {
+              return (
+                formField.title != "Lancer's Wallet Address" && (
+                  <FormFields
+                    formField={formField}
+                    index={index}
+                    form={form}
+                    updateFormField={updateFormField}
+                    key={index}
+                  />
+                )
+              );
+            } else if (pathname === "/project/[projectId]") {
+              return ( -->
                 <FormFields
                   formField={formField}
                   index={index}
@@ -259,6 +327,60 @@ const CreateProjectForm = ({
               }
             }}
           />
+<!--           {pathname === "/createProject" ? (
+            // "Create Project Button"
+            <CustomButton
+              text="Create"
+              styles="w-full bg-[#3E8ECC] rounded-md text-center text-lg font-semibold text-white py-[4px] px-7 hover:bg-[#377eb5] mt-12"
+              type="submit"
+              onClick={async (e) => {
+                e.preventDefault();
+                await onSubmit();
+                // router.push("/projectDetail");
+              }}
+            />
+          ) : pathname === "/project/[projectId]" ? (
+            <div className="w-full flex flex-col gap-6 mt-12 justify-between">
+              {/* Prepay Escrow Button */}
+              <CustomButton
+                text="Prepay Escrow"
+                styles="bg-[#3E8ECC] rounded-md text-center text-lg font-semibold text-white py-[4px] px-7 hover:bg-[#377eb5]"
+                type="submit"
+                onClick={(e) => {
+                  e.preventDefault();
+                }}
+              />
+              {/* Pay Lancer Button */}
+              <CustomButton
+                text="Pay Lancer"
+                styles="bg-[#40d1d1] rounded-md text-center text-lg font-semibold text-white py-[4px] px-7 hover:bg-[#31d1d1]"
+                type="submit"
+                onClick={(e) => {
+                  e.preventDefault();
+                }}
+              />
+              {/* Verify and Confirm Button */}
+              <CustomButton
+                text="Confirm"
+                styles="bg-[#d14040] rounded-md text-center text-lg font-semibold text-white py-[4px] px-7 hover:bg-[#d13131]"
+                type="submit"
+                onClick={(e) => signProjectDetail(e)}
+              /> -->
+
+              {/* Submit Project Button */}
+<!--               {pathname === "/project/[projectId]" && (
+                <CustomButton
+                  text="Submit"
+                  styles="bg-[#40d1d1] rounded-md text-center text-lg font-semibold text-white py-[4px] px-7 hover:bg-[#31d1d1]"
+                  type="submit"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setShowSubmitModal(true);
+                  }}
+                />
+              )}
+            </div>
+          ) : null} -->
         </div>
       </div>
     </motion.div>

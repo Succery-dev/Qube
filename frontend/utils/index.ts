@@ -58,6 +58,6 @@ export {
   populateStates,
   formatBytes,
 
-  firebaseApp,
+  // firebaseApp,
   uploadDeliverables,
 };

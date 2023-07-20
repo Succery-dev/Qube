@@ -153,7 +153,7 @@ const Logo = (): JSX.Element => {
 const LogoCanvas = ({
   nftCollectionImageUrl,
 }: {
-  nftCollectionImageUrl: string;
+  nftCollectionImageUrl?: string;
 }): JSX.Element => {
   return (
     <Canvas camera={{ position: [10, 0, 0], fov: 25 }}>

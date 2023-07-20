@@ -4,9 +4,9 @@ import type { NextPage } from "next";
 import { ProjectScaffold, Notification } from "../components";
 
 const CreateProject: NextPage = () => {
-<!--   const [showSubmitModal, setShowSubmitModal] = useState(false);
+  // const [showSubmitModal, setShowSubmitModal] = useState(false);
 
-  return <ProjectScaffold setShowSubmitModal={setShowSubmitModal} />; -->
+  // return <ProjectScaffold setShowSubmitModal={setShowSubmitModal} />;
   return (
     <div>
       <Notification />

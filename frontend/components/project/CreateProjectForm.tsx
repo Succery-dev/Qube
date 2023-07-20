@@ -108,8 +108,8 @@ const CreateProjectForm = ({
   setnftAddressDetails,
   setShowProjectModal,
   setProjectDetailLink,
-  setShowSubmitModal,
-  projectId,
+  // setShowSubmitModal,
+  // projectId,
 }: {
   form: CreateProjectFormInterface;
   setForm: React.Dispatch<React.SetStateAction<CreateProjectFormInterface>>;
@@ -119,31 +119,31 @@ const CreateProjectForm = ({
   >;
   setShowProjectModal: React.Dispatch<React.SetStateAction<boolean>>;
   setProjectDetailLink: React.Dispatch<React.SetStateAction<string>>;
-  setShowSubmitModal: React.Dispatch<React.SetStateAction<boolean>>;
-  projectId?: string;
+  // setShowSubmitModal: React.Dispatch<React.SetStateAction<boolean>>;
+  // projectId?: string;
 }): JSX.Element => {
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        console.log("Fetching project data...");
-        const res = await axios.get(`/api/projectDetail/${projectId}`);
-        const projectData = res.data;
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       console.log("Fetching project data...");
+  //       const res = await axios.get(`/api/projectDetail/${projectId}`);
+  //       const projectData = res.data;
 
-        setForm((prevForm) => ({
-          ...prevForm,
-          Title: projectData.Title,
-          Detail: projectData.Detail,
-          "Deadline(UTC)": projectData.Deadline,
-          "Reward(USDC)": projectData.Reward,
-          "Lancer's Wallet Address": projectData.LancerAddress,
-        }));
-      } catch (error) {
-        console.log("Error has occured with /api/project/[walletAddress].ts");
-      }
-    };
+  //       setForm((prevForm) => ({
+  //         ...prevForm,
+  //         Title: projectData.Title,
+  //         Detail: projectData.Detail,
+  //         "Deadline(UTC)": projectData.Deadline,
+  //         "Reward(USDC)": projectData.Reward,
+  //         "Lancer's Wallet Address": projectData.LancerAddress,
+  //       }));
+  //     } catch (error) {
+  //       console.log("Error has occured with /api/project/[walletAddress].ts");
+  //     }
+  //   };
   
-    fetchData();
-  }, []);
+  //   fetchData();
+  // }, []);
 
   // Notification Context
   const context = useNotificationContext();

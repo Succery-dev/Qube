@@ -263,11 +263,16 @@ const CreateProjectForm = ({
           className="xl:text-4xl lg:text-3xl md:text-4xl sm:text-xl text-3xl font-extrabold"
         >
           Create Project
-<!--           {pathname === "/createProject"
+
+          {/* ================================================================== */}
+          {/* Comment out because of the merge conflict in PR#131 */}
+          {/* {pathname === "/createProject"
             ? "Create Project"
             : pathname === "/project/[projectId]"
             ? "Project Detail"
-            : null} -->
+            : null} */}
+          {/* ========================================================= */}
+
         </motion.h1>
 
         {/* Form Fields */}
@@ -275,20 +280,25 @@ const CreateProjectForm = ({
           {createProjectFields.map((formField, index) => {
             return (
               formField.title != "Lancer's Wallet Address" && (
-<!--             if (pathname === "/createProject") {
-              return (
-                formField.title != "Lancer's Wallet Address" && (
-                  <FormFields
-                    formField={formField}
-                    index={index}
-                    form={form}
-                    updateFormField={updateFormField}
-                    key={index}
-                  />
-                )
-              );
-            } else if (pathname === "/project/[projectId]") {
-              return ( -->
+
+            // ==================================================================
+            // Comment out because of the merge conflict in PR#131
+            // if (pathname === "/createProject") {
+            //   return (
+            //     formField.title != "Lancer's Wallet Address" && (
+            //       <FormFields
+            //         formField={formField}
+            //         index={index}
+            //         form={form}
+            //         updateFormField={updateFormField}
+            //         key={index}
+            //       />
+            //     )
+            //   );
+            // } else if (pathname === "/project/[projectId]") {
+            //   return (
+            // ==================================================================
+
                 <FormFields
                   formField={formField}
                   index={index}
@@ -327,8 +337,10 @@ const CreateProjectForm = ({
               }
             }}
           />
-<!--           {pathname === "/createProject" ? (
-            // "Create Project Button"
+
+          {/* ================================================================== */}
+          {/* Comment out because of the merge conflict in PR#131 */}
+          {/* {pathname === "/createProject" ? (
             <CustomButton
               text="Create"
               styles="w-full bg-[#3E8ECC] rounded-md text-center text-lg font-semibold text-white py-[4px] px-7 hover:bg-[#377eb5] mt-12"
@@ -336,39 +348,38 @@ const CreateProjectForm = ({
               onClick={async (e) => {
                 e.preventDefault();
                 await onSubmit();
-                // router.push("/projectDetail");
               }}
             />
           ) : pathname === "/project/[projectId]" ? (
-            <div className="w-full flex flex-col gap-6 mt-12 justify-between">
+            <div className="w-full flex flex-col gap-6 mt-12 justify-between"> */}
               {/* Prepay Escrow Button */}
-              <CustomButton
+              {/* <CustomButton
                 text="Prepay Escrow"
                 styles="bg-[#3E8ECC] rounded-md text-center text-lg font-semibold text-white py-[4px] px-7 hover:bg-[#377eb5]"
                 type="submit"
                 onClick={(e) => {
                   e.preventDefault();
                 }}
-              />
+              /> */}
               {/* Pay Lancer Button */}
-              <CustomButton
+              {/* <CustomButton
                 text="Pay Lancer"
                 styles="bg-[#40d1d1] rounded-md text-center text-lg font-semibold text-white py-[4px] px-7 hover:bg-[#31d1d1]"
                 type="submit"
                 onClick={(e) => {
                   e.preventDefault();
                 }}
-              />
+              /> */}
               {/* Verify and Confirm Button */}
-              <CustomButton
+              {/* <CustomButton
                 text="Confirm"
                 styles="bg-[#d14040] rounded-md text-center text-lg font-semibold text-white py-[4px] px-7 hover:bg-[#d13131]"
                 type="submit"
                 onClick={(e) => signProjectDetail(e)}
-              /> -->
+              /> */}
 
               {/* Submit Project Button */}
-<!--               {pathname === "/project/[projectId]" && (
+              {/* {pathname === "/project/[projectId]" && (
                 <CustomButton
                   text="Submit"
                   styles="bg-[#40d1d1] rounded-md text-center text-lg font-semibold text-white py-[4px] px-7 hover:bg-[#31d1d1]"
@@ -380,7 +391,9 @@ const CreateProjectForm = ({
                 />
               )}
             </div>
-          ) : null} -->
+          ) : null} */}
+          {/* ========================================================= */}
+
         </div>
       </div>
     </motion.div>

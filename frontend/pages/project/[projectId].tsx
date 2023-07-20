@@ -1,14 +1,16 @@
 import React, { useState } from "react";
 import type { NextPage } from "next";
+import { useRouter } from "next/router";
 
 // Interfaces Imports
 import {
   ProjectScaffold,
   Notification,
   SubmitProjectModal,
-} from "../components";
+} from "../../components";
 
 const ContractDetails: NextPage = () => {
+  const router = useRouter();
   const [showSubmitModal, setShowSubmitModal] = useState(false);
 
   return (
@@ -19,7 +21,7 @@ const ContractDetails: NextPage = () => {
         showSubmitModal={showSubmitModal}
         setShowSubmitModal={setShowSubmitModal}
       />
-      <ProjectScaffold setShowSubmitModal={setShowSubmitModal} />
+      <ProjectScaffold setShowSubmitModal={setShowSubmitModal} projectId={router.query.projectId as string}/>
     </div>
   );
 };

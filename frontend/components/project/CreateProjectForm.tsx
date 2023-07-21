@@ -175,7 +175,7 @@ const CreateProjectForm = ({
   /**
    * @dev DEMO firebase functions
    */
-  const databaseRef = collection(database, "project-details");
+  const databaseRef = collection(database, "projects");
   const addDataToFirestore = async (form: StoreProjectDetailsInterface) => {
     if (isConnected) {
       try {

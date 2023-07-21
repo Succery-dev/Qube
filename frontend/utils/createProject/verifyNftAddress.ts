@@ -15,7 +15,7 @@ import axios from "axios";
 
 /**
  * @dev Checking if the entered NFT Address is in Valid Ethereum Address format
- * @param nftAddress : NFT address entered by the client when creating the contract
+ * @param nftAddress : NFT address entered by the client when creating the project
  *  */
 export const isValidEthereumContractAddress = (nftAddress: `0x${string}`) => {
   const ethereumContractAddressRegex = /^0x[0-9a-fA-F]{40}$/;
@@ -41,19 +41,17 @@ const fetchNftCollectionImage = async (
     const config = {
       headers: {
         "X-API-KEY": DEMO_OPENSEA_API_KEY,
-      },
-      params: {
-        chain_id: 137,
+        "accept": "application/json",
       },
     };
     /**
      * @dev fetching the collection details ASSUMING tokenId "1" exists for now.
      */
     const response = await axios.get(
-      `${baseUrl}/api/v1/asset_contract/${nftAddress}`,
+      `${baseUrl}/v2/chain/matic/contract/${nftAddress}/nfts`,
       config
     );
-    const collectionImageUrl = response.data.collection.image_url;
+    const collectionImageUrl = response.data.nfts[0]["image_url"];
     setnftAddressDetails({
       isNftAddress: true,
       nftCollectionImageUrl: collectionImageUrl,
@@ -117,7 +115,7 @@ export const isNftContract = async (
         abi: contractABI,
         functionName: "supportsInterface",
         args: [erc721InterfaceId],
-        chainId: 137,
+        chainId: 137, // Polygon Mainnet's ChainID
       });
 
       if (data === true) {

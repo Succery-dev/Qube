@@ -19,8 +19,8 @@ import {
 export const assingProject = async (
   nftOwnerAddress: `0x${string}`,
   nftAddress: `0x${string}`,
-  openConnectModal,
-  signTypedDataAsync,
+  openConnectModal: any,
+  signTypedDataAsync: any,
   projectId: string,
   setProjectDetails: React.Dispatch<
     React.SetStateAction<DisplayProjectDetailsInterface>

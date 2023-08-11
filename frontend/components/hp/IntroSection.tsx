@@ -33,9 +33,9 @@ const IntroFooterSection = (): JSX.Element => (
       viewport={{ once: true, amount: 0.25 }}
       className="xl:text-4xl lg:text-3xl sm:text-2xl text-[1.3rem] leading-[2rem] font-medium"
     >
-      <p className="block">The ultimate DApp enabling</p>
-      <p className="block">payments and delivery of</p>
-      <p className="block">work using smart contract</p>
+      <p className="block">Qube is a smart contract-based</p>
+      <p className="block">escrow payment system that</p>
+      <p className="block">allows people to operate anonymously.</p>
     </motion.h3>
     <CustomButton
       text="Join Waitlist"

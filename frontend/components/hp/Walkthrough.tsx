@@ -68,8 +68,9 @@ const Walkthrough = (): JSX.Element => {
         viewport={{ once: true, amount: 0.25 }}
         className="xl:text-7xl lg:text-6xl md:text-4xl sm:text-4xl text-4xl font-extrabold"
       >
-        User-Friendly <br /> and Secure
+        How to Use
       </motion.h1>
+      <p className="text-3xl mt-7">Qube is super simple to use! No Complexity!</p>
       <div className="sm:flex flex-row items-center md:gap-16 sm:gap-8 sm:mt-24 mt-16">
         <DemoVideo />
         <motion.div

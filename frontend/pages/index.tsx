@@ -53,7 +53,7 @@ export default function Home() {
         <CurrentSystemProblems />
       </SectionWrapper>
 
-      {/* User Friendly and Secure */}
+      {/* How to Use */}
       <SectionWrapper
         bgColor="bg-bg_primary"
         glowStyles={aesthetics.glow.walkthroughGlowStyles}

@@ -48,7 +48,7 @@ const CurrentSystemProblemsCard = ({
 
 const CurrentSystemProblems = (): JSX.Element => {
   return (
-    <div id="product">
+    <div id="product" className="flex flex-col h-full">
       <motion.h1
         variants={textVariant()}
         initial="hidden"
@@ -58,19 +58,20 @@ const CurrentSystemProblems = (): JSX.Element => {
       >
         Why use Qube?
       </motion.h1>
-      {/* <div className="sm:flex sm:flex-row justify-between lg:mt-32 sm:mt-16"> */}
-      <div className="space-y-7 mt-20">
-        <h3 className="text-4xl">An NFT Gaming Company</h3>
-        <p className="text-3xl">Tried to negotiate with NFT promoters to collaborate for a giveaway but most of them want to be prepaid…</p>
-        <h3 className="text-4xl">But Influencers</h3>
-        <p className="text-3xl">Want to get paid before executing the giveaway but the company doesn’t pay because they are pseudonymous…</p>
+      <div className="flex flex-col flex-1 items-center justify-evenly">
+        <div className="mx-10">
+          <h3 className="text-5xl text-green-400">An NFT Gaming Company</h3>
+          <p className="text-4xl">Tried to negotiate with NFT promoters to collaborate for a giveaway but most of them want to be prepaid…</p>
+          <div className="h-[70px]"></div>
+          <h3 className="text-5xl text-blue-400">But Influencers</h3>
+          <p className="text-4xl">Want to get paid before executing the giveaway but the company doesn’t pay because they are pseudonymous…</p>
+        </div>
 
-        <h2 className="text-5xl">These happen a lot…</h2>
-        <p className="text-3xl w-1/2">How can freelancers and influencers trust that they will get paid after work on time?</p>
-        <p className="text-3xl w-1/2 ml-auto">How can the hiring party trust that anonymous individuals will not ghost them after receiving advance payment?</p>
+        <div className="text-center w-3/4">
+          <h2 className="text-7xl underline linear-green-blue-gradient">We got your back!</h2>
+          <p className="text-5xl">Qube eliminate50s these concerns by using Escrow based payment system so that everyone can collaborate without any fear!</p>
+        </div>
 
-        <h2 className="text-5xl">We got your back! </h2>
-        <p className="text-3xl">Qube eliminates these concerns by using Escrow based payment system so that everyone can collaborate without any fear!</p>
         {/* {currentSystemProblems.map(
           (problem: ProblemsInterface, index: number) => {
             return (

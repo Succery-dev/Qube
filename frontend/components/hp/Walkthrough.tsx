@@ -78,7 +78,7 @@ const Walkthrough = (): JSX.Element => {
         {/* For Enterprises */}
         <div className="flex-1 max-w-4xl mx-auto">
           <h2 
-            className={`text-5xl font-semibold mb-6 ${activeTab === "enterprise" ? "underline text-white" : "text-gray-500"}`}
+            className={`text-5xl font-semibold mb-6 ${activeTab === "enterprise" ? "underline text-white" : ""}`}
             onClick={() => setActiveTab("enterprise")}
           >
             For Enterprises
@@ -128,7 +128,7 @@ const Walkthrough = (): JSX.Element => {
         {/* For Individuals */}
         <div className="flex-1 max-w-4xl mx-auto">
           <h2 
-            className={`text-5xl font-semibold mb-6 ${activeTab === "individuals" ? "underline text-white" : "text-gray-500"}`}
+            className={`text-5xl font-semibold mb-6 ${activeTab === "individuals" ? "underline text-white" : ""}`}
             onClick={() => setActiveTab("individuals")}
           >
             For Individuals

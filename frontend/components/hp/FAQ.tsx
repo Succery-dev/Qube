@@ -49,7 +49,7 @@ const FAQ = () => {
   };
 
   return (
-    <div id="faq">
+    <div id="faq" className="h-full">
       <motion.h1
         variants={textVariant()}
         initial="hidden"
@@ -59,7 +59,7 @@ const FAQ = () => {
       >
         FAQ
       </motion.h1>
-      <div className="space-y-4 ml-10">
+      <div className="h-full flex flex-col justify-evenly pl-10">
         {faqData.map((faq, index) => (
           <div key={index}>
             <motion.div
@@ -68,7 +68,7 @@ const FAQ = () => {
               initial={{ scale: 1 }}
               whileHover={{ scale: 1.05 }}
             >
-              <h3 className="text-3xl font-medium">
+              <h3 className="text-5xl font-medium">
                 {faq.question}
               </h3>
             </motion.div>
@@ -77,7 +77,7 @@ const FAQ = () => {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.3 }}
-                className="mt-2"
+                className="text-3xl"
               >
                 {faq.answer}
               </motion.p>

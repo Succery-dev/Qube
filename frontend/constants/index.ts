@@ -7,6 +7,7 @@ import {
   Community,
   API,
   NftGateway,
+  Gasless,
 } from "../assets";
 
 // Interfaces Imports
@@ -118,7 +119,7 @@ export const features: FeaturesInterface[] = [
   {
     id: "GasFree",
     title: "Gas Free",
-    image: NftGateway,
+    image: Gasless,
     description:
       "Sometimes gas fees can be quite burdensome…But with Qube, both parties don't have to worry about gas fees for their transactions!",
   },

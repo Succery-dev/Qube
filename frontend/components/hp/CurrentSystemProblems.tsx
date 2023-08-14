@@ -59,12 +59,15 @@ const CurrentSystemProblems = (): JSX.Element => {
         Why use Qube?
       </motion.h1>
       <div className="flex flex-col flex-1 items-center justify-evenly">
-        <div className="mx-10">
-          <h3 className="text-5xl text-green-400">An NFT Gaming Company</h3>
-          <p className="text-4xl">Tried to negotiate with NFT promoters to collaborate for a giveaway but most of them want to be prepaid…</p>
-          <div className="h-[70px]"></div>
-          <h3 className="text-5xl text-blue-400">But Influencers</h3>
-          <p className="text-4xl">Want to get paid before executing the giveaway but the company doesn’t pay because they are pseudonymous…</p>
+        <div className="mx-10 space-y-10">
+          <div className="w-2/3">
+            <h3 className="text-5xl text-green-400">An NFT Gaming Company</h3>
+            <p className="text-4xl">Tried to negotiate with NFT promoters to collaborate for a giveaway but most of them want to be prepaid…</p>
+          </div>
+          <div className="w-2/3 ml-auto">
+            <h3 className="text-5xl text-blue-400">But Influencers</h3>
+            <p className="text-4xl">Want to get paid before executing the giveaway but the company doesn’t pay because they are pseudonymous…</p>
+          </div>
         </div>
 
         <div className="text-center w-3/4">

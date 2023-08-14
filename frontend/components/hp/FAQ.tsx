@@ -49,7 +49,7 @@ const FAQ = () => {
   };
 
   return (
-    <div id="faq" className="h-full">
+    <div id="faq" className="h-full flex flex-col">
       <motion.h1
         variants={textVariant()}
         initial="hidden"
@@ -59,7 +59,7 @@ const FAQ = () => {
       >
         FAQ
       </motion.h1>
-      <div className="h-full flex flex-col justify-evenly pl-10">
+      <div className="flex flex-col justify-evenly pl-10 h-full">
         {faqData.map((faq, index) => (
           <div key={index}>
             <motion.div
@@ -85,6 +85,7 @@ const FAQ = () => {
           </div>
         ))}
       </div>
+      <p className="text-5xl">Feel free to contact us for more questions! [email address]</p>
     </div>
   );
 };

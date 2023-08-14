@@ -7,6 +7,7 @@ import {
   Footer,
   IntroSection,
   Walkthrough,
+  FAQ,
   Support,
   Glow,
   CustomButton
@@ -71,9 +72,9 @@ export default function Home() {
       </SectionWrapper>
 
       {/* Support & Call To Action */}
-      <SectionWrapper bgColor="bg-bg_primary" glowStyles={[]}>
+      <SectionWrapper bgColor="bg-bg_primary" glowStyles={aesthetics.glow.walkthroughGlowStyles}>
         <Support />
-        <div className="bg-gradient-to-r from-red-500 via-pink-500 to-blue-500 w-4/5 h-[150px] mx-auto mt-32 rounded-lg flex items-center justify-center text-white text-xl gap-x-5">
+        <div className="bg-gradient-to-r from-green-500 to-blue-500 w-4/5 h-[150px] mx-auto mt-32 rounded-lg flex items-center justify-center text-white text-xl gap-x-5">
           <p className="text-3xl">
             Come and join our waitlist for the best collaboration!
           </p>
@@ -88,7 +89,12 @@ export default function Home() {
         </div>
       </SectionWrapper>
 
-      <SectionWrapper bgColor="bg-black" glowStyles={[]}>
+      {/* FAQ */}
+      <SectionWrapper bgColor="bg-black" glowStyles={aesthetics.glow.featuresGlowStyles}>
+        <FAQ />
+      </SectionWrapper>
+
+      <SectionWrapper bgColor="bg-bg_primary" glowStyles={aesthetics.glow.walkthroughGlowStyles}>
         {/* Footer */}
         <Footer />
       </SectionWrapper>

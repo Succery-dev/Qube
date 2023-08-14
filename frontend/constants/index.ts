@@ -113,7 +113,7 @@ export const features: FeaturesInterface[] = [
     title: "Link-based",
     image: LinkIcon,
     description:
-      "Generate a direct link to a contract to share on any platform with anybody u want to collaborate with!",
+      "Generate a direct link to a contract to share on any platform with anybody you want to collaborate with!",
   },
   {
     id: "GasFree",
@@ -127,7 +127,7 @@ export const features: FeaturesInterface[] = [
     title: "Arbitration",
     image: JuryIcon,
     description:
-      "If there is any disagreement between the hiring party and freelancers, we will provide dispute resolution powered by Kleros, a decentralized court. visit our [whitepaper], for more!",
+      "If there is any disagreement, we will provide dispute resolution powered by Kleros, a decentralized court. visit our [whitepaper], for more!",
   },
 ];
 

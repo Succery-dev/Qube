@@ -17,6 +17,7 @@ import Community from "./Community.svg";
 import API from "./API.svg";
 import NftGateway from "./NFT-Gated.svg";
 import Gasless from "./Gasless.svg";
+import MediumIcon from "./Medium-Icon.svg";
 
 export {
   arrow,
@@ -38,4 +39,5 @@ export {
   API,
   NftGateway,
   Gasless,
+  MediumIcon,
 };

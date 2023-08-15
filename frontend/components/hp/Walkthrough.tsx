@@ -121,7 +121,7 @@ const Walkthrough = (): JSX.Element => {
           </div>
 
           <div className="flex items-center mb-4">
-            <h3 className="text-2xl font-semibold">Here u go! Leave the rest to Qube! </h3>
+            <h3 className="text-2xl font-semibold">Here you go! Leave the rest to Qube! </h3>
           </div>
         </div>
 

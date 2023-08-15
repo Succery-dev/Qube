@@ -3,7 +3,7 @@ import Link from "next/link";
 import Image from "next/image";
 
 // Image Imports
-import { TwitterIcon } from "../../assets";
+import { TwitterIcon, MediumIcon } from "../../assets";
 
 // Content Imports
 import { footerLinks } from "../../constants";
@@ -50,10 +50,45 @@ const Footer = () => {
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, amount: 0.25 }}
-      className=" sm:pt-48 sm:pb-24 pt-36 pb-12  flex sm:flex-row flex-col sm:justify-between sm:items-center sm:gap-0 gap-16 col-start-2 col-end-12 xl:text-xl lg:text-lg sm:text-sm text-xl font-medium"
+      className="py-10 px-20 lg:px-40 space-y-5 md:space-y-0 md:flex md:space-x-5 bg-slate-950"
     >
-      <FooterSocial />
-      <FooterLegal />
+      {/* <FooterSocial /> */}
+      {/* <FooterLegal /> */}
+      <div className="flex-1 flex flex-col items-center">
+        <div className="space-y-5">
+          <div className="flex items-center space-x-5">
+            <Image
+              src="/images/logo.png"
+              width="100"
+              height="100"
+              alt="Q"
+              className="rounded-md xl:h-[80px] lg:h-[70px] sm:h-[60px] h-[60px] w-auto shadow-indigo-500/50"
+            />
+            <h1 className="xl:text-6xl lg:text-4xl sm:text-2xl text-2xl text-primary font-extrabold">
+              Qube
+            </h1>
+          </div>
+          <div className="text-4xl">
+            <Link href="/" className="flex gap-2">
+              <Image src={TwitterIcon} alt="Twitter" height={30} />
+              <p>Twitter</p>
+            </Link>
+            <Link href="/" className="flex gap-2">
+              <Image src={MediumIcon} alt="Medium" height={30} />
+              <p>Medium</p>
+            </Link>
+          </div>
+        </div>
+      </div>
+      <div className="flex-1 text-4xl flex flex-col space-y-5 items-center">
+        <Link href="/">Resources</Link>
+        <Link href="/">FAQ's</Link>
+        <Link href="/">Whitepaper</Link>
+      </div>
+      <div className="flex-1 text-4xl flex flex-col space-y-5 items-center">
+        <Link href="/">Contacts</Link>
+        <Link href="/">[メアド]</Link>
+      </div>
     </motion.footer>
   );
 };

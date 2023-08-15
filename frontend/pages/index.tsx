@@ -94,10 +94,8 @@ export default function Home() {
         <FAQ />
       </SectionWrapper>
 
-      <SectionWrapper bgColor="bg-bg_primary" glowStyles={aesthetics.glow.walkthroughGlowStyles}>
-        {/* Footer */}
-        <Footer />
-      </SectionWrapper>
+      {/* Footer */}
+      <Footer />
     </div>
   );
 }

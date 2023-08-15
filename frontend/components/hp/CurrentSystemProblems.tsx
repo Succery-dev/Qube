@@ -48,7 +48,7 @@ const CurrentSystemProblemsCard = ({
 
 const CurrentSystemProblems = (): JSX.Element => {
   return (
-    <div id="product" className="flex flex-col h-full">
+    <div id="whyqube" className="flex flex-col h-full">
       <motion.h1
         variants={textVariant()}
         initial="hidden"

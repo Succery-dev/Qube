@@ -74,7 +74,7 @@ export default function Home() {
       {/* Support & Call To Action */}
       <SectionWrapper bgColor="bg-bg_primary" glowStyles={aesthetics.glow.walkthroughGlowStyles}>
         <Support />
-        <div className="bg-gradient-to-r from-green-500 to-blue-500 w-4/5 h-[150px] mx-auto mt-32 rounded-lg flex items-center justify-center text-white text-xl gap-x-5">
+        <div className="bg-gradient-to-r from-green-500 to-blue-500 h-[150px] mt-32 rounded-lg flex items-center justify-center text-white text-xl gap-x-5">
           <p className="text-3xl">
             Come and join our waitlist for the best collaboration!
           </p>

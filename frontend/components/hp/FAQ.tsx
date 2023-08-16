@@ -68,7 +68,7 @@ const FAQ = () => {
               initial={{ scale: 1 }}
               whileHover={{ scale: 1.05 }}
             >
-              <h3 className="text-5xl font-medium">
+              <h3 className="font-medium xl:text-3xl lg:text-2xl text-xl">
                 {faq.question}
               </h3>
             </motion.div>
@@ -77,7 +77,7 @@ const FAQ = () => {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.3 }}
-                className="text-3xl"
+                className="xl:text-2xl lg:text-xl text-lg"
               >
                 {faq.answer}
               </motion.p>

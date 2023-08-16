@@ -12,6 +12,7 @@ import {
   Walkthrough,
   Support,
   CurrentSystemProblems,
+  FAQ,
   Footer,
 } from "./hp";
 
@@ -40,6 +41,7 @@ export {
   Footer,
   Features,
   Walkthrough,
+  FAQ,
   Support,
   CurrentSystemProblems,
   Glow,

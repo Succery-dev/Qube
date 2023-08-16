@@ -45,51 +45,46 @@ const FooterLegal = (): JSX.Element => {
 
 const Footer = () => {
   return (
-    <motion.footer
-      variants={fadeIn("up", 1.25)}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, amount: 0.25 }}
-      className="py-10 px-20 lg:px-40 space-y-5 md:space-y-0 md:flex md:space-x-5 bg-slate-950"
-    >
-      {/* <FooterSocial /> */}
-      {/* <FooterLegal /> */}
-      <div className="flex-1 flex flex-col items-center">
-        <div className="space-y-5">
-          <div className="flex items-center space-x-5">
-            <Image
-              src="/images/logo.png"
-              width="100"
-              height="100"
-              alt="Q"
-              className="rounded-md xl:h-[80px] lg:h-[70px] sm:h-[60px] h-[60px] w-auto shadow-indigo-500/50"
-            />
-            <h1 className="xl:text-6xl lg:text-4xl sm:text-2xl text-2xl text-primary font-extrabold">
-              Qube
-            </h1>
-          </div>
-          <div className="text-4xl">
-            <Link href="/" className="flex gap-2">
+    <div className="bg-gray-900 px-24 xl:px-52 text-white pt-20 pb-40 grid grid-cols-10 space-y-5 md:space-y-0 text-center md:text-left">
+      <div className="col-span-10 md:col-span-4 space-y-5">
+        <div className="flex justify-center md:justify-start items-center space-x-5">
+          <Image
+            src="/images/logo.png"
+            width="100"
+            height="100"
+            alt="Q"
+            className="rounded-md h-[40px] w-auto shadow-indigo-500/50"
+          />
+          <h1 className="text-2xl text-primary font-extrabold">
+            Qube
+          </h1>
+        </div>
+        <div className="flex justify-center md:justify-start items-center space-x-10">
+            <Link href="/">
               <Image src={TwitterIcon} alt="Twitter" height={30} />
-              <p>Twitter</p>
             </Link>
-            <Link href="/" className="flex gap-2">
+            <Link href="/">
               <Image src={MediumIcon} alt="Medium" height={30} />
-              <p>Medium</p>
             </Link>
-          </div>
         </div>
       </div>
-      <div className="flex-1 text-4xl flex flex-col space-y-5 items-center">
-        <Link href="/">Resources</Link>
-        <Link href="/">FAQ's</Link>
-        <Link href="/">Whitepaper</Link>
+      <div className="col-span-10 md:col-span-3">
+        <h3 className="text-xl font-semibold mb-4">Resources</h3>
+        <ul>
+          <li className="mb-2"><a href="/" className="text-white hover:text-gray-500">FAQ's</a></li>
+          <li className="mb-2"><a href="/" className="text-white hover:text-gray-500">Whitepaper</a></li>
+          <li className="mb-2"><a href="/" className="text-white hover:text-gray-500">Sample</a></li>
+        </ul>
       </div>
-      <div className="flex-1 text-4xl flex flex-col space-y-5 items-center">
-        <Link href="/">Contacts</Link>
-        <Link href="/">[メアド]</Link>
+      <div className="col-span-10 md:col-span-3">
+        <h3 className="text-xl font-semibold mb-4">Contacts</h3>
+        <ul>
+          <li className="mb-2"><a href="/" className="text-white hover:text-gray-500">[メアド]</a></li>
+          <li className="mb-2"><a href="/" className="text-white hover:text-gray-500">Sample</a></li>
+          <li className="mb-2"><a href="/" className="text-white hover:text-gray-500">Sample</a></li>
+        </ul>
       </div>
-    </motion.footer>
+    </div>
   );
 };
 

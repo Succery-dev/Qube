@@ -64,7 +64,7 @@ const CurrentSystemProblems = (): JSX.Element => {
             <h3 className="text-5xl text-green-400">An NFT Gaming Company</h3>
             <p className="text-4xl">Tried to negotiate with NFT promoters to collaborate for a giveaway but most of them want to be prepaid…</p>
           </div>
-          <div className="w-2/3 ml-auto">
+          <div className="w-2/3 ml-auto text-right">
             <h3 className="text-5xl text-blue-400">But Influencers</h3>
             <p className="text-4xl">Want to get paid before executing the giveaway but the company doesn’t pay because they are pseudonymous…</p>
           </div>

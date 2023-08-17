@@ -72,7 +72,7 @@ const Walkthrough = (): JSX.Element => {
       >
         How to Use
       </motion.h1>
-      <p className="text-3xl mt-7 mb-36">Qube is super simple to use! No Complexity!</p>
+      <p className="text-3xl mt-7 mb-36">Creating contract is super simple! No Complexity!</p>
       <div className="sm:flex flex-row items-start md:gap-16 sm:gap-8 sm:mt-24 mt-16">
 
         {/* For Enterprises */}
@@ -120,9 +120,9 @@ const Walkthrough = (): JSX.Element => {
             </div>
           </div>
 
-          <div className="flex items-center mb-4">
+          {/* <div className="flex items-center mb-4">
             <h3 className="text-2xl font-semibold">Here you go! Leave the rest to Qube! </h3>
-          </div>
+          </div> */}
         </div>
 
         {/* For Individuals */}
@@ -152,9 +152,9 @@ const Walkthrough = (): JSX.Element => {
             </div>
           </div>
 
-          <div className="flex items-center mb-4">
+          {/* <div className="flex items-center mb-4">
             <h3 className="text-2xl font-semibold">Done! The payment will be executed automatically after the work is done!</h3>
-          </div>
+          </div> */}
         </div>
 
         {/* <DemoVideo /> */}

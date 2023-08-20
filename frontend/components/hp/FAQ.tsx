@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion"; // Framer Motionを使用する場合
 import { textVariant } from "../../utils";
+import Link from "next/link";
+import { waitlistUrl } from "../../constants";
 
 const FAQ = () => {
   const faqData = [
@@ -14,7 +16,7 @@ const FAQ = () => {
     },
     {
       question: "How much does it Cost?",
-      answer: "We are in our pre-alpha phase yet. So we don’t charge for now. Even you don’t have to pay Gas fee. Join us now! we are waiting for your feedback to make it better! [waitlist]",
+      answer: "We are in our pre-alpha phase yet. So we don’t charge for now. Even you don’t have to pay Gas fee. Join us now! we are waiting for your feedback to make it better! ",
     },
     {
       question: "Where can I get details of the Arbitration Solution?",
@@ -80,12 +82,15 @@ const FAQ = () => {
                 className="xl:text-2xl lg:text-xl text-lg"
               >
                 {faq.answer}
+                {faq.question === "How much does it Cost?" ? <Link href={waitlistUrl} className="underline">[waitlist]</Link> : null}
               </motion.p>
             )}
           </div>
         ))}
       </div>
-      <p className="text-5xl">Feel free to contact us for more questions! [email address]</p>
+      <p className="text-5xl">
+        Feel free to contact us for more questions! <Link href="https://docs.google.com/forms/d/e/1FAIpQLSdaRr4b4-XekKneAeAb4_Wx2ELEx_4YgdS-2Gtg0RQvtwWAnA/viewform" className="underline">[Google Form]</Link>
+      </p>
     </div>
   );
 };

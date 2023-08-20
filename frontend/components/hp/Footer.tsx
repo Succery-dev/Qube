@@ -60,10 +60,10 @@ const Footer = () => {
           </h1>
         </div>
         <div className="flex justify-center md:justify-start items-center space-x-10">
-            <Link href="/">
+            <Link href="https://twitter.com/0xQube">
               <Image src={TwitterIcon} alt="Twitter" height={30} />
             </Link>
-            <Link href="/">
+            <Link href="https://medium.com/@0xqube">
               <Image src={MediumIcon} alt="Medium" height={30} />
             </Link>
         </div>
@@ -71,17 +71,14 @@ const Footer = () => {
       <div className="col-span-10 md:col-span-3">
         <h3 className="text-xl font-semibold mb-4">Resources</h3>
         <ul>
-          <li className="mb-2"><a href="/" className="text-white hover:text-gray-500">FAQ's</a></li>
+          <li className="mb-2"><a href="#faq" className="text-white hover:text-gray-500">FAQ's</a></li>
           <li className="mb-2"><a href="/" className="text-white hover:text-gray-500">Whitepaper</a></li>
-          <li className="mb-2"><a href="/" className="text-white hover:text-gray-500">Sample</a></li>
         </ul>
       </div>
       <div className="col-span-10 md:col-span-3">
         <h3 className="text-xl font-semibold mb-4">Contacts</h3>
         <ul>
-          <li className="mb-2"><a href="/" className="text-white hover:text-gray-500">[メアド]</a></li>
-          <li className="mb-2"><a href="/" className="text-white hover:text-gray-500">Sample</a></li>
-          <li className="mb-2"><a href="/" className="text-white hover:text-gray-500">Sample</a></li>
+          <li className="mb-2"><a href="https://docs.google.com/forms/d/e/1FAIpQLSdaRr4b4-XekKneAeAb4_Wx2ELEx_4YgdS-2Gtg0RQvtwWAnA/viewform" className="text-white hover:text-gray-500">Google Form</a></li>
         </ul>
       </div>
     </div>

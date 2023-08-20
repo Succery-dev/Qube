@@ -72,7 +72,7 @@ const CurrentSystemProblems = (): JSX.Element => {
 
         <div className="text-center w-3/4">
           <h2 className="text-7xl underline linear-green-blue-gradient">We got your back!</h2>
-          <p className="text-5xl">Qube eliminate50s these concerns by using Escrow based payment system so that everyone can collaborate without any fear!</p>
+          <p className="text-5xl">Qube eliminates these concerns by using Escrow based payment system so that everyone can collaborate without any fear!</p>
         </div>
 
         {/* {currentSystemProblems.map(

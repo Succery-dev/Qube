@@ -128,7 +128,7 @@ export const features: FeaturesInterface[] = [
     title: "Arbitration",
     image: JuryIcon,
     description:
-      "If there is any disagreement, we will provide dispute resolution powered by Kleros, a decentralized court. visit our [whitepaper], for more!",
+      "If there is any disagreement, we will provide dispute resolution powered by Kleros, a decentralized court.",
   },
 ];
 

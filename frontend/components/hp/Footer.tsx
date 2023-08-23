@@ -72,7 +72,7 @@ const Footer = () => {
         <h3 className="text-xl font-semibold mb-4">Resources</h3>
         <ul>
           <li className="mb-2"><a href="#faq" className="text-white hover:text-gray-500">FAQ's</a></li>
-          <li className="mb-2"><a href="/" className="text-white hover:text-gray-500">Whitepaper</a></li>
+          <li className="mb-2"><a href="https://qube-1.gitbook.io/qube-whitepaper/" className="text-white hover:text-gray-500">Whitepaper</a></li>
         </ul>
       </div>
       <div className="col-span-10 md:col-span-3">

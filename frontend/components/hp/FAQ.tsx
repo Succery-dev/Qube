@@ -20,7 +20,7 @@ const FAQ = () => {
     },
     {
       question: "Where can I get details of the Arbitration Solution?",
-      answer: "You will get the details on our Whitepaper! [Link]",
+      answer: "You will get the details on our Whitepaper!",
     },
     {
       question: "What chain does it support?",
@@ -82,7 +82,13 @@ const FAQ = () => {
                 className="xl:text-2xl lg:text-xl text-lg"
               >
                 {faq.answer}
-                {faq.question === "How much does it Cost?" ? <Link href={waitlistUrl} className="underline">[waitlist]</Link> : null}
+                {
+                  faq.question === "How much does it Cost?" 
+                    ? <Link href={waitlistUrl} className="underline">[waitlist]</Link> 
+                    : faq.question === "Where can I get details of the Arbitration Solution?"
+                      ? <Link href="https://qube-1.gitbook.io/qube-whitepaper/" className="underline">[Link]</Link>
+                      : null
+                }
               </motion.p>
             )}
           </div>

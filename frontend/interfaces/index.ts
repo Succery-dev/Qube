@@ -17,9 +17,20 @@ import {
   CreateProjectFormInterface,
   CreateProjectFormContextInterface,
   TypeDataDomainInterface,
+  NftAddressDetailsInterface,
   SubmitDeliverablesInterface,
   SumbitFileInterface,
 } from "./project";
+
+// projectDetails Imports
+import {
+  StoreProjectDetailsInterface,
+  DisplayProjectDetailsInterface,
+  StoreFileDeliverableInterface,
+  DisplayFileDeliverableInterface,
+  DescriptionProjectDetailsInterface,
+  DisplayTextDeliverableInterface,
+} from "./projectDetails";
 
 // Notification Imports
 import {
@@ -41,6 +52,13 @@ export type {
   TypeDataDomainInterface,
   NotificationContextInterface,
   NotificationConfigurationInterface,
+  NftAddressDetailsInterface,
+  StoreProjectDetailsInterface,
+  DisplayProjectDetailsInterface,
+  StoreFileDeliverableInterface,
+  DisplayFileDeliverableInterface,
+  DescriptionProjectDetailsInterface,
+  DisplayTextDeliverableInterface,
   SubmitDeliverablesInterface,
   SumbitFileInterface,
 };

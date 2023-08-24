@@ -11,6 +11,14 @@
   text-fill-color: transparent;
 }
 
+.linear-green-blue-gradient {
+  background: linear-gradient(100.74deg, #00ffff , #2563EB );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-fill-color: transparent;
+}
+
 .progressBar {
   background: linear-gradient(to right, #2563eb, #00ffff);
 }
@@ -38,6 +46,19 @@
     transparent 50%,
     #00ffff 100%
   );
+}
+
+.progressBar {
+  background: linear-gradient(to right, #2563eb, #00ffff);
+}
+
+.hideScrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.hideScrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
 /* Hide scrollbar for Chrome, Safari and Opera */

@@ -1,5 +1,15 @@
 import ProjectScaffold from "./ProjectScaffold";
-import Dropbox from "./Dropbox";
+import CreateProjectModal from "./CreateProjectModal";
+// import Dropbox from "./Dropbox";
 import SubmitProjectModal from "./SubmitProjectModal";
 
-export { ProjectScaffold, Dropbox, SubmitProjectModal };
+// 3d Imports
+import { LogoCanvas } from "./3d";
+
+export { 
+  ProjectScaffold, 
+  // Dropbox, 
+  SubmitProjectModal, 
+  LogoCanvas, 
+  CreateProjectModal,
+};

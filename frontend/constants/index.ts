@@ -7,6 +7,7 @@ import {
   Community,
   API,
   NftGateway,
+  Gasless,
 } from "../assets";
 
 // Interfaces Imports
@@ -16,53 +17,61 @@ import {
   FeaturesInterface,
   SupportInterface,
   CreateProjectFieldInterface,
-  TypeDataDomainInterface
+  TypeDataDomainInterface,
 } from "../interfaces";
 
 // Types Imports
-import { ProjectDetailInterfaceKeysType } from "../types";
+import {
+  ProjectDetailInterfaceKeysType,
+  DisplayProjectDetailsInterfaceKeysType,
+  DescriptionProjectDetailsInterfaceKeysType,
+} from "../types";
 
 // Mock Data Import
 import { mockData } from "./mockData";
 
-export { mockData }
+export { mockData };
 
-export const waitlistUrl: string = "https://docs.google.com/forms/d/e/1FAIpQLSfe3r7ia_OTCHU8tHEtNG_aPY6OpLDsLPl3RDj-wQLutXNTKg/viewform";
+export const waitlistUrl: string =
+  "https://docs.google.com/forms/d/e/1FAIpQLSfe3r7ia_OTCHU8tHEtNG_aPY6OpLDsLPl3RDj-wQLutXNTKg/viewform";
 
 export const navLinks = [
   {
-    id: "product",
-    title: "Product",
+    id: "whyqube",
+    title: "Why Qube",
   },
   {
-    id: "walkthrough",
-    title: "Walkthrough",
+    id: "howtouse",
+    title: "How to use",
   },
   {
     id: "features",
     title: "Features",
   },
   {
-    id: "support",
-    title: "Support",
-  }
+    id: "faq",
+    title: "FAQ",
+  },
 ];
 
 export const currentSystemProblems: ProblemsInterface[] = [
   {
     id: "Escrow",
     image: Escrow,
-    description: "You can securely conduct transactions using Qube, even when dealing with anonymous individuals.",
+    description:
+      "You can securely conduct transactions using Qube, even when dealing with anonymous individuals.",
   },
   {
     id: "Community",
     image: Community,
-    description: "Not only can Qube be used for one-on-one transactions, but it is also suitable for assigning tasks to community members.",
+    description:
+      "Not only can Qube be used for one-on-one transactions, but it is also suitable for assigning tasks to community members.",
   },
   {
     id: "API",
     image: API,
-    description: "With Qube's developer tools, anyone will be able to easily build applications similar to Qube. (Coming soon)",
+    description:
+      "With Qube's developer tools, anyone will be able to easily build applications similar to Qube. (Coming soon)",
   },
 ];
 
@@ -94,32 +103,32 @@ export const walkthrough: WalkthroughInterface[] = [
 
 export const features: FeaturesInterface[] = [
   {
-    id: "Escrow",
-    title: "Escrow",
+    id: "NoThirdParty",
+    title: "No Third Party",
     image: EscrowIcon,
     description:
-      "Qube will hold the hiring company’s money until the company get satisfied with the work and pay the freelancer using smart contract.",
+      "Smart contract-based escrow will work as a middleman so that both parties don’t need to be worried about anything without a third party!",
+  },
+  {
+    id: "LinkBased",
+    title: "Link-based",
+    image: LinkIcon,
+    description:
+      "Generate a direct link to a contract to share on any platform with anybody you want to collaborate with!",
+  },
+  {
+    id: "GasFree",
+    title: "Gas Free",
+    image: Gasless,
+    description:
+      "Sometimes gas fees can be quite burdensome…But with Qube, both parties don't have to worry about gas fees for their transactions!",
   },
   {
     id: "Arbitration",
     title: "Arbitration",
     image: JuryIcon,
     description:
-      "If there is any disagreement between the hiring party and freelancers, we will provide dispute resolution.",
-  },
-  {
-    id: "LinkBased",
-    title: "Link based",
-    image: LinkIcon,
-    description:
-      "Generate a direct link of a contract describing the project and its payment details to share on any platform.",
-  },
-  {
-    id: "NFTGateway",
-    title: "NFT Gateway",
-    image: NftGateway,
-    description:
-      "With the gateway function provided by nfts, only specific individuals, such as NFT holder, can undertake the tasks.",
+      "If there is any disagreement, we will provide dispute resolution powered by Kleros, a decentralized court.",
   },
 ];
 
@@ -327,6 +336,27 @@ export const aesthetics = {
     createProjectGlowStyles: [
       {
         backgroundColor: "#00FFFF",
+        bottom: "20%",
+        left: "45%",
+        width: "200px",
+        height: "200px",
+        filter: "blur(200px)",
+        transform: "translateY(-50%) translateX(-50%)",
+      },
+      {
+        backgroundColor: "#2563EB",
+        top: "20%",
+        left: "45%",
+        width: "200px",
+        height: "200px",
+        filter: "blur(200px)",
+        transform: "translateY(-50%) translateX(-50%)",
+      },
+    ],
+
+    projectDetailsGlowStyles: [
+      {
+        backgroundColor: "#00FFFF",
         top: "50%",
         right: "10%",
         width: "200px",
@@ -341,6 +371,27 @@ export const aesthetics = {
         width: "200px",
         height: "200px",
         filter: "blur(200px)",
+        transform: "translateY(-50%)",
+      },
+    ],
+
+    pageNotFoundStyles: [
+      {
+        backgroundColor: "#00FFFF",
+        top: "50%",
+        left: "17%",
+        width: "250px",
+        height: "250px",
+        filter: "blur(250px)",
+        transform: "translateY(-50%)",
+      },
+      {
+        backgroundColor: "#2563EB",
+        top: "50%",
+        right: "35%",
+        width: "250px",
+        height: "250px",
+        filter: "blur(250px)",
         transform: "translateY(-50%)",
       },
     ],
@@ -361,6 +412,30 @@ export const projectDetailsInterfaceKeys: ProjectDetailInterfaceKeysType = [
   "amount",
   "status",
 ];
+
+export const DisplayProjectDetailsInterfaceKeys: DisplayProjectDetailsInterfaceKeysType[] =
+  [
+    "Title",
+    "Detail",
+    "Deadline(UTC)",
+    "Reward(USDC)",
+    "NFT(Contract Address)",
+    "Client's Wallet Address",
+    "Lancer's Wallet Address",
+    "fileDeliverable",
+    "textDeliverable",
+  ];
+
+export const DescriptionProjectDetailsInterfaceKeys: DescriptionProjectDetailsInterfaceKeysType[] =
+  [
+    "Title",
+    "Detail",
+    "Deadline(UTC)",
+    "Reward(USDC)",
+    "NFT(Contract Address)",
+    "Client's Wallet Address",
+    "Lancer's Wallet Address",
+  ];
 
 export const createProjectFields: CreateProjectFieldInterface[] = [
   {
@@ -384,8 +459,8 @@ export const createProjectFields: CreateProjectFieldInterface[] = [
     type: "number",
   },
   {
-    title: "Lancer's Wallet Address",
-    placeholder: "0x71C7656EC7ab88b098defB751B7401B5f6d8976F",
+    title: "NFT(Contract Address)",
+    placeholder: "0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d",
     type: "string",
   },
 ];
@@ -393,15 +468,17 @@ export const createProjectFields: CreateProjectFieldInterface[] = [
 export const signProjectEip712: TypeDataDomainInterface = {
   domain: {
     name: "QubePay-Sign-Project",
-    chainId: 80001,
+    chainId: 137,
   },
   types: {
     ProjectDetail: [
-      { name: "title", type: "string" },
-      { name: "detail", type: "string" },
-      { name: "deadline", type: "string" },
-      { name: "reward", type: "uint256" },
-      { name: "lancerAddress", type: "address" },
+      { name: "Title", type: "string" },
+      { name: "Detail", type: "string" },
+      { name: "Deadline(UTC)", type: "string" },
+      { name: "Reward(USDC)", type: "uint256" },
+      { name: "NFT(Contract Address)", type: "address" },
+      { name: "Client's Wallet Address", type: "address" },
+      { name: "Lancer's Wallet Address", type: "address" },
     ],
   },
 };
@@ -409,3 +486,5 @@ export const signProjectEip712: TypeDataDomainInterface = {
 // export const whitelist: string[] = [
 //   "0x329980D088Ba66B3d459AE3d396a722437801689",
 // ]
+
+export const addressZero = "0x0000000000000000000000000000000000000000";

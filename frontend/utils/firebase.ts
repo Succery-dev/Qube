@@ -15,6 +15,26 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-const firebaseApp = initializeApp(firebaseConfig);
+// const firebaseApp = initializeApp(firebaseConfig);
 
-export { firebaseApp }
+// export { firebaseApp }
+
+// ===========================================================================
+
+// import { initializeApp } from "firebase/app";
+import { getFirestore } from "firebase/firestore";
+import { getStorage } from "firebase/storage";
+
+// const firebaseConfig = {
+//   apiKey: "AIzaSyBjPHE5ESFSd_GhwFzUaE2mTUyqm9sVedo",
+//   authDomain: "qube-development-d6811.firebaseapp.com",
+//   projectId: "qube-development-d6811",
+//   storageBucket: "qube-development-d6811.appspot.com",
+//   messagingSenderId: "308534632877",
+//   appId: "1:308534632877:web:23ef644fd3ec5873a70124",
+// };
+
+// // Initialize Firebase
+export const app = initializeApp(firebaseConfig);
+export const database = getFirestore(app);
+export const storage = getStorage(app);

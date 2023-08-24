@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 
 // Custom components Imports
 import { Glow } from "../";
 import { LogoCanvas } from "./3d";
 import CreateProjectForm from "./CreateProjectForm";
+import { CreateProjectModal } from "./index";
 
 // Context Imports
 import { useProjectContext } from "../../context";
@@ -15,7 +16,10 @@ import { aesthetics } from "../../constants";
 import { motion } from "framer-motion";
 
 // Interface Imports
-import { SectionWrapperPropsInterface } from "../../interfaces";
+import {
+  SectionWrapperPropsInterface,
+  NftAddressDetailsInterface,
+} from "../../interfaces";
 
 const SectionWrapper: React.FC<SectionWrapperPropsInterface> = ({
   children,
@@ -35,13 +39,35 @@ const SectionWrapper: React.FC<SectionWrapperPropsInterface> = ({
 };
 
 const ProjectScaffold = ({
-  setShowSubmitModal,
+  // setShowSubmitModal,
+  // projectId,
 }: {
-  setShowSubmitModal: React.Dispatch<React.SetStateAction<boolean>>;
+  // setShowSubmitModal: React.Dispatch<React.SetStateAction<boolean>>;
+  // projectId?: string;
 }): JSX.Element => {
   const context = useProjectContext();
   const form = context.form;
   const setForm = context.setForm;
+
+  const [nftAddressDetails, setnftAddressDetails]: [
+    nftAddressDetails: NftAddressDetailsInterface,
+    setnftAddressDetails: React.Dispatch<
+      React.SetStateAction<NftAddressDetailsInterface>
+    >
+  ] = useState({
+    isNftAddress: false,
+    nftCollectionImageUrl: "",
+  });
+
+  const [projectDetailLink, setProjectDetailLink]: [
+    projectDetailLink: string,
+    setProjectDetailLink: React.Dispatch<React.SetStateAction<string>>
+  ] = useState(undefined as string);
+
+  const [showProjectModal, setShowProjectModal]: [
+    showProjectModal: boolean,
+    setShowProjectModal: React.Dispatch<React.SetStateAction<boolean>>
+  ] = useState(false);
 
   return (
     <div className="font-nunito text-secondary">
@@ -56,13 +82,26 @@ const ProjectScaffold = ({
           <CreateProjectForm
             form={form}
             setForm={setForm}
-            setShowSubmitModal={setShowSubmitModal}
+            nftAddressDetails={nftAddressDetails}
+            setnftAddressDetails={setnftAddressDetails}
+            setShowProjectModal={setShowProjectModal}
+            setProjectDetailLink={setProjectDetailLink}
+            // setShowSubmitModal={setShowSubmitModal}
+            // projectId={projectId}
           />
           {/* 3D Logo */}
           <div className="w-1/2 h-[500px] lg:block hidden">
-            <LogoCanvas />
+            <LogoCanvas
+              nftCollectionImageUrl={nftAddressDetails.nftCollectionImageUrl}
+            />
           </div>
         </div>
+
+        <CreateProjectModal
+          showProjectModal={showProjectModal}
+          setShowProjectModal={setShowProjectModal}
+          projectDetailLink={projectDetailLink}
+        />
       </SectionWrapper>
     </div>
   );

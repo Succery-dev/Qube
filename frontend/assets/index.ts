@@ -9,11 +9,15 @@ import CrossIcon from "./Icon-Cross.svg";
 import IconNotificationSuccess from "./Icon-Notification-Success.svg";
 import IconNotificationWarning from "./Icon-Notification-Warning.svg";
 import IconNotificationError from "./Icon-Notification-Error.svg";
+import IconCopy from "./Icon-Copy.svg";
+import IconDropdown from "./Icon-Dropdown.svg";
 import IconUploadFile from "./Icon-Upload-File.svg";
 import Escrow from "./Escrow.svg";
 import Community from "./Community.svg";
 import API from "./API.svg";
 import NftGateway from "./NFT-Gated.svg";
+import Gasless from "./Gasless.svg";
+import MediumIcon from "./Medium-Icon.svg";
 
 export {
   arrow,
@@ -27,9 +31,13 @@ export {
   IconNotificationSuccess,
   IconNotificationWarning,
   IconNotificationError,
+  IconCopy,
+  IconDropdown,
   IconUploadFile,
   Escrow,
   Community,
   API,
   NftGateway,
+  Gasless,
+  MediumIcon,
 };

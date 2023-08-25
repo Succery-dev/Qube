@@ -72,20 +72,20 @@ const Walkthrough = (): JSX.Element => {
       >
         How to Use
       </motion.h1>
-      <p className="text-3xl mt-7 mb-36">Creating contract is super simple! No Complexity!</p>
+      <p className="text-3xl mt-7 md:mb-36 mb-10">Creating contract is super simple! No Complexity!</p>
       <div className="sm:flex flex-row items-start md:gap-16 sm:gap-8 sm:mt-24 mt-16">
 
         {/* For Enterprises */}
         <div className="flex-1 max-w-4xl mx-auto">
           <h2 
-            className={`text-5xl font-semibold mb-6 ${activeTab === "enterprise" ? "underline text-white" : ""}`}
+            className={`xl:text-6xl lg:text-5xl sm:text-4xl text-[1.6rem] font-semibold mb-6 ${activeTab === "enterprise" ? "underline text-white" : ""}`}
             onClick={() => setActiveTab("enterprise")}
           >
             For Enterprises
           </h2>
           
           <div className="flex items-center mb-4">
-            <div className="flex-shrink-0 bg-blue-500 text-white rounded-full w-16 h-16 flex items-center justify-center mr-4 text-2xl">
+            <div className="flex-shrink-0 bg-blue-500 text-white rounded-full md:w-16 w-10 md:h-16 h-10 flex items-center justify-center mr-4 md:text-2xl text-lg">
               1
             </div>
             <div>
@@ -94,7 +94,7 @@ const Walkthrough = (): JSX.Element => {
           </div>
 
           <div className="flex items-center mb-4">
-            <div className="flex-shrink-0 bg-green-500 text-white rounded-full w-16 h-16 flex items-center justify-center mr-4 text-2xl">
+            <div className="flex-shrink-0 bg-green-500 text-white rounded-full md:w-16 w-10 md:h-16 h-10 flex items-center justify-center mr-4 md:text-2xl text-lg">
               2
             </div>
             <div>
@@ -103,7 +103,7 @@ const Walkthrough = (): JSX.Element => {
           </div>
 
           <div className="flex items-center mb-4">
-            <div className="flex-shrink-0 bg-indigo-500 text-white rounded-full w-16 h-16 flex items-center justify-center mr-4 text-2xl">
+            <div className="flex-shrink-0 bg-indigo-500 text-white rounded-full md:w-16 w-10 md:h-16 h-10 flex items-center justify-center mr-4 md:text-2xl text-lg">
               3
             </div>
             <div>
@@ -112,7 +112,7 @@ const Walkthrough = (): JSX.Element => {
           </div>
 
           <div className="flex items-center mb-4">
-            <div className="flex-shrink-0 bg-yellow-500 text-white rounded-full w-16 h-16 flex items-center justify-center mr-4 text-2xl">
+            <div className="flex-shrink-0 bg-yellow-500 text-white rounded-full md:w-16 w-10 md:h-16 h-10 flex items-center justify-center mr-4 md:text-2xl text-lg">
               4
             </div>
             <div>
@@ -128,14 +128,14 @@ const Walkthrough = (): JSX.Element => {
         {/* For Individuals */}
         <div className="flex-1 max-w-4xl mx-auto">
           <h2 
-            className={`text-5xl font-semibold mb-6 ${activeTab === "individuals" ? "underline text-white" : ""}`}
+            className={`xl:text-6xl lg:text-5xl sm:text-4xl text-[1.6rem] font-semibold mb-6 ${activeTab === "individuals" ? "underline text-white" : ""}`}
             onClick={() => setActiveTab("individuals")}
           >
             For Individuals
           </h2>
           
           <div className="flex items-center mb-4">
-            <div className="flex-shrink-0 bg-blue-500 text-white rounded-full w-16 h-16 flex items-center justify-center mr-4 text-2xl">
+            <div className="flex-shrink-0 bg-blue-500 text-white rounded-full md:w-16 w-10 md:h-16 h-10 flex items-center justify-center mr-4 md:text-2xl text-lg">
               1
             </div>
             <div>
@@ -144,7 +144,7 @@ const Walkthrough = (): JSX.Element => {
           </div>
 
           <div className="flex items-center mb-4">
-            <div className="flex-shrink-0 bg-green-500 text-white rounded-full w-16 h-16 flex items-center justify-center mr-4 text-2xl">
+            <div className="flex-shrink-0 bg-green-500 text-white rounded-full md:w-16 w-10 md:h-16 h-10 flex items-center justify-center mr-4 md:text-2xl text-lg">
               2
             </div>
             <div>

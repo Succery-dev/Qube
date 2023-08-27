@@ -19,7 +19,7 @@ export const getDataFromFireStore = async (
   projectId: string
 ): Promise<[StoreProjectDetailsInterface, DisplayProjectDetailsInterface]> => {
   try {
-    const databaseRef = doc(database, "project-details", projectId);
+    const databaseRef = doc(database, "projects", projectId);
     const response = await getDoc(databaseRef);
     const responseData = response.data() as StoreProjectDetailsInterface;
 

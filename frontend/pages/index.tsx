@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 // Components Imports
 import {
@@ -22,6 +22,9 @@ import { aesthetics, waitlistUrl } from "../constants";
 // Inteface Imports
 import { SectionWrapperPropsInterface } from "../interfaces";
 
+import { useAccount } from "wagmi";
+import { useRouter } from "next/router";
+
 const SectionWrapper: React.FC<SectionWrapperPropsInterface> = ({
   children,
   bgColor,
@@ -40,6 +43,15 @@ const SectionWrapper: React.FC<SectionWrapperPropsInterface> = ({
 };
 
 export default function Home() {
+  const router = useRouter();
+  const { address, isConnected } = useAccount();
+
+  useEffect(() => {
+    if (isConnected) {
+      router.push(`/dashboard/${address}`);
+    }
+  }, [isConnected]);
+
   return (
     <div className="font-nunito text-secondary">
       {/* IntroSection */}

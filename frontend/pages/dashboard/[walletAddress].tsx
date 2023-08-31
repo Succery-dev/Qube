@@ -57,7 +57,7 @@ const SectionWrapper: React.FC<SectionWrapperPropsInterface> = ({
 
 const Dashboard: NextPage = () => {
   const router = useRouter();
-  const { address } = useAccount();
+  const { address, isDisconnected } = useAccount();
   const [data, setData] = useState({} as ProjectDataInterface);
 
   useEffect(() => {
@@ -85,6 +85,12 @@ const Dashboard: NextPage = () => {
   
     fetchData();
   }, []);
+
+  useEffect(() => {
+    if (isDisconnected) {
+      router.push("/");
+    }
+  }, [isDisconnected]);
 
   if (!data) {
     return null;

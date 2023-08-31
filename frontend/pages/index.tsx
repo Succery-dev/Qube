@@ -49,8 +49,6 @@ export default function Home() {
   useEffect(() => {
     if (isConnected) {
       router.push(`/dashboard/${address}`);
-    } else {
-      router.push('/');
     }
   }, [isConnected]);
 

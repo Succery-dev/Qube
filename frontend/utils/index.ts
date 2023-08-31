@@ -5,7 +5,7 @@ import { convertSeconds } from "./convertSeconds";
  * @todo use this app for production
  */
 // import { firebaseApp } from "./firebase";
-import { app, database, storage } from "./firebase";
+import { firebaseApp, database, storage } from "./firebase";
 
 import { formatBytes } from "./formatBytes";
 
@@ -45,7 +45,7 @@ export {
   fadeIn,
   
   // firebaseApp,
-  app,
+  firebaseApp,
   database,
   storage,
   isValidEthereumContractAddress,

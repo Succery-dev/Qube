@@ -35,6 +35,6 @@ import { getStorage } from "firebase/storage";
 // };
 
 // // Initialize Firebase
-export const app = initializeApp(firebaseConfig);
-export const database = getFirestore(app);
-export const storage = getStorage(app);
+export const firebaseApp = initializeApp(firebaseConfig);
+export const database = getFirestore(firebaseApp);
+export const storage = getStorage(firebaseApp);

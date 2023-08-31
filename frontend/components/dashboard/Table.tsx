@@ -43,7 +43,7 @@ const TableContents = ({
     <div>
       {projectData.data.map((project: ProjectDetailInterface, index: number) => {
         return (
-          <Link href={`/project/${project["id"]}`}>
+          <Link key={project["id"]} href={`/project/${project["id"]}`}>
             <div
               className="grid grid-cols-4 items-center border-t-[1px] border-b-[1px] border-[#CFCFCF] xs:min-h-[60px] min-h-[50px] xs:text-base text-[0.65rem] cursor-pointer bg-bg_primary hover:bg-primary text-[#CFCFCF] font-normal"
               key={`${project.project}`}

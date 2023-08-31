@@ -40,7 +40,7 @@ import { isNftContract } from "../../utils";
 
 // Firebase Imports
 import { collection, addDoc } from "firebase/firestore";
-import { app, database } from "../../utils";
+import { firebaseApp, database } from "../../utils";
 
 // Status Enum Import
 import { StatusEnum } from "../../enums";

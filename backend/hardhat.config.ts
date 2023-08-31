@@ -6,6 +6,7 @@ dotenvConfig();
 require("@nomiclabs/hardhat-etherscan");
 import "@typechain/hardhat";
 import "solidity-coverage";
+import "hardhat-gas-reporter";
 
 const config: HardhatUserConfig = {
     defaultNetwork: "hardhat",
@@ -52,6 +53,11 @@ const config: HardhatUserConfig = {
             goerli: `${process.env.ETHERSCAN}`,
             mainnet: `${process.env.ETHERSCAN}`,
         }
+    },
+    gasReporter: {
+        enabled: true,
+        currency: 'USD',
+        gasPrice: 21
     }
 };
 

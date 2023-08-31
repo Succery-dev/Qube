@@ -103,7 +103,7 @@ const ProjectDetailsDescription = ({
           }
         )}
       </div>
-      {projectDetails && !isAssigned && (
+      {projectDetails && !isAssigned && projectDetails["Lancer's Wallet Address"] === "0x0000000000000000000000000000000000000000" && (
         <CustomButton
           text="Approve Project"
           type="button"
@@ -121,6 +121,16 @@ const ProjectDetailsDescription = ({
             );
           }}
           styles="w-full mx-auto block bg-[#3E8ECC] hover:bg-[#377eb5] rounded-md text-center text-lg font-semibold text-white py-[4px] px-7 mt-6"
+        />
+      )}
+      {projectDetails["Lancer's Wallet Address"] !== "0x0000000000000000000000000000000000000000" && (
+        <CustomButton
+          text="Prepay Escrow"
+          styles="w-full mx-auto block bg-[#3E8ECC] hover:bg-[#377eb5] rounded-md text-center text-lg font-semibold text-white py-[4px] px-7 mt-6"
+          type="submit"
+          onClick={(e) => {
+            e.preventDefault();
+          }}
         />
       )}
     </>

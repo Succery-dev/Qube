@@ -464,6 +464,9 @@ export const createProjectFields: CreateProjectFieldInterface[] = [
   },
 ];
 
+/**
+ * @TODO get this signProjectEip712 from the server for integrity and consistency
+ */
 export const signProjectEip712: TypeDataDomainInterface = {
   domain: {
     name: "QubePay-Sign-Project",
@@ -477,7 +480,6 @@ export const signProjectEip712: TypeDataDomainInterface = {
       { name: "Reward(USDC)", type: "uint256" },
       { name: "NFT(Contract Address)", type: "address" },
       { name: "Client's Wallet Address", type: "address" },
-      { name: "Lancer's Wallet Address", type: "address" },
     ],
   },
 };

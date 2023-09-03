@@ -5,7 +5,7 @@ import { convertSeconds } from "./convertSeconds";
  * @todo use this app for production
  */
 // import { firebaseApp } from "./firebase";
-import { app, database, storage } from "./firebase";
+import { app, database, storage, auth } from "./firebase";
 
 import { formatBytes } from "./formatBytes";
 
@@ -33,6 +33,15 @@ import {
 
 import { uploadDeliverables } from "./project/uploadDeliverables";
 
+// Lighthouse
+import {
+  encryptionSignature,
+  progressCallback,
+  progressCallbackHelper,
+  uploadFileEncrypted,
+  shareFileEncrypted,
+} from "./lighthouse";
+
 export {
   convertSeconds,
   getDoughnutChartConfig,
@@ -43,11 +52,12 @@ export {
   modalLinksVariant,
   textVariant,
   fadeIn,
-  
+
   // firebaseApp,
   app,
   database,
   storage,
+  auth,
   isValidEthereumContractAddress,
   isNftContract,
   checkNftOwnership,
@@ -60,4 +70,11 @@ export {
 
   // firebaseApp,
   uploadDeliverables,
+
+  // Lighthouse
+  encryptionSignature,
+  progressCallback,
+  progressCallbackHelper,
+  uploadFileEncrypted,
+  shareFileEncrypted,
 };

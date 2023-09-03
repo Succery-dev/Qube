@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { useDropzone, FileWithPath } from "react-dropzone";
+import { useDropzone, FileWithPath, FileRejection } from "react-dropzone";
 import Image from "next/image";
 
 // Image Imports
@@ -16,10 +16,15 @@ import { fadeIn } from "../../utils/motion";
 
 // Firebase Imports
 import {
+  encryptionSignature,
   formatBytes,
   populateStates,
+  progressCallback,
+  progressCallbackHelper,
+  shareFileEncrypted,
   storage,
   updateProjectDetails,
+  uploadFileEncrypted,
 } from "../../utils";
 import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
 
@@ -29,9 +34,15 @@ import {
   DisplayProjectDetailsInterface,
   DisplayTextDeliverableInterface,
   NotificationConfigurationInterface,
+  ProgressDataInterface,
+  ShareFileEncryptedResponseInterface,
   StoreFileDeliverableInterface,
+  UploadFileEncryptedResponseInterface,
 } from "../../interfaces";
 import Link from "next/link";
+
+// Lighthouse Imports
+import { IFileUploadedResponse } from "@lighthouse-web3/sdk/dist/types";
 
 const Dropbox = ({
   fileDeliverables,
@@ -44,6 +55,9 @@ const Dropbox = ({
   setTextDeliverables,
   projectDetails,
   isAssigned,
+  address,
+  clientAddress,
+  freelancerAddress,
 }: {
   fileDeliverables: DisplayFileDeliverableInterface[];
   setFileDeliverables: React.Dispatch<
@@ -63,22 +77,34 @@ const Dropbox = ({
     React.SetStateAction<DisplayTextDeliverableInterface[]>
   >;
   isAssigned: boolean;
+  address: `0x${string}`;
+  clientAddress: `0x${string}`;
+  freelancerAddress: `0x${string}`;
 }) => {
   // States
   const [isDropable, setIsDropable] = useState(true);
 
   const onDrop = useCallback(
-    async (acceptedFiles: FileWithPath[]) => {
+    async (acceptedFiles: FileWithPath[], fileRejections: FileRejection[]) => {
       try {
-        if (!isAssigned) {
-          throw new Error("Not Approved for the project");
-        }
+        console.log("was here");
+
+        // if (!isAssigned) {
+        //   throw new Error("Not Approved for the project");
+        // }
 
         if (!isDropable) {
           return;
         }
 
+        if (fileRejections.length > 0) {
+          throw new Error("Only one file can be selected");
+        }
+
         setIsDropable(false);
+
+        console.log("was here too");
+
         let updatedFileDeliverables: StoreFileDeliverableInterface[] =
           fileDeliverables.map((fileDeliverable) => {
             return {
@@ -88,72 +114,56 @@ const Dropbox = ({
             };
           });
 
-        const uploadPromises: Promise<StoreFileDeliverableInterface>[] =
-          acceptedFiles.map((file, acceptedFileIndex) => {
-            const index = fileDeliverables.length + acceptedFileIndex;
-            // const index = acceptedFileIndex;
-            const storageRef = ref(storage, `file/${file.name}`);
-            const uploadTask = uploadBytesResumable(storageRef, file);
+        const progressCallback = (progressData: ProgressDataInterface) => {
+          let percentageDone = progressData?.total / progressData?.uploaded;
+          percentageDone = 100 - Number(percentageDone.toFixed(2));
 
-            return new Promise((resolve, reject) => {
-              ((index: number) => {
-                uploadTask.on(
-                  "state_changed",
-                  (snapshot) => {
-                    const progress =
-                      (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          setFileDeliverables((prevFileDeliverableArray) => {
+            const updatedFileDeliverableArray = [...prevFileDeliverableArray];
+            console.log("acceptedFile[0", acceptedFiles[0]);
+            updatedFileDeliverableArray[fileDeliverables.length] = {
+              fileName: acceptedFiles[0].name,
+              fileSize: `${acceptedFiles[0].size}`,
+              progress: `${percentageDone}`,
+              downloadUrl: undefined as string,
+            };
 
-                    setFileDeliverables((prevFileDeliverableArray) => {
-                      const updatedFileDeliverableArray = [
-                        ...prevFileDeliverableArray,
-                      ];
-
-                      updatedFileDeliverableArray[index] = {
-                        fileName: file.name,
-                        fileSize: `${file.size}`,
-                        progress: `${progress}`,
-                        downloadUrl: undefined as string,
-                      };
-
-                      return updatedFileDeliverableArray;
-                    });
-                  },
-                  (error) => {
-                    reject(undefined as StoreFileDeliverableInterface);
-                  },
-                  () => {
-                    getDownloadURL(uploadTask.snapshot.ref).then(
-                      (downloadUrl) => {
-                        setFileDeliverables((prevFileDeliverableArray) => {
-                          const updatedFileDeliverableArray = [
-                            ...prevFileDeliverableArray,
-                          ];
-                          updatedFileDeliverableArray[index] = {
-                            ...updatedFileDeliverableArray[index],
-                            downloadUrl: downloadUrl,
-                          };
-
-                          resolve({
-                            fileName: file.name,
-                            fileSize: `${file.size}`,
-                            downloadUrl: downloadUrl,
-                          } as StoreFileDeliverableInterface);
-
-                          return updatedFileDeliverableArray;
-                        });
-                      }
-                    );
-                  }
-                );
-              })(index);
-            });
+            return updatedFileDeliverableArray;
           });
+        };
 
-        const resolvedUploadPromises = await Promise.all(uploadPromises);
+        const uploadResponse: IFileUploadedResponse = await uploadFileEncrypted(
+          address,
+          acceptedFiles,
+          progressCallback
+        );
+
+        const shareResponse: ShareFileEncryptedResponseInterface =
+          await shareFileEncrypted(
+            address,
+            [clientAddress],
+            uploadResponse.Hash
+          );
+
+        setFileDeliverables((prevFileDeliverableArray) => {
+          const updatedFileDeliverableArray = [...prevFileDeliverableArray];
+          updatedFileDeliverableArray[fileDeliverables.length] = {
+            ...updatedFileDeliverableArray[fileDeliverables.length],
+            downloadUrl: `https://files.lighthouse.storage/viewFile/${shareResponse.cid}`,
+          };
+
+          return updatedFileDeliverableArray;
+        });
+
+        const newFileDeliverable = {
+          fileName: acceptedFiles[0].name,
+          fileSize: `${acceptedFiles[0].size}`,
+          downloadUrl: `https://files.lighthouse.storage/viewFile/${shareResponse.cid}`,
+        } as StoreFileDeliverableInterface;
 
         updatedFileDeliverables = [
           ...updatedFileDeliverables,
-          ...resolvedUploadPromises,
+          newFileDeliverable,
         ];
 
         await updateProjectDetails(projectId, {
@@ -169,10 +179,11 @@ const Dropbox = ({
           setShowNotification,
           setTextDeliverables
         );
+
         setNotificationConfiguration({
           modalColor: "#62d140",
           title: "Success",
-          message: "Submitted the files",
+          message: "Submitted the file",
           icon: IconNotificationSuccess,
         });
         setIsDropable(true);
@@ -184,22 +195,40 @@ const Dropbox = ({
             message: "Adddress not Approved for project",
             icon: IconNotificationError,
           });
+        } else if (error.message === "Only one file can be selected") {
+          setNotificationConfiguration({
+            modalColor: "#d1d140",
+            title: "Invalid selection",
+            message: "Only one file can be selected at a time",
+            icon: IconNotificationWarning,
+          });
+        } else if (
+          error.message === "Error uploading file" ||
+          error.message === "Error Sharing the file"
+        ) {
+          setNotificationConfiguration({
+            modalColor: "#d14040",
+            title: "Upload Error",
+            message: "Error uploading the file",
+            icon: IconNotificationError,
+          });
         } else {
           setNotificationConfiguration({
             modalColor: "#d14040",
             title: "Error",
-            message: "Error submitting the files",
+            message: "Error submitting the file",
             icon: IconNotificationError,
           });
         }
       } finally {
+        setShowNotification(true);
       }
     },
 
     [isDropable]
   );
 
-  const { getRootProps, getInputProps } = useDropzone({ onDrop });
+  const { getRootProps, getInputProps } = useDropzone({ onDrop, maxFiles: 1 });
 
   return (
     <>
@@ -222,7 +251,7 @@ const Dropbox = ({
 
               {isDropable ? (
                 <p className="text-[#c7c7cd] text-sm lg:text-base xl:text-lg">
-                  Drag and Drop Files
+                  Drag and Drop File
                   <br />
                   OR
                   <br />

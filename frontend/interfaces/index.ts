@@ -38,6 +38,13 @@ import {
   NotificationConfigurationInterface,
 } from "./notificationContextInterface";
 
+// Lighthouse
+import {
+  ProgressDataInterface,
+  UploadFileEncryptedResponseInterface,
+  ShareFileEncryptedResponseInterface,
+} from "./lighthouse";
+
 export type {
   ProjectDataInterface,
   ProjectDetailInterface,
@@ -61,4 +68,7 @@ export type {
   DisplayTextDeliverableInterface,
   SubmitDeliverablesInterface,
   SumbitFileInterface,
+  ProgressDataInterface,
+  UploadFileEncryptedResponseInterface,
+  ShareFileEncryptedResponseInterface,
 };

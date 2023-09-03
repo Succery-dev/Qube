@@ -25,7 +25,7 @@ import {
 import { aesthetics, signProjectEip712 } from "../../constants";
 
 // Wagmi Imports
-import { useAccount, useSignTypedData } from "wagmi";
+import { useAccount, useSignMessage, useSignTypedData } from "wagmi";
 
 // Rainbowkit Imports
 import { useConnectModal } from "@rainbow-me/rainbowkit";
@@ -84,7 +84,6 @@ const ProjectDetails = ({ projectId }: { projectId: string }): JSX.Element => {
       "Deadline(UTC)": projectDetails["Deadline(UTC)"],
       "Reward(USDC)": projectDetails["Reward(USDC)"],
       "NFT(Contract Address)": projectDetails["NFT(Contract Address)"],
-      "Client's Wallet Address": projectDetails["Client's Wallet Address"],
       "Lancer's Wallet Address": address,
     },
   });
@@ -203,6 +202,9 @@ const ProjectDetails = ({ projectId }: { projectId: string }): JSX.Element => {
                 setShowNotification={setShowNotification}
                 projectDetails={projectDetails}
                 setTextDeliverables={setTextDeliverables}
+                address={address}
+                clientAddress={projectDetails["Client's Wallet Address"]}
+                freelancerAddress={projectDetails["Lancer's Wallet Address"]}
               />
             )}
             {section === "text" && (

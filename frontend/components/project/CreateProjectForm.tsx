@@ -182,6 +182,7 @@ const CreateProjectForm = ({
         form.approveProof = "";
         form.fileDeliverable = [];
         form.textDeliverable = [];
+        form.Status = StatusEnum.WaitingForConnectingLancersWallet;
 
         const response = await addDoc(databaseRef, form);
         const projectDetailLink =

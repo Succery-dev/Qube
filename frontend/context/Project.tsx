@@ -5,6 +5,7 @@ import {
   CreateProjectFormInterface,
   CreateProjectFormContextInterface,
 } from "../interfaces";
+import { StatusEnum } from "../enums";
 
 const initialFormValue = {
   Title: "",
@@ -12,6 +13,7 @@ const initialFormValue = {
   "Deadline(UTC)": "",
   "Reward(USDC)": 0,
   // "NFT(Contract Address)": "" as `0x${string}`,
+  Status: StatusEnum.WaitingForConnectingLancersWallet,
 };
 
 // Create the context

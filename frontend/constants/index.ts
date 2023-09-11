@@ -435,6 +435,7 @@ export const DescriptionProjectDetailsInterfaceKeys: DescriptionProjectDetailsIn
     // "NFT(Contract Address)",
     "Client's Wallet Address",
     "Lancer's Wallet Address",
+    "Status",
   ];
 
 export const createProjectFields: CreateProjectFieldInterface[] = [

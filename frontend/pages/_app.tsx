@@ -31,6 +31,8 @@ import { useRouter } from "next/router";
 import { RainbowKitChain } from "@rainbow-me/rainbowkit/dist/components/RainbowKitProvider/RainbowKitChainContext";
 import { ProjectProvider, NotificationProvider } from "../context";
 import merge from "lodash.merge";
+import { useEffect } from "react";
+import { initializeWeb3Provider } from "../utils/ethers";
 
 // Custom chain for hardhat network on local env with "chainId: 31337"
 const localhost8545 = {
@@ -113,6 +115,12 @@ function MyApp({
       // if (!isReconnected) router.reload();
     },
   });
+
+  useEffect(() => {
+    // Initialize Web3Provider on application load
+    initializeWeb3Provider();
+  }, []);
+
   return (
     <WagmiConfig client={wagmiClient}>
       <SessionProvider session={pageProps.session} refetchInterval={0}>

@@ -16,9 +16,11 @@ import {
   updateProjectDetails,
 } from "./index";
 
-export const assingProject = async (
-  nftOwnerAddress: `0x${string}`,
-  nftAddress: `0x${string}`,
+export const assignProject = async (
+  // nftOwnerAddress: `0x${string}`,
+  // nftAddress: `0x${string}`,
+  freelancerAddress: `0x${string}`,
+  clientAddress: `0x${string}`,
   openConnectModal: any,
   signTypedDataAsync: any,
   projectId: string,
@@ -31,15 +33,18 @@ export const assingProject = async (
   >,
   setShowNotification: React.Dispatch<React.SetStateAction<boolean>>
 ) => {
-  if (nftOwnerAddress) {
+  if (freelancerAddress) {
     try {
-      const isOwner = await checkNftOwnership(nftAddress, nftOwnerAddress);
-      if (isOwner) {
+      // const isOwner = await checkNftOwnership(nftAddress, nftOwnerAddress);
+      // if (isOwner) {
+        if (clientAddress === freelancerAddress) {
+          throw new Error("You can't approve this project");
+        }
         const approveProof = await approveProjectDetails(signTypedDataAsync);
         const updatedSubsetProjectDetail: Partial<StoreProjectDetailsInterface> =
           {
             approveProof: approveProof,
-            "Lancer's Wallet Address": nftOwnerAddress,
+            "Lancer's Wallet Address": freelancerAddress,
           };
         await updateProjectDetails(projectId, updatedSubsetProjectDetail);
         const [_, updatedProjectDetails] = await getDataFromFireStore(
@@ -56,10 +61,11 @@ export const assingProject = async (
           icon: IconNotificationSuccess,
         });
         setShowNotification(true);
-      } else {
-        throw new Error("Not Approved for the project");
-      }
+      // } else {
+      //   throw new Error("Not Approved for the project");
+      // }
     } catch (error) {
+      console.log("hello: ", error);
       setNotificationConfiguration({
         modalColor: "#d14040",
         title: "Error",

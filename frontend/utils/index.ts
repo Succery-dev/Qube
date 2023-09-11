@@ -27,7 +27,7 @@ import {
   approveProjectDetails,
   updateProjectDetails,
   getDataFromFireStore,
-  assingProject,
+  assignProject,
   populateStates,
 } from "./projectDetail";
 
@@ -54,7 +54,7 @@ export {
   approveProjectDetails,
   updateProjectDetails,
   getDataFromFireStore,
-  assingProject,
+  assignProject,
   populateStates,
   formatBytes,
 

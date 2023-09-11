@@ -35,7 +35,7 @@ import { useNotificationContext } from "../../context";
 
 // utils Imports
 import { checkNftOwnership, getDataFromFireStore } from "../../utils";
-import { assingProject, populateStates } from "../../utils/projectDetail";
+import { assignProject, populateStates } from "../../utils/projectDetail";
 import { IconNotificationWarning } from "../../assets";
 
 const SectionWrapper: React.FC<SectionWrapperPropsInterface> = ({
@@ -83,7 +83,7 @@ const ProjectDetails = ({ projectId }: { projectId: string }): JSX.Element => {
       Detail: projectDetails.Detail,
       "Deadline(UTC)": projectDetails["Deadline(UTC)"],
       "Reward(USDC)": projectDetails["Reward(USDC)"],
-      "NFT(Contract Address)": projectDetails["NFT(Contract Address)"],
+      // "NFT(Contract Address)": projectDetails["NFT(Contract Address)"],
       "Client's Wallet Address": projectDetails["Client's Wallet Address"],
       "Lancer's Wallet Address": address,
     },
@@ -180,7 +180,8 @@ const ProjectDetails = ({ projectId }: { projectId: string }): JSX.Element => {
                 isAssigned={isAssigned}
                 openConnectModal={openConnectModal}
                 signTypedDataAsync={signTypedDataAsync}
-                nftOwnerAddress={address}
+                // nftOwnerAddress={address}
+                freelancerAddress={address}
                 setFileDeliverables={setFileDeliverables}
                 projectId={projectId}
                 setIsAssigned={setIsAssigned}

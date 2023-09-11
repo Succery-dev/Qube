@@ -2,7 +2,7 @@ import { checkNftOwnership } from "./checkNftOwnership";
 import { approveProjectDetails } from "./approveProjectDetails";
 import { updateProjectDetails } from "./updateProjectDetails";
 import { getDataFromFireStore } from "./getDataFromFireStore";
-import { assingProject } from "./assignProject";
+import { assignProject } from "./assignProject";
 import { populateStates } from "./populateStates";
 
 export {
@@ -10,6 +10,6 @@ export {
   approveProjectDetails,
   updateProjectDetails,
   getDataFromFireStore,
-  assingProject,
+  assignProject,
   populateStates,
 };

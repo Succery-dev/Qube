@@ -32,6 +32,22 @@ import { RainbowKitChain } from "@rainbow-me/rainbowkit/dist/components/RainbowK
 import { ProjectProvider, NotificationProvider } from "../context";
 import merge from "lodash.merge";
 
+// Custom chain for hardhat network on local env with "chainId: 31337"
+const localhost8545 = {
+  id: 31337,
+  name: "Localhost8545",
+  network: "localhost8545",
+  nativeCurrency: {
+    decimals: 18,
+    name: "Hardhat Eth",
+    symbol: "HARDHATETH",
+  },
+  rpcUrls: {
+    public: { http: ["http://127.0.0.1:8545"] },
+    default: { http: ["http://127.0.0.1:8545"] },
+  },
+}
+
 const { chains, provider } = configureChains(
   [
     mainnet,
@@ -44,6 +60,7 @@ const { chains, provider } = configureChains(
     arbitrumGoerli,
     polygonZkEvm,
     polygonZkEvmTestnet,
+    localhost8545,
   ],
 
   // TODO: remove the below comment for production => use Alchemy Provider for production for enhanced performance

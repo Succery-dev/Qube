@@ -11,7 +11,7 @@ const initialFormValue = {
   Detail: "",
   "Deadline(UTC)": "",
   "Reward(USDC)": 0,
-  "NFT(Contract Address)": "" as `0x${string}`,
+  // "NFT(Contract Address)": "" as `0x${string}`,
 };
 
 // Create the context

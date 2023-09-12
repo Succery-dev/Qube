@@ -92,7 +92,7 @@ const Dropbox = ({
           acceptedFiles.map((file, acceptedFileIndex) => {
             const index = fileDeliverables.length + acceptedFileIndex;
             // const index = acceptedFileIndex;
-            const storageRef = ref(storage, `file/${file.name}`);
+            const storageRef = ref(storage, `${projectId}/${file.name}`);
             const uploadTask = uploadBytesResumable(storageRef, file);
 
             return new Promise((resolve, reject) => {

@@ -1,5 +1,6 @@
 // Asset Imports
 import { IconNotificationSuccess, IconNotificationError } from "../../assets";
+import { StatusEnum } from "../../enums";
 
 // Interface Imports
 import {
@@ -45,6 +46,7 @@ export const assignProject = async (
           {
             approveProof: approveProof,
             "Lancer's Wallet Address": freelancerAddress,
+            "Status": StatusEnum.PayInAdvance,
           };
         await updateProjectDetails(projectId, updatedSubsetProjectDetail);
         const [_, updatedProjectDetails] = await getDataFromFireStore(

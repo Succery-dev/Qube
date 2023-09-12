@@ -11,6 +11,7 @@ const initialFormValue = {
   Title: "",
   Detail: "",
   "Deadline(UTC)": "",
+  "Deadline(UTC) For Payment": "",
   "Reward(USDC)": 0,
   // "NFT(Contract Address)": "" as `0x${string}`,
   Status: StatusEnum.WaitingForConnectingLancersWallet,

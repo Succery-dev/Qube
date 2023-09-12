@@ -177,6 +177,10 @@ const CreateProjectForm = ({
   const addDataToFirestore = async (form: StoreProjectDetailsInterface) => {
     if (isConnected) {
       try {
+        const submissionDeadline = new Date(form["Deadline(UTC)"] + "Z");
+        form["Deadline(UTC)"] = submissionDeadline.toISOString();
+        submissionDeadline.setDate(submissionDeadline.getDate() + 7);
+        form["Deadline(UTC) For Payment"] = submissionDeadline.toISOString();
         form["Client's Wallet Address"] = address;
         form["Lancer's Wallet Address"] = addressZero;
         form.approveProof = "";

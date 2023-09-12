@@ -7,6 +7,7 @@ import {
   DisplayProjectDetailsInterface,
   DisplayTextDeliverableInterface,
   NotificationConfigurationInterface,
+  StoreProjectDetailsInterface,
 } from "../../interfaces";
 
 // Constant Imports
@@ -21,7 +22,7 @@ import { CustomButton } from "..";
 // Utils Imports
 import {
   approveProjectDetails,
-  assingProject,
+  assignProject,
   populateStates,
   updateProjectDetails,
 } from "../../utils";
@@ -30,11 +31,19 @@ import {
 import { useNotificationContext } from "../../context";
 import { IconNotificationError, IconNotificationSuccess } from "../../assets";
 
+import { ethers } from "ethers";
+import { approve } from "../../contracts/MockToken";
+import { EscrowAddress, depositTokens } from "../../contracts/Escrow";
+import { StatusEnum } from "../../enums";
+import { getDataFromFireStore } from "../../utils";
+import { useAccount } from "wagmi";
+
 const ProjectDetailsDescription = ({
   isAssigned,
   openConnectModal,
   signTypedDataAsync,
-  nftOwnerAddress,
+  // nftOwnerAddress,
+  freelancerAddress,
   setFileDeliverables,
   projectId,
   setIsAssigned,
@@ -47,7 +56,8 @@ const ProjectDetailsDescription = ({
   isAssigned: boolean;
   openConnectModal: unknown;
   signTypedDataAsync: unknown;
-  nftOwnerAddress: `0x${string}`;
+  // nftOwnerAddress: `0x${string}`;
+  freelancerAddress: `0x${string}`;
   setFileDeliverables: React.Dispatch<
     React.SetStateAction<DisplayFileDeliverableInterface[]>
   >;
@@ -69,6 +79,8 @@ const ProjectDetailsDescription = ({
   delete projectDetails.textDeliverable;
   const descriptionProjectDetails: DescriptionProjectDetailsInterface =
     projectDetails;
+
+  const { address, isConnected } = useAccount();
 
   return (
     <>
@@ -108,9 +120,11 @@ const ProjectDetailsDescription = ({
           text="Approve Project"
           type="button"
           onClick={() => {
-            assingProject(
-              nftOwnerAddress,
-              projectDetails["NFT(Contract Address)"],
+            assignProject(
+              // nftOwnerAddress,
+              freelancerAddress,
+              projectDetails["Client's Wallet Address"],
+              // projectDetails["NFT(Contract Address)"],
               openConnectModal,
               signTypedDataAsync,
               projectId,
@@ -128,8 +142,64 @@ const ProjectDetailsDescription = ({
           text="Prepay Escrow"
           styles="w-full mx-auto block bg-[#3E8ECC] hover:bg-[#377eb5] rounded-md text-center text-lg font-semibold text-white py-[4px] px-7 mt-6"
           type="submit"
-          onClick={(e) => {
+          onClick={async (e) => {
             e.preventDefault();
+
+            if (isConnected && address == projectDetails["Client's Wallet Address"]) {
+              try {
+                // Prepay amount
+                console.log("Reward: %sUSDC", projectDetails["Reward(USDC)"]);
+                const amount = ethers.utils.parseEther(projectDetails["Reward(USDC)"].toString());
+
+                // Approve tokens
+                const approveResult = await approve(EscrowAddress, amount);
+                console.log("Approve Result: ", approveResult);
+
+                // Deposit tokens
+                console.log("Recipient: %s, ProjectId: %s", projectDetails["Lancer's Wallet Address"], projectId);
+                const depositResult = await depositTokens(projectDetails["Lancer's Wallet Address"], amount, projectId);
+                console.log("Deposit Result: ", depositResult);
+
+                // Update the status to "Waiting for Submission"
+                const updatedSubsetProjectDetail: Partial<StoreProjectDetailsInterface> =
+                  {
+                    "Status": StatusEnum.WaitingForSubmission,
+                  };
+                await updateProjectDetails(projectId, updatedSubsetProjectDetail);
+                const [_, updatedProjectDetails] = await getDataFromFireStore(
+                  projectId
+                );
+
+                setProjectDetails(updatedProjectDetails);
+
+                setNotificationConfiguration({
+                  modalColor: "#62d140",
+                  title: "Sucess",
+                  message: "Successfully prepaid tokens",
+                  icon: IconNotificationSuccess,
+                });
+                setShowNotification(true);
+              } catch (error) {
+                console.log("Prepay Failed: ", error);
+                setNotificationConfiguration({
+                  modalColor: "#d14040",
+                  title: "Error",
+                  message: "Error prepaying tokens",
+                  icon: IconNotificationError,
+                });
+                setShowNotification(true);
+              }
+            } else {
+              setNotificationConfiguration({
+                modalColor: "#d14040",
+                title: "Error",
+                message: "Please connect your right wallet account",
+                icon: IconNotificationError,
+              });
+              setShowNotification(true);
+            }
+            
+
           }}
         />
       )}

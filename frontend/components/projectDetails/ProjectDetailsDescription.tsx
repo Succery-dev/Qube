@@ -33,7 +33,7 @@ import { IconNotificationError, IconNotificationSuccess } from "../../assets";
 
 import { ethers } from "ethers";
 import { approve } from "../../contracts/MockToken";
-import { EscrowAddress, depositTokens } from "../../contracts/Escrow";
+import { EscrowAddress, depositTokens, withdrawTokensToRecipientByDepositor } from "../../contracts/Escrow";
 import { StatusEnum } from "../../enums";
 import { getDataFromFireStore } from "../../utils";
 import { useAccount } from "wagmi";
@@ -198,10 +198,50 @@ const ProjectDetailsDescription = ({
               });
               setShowNotification(true);
             }
-            
-
           }}
         />
+      )}
+      {projectDetails.Status === StatusEnum.WaitingForPayment && (
+        <>
+          <CustomButton
+            text="Approve The Deliverables"
+            type="button"
+            onClick={async () => {
+              // ③ Approve The Submission
+              const approveResult = await withdrawTokensToRecipientByDepositor(projectId);
+              console.log("Approve Result: ", approveResult);
+
+              // Update the status to "Waiting for Submission"
+              const updatedSubsetProjectDetail: Partial<StoreProjectDetailsInterface> =
+                {
+                  "Status": StatusEnum.CompleteApproval,
+                };
+              await updateProjectDetails(projectId, updatedSubsetProjectDetail);
+              const [_, updatedProjectDetails] = await getDataFromFireStore(
+                projectId
+              );
+
+              setProjectDetails(updatedProjectDetails);
+
+              setNotificationConfiguration({
+                modalColor: "#62d140",
+                title: "Sucess",
+                message: "Successfully paid tokens to the freelancer",
+                icon: IconNotificationSuccess,
+              });
+              setShowNotification(true);
+            }}
+            styles="w-full mx-auto block bg-[#3E8ECC] hover:bg-[#377eb5] rounded-md text-center text-lg font-semibold text-white py-[4px] px-7 mt-6"
+          />
+          <CustomButton
+            text="Request Deadline-Extension"
+            type="button"
+            onClick={async () => {
+              console.log("world");
+            }}
+            styles="w-full mx-auto block bg-[#3E8ECC] hover:bg-[#377eb5] rounded-md text-center text-lg font-semibold text-white py-[4px] px-7 mt-6"
+          />
+        </>
       )}
     </>
   );

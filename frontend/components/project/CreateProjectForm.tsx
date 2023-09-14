@@ -187,6 +187,7 @@ const CreateProjectForm = ({
         form.fileDeliverable = [];
         form.textDeliverable = [];
         form.Status = StatusEnum.WaitingForConnectingLancersWallet;
+        form.DeadlineExtensionRequest = false;
 
         const response = await addDoc(databaseRef, form);
         const projectDetailLink =

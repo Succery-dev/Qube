@@ -8,6 +8,7 @@ interface DisplayProjectDetailsInterface extends CreateProjectFormInterface {
   "Lancer's Wallet Address": `0x${string}`;
   fileDeliverable: StoreFileDeliverableInterface[];
   textDeliverable: string[];
+  DeadlineExtensionRequest: boolean;
 }
 
 export type { DisplayProjectDetailsInterface };

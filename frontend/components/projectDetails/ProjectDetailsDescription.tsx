@@ -233,14 +233,48 @@ const ProjectDetailsDescription = ({
             }}
             styles="w-full mx-auto block bg-[#3E8ECC] hover:bg-[#377eb5] rounded-md text-center text-lg font-semibold text-white py-[4px] px-7 mt-6"
           />
-          <CustomButton
-            text="Request Deadline-Extension"
-            type="button"
-            onClick={async () => {
-              console.log("world");
-            }}
-            styles="w-full mx-auto block bg-[#3E8ECC] hover:bg-[#377eb5] rounded-md text-center text-lg font-semibold text-white py-[4px] px-7 mt-6"
-          />
+          {projectDetails.DeadlineExtensionRequest ? (
+            <CustomButton
+              text="Disapprove The Deliverables"
+              type="button"
+              onClick={async () => {
+                // Set to 9 months later
+                const dateObject = new Date(projectDetails["Deadline(UTC) For Payment"]);
+                dateObject.setMonth(dateObject.getMonth() + 9);
+
+                // Update "Deadline(UTC) For Payment" to return tokens to clients when disapprove
+                const updatedSubsetProjectDetail: Partial<StoreProjectDetailsInterface> =
+                  {
+                    "Deadline(UTC) For Payment": dateObject.toISOString(),
+                    "Status": StatusEnum.CompleteDisapproval,
+                  };
+                await updateProjectDetails(projectId, updatedSubsetProjectDetail);
+                const [_, updatedProjectDetails] = await getDataFromFireStore(
+                  projectId
+                );
+
+                setProjectDetails(updatedProjectDetails);
+
+                setNotificationConfiguration({
+                  modalColor: "#62d140",
+                  title: "Sucess",
+                  message: "Successfully disapproved and will pay back tokens to the client in 9 months",
+                  icon: IconNotificationSuccess,
+                });
+                setShowNotification(true);
+              }}
+              styles="w-full mx-auto block bg-[#3E8ECC] hover:bg-[#377eb5] rounded-md text-center text-lg font-semibold text-white py-[4px] px-7 mt-6"
+            />
+          ) : (
+            <CustomButton
+              text="Request Deadline-Extension"
+              type="button"
+              onClick={async () => {
+                console.log("Deadline Extension Request");
+              }}
+              styles="w-full mx-auto block bg-[#3E8ECC] hover:bg-[#377eb5] rounded-md text-center text-lg font-semibold text-white py-[4px] px-7 mt-6"
+            />
+          )}
         </>
       )}
     </>

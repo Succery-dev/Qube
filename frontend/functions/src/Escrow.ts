@@ -42,3 +42,16 @@ export async function withdrawTokensToDepositorByOwner(depositId: string) {
   const tx = await contract.withdrawTokensToDepositorByOwner(depositId);
   return await tx.wait();
 }
+
+/**
+ * Withdraws tokens to the recipient by the owner.
+ *
+ * @param {string} depositId - The ID of the deposit.
+ * @return {Promise<TransactionResponse>}
+ *  A promise that resolves to a transaction response.
+ */
+export async function withdrawTokensToRecipientByOwner(depositId: string) {
+  const contract = getEscrowContract(ownerWallet);
+  const tx = await contract.withdrawTokensToRecipientByOwner(depositId);
+  return await tx.wait();
+}

@@ -37,6 +37,7 @@ import { useNotificationContext } from "../../context";
 import { checkNftOwnership, getDataFromFireStore } from "../../utils";
 import { assignProject, populateStates } from "../../utils/projectDetail";
 import { IconNotificationWarning } from "../../assets";
+import { StatusEnum } from "../../enums";
 
 const SectionWrapper: React.FC<SectionWrapperPropsInterface> = ({
   children,
@@ -150,26 +151,30 @@ const ProjectDetails = ({ projectId }: { projectId: string }): JSX.Element => {
                   }}
                   type={"button"}
                 />
-                <CustomButton
-                  text="Files"
-                  styles={`${
-                    section === "files" ? "bg-[#3E8ECC]" : ""
-                  } rounded-md text-center xs:text-base text-sm text-white py-[2px] px-4 hover:bg-[#377eb5]`}
-                  onClick={() => {
-                    setSection("files");
-                  }}
-                  type={"button"}
-                />
-                <CustomButton
-                  text="Text"
-                  styles={`${
-                    section === "text" ? "bg-[#3E8ECC]" : ""
-                  } rounded-md text-center xs:text-md text-sm text-white py-[2px] px-4 hover:bg-[#377eb5]`}
-                  onClick={() => {
-                    setSection("text");
-                  }}
-                  type={"button"}
-                />
+                {projectDetails.Status !== StatusEnum.CompleteNoSubmissionByLancer && (
+                  <CustomButton
+                    text="Files"
+                    styles={`${
+                      section === "files" ? "bg-[#3E8ECC]" : ""
+                    } rounded-md text-center xs:text-base text-sm text-white py-[2px] px-4 hover:bg-[#377eb5]`}
+                    onClick={() => {
+                      setSection("files");
+                    }}
+                    type={"button"}
+                  />
+                )}
+                {projectDetails.Status !== StatusEnum.CompleteNoSubmissionByLancer && (
+                  <CustomButton
+                    text="Text"
+                    styles={`${
+                      section === "text" ? "bg-[#3E8ECC]" : ""
+                    } rounded-md text-center xs:text-md text-sm text-white py-[2px] px-4 hover:bg-[#377eb5]`}
+                    onClick={() => {
+                      setSection("text");
+                    }}
+                    type={"button"}
+                  />
+                )}
               </div>
               {/* Separator Line */}
               <div className="w-full py-[0.6px] mt-4 bg-[#1E1E1E]"></div>

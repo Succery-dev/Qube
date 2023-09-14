@@ -115,9 +115,9 @@ const ProjectDetailsDescription = ({
           }
         )}
       </div>
-      {projectDetails && !isAssigned && projectDetails["Lancer's Wallet Address"] === "0x0000000000000000000000000000000000000000" && (
+      {projectDetails.Status === StatusEnum.WaitingForConnectingLancersWallet && (
         <CustomButton
-          text="Approve Project"
+          text="Approve Project By Freelancer"
           type="button"
           onClick={() => {
             assignProject(
@@ -137,7 +137,7 @@ const ProjectDetailsDescription = ({
           styles="w-full mx-auto block bg-[#3E8ECC] hover:bg-[#377eb5] rounded-md text-center text-lg font-semibold text-white py-[4px] px-7 mt-6"
         />
       )}
-      {projectDetails["Lancer's Wallet Address"] !== "0x0000000000000000000000000000000000000000" && (
+      {projectDetails.Status === StatusEnum.PayInAdvance && (
         <CustomButton
           text="Prepay Escrow"
           styles="w-full mx-auto block bg-[#3E8ECC] hover:bg-[#377eb5] rounded-md text-center text-lg font-semibold text-white py-[4px] px-7 mt-6"

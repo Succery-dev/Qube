@@ -70,3 +70,23 @@ export const checkPaymentDeadline = onSchedule("30 0 * * *", async () => {
     logger.log("Changed the status 'Complete (No Contact By Client)'");
   });
 });
+
+export const checkDisapproveRefund = onSchedule("0 1 * * *", async () => {
+  const now = new Date();
+  // Filter the projects
+  const projects = await firestore
+    .collection("projects")
+    .where("Status", "==", "Complete (Disapproval)")
+    .where("Deadline(UTC) For Payment", "<=", now.toISOString())
+    .get();
+  
+  // Refund tokens to clients "④ Disapprove The Submission"
+  projects.forEach(async (doc) => {
+    // Log the project ID
+    logger.log("④ Disapprove The Submission: ", doc.id);
+    // Withdraw tokens to client by owner
+    const withdrawResult = await withdrawTokensToDepositorByOwner(doc.id);
+    // Log the result
+    logger.log("Withdraw Result: ", withdrawResult);
+  });
+});

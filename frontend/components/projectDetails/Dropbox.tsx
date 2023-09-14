@@ -20,6 +20,7 @@ import {
   populateStates,
   storage,
   updateProjectDetails,
+  getDataFromFireStore,
 } from "../../utils";
 import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
 
@@ -30,8 +31,10 @@ import {
   DisplayTextDeliverableInterface,
   NotificationConfigurationInterface,
   StoreFileDeliverableInterface,
+  StoreProjectDetailsInterface,
 } from "../../interfaces";
 import Link from "next/link";
+import { StatusEnum } from "../../enums";
 
 const Dropbox = ({
   fileDeliverables,
@@ -76,6 +79,19 @@ const Dropbox = ({
 
         if (!isDropable) {
           return;
+        }
+
+        // Update the status to "Waiting for Payment"
+        if (projectDetails.fileDeliverable === undefined && projectDetails.textDeliverable === undefined) {
+          const updatedSubsetProjectDetail: Partial<StoreProjectDetailsInterface> =
+            {
+              "Status": StatusEnum.WaitingForPayment,
+            };
+          await updateProjectDetails(projectId, updatedSubsetProjectDetail);
+          const [_, updatedProjectDetails] = await getDataFromFireStore(
+            projectId
+          );
+          setProjectDetails(updatedProjectDetails);
         }
 
         setIsDropable(false);

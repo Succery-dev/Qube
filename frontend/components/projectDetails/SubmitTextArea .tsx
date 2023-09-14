@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import React, { useEffect, useState } from "react";
-import { fadeIn, populateStates, updateProjectDetails } from "../../utils";
+import { fadeIn, populateStates, updateProjectDetails, getDataFromFireStore } from "../../utils";
 import { CustomButton } from "..";
 import Image from "next/image";
 import {
@@ -15,7 +15,9 @@ import {
   DisplayProjectDetailsInterface,
   DisplayTextDeliverableInterface,
   NotificationConfigurationInterface,
+  StoreProjectDetailsInterface,
 } from "../../interfaces";
+import { StatusEnum } from "../../enums";
 
 const SubmitTextArea = ({
   textDeliverables,
@@ -73,6 +75,20 @@ const SubmitTextArea = ({
         if (!isAssigned) {
           throw new Error("Not Approved for the project");
         }
+
+        // Update the status to "Waiting for Payment"
+        if (projectDetails.fileDeliverable === undefined && projectDetails.textDeliverable === undefined) {
+          const updatedSubsetProjectDetail: Partial<StoreProjectDetailsInterface> =
+            {
+              "Status": StatusEnum.WaitingForPayment,
+            };
+          await updateProjectDetails(projectId, updatedSubsetProjectDetail);
+          const [_, updatedProjectDetails] = await getDataFromFireStore(
+            projectId
+          );
+          setProjectDetails(updatedProjectDetails);
+        }
+
         setIsUploading(true);
         const prevTextDeliverableStorage = textDeliverables.map(
           (textDeliverable) => textDeliverable.text

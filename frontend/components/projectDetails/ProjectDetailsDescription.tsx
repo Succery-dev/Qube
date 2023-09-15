@@ -252,29 +252,43 @@ const ProjectDetailsDescription = ({
               text="Disapprove The Deliverables"
               type="button"
               onClick={async () => {
-                // Set to 9 months later
-                const dateObject = new Date(projectDetails["Deadline(UTC) For Payment"]);
-                dateObject.setMonth(dateObject.getMonth() + 9);
+                try {
+                  if (projectDetails["Client's Wallet Address"] != address) {
+                    throw new Error("Not authorized to disapprove the deliverables");
+                  }
 
-                // Update "Deadline(UTC) For Payment" to return tokens to clients when disapprove
-                const updatedSubsetProjectDetail: Partial<StoreProjectDetailsInterface> =
-                  {
-                    "Deadline(UTC) For Payment": dateObject.toISOString(),
-                    "Status": StatusEnum.CompleteDisapproval,
-                  };
-                await updateProjectDetails(projectId, updatedSubsetProjectDetail);
-                const [_, updatedProjectDetails] = await getDataFromFireStore(
-                  projectId
-                );
+                  // Set to 9 months later
+                  const dateObject = new Date(projectDetails["Deadline(UTC) For Payment"]);
+                  dateObject.setMonth(dateObject.getMonth() + 9);
 
-                setProjectDetails(updatedProjectDetails);
+                  // Update "Deadline(UTC) For Payment" to return tokens to clients when disapprove
+                  const updatedSubsetProjectDetail: Partial<StoreProjectDetailsInterface> =
+                    {
+                      "Deadline(UTC) For Payment": dateObject.toISOString(),
+                      "Status": StatusEnum.CompleteDisapproval,
+                    };
+                  await updateProjectDetails(projectId, updatedSubsetProjectDetail);
+                  const [_, updatedProjectDetails] = await getDataFromFireStore(
+                    projectId
+                  );
 
-                setNotificationConfiguration({
-                  modalColor: "#62d140",
-                  title: "Sucess",
-                  message: "Successfully disapproved and will pay back tokens to the client in 9 months",
-                  icon: IconNotificationSuccess,
-                });
+                  setProjectDetails(updatedProjectDetails);
+
+                  setNotificationConfiguration({
+                    modalColor: "#62d140",
+                    title: "Sucess",
+                    message: "Successfully disapproved and will pay back tokens to the client in 9 months",
+                    icon: IconNotificationSuccess,
+                  });
+                } catch (error) {
+                  console.log(error);
+                  setNotificationConfiguration({
+                    modalColor: "#d14040",
+                    title: "Error",
+                    message: "Not authorized to disapprove the deliverables",
+                    icon: IconNotificationError,
+                  });
+                }
                 setShowNotification(true);
               }}
               styles="w-full mx-auto block bg-[#3E8ECC] hover:bg-[#377eb5] rounded-md text-center text-lg font-semibold text-white py-[4px] px-7 mt-6"

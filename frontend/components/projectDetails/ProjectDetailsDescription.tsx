@@ -298,24 +298,38 @@ const ProjectDetailsDescription = ({
               text="Request Deadline-Extension"
               type="button"
               onClick={async () => {
-                const updatedSubsetProjectDetail: Partial<StoreProjectDetailsInterface> =
-                  {
-                    "InDispute": true,
-                    "DeadlineExtensionRequest": true,
-                  };
-                await updateProjectDetails(projectId, updatedSubsetProjectDetail);
-                const [_, updatedProjectDetails] = await getDataFromFireStore(
-                  projectId
-                );
+                try {
+                  if (projectDetails["Client's Wallet Address"] != address) {
+                    throw new Error("Not authorized to request deadline-extension");
+                  }
 
-                setProjectDetails(updatedProjectDetails);
+                  const updatedSubsetProjectDetail: Partial<StoreProjectDetailsInterface> =
+                    {
+                      "InDispute": true,
+                      "DeadlineExtensionRequest": true,
+                    };
+                  await updateProjectDetails(projectId, updatedSubsetProjectDetail);
+                  const [_, updatedProjectDetails] = await getDataFromFireStore(
+                    projectId
+                  );
 
-                setNotificationConfiguration({
-                  modalColor: "#62d140",
-                  title: "Sucess",
-                  message: "Successfully requested Deadline-Extension",
-                  icon: IconNotificationSuccess,
-                });
+                  setProjectDetails(updatedProjectDetails);
+
+                  setNotificationConfiguration({
+                    modalColor: "#62d140",
+                    title: "Sucess",
+                    message: "Successfully requested Deadline-Extension",
+                    icon: IconNotificationSuccess,
+                  });
+                } catch (error) {
+                  console.log(error);
+                  setNotificationConfiguration({
+                    modalColor: "#d14040",
+                    title: "Error",
+                    message: "Not authorized to request deadline-extension",
+                    icon: IconNotificationError,
+                  });
+                }
                 setShowNotification(true);
               }}
               styles="w-full mx-auto block bg-[#3E8ECC] hover:bg-[#377eb5] rounded-md text-center text-lg font-semibold text-white py-[4px] px-7 mt-6"

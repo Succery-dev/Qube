@@ -26,5 +26,5 @@ export async function getDepositedAmount() {
   const signer = getSigner() as ethers.Signer;
   const contract = getEscrowContract(signer);
   const address = await signer.getAddress();
-  return await contract.deposits(address).then((amount: ethers.BigNumberish) => ethers.utils.formatEther(amount));
+  return await contract.deposits(address).then((amount: ethers.BigNumberish) => ethers.formatEther(amount));
 }

@@ -36,7 +36,7 @@ import {
 } from "../../assets";
 
 // Utils Imports
-import { isNftContract } from "../../utils";
+// import { isNftContract } from "../../utils";
 
 // Firebase Imports
 import { collection, addDoc } from "firebase/firestore";

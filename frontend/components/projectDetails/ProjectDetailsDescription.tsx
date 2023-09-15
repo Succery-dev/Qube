@@ -351,7 +351,40 @@ const ProjectDetailsDescription = ({
             text="Reject Deadline-Extension"
             type="button"
             onClick={async () => {
-              console.log("Reject");
+              try {
+                if (projectDetails["Lancer's Wallet Address"] !== freelancerAddress) {
+                  throw new Error("Not authorized to either accept or reject the deadline-extension");
+                }
+
+                const updatedSubsetProjectDetail: Partial<StoreProjectDetailsInterface> =
+                  {
+                    "InDispute": false,
+                    Status: StatusEnum.InDispute,
+                  };
+                await updateProjectDetails(projectId, updatedSubsetProjectDetail);
+                const [_, updatedProjectDetails] = await getDataFromFireStore(
+                  projectId
+                );
+
+                setProjectDetails(updatedProjectDetails);
+
+                setNotificationConfiguration({
+                  modalColor: "#62d140",
+                  title: "Sucess",
+                  message: "Successfully rejected Deadline-Extension",
+                  icon: IconNotificationSuccess,
+                });
+                setShowNotification(true);
+              } catch (error) {
+                console.log(error);
+                setNotificationConfiguration({
+                  modalColor: "#d14040",
+                  title: "Error",
+                  message: "Not authorized to either accept or reject the deadline-extension",
+                  icon: IconNotificationError,
+                });
+              }
+              setShowNotification(true);
             }}
             styles="w-full mx-auto block bg-[#FF4B4B] hover:bg-[#E43F3F] rounded-md text-center text-lg font-semibold text-white py-[4px] px-7 mt-6"
           />

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 
 // Interface Imports
 import {
@@ -201,7 +201,7 @@ const ProjectDetailsDescription = ({
           }}
         />
       )}
-      {projectDetails.Status === StatusEnum.WaitingForPayment && (
+      {projectDetails.Status === StatusEnum.WaitingForPayment && !projectDetails.InDispute && (
         <>
           <CustomButton
             text="Approve The Deliverables"
@@ -270,12 +270,92 @@ const ProjectDetailsDescription = ({
               text="Request Deadline-Extension"
               type="button"
               onClick={async () => {
-                console.log("Deadline Extension Request");
+                const updatedSubsetProjectDetail: Partial<StoreProjectDetailsInterface> =
+                  {
+                    "InDispute": true,
+                    "DeadlineExtensionRequest": true,
+                  };
+                await updateProjectDetails(projectId, updatedSubsetProjectDetail);
+                const [_, updatedProjectDetails] = await getDataFromFireStore(
+                  projectId
+                );
+
+                setProjectDetails(updatedProjectDetails);
+
+                setNotificationConfiguration({
+                  modalColor: "#62d140",
+                  title: "Sucess",
+                  message: "Successfully requested Deadline-Extension",
+                  icon: IconNotificationSuccess,
+                });
+                setShowNotification(true);
               }}
               styles="w-full mx-auto block bg-[#3E8ECC] hover:bg-[#377eb5] rounded-md text-center text-lg font-semibold text-white py-[4px] px-7 mt-6"
             />
           )}
         </>
+      )}
+      {projectDetails.InDispute && (
+        <div className="flex space-x-10">
+          <CustomButton
+            text="Accept Deadline-Extension"
+            type="button"
+            onClick={async () => {
+              try {
+                if (projectDetails["Lancer's Wallet Address"] !== freelancerAddress) {
+                  throw new Error("Not authorized to either accept or reject the deadline-extension");
+                }
+
+                const submissionDeadline = new Date(projectDetails["Deadline(UTC)"]);
+                const paymentDeadline = new Date(projectDetails["Deadline(UTC) For Payment"]);
+                submissionDeadline.setDate(submissionDeadline.getDate() + 14);
+                paymentDeadline.setDate(paymentDeadline.getDate() + 14);
+                console.log("New Submission Dealine: ", submissionDeadline.toISOString());
+                console.log("New Payment Dealine: ", paymentDeadline.toISOString());
+
+                const updatedSubsetProjectDetail: Partial<StoreProjectDetailsInterface> =
+                  {
+                    "Deadline(UTC)": submissionDeadline.toISOString(),
+                    "Deadline(UTC) For Payment": paymentDeadline.toISOString(),
+                    "InDispute": false,
+                    Status: StatusEnum.WaitingForSubmissionDER,
+                  };
+                await updateProjectDetails(projectId, updatedSubsetProjectDetail);
+                const [_, updatedProjectDetails] = await getDataFromFireStore(
+                  projectId
+                );
+
+                setProjectDetails(updatedProjectDetails);
+
+                setNotificationConfiguration({
+                  modalColor: "#62d140",
+                  title: "Sucess",
+                  message: "Successfully accepted Deadline-Extension",
+                  icon: IconNotificationSuccess,
+                });
+                setShowNotification(true);
+              } catch (error) {
+                console.log(error);
+                setNotificationConfiguration({
+                  modalColor: "#d14040",
+                  title: "Error",
+                  message: "Not authorized to either accept or reject the deadline-extension",
+                  icon: IconNotificationError,
+                });
+              }
+              setShowNotification(true);
+            }}
+            styles="w-full mx-auto block bg-[#3E8ECC] hover:bg-[#377eb5] rounded-md text-center text-lg font-semibold text-white py-[4px] px-7 mt-6"
+          />
+          <CustomButton
+            text="Reject Deadline-Extension"
+            type="button"
+            onClick={async () => {
+              console.log("Reject");
+            }}
+            styles="w-full mx-auto block bg-[#FF4B4B] hover:bg-[#E43F3F] rounded-md text-center text-lg font-semibold text-white py-[4px] px-7 mt-6"
+          />
+        </div>
       )}
     </>
   );

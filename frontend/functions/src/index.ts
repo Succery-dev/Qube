@@ -43,6 +43,21 @@ export const checkSubmissionDeadline = onSchedule("0 0 * * *", async () => {
       .set({Status: "Complete (No Submission By Lancer)"}, {merge: true});
     logger.log("Changed the status 'Complete (No Submission By Lancer)'");
   });
+
+  // Filter the projects after the Deadline-Extension
+  const projectsAfterDE = await firestore
+    .collection("projects")
+    .where("Status", "==", "Waiting for Submission (DER)")
+    .where("Deadline(UTC)", "<=", now.toISOString())
+    .get();
+  
+  // Change the status to "Waiting for Payment"
+  projectsAfterDE.forEach(async (doc) => {
+    await firestore
+      .collection("projects")
+      .doc(doc.id)
+      .set({Status: "Waiting for Payment"}, {merge: true});
+  });
 });
 
 export const checkPaymentDeadline = onSchedule("30 0 * * *", async () => {

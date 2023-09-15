@@ -66,6 +66,7 @@ export const checkPaymentDeadline = onSchedule("30 0 * * *", async () => {
   const projects = await firestore
     .collection("projects")
     .where("Status", "==", "Waiting for Payment")
+    .where("InDispute", "==", false)
     .where("Deadline(UTC) For Payment", "<=", now.toISOString())
     .get();
 

@@ -356,10 +356,15 @@ const ProjectDetailsDescription = ({
                   throw new Error("Not authorized to either accept or reject the deadline-extension");
                 }
 
+                const paymentDeadline = new Date(projectDetails["Deadline(UTC) For Payment"]);
+                paymentDeadline.setMonth(paymentDeadline.getMonth() + 9);
+                console.log("New Payment Dealine: ", paymentDeadline.toISOString());
+
                 const updatedSubsetProjectDetail: Partial<StoreProjectDetailsInterface> =
                   {
                     "InDispute": false,
                     Status: StatusEnum.InDispute,
+                    "Deadline(UTC) For Payment": paymentDeadline.toISOString(),
                   };
                 await updateProjectDetails(projectId, updatedSubsetProjectDetail);
                 const [_, updatedProjectDetails] = await getDataFromFireStore(

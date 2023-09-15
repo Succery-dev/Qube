@@ -4,8 +4,8 @@ import EscrowArtifact from "../../backend/artifacts/contracts/Escrow.sol/Escrow.
 
 export const EscrowAddress = "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512";
 
-export function getEscrowContract(signerOrProvider: ethers.Signer | ethers.providers.Provider): ethers.Contract {
-  return new ethers.Contract(EscrowAddress, EscrowArtifact.abi, signerOrProvider);
+export function getEscrowContract(signer: ethers.Signer): ethers.Contract {
+  return new ethers.Contract(EscrowAddress, EscrowArtifact.abi, signer);
 }
 
 export async function depositTokens(recipient: string, amount: ethers.BigNumberish, depositId: string) {

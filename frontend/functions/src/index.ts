@@ -105,3 +105,29 @@ export const checkDisapproveRefund = onSchedule("0 1 * * *", async () => {
     logger.log("Withdraw Result: ", withdrawResult);
   });
 });
+
+export const checkDisputeRefund = onSchedule("30 1 * * *", async () => {
+  const now = new Date();
+  // Filter the projects
+  const projects = await firestore
+    .collection("projects")
+    .where("Status", "==", "In Dispute")
+    .where("Deadline(UTC) For Payment", "<=", now.toISOString())
+    .get();
+  
+  // Refund tokens to clients "⑥ Deadline-Extension Request (Disapproval)"
+  projects.forEach(async (doc) => {
+    // Log the project ID
+    logger.log("⑥ Deadline-Extension Request (Disapproval)", doc.id);
+    // Withdraw tokens to client by owner
+    const withdrawResult = await withdrawTokensToDepositorByOwner(doc.id);
+    // Log the result
+    logger.log("Withdraw Result: ", withdrawResult);
+    // Change the status to "Complete (Dispute)"
+    await firestore
+      .collection("projects")
+      .doc(doc.id)
+      .set({Status: "Complete (Dispute)"}, {merge: true});
+    logger.log("Changed the status 'Complete (Dispute)'");
+  });
+});

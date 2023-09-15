@@ -34,7 +34,7 @@
 		"react-parallax-tilt": "^1.7.141",
 		"siwe": "^2.1.4",
 		"three": "^0.152.2",
-		"wagmi": "^0.12.6"
+		"wagmi": "^1.4.1"
 	},
 	"devDependencies": {
 		"@types/lodash.merge": "^4.6.7",

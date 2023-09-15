@@ -149,7 +149,7 @@ const ProjectDetailsDescription = ({
               try {
                 // Prepay amount
                 console.log("Reward: %sUSDC", projectDetails["Reward(USDC)"]);
-                const amount = ethers.parseEther(projectDetails["Reward(USDC)"].toString());
+                const amount = ethers.utils.parseEther(projectDetails["Reward(USDC)"].toString());
 
                 // Approve tokens
                 const approveResult = await approve(EscrowAddress, amount);

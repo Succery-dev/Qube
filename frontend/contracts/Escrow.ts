@@ -9,22 +9,22 @@ export function getEscrowContract(signer: ethers.Signer): ethers.Contract {
 }
 
 export async function depositTokens(recipient: string, amount: ethers.BigNumberish, depositId: string) {
-  const signer = await getSigner();
+  const signer = getSigner();
   const contract = getEscrowContract(signer);
   const tx = await contract.depositTokens(recipient, amount, depositId);
   return await tx.wait();
 }
 
 export async function withdrawTokensToRecipientByDepositor(depositId: string) {
-  const signer = await getSigner();
+  const signer = getSigner();
   const contract = getEscrowContract(signer);
   const tx = await contract.withdrawTokensToRecipientByDepositor(depositId);
   return await tx.wait();
 }
 
 export async function getDepositedAmount() {
-  const signer = await getSigner();
+  const signer = getSigner();
   const contract = getEscrowContract(signer);
   const address = await signer.getAddress();
-  return await contract.deposits(address).then((amount: ethers.BigNumberish) => ethers.formatEther(amount));
+  return await contract.deposits(address).then((amount: ethers.BigNumberish) => ethers.utils.formatEther(amount));
 }

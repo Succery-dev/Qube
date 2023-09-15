@@ -4,7 +4,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const LOCAL_NODE_URL = process.env.NODE_URL;
-const jsonRpcProvider = new ethers.JsonRpcProvider(LOCAL_NODE_URL);
+const jsonRpcProvider = new ethers.providers.JsonRpcProvider(LOCAL_NODE_URL);
 
 const ownerPrivateKey = process.env.SECRET_KEY;
 if (!ownerPrivateKey) {
@@ -23,7 +23,7 @@ const EscrowAddress = process.env.ESCROW_ADDRESS as string;
  * @return {ethers.Contract} - An escrow contract instance
  */
 function getEscrowContract(
-  signerOrProvider: ethers.Signer | ethers.Provider
+  signerOrProvider: ethers.Signer | ethers.providers.Provider
 ): ethers.Contract {
   return new ethers.Contract(
     EscrowAddress, EscrowArtifact.abi, signerOrProvider

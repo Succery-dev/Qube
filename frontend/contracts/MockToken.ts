@@ -11,7 +11,7 @@ export function getMockTokenContract(signer: ethers.Signer): ethers.Contract {
 export async function balanceOf(account: string) {
   const provider = getJsonRpcProvider();
   const contract = getMockTokenContract(provider);
-  return ethers.utils.formatEther(await contract.balanceOf(account));
+  return ethers.formatEther(await contract.balanceOf(account));
 }
 
 export async function transfer(recipient: string, amount: ethers.BigNumberish) {

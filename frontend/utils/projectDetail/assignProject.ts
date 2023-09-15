@@ -12,7 +12,7 @@ import {
 // Utils Imports
 import {
   approveProjectDetails,
-  checkNftOwnership,
+  // checkNftOwnership,
   getDataFromFireStore,
   updateProjectDetails,
 } from "./index";

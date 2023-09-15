@@ -23,7 +23,7 @@ import {
 import { isValidEthereumContractAddress, isNftContract } from "./createProject";
 
 import {
-  checkNftOwnership,
+  // checkNftOwnership,
   approveProjectDetails,
   updateProjectDetails,
   getDataFromFireStore,
@@ -50,7 +50,7 @@ export {
   storage,
   isValidEthereumContractAddress,
   isNftContract,
-  checkNftOwnership,
+  // checkNftOwnership,
   approveProjectDetails,
   updateProjectDetails,
   getDataFromFireStore,

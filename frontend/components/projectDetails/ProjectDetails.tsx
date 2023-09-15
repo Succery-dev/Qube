@@ -34,7 +34,7 @@ import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { useNotificationContext } from "../../context";
 
 // utils Imports
-import { checkNftOwnership, getDataFromFireStore } from "../../utils";
+import { getDataFromFireStore } from "../../utils";
 import { assignProject, populateStates } from "../../utils/projectDetail";
 import { IconNotificationWarning } from "../../assets";
 import { StatusEnum } from "../../enums";

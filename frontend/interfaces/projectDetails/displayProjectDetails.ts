@@ -10,6 +10,7 @@ interface DisplayProjectDetailsInterface extends CreateProjectFormInterface {
   textDeliverable: string[];
   DeadlineExtensionRequest: boolean;
   InDispute: boolean;
+  RequestedDeadlineExtension: string;
 }
 
 export type { DisplayProjectDetailsInterface };

@@ -303,10 +303,12 @@ const ProjectDetailsDescription = ({
                     throw new Error("Not authorized to request deadline-extension");
                   }
 
+                  const now = new Date();
                   const updatedSubsetProjectDetail: Partial<StoreProjectDetailsInterface> =
                     {
                       "InDispute": true,
                       "DeadlineExtensionRequest": true,
+                      "RequestedDeadlineExtension": now.toISOString(),
                     };
                   await updateProjectDetails(projectId, updatedSubsetProjectDetail);
                   const [_, updatedProjectDetails] = await getDataFromFireStore(

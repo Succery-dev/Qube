@@ -207,28 +207,42 @@ const ProjectDetailsDescription = ({
             text="Approve The Deliverables"
             type="button"
             onClick={async () => {
-              // ③ Approve The Submission
-              const approveResult = await withdrawTokensToRecipientByDepositor(projectId);
-              console.log("Approve Result: ", approveResult);
+              try {
+                if (projectDetails["Client's Wallet Address"] != address) {
+                  throw new Error("Not authorized to either accept or reject the deadline-extension");
+                }
 
-              // Update the status to "Waiting for Submission"
-              const updatedSubsetProjectDetail: Partial<StoreProjectDetailsInterface> =
-                {
-                  "Status": StatusEnum.CompleteApproval,
-                };
-              await updateProjectDetails(projectId, updatedSubsetProjectDetail);
-              const [_, updatedProjectDetails] = await getDataFromFireStore(
-                projectId
-              );
+                // ③ Approve The Submission
+                const approveResult = await withdrawTokensToRecipientByDepositor(projectId);
+                console.log("Approve Result: ", approveResult);
 
-              setProjectDetails(updatedProjectDetails);
+                // Update the status to "Waiting for Submission"
+                const updatedSubsetProjectDetail: Partial<StoreProjectDetailsInterface> =
+                  {
+                    "Status": StatusEnum.CompleteApproval,
+                  };
+                await updateProjectDetails(projectId, updatedSubsetProjectDetail);
+                const [_, updatedProjectDetails] = await getDataFromFireStore(
+                  projectId
+                );
 
-              setNotificationConfiguration({
-                modalColor: "#62d140",
-                title: "Sucess",
-                message: "Successfully paid tokens to the freelancer",
-                icon: IconNotificationSuccess,
-              });
+                setProjectDetails(updatedProjectDetails);
+
+                setNotificationConfiguration({
+                  modalColor: "#62d140",
+                  title: "Sucess",
+                  message: "Successfully approved the deliverables and paid tokens to the freelancer",
+                  icon: IconNotificationSuccess,
+                });
+              } catch (error) {
+                console.log(error);
+                setNotificationConfiguration({
+                  modalColor: "#d14040",
+                  title: "Error",
+                  message: "Not authorized to approve the deliverables",
+                  icon: IconNotificationError,
+                });
+              }
               setShowNotification(true);
             }}
             styles="w-full mx-auto block bg-[#3E8ECC] hover:bg-[#377eb5] rounded-md text-center text-lg font-semibold text-white py-[4px] px-7 mt-6"

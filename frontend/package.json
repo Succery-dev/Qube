@@ -19,7 +19,7 @@
 		"axios": "^1.4.0",
 		"chart.js": "^4.3.0",
 		"dotenv": "^16.3.1",
-		"ethers": "^6.7.1",
+		"ethers": "^5.5.1",
 		"firebase": "^9.22.1",
 		"firebase-admin": "^11.10.1",
 		"firebase-functions": "^4.4.1",
@@ -34,7 +34,7 @@
 		"react-parallax-tilt": "^1.7.141",
 		"siwe": "^2.1.4",
 		"three": "^0.152.2",
-		"wagmi": "^1.4.1"
+		"wagmi": "^0.12.19"
 	},
 	"devDependencies": {
 		"@types/lodash.merge": "^4.6.7",

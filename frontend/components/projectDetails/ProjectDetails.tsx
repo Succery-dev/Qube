@@ -79,12 +79,11 @@ const ProjectDetails = ({ projectId }: { projectId: string }): JSX.Element => {
   const { signTypedDataAsync } = useSignTypedData({
     domain: signProjectEip712.domain,
     types: signProjectEip712.types,
-    message: {
-      Title: projectDetails.Title,
-      Detail: projectDetails.Detail,
+    value: {
+      "Title": projectDetails.Title,
+      "Detail": projectDetails.Detail,
       "Deadline(UTC)": projectDetails["Deadline(UTC)"],
       "Reward(USDC)": projectDetails["Reward(USDC)"],
-      // "NFT(Contract Address)": projectDetails["NFT(Contract Address)"],
       "Client's Wallet Address": projectDetails["Client's Wallet Address"],
       "Lancer's Wallet Address": address,
     },

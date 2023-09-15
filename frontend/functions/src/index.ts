@@ -132,3 +132,31 @@ export const checkDisputeRefund = onSchedule("30 1 * * *", async () => {
     logger.log("Changed the status 'Complete (Dispute)'");
   });
 });
+
+export const checkInDispute = onSchedule("0 2 * * *", async () => {
+  const now = new Date();
+  // Filter the projects
+  const projects = await firestore
+    .collection("projects")
+    .where("InDispute", "==", true)
+    .where("RequestedDeadlineExtension", "<=", now.toISOString())
+    .get();
+  
+  // Change the status to "Waiting for Submission (DER)"
+  projects.forEach(async (doc) => {
+    const submissionDeadline = new Date(doc.data()["Deadline(UTC)"]);
+    const paymentDeadline = new Date(doc.data()["Deadline(UTC) For Payment"]);
+    submissionDeadline.setDate(submissionDeadline.getDate() + 14);
+    paymentDeadline.setDate(paymentDeadline.getDate() + 14);
+
+    await firestore
+      .collection("projects")
+      .doc(doc.id)
+      .set({
+        Status: "Waiting for Submission (DER)",
+        "Deadline(UTC)": submissionDeadline.toISOString(),
+        "Deadline(UTC) For Payment": paymentDeadline.toISOString(),
+        "InDispute": false,
+      }, {merge: true});
+  });
+});

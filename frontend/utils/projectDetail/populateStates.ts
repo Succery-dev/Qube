@@ -35,6 +35,8 @@ export const populateStates = async (
     const approveProof = storeProjectDetails.approveProof;
     if (approveProof === "") {
       setIsAssigned(false);
+    } else {
+      setIsAssigned(true);
     }
 
     setProjectDetails(updatedProjectDetails);

@@ -20,14 +20,14 @@ import {
   fadeIn,
 } from "./motion";
 
-import { isValidEthereumContractAddress, isNftContract } from "./createProject";
+// import { isValidEthereumContractAddress, isNftContract } from "./createProject";
 
 import {
-  checkNftOwnership,
+  // checkNftOwnership,
   approveProjectDetails,
   updateProjectDetails,
   getDataFromFireStore,
-  assingProject,
+  assignProject,
   populateStates,
 } from "./projectDetail";
 
@@ -48,13 +48,13 @@ export {
   firebaseApp,
   database,
   storage,
-  isValidEthereumContractAddress,
-  isNftContract,
-  checkNftOwnership,
+  // isValidEthereumContractAddress,
+  // isNftContract,
+  // checkNftOwnership,
   approveProjectDetails,
   updateProjectDetails,
   getDataFromFireStore,
-  assingProject,
+  assignProject,
   populateStates,
   formatBytes,
 

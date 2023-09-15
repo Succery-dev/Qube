@@ -5,7 +5,7 @@ import {anyValue} from "@nomicfoundation/hardhat-chai-matchers/withArgs";
 import {expect} from "chai";
 import {ethers} from "hardhat";
 import {BigNumber} from "ethers";
-import {MockController, Pool, RewardToken, DepositToken, MockRouter} from "../typechain-types";
+import {MockController} from "../typechain-types";
 import {SignerWithAddress} from "@nomiclabs/hardhat-ethers/signers";
 
 function fromWei(value: any) {

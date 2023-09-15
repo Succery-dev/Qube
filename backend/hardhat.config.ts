@@ -1,4 +1,4 @@
-import { HardhatUserConfig } from "hardhat/config";
+import { HardhatUserConfig, task } from "hardhat/config";
 import "@nomicfoundation/hardhat-toolbox";
 // add dotenv
 import { config as dotenvConfig } from "dotenv";
@@ -8,22 +8,36 @@ import "@typechain/hardhat";
 import "solidity-coverage";
 import "hardhat-gas-reporter";
 
+task("balance", "Prints an account's balance")
+    .addParam("account", "The account's address")
+    .setAction(async (taskArgs, hre) => {
+        const balance = await hre.ethers.provider.getBalance(taskArgs.account);
+        console.log(hre.ethers.utils.formatEther(balance), "ETH");
+    });
+
 const config: HardhatUserConfig = {
     defaultNetwork: "hardhat",
     networks: {
-        mainnet: {
-            url: "https://eth.llamarpc.com",
-            accounts: [`${process.env.PRIVATE_KEY}`],
-        },
-        testnet: {
-            url: "https://rpc.ankr.com/eth_goerli",
-            accounts: [`${process.env.PRIVATE_KEY}`],
-        },
+        // mainnet: {
+        //     url: "https://eth.llamarpc.com",
+        //     accounts: [`${process.env.PRIVATE_KEY}`],
+        // },
+        // testnet: {
+        //     url: "https://rpc.ankr.com/eth_goerli",
+        //     accounts: [`${process.env.PRIVATE_KEY}`],
+        // },
+        // hardhat: {
+        //     forking: {
+        //         url: "https://eth.llamarpc.com",
+        //         blockNumber: 17103794
+        //     }
+        // },
+        // localhost: {
+        //     url: "http://127.0.0.1:8545"
+        // },
         hardhat: {
-            forking: {
-                url: "https://eth.llamarpc.com",
-                blockNumber: 17103794
-            }
+            chainId: 31337,
+            initialBaseFeePerGas: 0,
         }
     },
     solidity: {

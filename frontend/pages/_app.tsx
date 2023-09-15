@@ -31,6 +31,24 @@ import { useRouter } from "next/router";
 import { RainbowKitChain } from "@rainbow-me/rainbowkit/dist/components/RainbowKitProvider/RainbowKitChainContext";
 import { ProjectProvider, NotificationProvider } from "../context";
 import merge from "lodash.merge";
+import { useEffect } from "react";
+import { initializeWeb3Provider } from "../utils/ethers";
+
+// Custom chain for hardhat network on local env with "chainId: 31337"
+const localhost8545 = {
+  id: 31337,
+  name: "Localhost8545",
+  network: "localhost8545",
+  nativeCurrency: {
+    decimals: 18,
+    name: "Hardhat Eth",
+    symbol: "HARDHATETH",
+  },
+  rpcUrls: {
+    public: { http: ["http://127.0.0.1:8545"] },
+    default: { http: ["http://127.0.0.1:8545"] },
+  },
+}
 
 const { chains, provider } = configureChains(
   [
@@ -44,6 +62,7 @@ const { chains, provider } = configureChains(
     arbitrumGoerli,
     polygonZkEvm,
     polygonZkEvmTestnet,
+    localhost8545,
   ],
 
   // TODO: remove the below comment for production => use Alchemy Provider for production for enhanced performance
@@ -96,6 +115,12 @@ function MyApp({
       // if (!isReconnected) router.reload();
     },
   });
+
+  useEffect(() => {
+    // Initialize Web3Provider on application load
+    initializeWeb3Provider();
+  }, []);
+
   return (
     <WagmiConfig client={wagmiClient}>
       <SessionProvider session={pageProps.session} refetchInterval={0}>

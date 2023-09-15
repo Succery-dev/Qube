@@ -36,7 +36,7 @@ import {
 } from "../../assets";
 
 // Utils Imports
-import { isNftContract } from "../../utils";
+// import { isNftContract } from "../../utils";
 
 // Firebase Imports
 import { collection, addDoc } from "firebase/firestore";
@@ -104,8 +104,8 @@ const FormFields = ({
 const CreateProjectForm = ({
   form,
   setForm,
-  nftAddressDetails,
-  setnftAddressDetails,
+  // nftAddressDetails,
+  // setnftAddressDetails,
   setShowProjectModal,
   setProjectDetailLink,
   // setShowSubmitModal,
@@ -113,10 +113,8 @@ const CreateProjectForm = ({
 }: {
   form: CreateProjectFormInterface;
   setForm: React.Dispatch<React.SetStateAction<CreateProjectFormInterface>>;
-  nftAddressDetails: NftAddressDetailsInterface;
-  setnftAddressDetails: React.Dispatch<
-    React.SetStateAction<NftAddressDetailsInterface>
-  >;
+  // nftAddressDetails: NftAddressDetailsInterface;
+  // setnftAddressDetails: React.Dispatch<React.SetStateAction<NftAddressDetailsInterface>>;
   setShowProjectModal: React.Dispatch<React.SetStateAction<boolean>>;
   setProjectDetailLink: React.Dispatch<React.SetStateAction<string>>;
   // setShowSubmitModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -179,11 +177,19 @@ const CreateProjectForm = ({
   const addDataToFirestore = async (form: StoreProjectDetailsInterface) => {
     if (isConnected) {
       try {
+        const submissionDeadline = new Date(form["Deadline(UTC)"] + "Z");
+        form["Deadline(UTC)"] = submissionDeadline.toISOString();
+        submissionDeadline.setDate(submissionDeadline.getDate() + 7);
+        form["Deadline(UTC) For Payment"] = submissionDeadline.toISOString();
         form["Client's Wallet Address"] = address;
         form["Lancer's Wallet Address"] = addressZero;
         form.approveProof = "";
         form.fileDeliverable = [];
         form.textDeliverable = [];
+        form.Status = StatusEnum.WaitingForConnectingLancersWallet;
+        form.DeadlineExtensionRequest = false;
+        form.InDispute = false;
+        form.RequestedDeadlineExtension = "";
 
         const response = await addDoc(databaseRef, form);
         const projectDetailLink =
@@ -314,25 +320,26 @@ const CreateProjectForm = ({
           {/* Create Project Button */}
           <CustomButton
             text={
-              nftAddressDetails.isNftAddress
-                ? "2/2 Create Project"
-                : "1/2 Verify NFT Address"
+              // nftAddressDetails.isNftAddress
+                // ? "2/2 Create Project"
+                "Create Project"
+                // : "1/2 Verify NFT Address"
             }
             styles="w-full bg-[#3E8ECC] rounded-md text-center text-lg font-semibold text-white py-[4px] px-7 hover:bg-[#377eb5] mt-12"
             type="button"
             onClick={(e) => {
               e.preventDefault();
 
-              if (nftAddressDetails.isNftAddress) {
+              // if (nftAddressDetails.isNftAddress) {
                 addDataToFirestore(form as StoreProjectDetailsInterface);
-              } else {
-                isNftContract(
-                  form["NFT(Contract Address)"],
-                  setNotificationConfiguration,
-                  setShowNotification,
-                  setnftAddressDetails
-                );
-              }
+              // } else {
+              //   isNftContract(
+              //     form["NFT(Contract Address)"],
+              //     setNotificationConfiguration,
+              //     setShowNotification,
+              //     setnftAddressDetails
+              //   );
+              // }
             }}
           />
 

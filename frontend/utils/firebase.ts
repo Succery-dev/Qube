@@ -8,7 +8,9 @@ const firebaseConfig = {
   // TODO: This below causes an error (Issue #47)
   // projectId: process.env.FIREBASE_PROJECT_ID,
   projectId: "qubepay-succery",
-  storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
+  // TODO: This below causes an error
+  // storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
+  storageBucket: "qubepay-succery.appspot.com",
   messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
   appId: process.env.FIREBASE_APP_ID,
   measurementId: process.env.FIREBASE_MEASUREMENT_ID

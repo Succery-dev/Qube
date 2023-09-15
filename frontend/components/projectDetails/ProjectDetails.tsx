@@ -34,9 +34,10 @@ import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { useNotificationContext } from "../../context";
 
 // utils Imports
-import { checkNftOwnership, getDataFromFireStore } from "../../utils";
-import { assingProject, populateStates } from "../../utils/projectDetail";
+import { getDataFromFireStore } from "../../utils";
+import { assignProject, populateStates } from "../../utils/projectDetail";
 import { IconNotificationWarning } from "../../assets";
+import { StatusEnum } from "../../enums";
 
 const SectionWrapper: React.FC<SectionWrapperPropsInterface> = ({
   children,
@@ -79,11 +80,10 @@ const ProjectDetails = ({ projectId }: { projectId: string }): JSX.Element => {
     domain: signProjectEip712.domain,
     types: signProjectEip712.types,
     value: {
-      Title: projectDetails.Title,
-      Detail: projectDetails.Detail,
+      "Title": projectDetails.Title,
+      "Detail": projectDetails.Detail,
       "Deadline(UTC)": projectDetails["Deadline(UTC)"],
       "Reward(USDC)": projectDetails["Reward(USDC)"],
-      "NFT(Contract Address)": projectDetails["NFT(Contract Address)"],
       "Client's Wallet Address": projectDetails["Client's Wallet Address"],
       "Lancer's Wallet Address": address,
     },
@@ -150,26 +150,30 @@ const ProjectDetails = ({ projectId }: { projectId: string }): JSX.Element => {
                   }}
                   type={"button"}
                 />
-                <CustomButton
-                  text="Files"
-                  styles={`${
-                    section === "files" ? "bg-[#3E8ECC]" : ""
-                  } rounded-md text-center xs:text-base text-sm text-white py-[2px] px-4 hover:bg-[#377eb5]`}
-                  onClick={() => {
-                    setSection("files");
-                  }}
-                  type={"button"}
-                />
-                <CustomButton
-                  text="Text"
-                  styles={`${
-                    section === "text" ? "bg-[#3E8ECC]" : ""
-                  } rounded-md text-center xs:text-md text-sm text-white py-[2px] px-4 hover:bg-[#377eb5]`}
-                  onClick={() => {
-                    setSection("text");
-                  }}
-                  type={"button"}
-                />
+                {projectDetails.Status !== StatusEnum.CompleteNoSubmissionByLancer && (
+                  <CustomButton
+                    text="Files"
+                    styles={`${
+                      section === "files" ? "bg-[#3E8ECC]" : ""
+                    } rounded-md text-center xs:text-base text-sm text-white py-[2px] px-4 hover:bg-[#377eb5]`}
+                    onClick={() => {
+                      setSection("files");
+                    }}
+                    type={"button"}
+                  />
+                )}
+                {projectDetails.Status !== StatusEnum.CompleteNoSubmissionByLancer && (
+                  <CustomButton
+                    text="Text"
+                    styles={`${
+                      section === "text" ? "bg-[#3E8ECC]" : ""
+                    } rounded-md text-center xs:text-md text-sm text-white py-[2px] px-4 hover:bg-[#377eb5]`}
+                    onClick={() => {
+                      setSection("text");
+                    }}
+                    type={"button"}
+                  />
+                )}
               </div>
               {/* Separator Line */}
               <div className="w-full py-[0.6px] mt-4 bg-[#1E1E1E]"></div>
@@ -180,7 +184,8 @@ const ProjectDetails = ({ projectId }: { projectId: string }): JSX.Element => {
                 isAssigned={isAssigned}
                 openConnectModal={openConnectModal}
                 signTypedDataAsync={signTypedDataAsync}
-                nftOwnerAddress={address}
+                // nftOwnerAddress={address}
+                freelancerAddress={address}
                 setFileDeliverables={setFileDeliverables}
                 projectId={projectId}
                 setIsAssigned={setIsAssigned}

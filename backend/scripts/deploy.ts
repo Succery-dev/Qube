@@ -1,47 +1,34 @@
-import {ethers} from "hardhat";
-const hre = require("hardhat");
-const fs = require('fs');
-
-import {Controller} from "../typechain-types";
+import { ethers } from "hardhat";
 
 async function main() {
+  const [owner, account1, account2] = await ethers.getSigners();
+  console.log("Deploying contracts with the owner account: ", owner.address);
 
-    const routerAddress = process.env.ROUTER as string;
-    const network = await hre.ethers.provider.getNetwork();
-    const mainnet = network.chainId === 1;
-    const tesntet = network.chainId === 5;
+  // Deploy MockToken contract
+  const MockToken = await ethers.getContractFactory("MockToken");
+  const USDC = await MockToken.deploy();
+  console.log("USDC Contract deployed to:", USDC.address);
 
-    const ControllerFactory = await ethers.getContractFactory("Controller");
-    const controller: Controller = await ControllerFactory.deploy();
-    const controllerAddress = controller.address;
-    const contracts = {
-        controller: controllerAddress,
-    };
+  // Deploy Qube contract
+  const Escrow = await ethers.getContractFactory("Escrow");
+  const Qube = await Escrow.deploy(USDC.address);
+  console.log("Qube Contract deployed to:", Qube.address);
 
-    fs.writeFileSync('./contracts.json', JSON.stringify(contracts, null, 2));
-
-    if (process.env.ETHERSCAN) {
-        try {
-            if (mainnet || tesntet) {
-                controller.deployTransaction.wait(10);
-                await hre.run("verify:verify", {
-                    contract: "contracts/Controller.sol:Controller",
-                    address: controllerAddress,
-                    constructorArguments: []
-                });
-            }
-        } catch (e) {
-            console.log(e.toString());
-        }
-    } else {
-        console.log(`contract verification canceled as ETHERSCAN API key not informed in .env file.`)
-    }
-
+  // USDC: Init Distribution Status
+  // owner(0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266): 1000000 (by constructor in MockToken.sol)
+  // account1(0x70997970C51812dc3A010C7d01b50e0d17dc79C8): 1000
+  // account2(0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC): 1000
+  console.log("Owner(%s): %sUSDC", owner.address, ethers.utils.formatEther(await USDC.balanceOf(owner.address)));
+  const amount = ethers.utils.parseEther("1000");
+  await USDC.mint(account1.address, amount);
+  console.log("Account1(%s): %sUSDC", account1.address, ethers.utils.formatEther(await USDC.balanceOf(account1.address)));
+  await USDC.mint(account2.address, amount);
+  console.log("Account2(%s): %sUSDC", account2.address, ethers.utils.formatEther(await USDC.balanceOf(account2.address)));
 }
 
-// We recommend this pattern to be able to use async/await everywhere
-// and properly handle errors.
-main().catch((error) => {
+main()
+  .then(() => process.exit(0))
+  .catch((error) => {
     console.error(error);
-    process.exitCode = 1;
-});
+    process.exit(1);
+  });

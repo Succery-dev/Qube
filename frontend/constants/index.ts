@@ -418,8 +418,9 @@ export const DisplayProjectDetailsInterfaceKeys: DisplayProjectDetailsInterfaceK
     "Title",
     "Detail",
     "Deadline(UTC)",
+    "Deadline(UTC) For Payment",
     "Reward(USDC)",
-    "NFT(Contract Address)",
+    // "NFT(Contract Address)",
     "Client's Wallet Address",
     "Lancer's Wallet Address",
     "fileDeliverable",
@@ -431,10 +432,12 @@ export const DescriptionProjectDetailsInterfaceKeys: DescriptionProjectDetailsIn
     "Title",
     "Detail",
     "Deadline(UTC)",
+    "Deadline(UTC) For Payment",
     "Reward(USDC)",
-    "NFT(Contract Address)",
+    // "NFT(Contract Address)",
     "Client's Wallet Address",
     "Lancer's Wallet Address",
+    "Status",
   ];
 
 export const createProjectFields: CreateProjectFieldInterface[] = [
@@ -458,17 +461,18 @@ export const createProjectFields: CreateProjectFieldInterface[] = [
     placeholder: "500",
     type: "number",
   },
-  {
-    title: "NFT(Contract Address)",
-    placeholder: "0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d",
-    type: "string",
-  },
+  // {
+  //   title: "NFT(Contract Address)",
+  //   placeholder: "0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d",
+  //   type: "string",
+  // },
 ];
 
 export const signProjectEip712: TypeDataDomainInterface = {
   domain: {
-    name: "QubePay-Sign-Project",
-    chainId: 137,
+    name: "Qube-Sign-Project",
+    // chainId: 137,
+    chainId: 31337, // Hardhat Network ChainID
   },
   types: {
     ProjectDetail: [
@@ -476,7 +480,7 @@ export const signProjectEip712: TypeDataDomainInterface = {
       { name: "Detail", type: "string" },
       { name: "Deadline(UTC)", type: "string" },
       { name: "Reward(USDC)", type: "uint256" },
-      { name: "NFT(Contract Address)", type: "address" },
+      // { name: "NFT(Contract Address)", type: "address" },
       { name: "Client's Wallet Address", type: "address" },
       { name: "Lancer's Wallet Address", type: "address" },
     ],

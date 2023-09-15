@@ -13,7 +13,7 @@ import {onSchedule} from "firebase-functions/v2/scheduler";
 
 import {
   withdrawTokensToDepositorByOwner,
-  withdrawTokensToRecipientByOwner
+  withdrawTokensToRecipientByOwner,
 } from "./Escrow";
 
 const app: App = admin.initializeApp();
@@ -50,7 +50,7 @@ export const checkSubmissionDeadline = onSchedule("0 0 * * *", async () => {
     .where("Status", "==", "Waiting for Submission (DER)")
     .where("Deadline(UTC)", "<=", now.toISOString())
     .get();
-  
+
   // Change the status to "Waiting for Payment"
   projectsAfterDE.forEach(async (doc) => {
     await firestore
@@ -95,7 +95,7 @@ export const checkDisapproveRefund = onSchedule("0 1 * * *", async () => {
     .where("Status", "==", "Complete (Disapproval)")
     .where("Deadline(UTC) For Payment", "<=", now.toISOString())
     .get();
-  
+
   // Refund tokens to clients "④ Disapprove The Submission"
   projects.forEach(async (doc) => {
     // Log the project ID
@@ -115,7 +115,7 @@ export const checkDisputeRefund = onSchedule("30 1 * * *", async () => {
     .where("Status", "==", "In Dispute")
     .where("Deadline(UTC) For Payment", "<=", now.toISOString())
     .get();
-  
+
   // Refund tokens to clients "⑥ Deadline-Extension Request (Disapproval)"
   projects.forEach(async (doc) => {
     // Log the project ID
@@ -141,7 +141,7 @@ export const checkInDispute = onSchedule("0 2 * * *", async () => {
     .where("InDispute", "==", true)
     .where("RequestedDeadlineExtension", "<=", now.toISOString())
     .get();
-  
+
   // Change the status to "Waiting for Submission (DER)"
   projects.forEach(async (doc) => {
     const submissionDeadline = new Date(doc.data()["Deadline(UTC)"]);
@@ -153,7 +153,7 @@ export const checkInDispute = onSchedule("0 2 * * *", async () => {
       .collection("projects")
       .doc(doc.id)
       .set({
-        Status: "Waiting for Submission (DER)",
+        "Status": "Waiting for Submission (DER)",
         "Deadline(UTC)": submissionDeadline.toISOString(),
         "Deadline(UTC) For Payment": paymentDeadline.toISOString(),
         "InDispute": false,

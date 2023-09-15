@@ -1,6 +1,6 @@
 import {ethers, Wallet} from "ethers";
 import EscrowArtifact from "./Escrow.json";
-import * as dotenv from "dotenv";
+import dotenv from "dotenv";
 dotenv.config();
 
 const LOCAL_NODE_URL = process.env.NODE_URL;

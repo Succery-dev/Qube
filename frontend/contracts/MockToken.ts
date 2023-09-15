@@ -4,8 +4,8 @@ import MockTokenArtifact from "../../backend/artifacts/contracts/mocks/MockToken
 
 const MockTokenAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
 
-export function getMockTokenContract(signerOrProvider: ethers.Signer | ethers.providers.Provider): ethers.Contract {
-  return new ethers.Contract(MockTokenAddress, MockTokenArtifact.abi, signerOrProvider);
+export function getMockTokenContract(signer: ethers.Signer): ethers.Contract {
+  return new ethers.Contract(MockTokenAddress, MockTokenArtifact.abi, signer);
 }
 
 export async function balanceOf(account: string) {

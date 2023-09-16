@@ -100,7 +100,11 @@ const ProjectDetailsDescription = ({
                   {/* TODO: fix */}
                   {descriptionSection === "Lancer's Wallet Address"
                     ? "Freelancer's Wallet Address"
-                    : descriptionSection
+                    : descriptionSection === "Deadline(UTC)"
+                      ? "Submission Date (UTC)"
+                      : descriptionSection === "Deadline(UTC) For Payment"
+                        ? "Payment Date (UTC)"
+                        : descriptionSection
                   }
                 </h2>
                 {descriptionSection.toLowerCase().includes("address") ? (

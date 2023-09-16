@@ -17,6 +17,7 @@ task("balance", "Prints an account's balance")
 
 const config: HardhatUserConfig = {
     defaultNetwork: "hardhat",
+    solidity: "^0.8.18",
     networks: {
         // mainnet: {
         //     url: "https://eth.llamarpc.com",
@@ -40,28 +41,28 @@ const config: HardhatUserConfig = {
             initialBaseFeePerGas: 0,
         }
     },
-    solidity: {
-        compilers: [
-            {
-                version: '0.8.18',
-                settings: {
-                    optimizer: {
-                        enabled: true,
-                        runs: 200
-                    },
-                },
-            },
-            {
-                version: '0.6.6',
-                settings: {
-                    optimizer: {
-                        enabled: true,
-                        runs: 200
-                    },
-                },
-            }
-        ],
-    },
+    // solidity: {
+    //     compilers: [
+    //         {
+    //             version: '0.8.18',
+    //             settings: {
+    //                 optimizer: {
+    //                     enabled: true,
+    //                     runs: 200
+    //                 },
+    //             },
+    //         },
+    //         {
+    //             version: '0.6.6',
+    //             settings: {
+    //                 optimizer: {
+    //                     enabled: true,
+    //                     runs: 200
+    //                 },
+    //             },
+    //         }
+    //     ],
+    // },
     etherscan: {
         apiKey: { // npx hardhat verify --list-networks
             goerli: `${process.env.ETHERSCAN}`,

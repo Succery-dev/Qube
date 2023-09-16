@@ -115,15 +115,7 @@ const ProjectDetails = ({ projectId }: { projectId: string }): JSX.Element => {
             <div className="w-full text-white">
               {section === "description" && (
                 <h1 className="sm:text-4xl xs:text-3xl text-3xl">
-                  Project for{" "}
-                  {projectDetails["Client's Wallet Address"] != undefined
-                    ? `${projectDetails["Client's Wallet Address"].slice(
-                        0,
-                        7
-                      )}...${projectDetails["Client's Wallet Address"].slice(
-                        -4
-                      )}`
-                    : ""}
+                  Project for {projectDetails.Title}
                 </h1>
               )}
 

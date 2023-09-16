@@ -482,7 +482,7 @@ export const signProjectEip712: TypeDataDomainInterface = {
       { name: "Reward(USDC)", type: "uint256" },
       // { name: "NFT(Contract Address)", type: "address" },
       { name: "Client's Wallet Address", type: "address" },
-      { name: "Lancer's Wallet Address", type: "address" },
+      { name: "Freelancer's Wallet Address", type: "address" },
     ],
   },
 };

@@ -97,7 +97,11 @@ const ProjectDetailsDescription = ({
             return (
               <div key={`description-section-${index}`}>
                 <h2 className="xs:text-base text-sm text-white">
-                  {descriptionSection}
+                  {/* TODO: fix */}
+                  {descriptionSection === "Lancer's Wallet Address"
+                    ? "Freelancer's Wallet Address"
+                    : descriptionSection
+                  }
                 </h2>
                 {descriptionSection.toLowerCase().includes("address") ? (
                   <p

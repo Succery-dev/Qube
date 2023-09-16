@@ -85,7 +85,7 @@ const ProjectDetails = ({ projectId }: { projectId: string }): JSX.Element => {
       "Deadline(UTC)": projectDetails["Deadline(UTC)"],
       "Reward(USDC)": projectDetails["Reward(USDC)"],
       "Client's Wallet Address": projectDetails["Client's Wallet Address"],
-      "Lancer's Wallet Address": address,
+      "Freelancer's Wallet Address": address,
     },
   });
 

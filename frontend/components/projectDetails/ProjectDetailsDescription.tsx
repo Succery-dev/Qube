@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 // Interface Imports
 import {
@@ -37,6 +37,7 @@ import { EscrowAddress, depositTokens, withdrawTokensToRecipientByDepositor } fr
 import { StatusEnum } from "../../enums";
 import { getDataFromFireStore } from "../../utils";
 import { useAccount } from "wagmi";
+import Modal from "./Modal";
 
 const ProjectDetailsDescription = ({
   isAssigned,
@@ -81,6 +82,71 @@ const ProjectDetailsDescription = ({
     projectDetails;
 
   const { address, isConnected } = useAccount();
+
+  // TODO: fix, these are for the modal
+  const [showModal, setShowModal]: [
+    showModal: boolean,
+    setShowModal: React.Dispatch<React.SetStateAction<boolean>>
+  ] = useState(false);
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [onConfirm, setOnConfirm] = useState<() => Promise<void>>(() => Promise.resolve());
+
+  const prepayEscrow = async () => {
+    if (isConnected && address == projectDetails["Client's Wallet Address"]) {
+      try {
+        // Prepay amount
+        console.log("Reward: %sUSDC", projectDetails["Reward(USDC)"]);
+        const amount = ethers.utils.parseEther(projectDetails["Reward(USDC)"].toString());
+
+        // Approve tokens
+        const approveResult = await approve(EscrowAddress, amount);
+        console.log("Approve Result: ", approveResult);
+
+        // Deposit tokens
+        console.log("Recipient: %s, ProjectId: %s", projectDetails["Lancer's Wallet Address"], projectId);
+        const depositResult = await depositTokens(projectDetails["Lancer's Wallet Address"], amount, projectId);
+        console.log("Deposit Result: ", depositResult);
+
+        // Update the status to "Waiting for Submission"
+        const updatedSubsetProjectDetail: Partial<StoreProjectDetailsInterface> =
+          {
+            "Status": StatusEnum.WaitingForSubmission,
+          };
+        await updateProjectDetails(projectId, updatedSubsetProjectDetail);
+        const [_, updatedProjectDetails] = await getDataFromFireStore(
+          projectId
+        );
+
+        setProjectDetails(updatedProjectDetails);
+
+        setNotificationConfiguration({
+          modalColor: "#62d140",
+          title: "Sucess",
+          message: "Successfully prepaid tokens",
+          icon: IconNotificationSuccess,
+        });
+        setShowNotification(true);
+      } catch (error) {
+        console.log("Prepay Failed: ", error);
+        setNotificationConfiguration({
+          modalColor: "#d14040",
+          title: "Error",
+          message: "Error prepaying tokens",
+          icon: IconNotificationError,
+        });
+        setShowNotification(true);
+      }
+    } else {
+      setNotificationConfiguration({
+        modalColor: "#d14040",
+        title: "Error",
+        message: "Please connect your right wallet account",
+        icon: IconNotificationError,
+      });
+      setShowNotification(true);
+    }
+  }
 
   return (
     <>
@@ -153,59 +219,10 @@ const ProjectDetailsDescription = ({
           onClick={async (e) => {
             e.preventDefault();
 
-            if (isConnected && address == projectDetails["Client's Wallet Address"]) {
-              try {
-                // Prepay amount
-                console.log("Reward: %sUSDC", projectDetails["Reward(USDC)"]);
-                const amount = ethers.utils.parseEther(projectDetails["Reward(USDC)"].toString());
-
-                // Approve tokens
-                const approveResult = await approve(EscrowAddress, amount);
-                console.log("Approve Result: ", approveResult);
-
-                // Deposit tokens
-                console.log("Recipient: %s, ProjectId: %s", projectDetails["Lancer's Wallet Address"], projectId);
-                const depositResult = await depositTokens(projectDetails["Lancer's Wallet Address"], amount, projectId);
-                console.log("Deposit Result: ", depositResult);
-
-                // Update the status to "Waiting for Submission"
-                const updatedSubsetProjectDetail: Partial<StoreProjectDetailsInterface> =
-                  {
-                    "Status": StatusEnum.WaitingForSubmission,
-                  };
-                await updateProjectDetails(projectId, updatedSubsetProjectDetail);
-                const [_, updatedProjectDetails] = await getDataFromFireStore(
-                  projectId
-                );
-
-                setProjectDetails(updatedProjectDetails);
-
-                setNotificationConfiguration({
-                  modalColor: "#62d140",
-                  title: "Sucess",
-                  message: "Successfully prepaid tokens",
-                  icon: IconNotificationSuccess,
-                });
-                setShowNotification(true);
-              } catch (error) {
-                console.log("Prepay Failed: ", error);
-                setNotificationConfiguration({
-                  modalColor: "#d14040",
-                  title: "Error",
-                  message: "Error prepaying tokens",
-                  icon: IconNotificationError,
-                });
-                setShowNotification(true);
-              }
-            } else {
-              setNotificationConfiguration({
-                modalColor: "#d14040",
-                title: "Error",
-                message: "Please connect your right wallet account",
-                icon: IconNotificationError,
-              });
-              setShowNotification(true);
-            }
+            setTitle("Prepay Escrow");
+            setDescription("This is to prepay the money to Qube’s Smart Contract. The money will be held until the submission is approved by you. Do you want to proceed?");
+            setOnConfirm(() => prepayEscrow);
+            setShowModal(true);
           }}
         />
       )}
@@ -447,6 +464,13 @@ const ProjectDetailsDescription = ({
           />
         </div>
       )}
+      <Modal
+        showModal={showModal}
+        setShowModal={setShowModal}
+        title={title}
+        description={description}
+        onConfirm={onConfirm}
+      />
     </>
   );
 };

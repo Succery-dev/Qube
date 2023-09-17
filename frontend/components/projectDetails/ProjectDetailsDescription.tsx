@@ -215,8 +215,8 @@ const ProjectDetailsDescription = ({
 
       setNotificationConfiguration({
         modalColor: "#62d140",
-        title: "Sucess",
-        message: "Successfully accepted Deadline-Extension",
+        title: "Successfully accepted Deadline-Extension",
+        message: "The submission date has been extended for 2 weeks. Submit your work again before the deadline!",
         icon: IconNotificationSuccess,
       });
       setShowNotification(true);

@@ -148,6 +148,44 @@ const ProjectDetailsDescription = ({
     }
   }
 
+  const requestDeadlineExtension = async () => {
+    try {
+      if (projectDetails["Client's Wallet Address"] != address) {
+        throw new Error("Not authorized to request deadline-extension");
+      }
+
+      const now = new Date();
+      const updatedSubsetProjectDetail: Partial<StoreProjectDetailsInterface> =
+        {
+          "InDispute": true,
+          "DeadlineExtensionRequest": true,
+          "RequestedDeadlineExtension": now.toISOString(),
+        };
+      await updateProjectDetails(projectId, updatedSubsetProjectDetail);
+      const [_, updatedProjectDetails] = await getDataFromFireStore(
+        projectId
+      );
+
+      setProjectDetails(updatedProjectDetails);
+
+      setNotificationConfiguration({
+        modalColor: "#62d140",
+        title: "Sucess",
+        message: "Successfully requested Deadline-Extension",
+        icon: IconNotificationSuccess,
+      });
+    } catch (error) {
+      console.log(error);
+      setNotificationConfiguration({
+        modalColor: "#d14040",
+        title: "Error",
+        message: "Not authorized to request deadline-extension",
+        icon: IconNotificationError,
+      });
+    }
+    setShowNotification(true);
+  }
+
   return (
     <>
       <div className="flex flex-col gap-4 xs:mt-8 mt-4 sm:w-[80%] w-full">
@@ -322,42 +360,13 @@ const ProjectDetailsDescription = ({
             <CustomButton
               text="Request Deadline-Extension"
               type="button"
-              onClick={async () => {
-                try {
-                  if (projectDetails["Client's Wallet Address"] != address) {
-                    throw new Error("Not authorized to request deadline-extension");
-                  }
+              onClick={async (e) => {
+                e.preventDefault();
 
-                  const now = new Date();
-                  const updatedSubsetProjectDetail: Partial<StoreProjectDetailsInterface> =
-                    {
-                      "InDispute": true,
-                      "DeadlineExtensionRequest": true,
-                      "RequestedDeadlineExtension": now.toISOString(),
-                    };
-                  await updateProjectDetails(projectId, updatedSubsetProjectDetail);
-                  const [_, updatedProjectDetails] = await getDataFromFireStore(
-                    projectId
-                  );
-
-                  setProjectDetails(updatedProjectDetails);
-
-                  setNotificationConfiguration({
-                    modalColor: "#62d140",
-                    title: "Sucess",
-                    message: "Successfully requested Deadline-Extension",
-                    icon: IconNotificationSuccess,
-                  });
-                } catch (error) {
-                  console.log(error);
-                  setNotificationConfiguration({
-                    modalColor: "#d14040",
-                    title: "Error",
-                    message: "Not authorized to request deadline-extension",
-                    icon: IconNotificationError,
-                  });
-                }
-                setShowNotification(true);
+                setTitle("Request Deadline-Extension");
+                setDescription("This is to extend the submission and payment date for 2 weeks. This can be applied only once. Are you sure you want to extend the deadline? *If yes, let the freelancer know that it has to be approved within a week.");
+                setOnConfirm(() => requestDeadlineExtension);
+                setShowModal(true);
               }}
               styles="w-full mx-auto block bg-[#3E8ECC] hover:bg-[#377eb5] rounded-md text-center text-lg font-semibold text-white py-[4px] px-7 mt-6"
             />

@@ -422,8 +422,8 @@ const ProjectDetailsDescription = ({
 
                 setNotificationConfiguration({
                   modalColor: "#62d140",
-                  title: "Sucess",
-                  message: "Successfully approved the deliverables and paid tokens to the freelancer",
+                  title: "Successfully approved the deliverables and paid tokens to the freelancer",
+                  message: "Done!",
                   icon: IconNotificationSuccess,
                 });
               } catch (error) {

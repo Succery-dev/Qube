@@ -232,6 +232,48 @@ const ProjectDetailsDescription = ({
     setShowNotification(true);
   }
 
+  const rejectDeadlineExtension = async () => {
+    try {
+      if (projectDetails["Lancer's Wallet Address"] !== freelancerAddress) {
+        throw new Error("Not authorized to either accept or reject the deadline-extension");
+      }
+
+      const paymentDeadline = new Date(projectDetails["Deadline(UTC) For Payment"]);
+      paymentDeadline.setMonth(paymentDeadline.getMonth() + 9);
+      console.log("New Payment Dealine: ", paymentDeadline.toISOString());
+
+      const updatedSubsetProjectDetail: Partial<StoreProjectDetailsInterface> =
+        {
+          "InDispute": false,
+          Status: StatusEnum.InDispute,
+          "Deadline(UTC) For Payment": paymentDeadline.toISOString(),
+        };
+      await updateProjectDetails(projectId, updatedSubsetProjectDetail);
+      const [_, updatedProjectDetails] = await getDataFromFireStore(
+        projectId
+      );
+
+      setProjectDetails(updatedProjectDetails);
+
+      setNotificationConfiguration({
+        modalColor: "#62d140",
+        title: "Sucess",
+        message: "Successfully rejected Deadline-Extension",
+        icon: IconNotificationSuccess,
+      });
+      setShowNotification(true);
+    } catch (error) {
+      console.log(error);
+      setNotificationConfiguration({
+        modalColor: "#d14040",
+        title: "Error",
+        message: "Not authorized to either accept or reject the deadline-extension",
+        icon: IconNotificationError,
+      });
+    }
+    setShowNotification(true);
+  }
+
   return (
     <>
       <div className="flex flex-col gap-4 xs:mt-8 mt-4 sm:w-[80%] w-full">
@@ -437,46 +479,13 @@ const ProjectDetailsDescription = ({
           <CustomButton
             text="Reject Deadline-Extension"
             type="button"
-            onClick={async () => {
-              try {
-                if (projectDetails["Lancer's Wallet Address"] !== freelancerAddress) {
-                  throw new Error("Not authorized to either accept or reject the deadline-extension");
-                }
+            onClick={async (e) => {
+              e.preventDefault();
 
-                const paymentDeadline = new Date(projectDetails["Deadline(UTC) For Payment"]);
-                paymentDeadline.setMonth(paymentDeadline.getMonth() + 9);
-                console.log("New Payment Dealine: ", paymentDeadline.toISOString());
-
-                const updatedSubsetProjectDetail: Partial<StoreProjectDetailsInterface> =
-                  {
-                    "InDispute": false,
-                    Status: StatusEnum.InDispute,
-                    "Deadline(UTC) For Payment": paymentDeadline.toISOString(),
-                  };
-                await updateProjectDetails(projectId, updatedSubsetProjectDetail);
-                const [_, updatedProjectDetails] = await getDataFromFireStore(
-                  projectId
-                );
-
-                setProjectDetails(updatedProjectDetails);
-
-                setNotificationConfiguration({
-                  modalColor: "#62d140",
-                  title: "Sucess",
-                  message: "Successfully rejected Deadline-Extension",
-                  icon: IconNotificationSuccess,
-                });
-                setShowNotification(true);
-              } catch (error) {
-                console.log(error);
-                setNotificationConfiguration({
-                  modalColor: "#d14040",
-                  title: "Error",
-                  message: "Not authorized to either accept or reject the deadline-extension",
-                  icon: IconNotificationError,
-                });
-              }
-              setShowNotification(true);
+              setTitle("Reject Deadline-Extension");
+              setDescription("By denying this, The fund in the escrow will be frozen for 9 months. Are you sure you want to deny it?");
+              setOnConfirm(() => rejectDeadlineExtension);
+              setShowModal(true);
             }}
             styles="w-full mx-auto block bg-[#FF4B4B] hover:bg-[#E43F3F] rounded-md text-center text-lg font-semibold text-white py-[4px] px-7 mt-6"
           />

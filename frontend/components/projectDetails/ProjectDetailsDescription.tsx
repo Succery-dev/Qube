@@ -170,8 +170,8 @@ const ProjectDetailsDescription = ({
 
       setNotificationConfiguration({
         modalColor: "#62d140",
-        title: "Sucess",
-        message: "Successfully requested Deadline-Extension",
+        title: "Successfully requested Deadline-Extension",
+        message: "Wait till the freelancer approves the request.",
         icon: IconNotificationSuccess,
       });
     } catch (error) {

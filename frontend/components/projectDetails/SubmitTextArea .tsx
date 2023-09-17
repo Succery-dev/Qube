@@ -118,8 +118,8 @@ const SubmitTextArea = ({
 
         setNotificationConfiguration({
           modalColor: "#62d140",
-          title: "Success",
-          message: "Submitted the Text",
+          title: "Submitted the submissions",
+          message: "Well done! Wait till your submissions get approved by the client.",
           icon: IconNotificationSuccess,
         });
 

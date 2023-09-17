@@ -17,7 +17,7 @@ task("balance", "Prints an account's balance")
 
 const config: HardhatUserConfig = {
     defaultNetwork: "hardhat",
-    solidity: "^0.8.18",
+    solidity: "0.8.18",
     networks: {
         // mainnet: {
         //     url: "https://eth.llamarpc.com",

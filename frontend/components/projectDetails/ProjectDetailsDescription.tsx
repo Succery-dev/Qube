@@ -274,6 +274,47 @@ const ProjectDetailsDescription = ({
     setShowNotification(true);
   }
 
+  const disapproveDeliverables = async () => {
+    try {
+      if (projectDetails["Client's Wallet Address"] != address) {
+        throw new Error("Not authorized to disapprove the deliverables");
+      }
+
+      // Set to 9 months later
+      const dateObject = new Date(projectDetails["Deadline(UTC) For Payment"]);
+      dateObject.setMonth(dateObject.getMonth() + 9);
+
+      // Update "Deadline(UTC) For Payment" to return tokens to clients when disapprove
+      const updatedSubsetProjectDetail: Partial<StoreProjectDetailsInterface> =
+        {
+          "Deadline(UTC) For Payment": dateObject.toISOString(),
+          "Status": StatusEnum.CompleteDisapproval,
+        };
+      await updateProjectDetails(projectId, updatedSubsetProjectDetail);
+      const [_, updatedProjectDetails] = await getDataFromFireStore(
+        projectId
+      );
+
+      setProjectDetails(updatedProjectDetails);
+
+      setNotificationConfiguration({
+        modalColor: "#62d140",
+        title: "Sucess",
+        message: "Successfully disapproved and will pay back tokens to the client in 9 months",
+        icon: IconNotificationSuccess,
+      });
+    } catch (error) {
+      console.log(error);
+      setNotificationConfiguration({
+        modalColor: "#d14040",
+        title: "Error",
+        message: "Not authorized to disapprove the deliverables",
+        icon: IconNotificationError,
+      });
+    }
+    setShowNotification(true);
+  }
+
   return (
     <>
       <div className="flex flex-col gap-4 xs:mt-8 mt-4 sm:w-[80%] w-full">
@@ -402,45 +443,13 @@ const ProjectDetailsDescription = ({
             <CustomButton
               text="Disapprove The Deliverables"
               type="button"
-              onClick={async () => {
-                try {
-                  if (projectDetails["Client's Wallet Address"] != address) {
-                    throw new Error("Not authorized to disapprove the deliverables");
-                  }
+              onClick={async (e) => {
+                e.preventDefault();
 
-                  // Set to 9 months later
-                  const dateObject = new Date(projectDetails["Deadline(UTC) For Payment"]);
-                  dateObject.setMonth(dateObject.getMonth() + 9);
-
-                  // Update "Deadline(UTC) For Payment" to return tokens to clients when disapprove
-                  const updatedSubsetProjectDetail: Partial<StoreProjectDetailsInterface> =
-                    {
-                      "Deadline(UTC) For Payment": dateObject.toISOString(),
-                      "Status": StatusEnum.CompleteDisapproval,
-                    };
-                  await updateProjectDetails(projectId, updatedSubsetProjectDetail);
-                  const [_, updatedProjectDetails] = await getDataFromFireStore(
-                    projectId
-                  );
-
-                  setProjectDetails(updatedProjectDetails);
-
-                  setNotificationConfiguration({
-                    modalColor: "#62d140",
-                    title: "Sucess",
-                    message: "Successfully disapproved and will pay back tokens to the client in 9 months",
-                    icon: IconNotificationSuccess,
-                  });
-                } catch (error) {
-                  console.log(error);
-                  setNotificationConfiguration({
-                    modalColor: "#d14040",
-                    title: "Error",
-                    message: "Not authorized to disapprove the deliverables",
-                    icon: IconNotificationError,
-                  });
-                }
-                setShowNotification(true);
+                setTitle("Disapprove The Deliverables");
+                setDescription("If disapproved, the fund will be frozen for 9 months. There is no way you can refund the money before 9 months. This is the ultimate option that should be used if there is no other way. Are you sure you want to disapprove the submission?");
+                setOnConfirm(() => disapproveDeliverables);
+                setShowModal(true);
               }}
               styles="w-full mx-auto block bg-[#3E8ECC] hover:bg-[#377eb5] rounded-md text-center text-lg font-semibold text-white py-[4px] px-7 mt-6"
             />

@@ -58,8 +58,8 @@ export const assignProject = async (
 
         setNotificationConfiguration({
           modalColor: "#62d140",
-          title: "Sucess",
-          message: "Successfully approved project",
+          title: "Successfully approved project",
+          message: "Submit your work before the deadline!",
           icon: IconNotificationSuccess,
         });
         setShowNotification(true);

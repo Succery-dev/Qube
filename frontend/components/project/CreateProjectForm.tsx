@@ -204,8 +204,8 @@ const CreateProjectForm = ({
 
         setNotificationConfiguration({
           modalColor: "#62d140",
-          title: "Success",
-          message: "Sucessfully created the project",
+          title: "Successfully created the project",
+          message: "Share the link and wait till the freelancer signs to the project!",
           icon: IconNotificationSuccess,
         });
 

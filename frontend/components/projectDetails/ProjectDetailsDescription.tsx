@@ -186,6 +186,52 @@ const ProjectDetailsDescription = ({
     setShowNotification(true);
   }
 
+  const acceptDeadlineExtension = async () => {
+    try {
+      if (projectDetails["Lancer's Wallet Address"] !== freelancerAddress) {
+        throw new Error("Not authorized to either accept or reject the deadline-extension");
+      }
+
+      const submissionDeadline = new Date(projectDetails["Deadline(UTC)"]);
+      const paymentDeadline = new Date(projectDetails["Deadline(UTC) For Payment"]);
+      submissionDeadline.setDate(submissionDeadline.getDate() + 14);
+      paymentDeadline.setDate(paymentDeadline.getDate() + 14);
+      console.log("New Submission Dealine: ", submissionDeadline.toISOString());
+      console.log("New Payment Dealine: ", paymentDeadline.toISOString());
+
+      const updatedSubsetProjectDetail: Partial<StoreProjectDetailsInterface> =
+        {
+          "Deadline(UTC)": submissionDeadline.toISOString(),
+          "Deadline(UTC) For Payment": paymentDeadline.toISOString(),
+          "InDispute": false,
+          Status: StatusEnum.WaitingForSubmissionDER,
+        };
+      await updateProjectDetails(projectId, updatedSubsetProjectDetail);
+      const [_, updatedProjectDetails] = await getDataFromFireStore(
+        projectId
+      );
+
+      setProjectDetails(updatedProjectDetails);
+
+      setNotificationConfiguration({
+        modalColor: "#62d140",
+        title: "Sucess",
+        message: "Successfully accepted Deadline-Extension",
+        icon: IconNotificationSuccess,
+      });
+      setShowNotification(true);
+    } catch (error) {
+      console.log(error);
+      setNotificationConfiguration({
+        modalColor: "#d14040",
+        title: "Error",
+        message: "Not authorized to either accept or reject the deadline-extension",
+        icon: IconNotificationError,
+      });
+    }
+    setShowNotification(true);
+  }
+
   return (
     <>
       <div className="flex flex-col gap-4 xs:mt-8 mt-4 sm:w-[80%] w-full">
@@ -378,50 +424,13 @@ const ProjectDetailsDescription = ({
           <CustomButton
             text="Accept Deadline-Extension"
             type="button"
-            onClick={async () => {
-              try {
-                if (projectDetails["Lancer's Wallet Address"] !== freelancerAddress) {
-                  throw new Error("Not authorized to either accept or reject the deadline-extension");
-                }
+            onClick={async (e) => {
+              e.preventDefault();
 
-                const submissionDeadline = new Date(projectDetails["Deadline(UTC)"]);
-                const paymentDeadline = new Date(projectDetails["Deadline(UTC) For Payment"]);
-                submissionDeadline.setDate(submissionDeadline.getDate() + 14);
-                paymentDeadline.setDate(paymentDeadline.getDate() + 14);
-                console.log("New Submission Dealine: ", submissionDeadline.toISOString());
-                console.log("New Payment Dealine: ", paymentDeadline.toISOString());
-
-                const updatedSubsetProjectDetail: Partial<StoreProjectDetailsInterface> =
-                  {
-                    "Deadline(UTC)": submissionDeadline.toISOString(),
-                    "Deadline(UTC) For Payment": paymentDeadline.toISOString(),
-                    "InDispute": false,
-                    Status: StatusEnum.WaitingForSubmissionDER,
-                  };
-                await updateProjectDetails(projectId, updatedSubsetProjectDetail);
-                const [_, updatedProjectDetails] = await getDataFromFireStore(
-                  projectId
-                );
-
-                setProjectDetails(updatedProjectDetails);
-
-                setNotificationConfiguration({
-                  modalColor: "#62d140",
-                  title: "Sucess",
-                  message: "Successfully accepted Deadline-Extension",
-                  icon: IconNotificationSuccess,
-                });
-                setShowNotification(true);
-              } catch (error) {
-                console.log(error);
-                setNotificationConfiguration({
-                  modalColor: "#d14040",
-                  title: "Error",
-                  message: "Not authorized to either accept or reject the deadline-extension",
-                  icon: IconNotificationError,
-                });
-              }
-              setShowNotification(true);
+              setTitle("Accept Deadline-Extension");
+              setDescription("By accepting this the submission and payment date will be extended for 2 weeks. If you haven't talked with the opposite person yet, first confirm before pressing accept.");
+              setOnConfirm(() => acceptDeadlineExtension);
+              setShowModal(true);
             }}
             styles="w-full mx-auto block bg-[#3E8ECC] hover:bg-[#377eb5] rounded-md text-center text-lg font-semibold text-white py-[4px] px-7 mt-6"
           />

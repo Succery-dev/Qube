@@ -122,8 +122,8 @@ const ProjectDetailsDescription = ({
 
         setNotificationConfiguration({
           modalColor: "#62d140",
-          title: "Sucess",
-          message: "Successfully prepaid tokens",
+          title: "Successfully prepaid to the escrow",
+          message: "Prepaid is done. Wait for the freelancer's submission! Remind the freelancer to submit before the deadline for a smoother transaction.",
           icon: IconNotificationSuccess,
         });
         setShowNotification(true);

@@ -167,7 +167,8 @@ const ProjectDetails = ({ projectId }: { projectId: string }): JSX.Element => {
                   }}
                   type={"button"}
                 />
-                {projectDetails.Status !== StatusEnum.CompleteNoSubmissionByLancer && (
+                {projectDetails.Status !== StatusEnum.CompleteNoSubmissionByLancer
+                && projectDetails.Status !== StatusEnum.PayInAdvance && (
                   <CustomButton
                     text="Files"
                     styles={`${
@@ -179,7 +180,8 @@ const ProjectDetails = ({ projectId }: { projectId: string }): JSX.Element => {
                     type={"button"}
                   />
                 )}
-                {projectDetails.Status !== StatusEnum.CompleteNoSubmissionByLancer && (
+                {projectDetails.Status !== StatusEnum.CompleteNoSubmissionByLancer
+                && projectDetails.Status !== StatusEnum.PayInAdvance && (
                   <CustomButton
                     text="Text"
                     styles={`${

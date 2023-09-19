@@ -15,6 +15,7 @@ import {
   ProjectDataInterface,
 } from "../../interfaces";
 import Link from "next/link";
+import { convertState } from "../../utils";
 
 const TableHeader = (): JSX.Element => {
   return (
@@ -68,7 +69,9 @@ const TableContents = ({
                         ? project.amount.toLocaleString()
                         : projectKey === "id"
                           ? null
-                          : project[projectKey as keyof typeof project]}
+                          : projectKey == "status"
+                            ? convertState(project.status) // TODO: Fix this
+                            : project[projectKey as keyof typeof project]}
                   </p>
                 );
               })}

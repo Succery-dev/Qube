@@ -23,6 +23,7 @@ import { CustomButton } from "..";
 import {
   approveProjectDetails,
   assignProject,
+  convertState,
   populateStates,
   updateProjectDetails,
 } from "../../utils";
@@ -350,7 +351,10 @@ const ProjectDetailsDescription = ({
                   </p>
                 ) : (
                   <p className={`xs:text-base text-xs font-normal break-words`}>
-                    {descriptionText}
+                    {descriptionSection === "Status"
+                      ? convertState(descriptionText)
+                      : descriptionText
+                    }
                   </p>
                 )}
               </div>

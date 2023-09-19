@@ -360,7 +360,7 @@ const ProjectDetailsDescription = ({
       </div>
       {projectDetails.Status === StatusEnum.WaitingForConnectingLancersWallet && (
         <CustomButton
-          text="Approve Project By Freelancer"
+          text="Approve Project"
           type="button"
           onClick={() => {
             assignProject(

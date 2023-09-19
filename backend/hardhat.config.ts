@@ -1,8 +1,7 @@
 import { HardhatUserConfig, task } from "hardhat/config";
 import "@nomicfoundation/hardhat-toolbox";
-// add dotenv
-import { config as dotenvConfig } from "dotenv";
-dotenvConfig();
+import dotenv from "dotenv";
+dotenv.config();
 require("@nomiclabs/hardhat-etherscan");
 import "@typechain/hardhat";
 import "solidity-coverage";
@@ -36,6 +35,10 @@ const config: HardhatUserConfig = {
         // localhost: {
         //     url: "http://127.0.0.1:8545"
         // },
+        mumbai: {
+            url: `https://polygon-mumbai.g.alchemy.com/v2/${process.env.ALCHEMY_API_KEY}`,
+            accounts: [process.env.PRIVATE_KEY as string],
+        },
         hardhat: {
             chainId: 31337,
             initialBaseFeePerGas: 0,

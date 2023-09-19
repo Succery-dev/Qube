@@ -2,7 +2,7 @@ import { ethers } from "ethers";
 import { getSigner } from "../utils/ethers";
 import EscrowArtifact from "../../backend/artifacts/contracts/Escrow.sol/Escrow.json";
 
-export const EscrowAddress = "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512";
+export const EscrowAddress = "0x0A2Dd392CBb168fE2aFe63C85a9cC7FD9b100892";
 
 export function getEscrowContract(signer: ethers.Signer): ethers.Contract {
   return new ethers.Contract(EscrowAddress, EscrowArtifact.abi, signer);

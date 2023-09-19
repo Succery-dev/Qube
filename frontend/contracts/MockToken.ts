@@ -1,11 +1,12 @@
 import { ethers } from "ethers";
 import { getSigner, getJsonRpcProvider } from "../utils/ethers";
-import MockTokenArtifact from "../../backend/artifacts/contracts/mocks/MockToken.sol/MockToken.json";
+// import MockTokenArtifact from "../../backend/artifacts/contracts/mocks/MockToken.sol/MockToken.json";
+import USDCMumbai from "./USDC_mumbai.json";
 
-const MockTokenAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
+const MockTokenAddress = "0x0FA8781a83E46826621b3BC094Ea2A0212e71B23";
 
 export function getMockTokenContract(signerOrProvider: ethers.Signer | ethers.providers.Provider): ethers.Contract {
-  return new ethers.Contract(MockTokenAddress, MockTokenArtifact.abi, signerOrProvider);
+  return new ethers.Contract(MockTokenAddress, USDCMumbai, signerOrProvider);
 }
 
 export async function balanceOf(account: string) {
@@ -39,4 +40,10 @@ export async function mint(to: string, amount: ethers.BigNumberish) {
   const contract = getMockTokenContract(signer);
   const tx = await contract.mint(to, amount);
   return await tx.wait();
+}
+
+export async function implementation() {
+  const signer = getSigner();
+  const contract = getMockTokenContract(signer);
+  return await contract.implementation();
 }

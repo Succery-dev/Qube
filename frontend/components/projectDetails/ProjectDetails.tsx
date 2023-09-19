@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import Image from "next/image";
+import { useRouter } from "next/router";
 
 // Interface Imports
 import {
@@ -36,7 +38,7 @@ import { useNotificationContext } from "../../context";
 // utils Imports
 import { getDataFromFireStore } from "../../utils";
 import { assignProject, populateStates } from "../../utils/projectDetail";
-import { IconNotificationWarning } from "../../assets";
+import { IconNotificationWarning, IconCopy, IconNotificationSuccess } from "../../assets";
 import { StatusEnum } from "../../enums";
 
 const SectionWrapper: React.FC<SectionWrapperPropsInterface> = ({
@@ -103,6 +105,23 @@ const ProjectDetails = ({ projectId }: { projectId: string }): JSX.Element => {
     }
   }, [projectId]);
 
+  const router = useRouter();
+
+  async function handleCopyToClipboard() {
+    try {
+      const textToCopy = `http://${window.location.host}/${router.asPath}`;
+      await navigator.clipboard.writeText(textToCopy);
+      setNotificationConfiguration({
+        modalColor: "#62d140",
+        title: "Copy the link",
+        message: "Successfully copied the link to the clipboard",
+        icon: IconNotificationSuccess,
+      });
+
+      setShowNotification(true);
+    } catch (error) {}
+  };
+
   return (
     <SectionWrapper
       bgColor="bg-bg_primary"
@@ -114,7 +133,13 @@ const ProjectDetails = ({ projectId }: { projectId: string }): JSX.Element => {
             {/* Header */}
             <div className="w-full text-white">
               {section === "description" && (
-                <h1 className="sm:text-4xl xs:text-3xl text-3xl">
+                <h1 className="flex flex-row items-center gap-5 sm:text-4xl xs:text-3xl text-3xl">
+                  <Image
+                    src={IconCopy}
+                    alt="copy"
+                    className="h-6 w-auto cursor-pointer"
+                    onClick={() => handleCopyToClipboard()}
+                  />
                   Project for {projectDetails.Title}
                 </h1>
               )}

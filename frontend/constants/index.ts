@@ -472,7 +472,8 @@ export const signProjectEip712: TypeDataDomainInterface = {
   domain: {
     name: "Qube-Sign-Project",
     // chainId: 137,
-    chainId: 31337, // Hardhat Network ChainID
+    // chainId: 31337, // Hardhat Network ChainID
+    chainId: 80001,
   },
   types: {
     ProjectDetail: [

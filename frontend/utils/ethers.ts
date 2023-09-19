@@ -1,8 +1,11 @@
 import { ethers } from "ethers";
+import dotenv from "dotenv";
+dotenv.config();
 
 // JSON RPC Provider
-const LOCAL_NODE_URL = "http://127.0.0.1:8545/";
-const jsonRpcProvider = new ethers.providers.JsonRpcProvider(LOCAL_NODE_URL);
+// const LOCAL_NODE_URL = "http://127.0.0.1:8545/";
+const MUMBAI_NODE_URL = `https://polygon-mumbai.g.alchemy.com/v2/${process.env.ALCHEMY_API_KEY}`;
+const jsonRpcProvider = new ethers.providers.JsonRpcProvider(MUMBAI_NODE_URL);
 
 export function getJsonRpcProvider(): ethers.providers.JsonRpcProvider {
   return jsonRpcProvider;

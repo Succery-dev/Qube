@@ -34,6 +34,7 @@ import {
 import { uploadDeliverables } from "./project/uploadDeliverables";
 
 import { convertState } from "./convertState";
+import { activeUserByStatus } from "./activeUserByStatus";
 
 export {
   convertSeconds,
@@ -64,4 +65,5 @@ export {
   uploadDeliverables,
 
   convertState,
+  activeUserByStatus,
 };

@@ -36,7 +36,7 @@ import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { useNotificationContext } from "../../context";
 
 // utils Imports
-import { getDataFromFireStore } from "../../utils";
+import { getDataFromFireStore, activeUserByStatus } from "../../utils";
 import { assignProject, populateStates } from "../../utils/projectDetail";
 import { IconNotificationWarning, IconCopy, IconNotificationSuccess } from "../../assets";
 import { StatusEnum } from "../../enums";
@@ -141,6 +141,22 @@ const ProjectDetails = ({ projectId }: { projectId: string }): JSX.Element => {
                     onClick={() => handleCopyToClipboard()}
                   />
                   Project for {projectDetails.Title}
+                  {/* TODO: fix this, change this button to a block */}
+                  {projectDetails.Status !== StatusEnum.CompleteNoSubmissionByLancer
+                  && projectDetails.Status !== StatusEnum.CompleteNoContactByClient
+                  && projectDetails.Status !== StatusEnum.CompleteApproval
+                  && projectDetails.Status !== StatusEnum.CompleteDisapproval
+                  && projectDetails.Status !== StatusEnum.CompleteDispute
+                  && projectDetails.Status !== StatusEnum.InDispute
+                  && projectDetails.Status !== StatusEnum.Cancel
+                  &&
+                    <button
+                      onClick={() => {}}
+                      className="bg-green-500 text-white font-bold py-2 px-4 rounded ml-auto"
+                    >
+                      {activeUserByStatus(projectDetails)}
+                    </button>
+                  }
                 </h1>
               )}
 

@@ -364,7 +364,7 @@ const ProjectDetailsDescription = ({
       </div>
       {projectDetails.Status === StatusEnum.WaitingForConnectingLancersWallet && (
         <CustomButton
-          text="Approve Project"
+          text="Waiting For Approval"
           type="button"
           onClick={() => {
             assignProject(
@@ -386,7 +386,7 @@ const ProjectDetailsDescription = ({
       )}
       {projectDetails.Status === StatusEnum.PayInAdvance && (
         <CustomButton
-          text="Prepay Escrow"
+          text="Waiting For Prepay"
           styles="w-full mx-auto block bg-[#3E8ECC] hover:bg-[#377eb5] rounded-md text-center text-lg font-semibold text-white py-[4px] px-7 mt-6"
           type="submit"
           onClick={async (e) => {
@@ -402,7 +402,7 @@ const ProjectDetailsDescription = ({
       {projectDetails.Status === StatusEnum.WaitingForPayment && !projectDetails.InDispute && (
         <>
           <CustomButton
-            text="Approve The Deliverables"
+            text="Waiting For Approval Of The Deliverables"
             type="button"
             onClick={async () => {
               try {

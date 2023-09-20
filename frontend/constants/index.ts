@@ -488,8 +488,4 @@ export const signProjectEip712: TypeDataDomainInterface = {
   },
 };
 
-// export const whitelist: string[] = [
-//   "0x329980D088Ba66B3d459AE3d396a722437801689",
-// ]
-
 export const addressZero = "0x0000000000000000000000000000000000000000";

@@ -1,6 +1,8 @@
 export const whitelist: string[] = [
-  "0xF9E2c67f4B7d9D6B931c81c68D748Cf913B98865", // Shungo, Client
-  "0xf1fd6C09e2aD333A88b5051346645Dcb8a49998a", // Shungo, Freelancer
+  "0xF9E2c67f4B7d9D6B931c81c68D748Cf913B98865", //Shungo, Client
+  "0xf1fd6C09e2aD333A88b5051346645Dcb8a49998a", //Shungo, Freelancer
+  "0x9d53101902859E9a3Ea0a48de3976A2A3326c422", //Yusaku
+  "0x2Ed4a43bF11049c78E171A9c3F4A7ea1e6EDfBD4", //Badhan
   // =============================================================================
   "0xbB69c6d675Db063a543d6D8fdA4435025f93b828", //lucatomescu0@gmail.com
   "0xdd304336cf878df7d2647435d5f57c2345b140c1", //george.donnelly@gmail.com

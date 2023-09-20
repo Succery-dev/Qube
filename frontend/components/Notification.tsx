@@ -16,7 +16,7 @@ const Notification = (): JSX.Element | null => {
   useEffect(() => {
     const timeOut = setTimeout(() => {
       setShowNotification(false);
-    }, 10000);
+    }, 20000);
 
     return () => {
       clearTimeout(timeOut);

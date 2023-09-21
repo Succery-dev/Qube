@@ -70,7 +70,7 @@ const { chains, provider } = configureChains(
    * @dev providing alchemyProvider for development can cause various hinderances like unexpected errors due to limited FREE API calls and separate APIs for each network. Public providers connects to freely available public Ethereum nodes without any API keys.
    */
   [
-    alchemyProvider({ apiKey: process.env.ALCHEMY_API_KEY }),
+    alchemyProvider({ apiKey: process.env.NEXT_PUBLIC_ALCHEMY_API_KEY }),
     // publicProvider(),
   ]
 );

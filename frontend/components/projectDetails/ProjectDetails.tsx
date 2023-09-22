@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import Image from "next/image";
+import { useRouter } from "next/router";
 
 // Interface Imports
 import {
@@ -34,9 +36,10 @@ import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { useNotificationContext } from "../../context";
 
 // utils Imports
-import { checkNftOwnership, getDataFromFireStore } from "../../utils";
-import { assingProject, populateStates } from "../../utils/projectDetail";
-import { IconNotificationWarning } from "../../assets";
+import { getDataFromFireStore, activeUserByStatus } from "../../utils";
+import { assignProject, populateStates } from "../../utils/projectDetail";
+import { IconNotificationWarning, IconCopy, IconNotificationSuccess } from "../../assets";
+import { StatusEnum } from "../../enums";
 
 const SectionWrapper: React.FC<SectionWrapperPropsInterface> = ({
   children,
@@ -79,13 +82,12 @@ const ProjectDetails = ({ projectId }: { projectId: string }): JSX.Element => {
     domain: signProjectEip712.domain,
     types: signProjectEip712.types,
     value: {
-      Title: projectDetails.Title,
-      Detail: projectDetails.Detail,
+      "Title": projectDetails.Title,
+      "Detail": projectDetails.Detail,
       "Deadline(UTC)": projectDetails["Deadline(UTC)"],
       "Reward(USDC)": projectDetails["Reward(USDC)"],
-      "NFT(Contract Address)": projectDetails["NFT(Contract Address)"],
       "Client's Wallet Address": projectDetails["Client's Wallet Address"],
-      "Lancer's Wallet Address": address,
+      "Freelancer's Wallet Address": address,
     },
   });
 
@@ -103,6 +105,23 @@ const ProjectDetails = ({ projectId }: { projectId: string }): JSX.Element => {
     }
   }, [projectId]);
 
+  const router = useRouter();
+
+  async function handleCopyToClipboard() {
+    try {
+      const textToCopy = `http://${window.location.host}/${router.asPath}`;
+      await navigator.clipboard.writeText(textToCopy);
+      setNotificationConfiguration({
+        modalColor: "#62d140",
+        title: "Copy the link",
+        message: "Successfully copied the link to the clipboard",
+        icon: IconNotificationSuccess,
+      });
+
+      setShowNotification(true);
+    } catch (error) {}
+  };
+
   return (
     <SectionWrapper
       bgColor="bg-bg_primary"
@@ -114,16 +133,30 @@ const ProjectDetails = ({ projectId }: { projectId: string }): JSX.Element => {
             {/* Header */}
             <div className="w-full text-white">
               {section === "description" && (
-                <h1 className="sm:text-4xl xs:text-3xl text-3xl">
-                  Project for{" "}
-                  {projectDetails["Client's Wallet Address"] != undefined
-                    ? `${projectDetails["Client's Wallet Address"].slice(
-                        0,
-                        7
-                      )}...${projectDetails["Client's Wallet Address"].slice(
-                        -4
-                      )}`
-                    : ""}
+                <h1 className="flex flex-row items-center gap-5 sm:text-4xl xs:text-3xl text-3xl">
+                  <Image
+                    src={IconCopy}
+                    alt="copy"
+                    className="h-6 w-auto cursor-pointer"
+                    onClick={() => handleCopyToClipboard()}
+                  />
+                  Project for {projectDetails.Title}
+                  {/* TODO: fix this, change this button to a block */}
+                  {projectDetails.Status !== StatusEnum.CompleteNoSubmissionByLancer
+                  && projectDetails.Status !== StatusEnum.CompleteNoContactByClient
+                  && projectDetails.Status !== StatusEnum.CompleteApproval
+                  && projectDetails.Status !== StatusEnum.CompleteDisapproval
+                  && projectDetails.Status !== StatusEnum.CompleteDispute
+                  && projectDetails.Status !== StatusEnum.InDispute
+                  && projectDetails.Status !== StatusEnum.Cancel
+                  &&
+                    <button
+                      onClick={() => {}}
+                      className="bg-green-500 text-white font-bold py-2 px-4 rounded ml-auto"
+                    >
+                      {activeUserByStatus(projectDetails)}
+                    </button>
+                  }
                 </h1>
               )}
 
@@ -150,26 +183,32 @@ const ProjectDetails = ({ projectId }: { projectId: string }): JSX.Element => {
                   }}
                   type={"button"}
                 />
-                <CustomButton
-                  text="Files"
-                  styles={`${
-                    section === "files" ? "bg-[#3E8ECC]" : ""
-                  } rounded-md text-center xs:text-base text-sm text-white py-[2px] px-4 hover:bg-[#377eb5]`}
-                  onClick={() => {
-                    setSection("files");
-                  }}
-                  type={"button"}
-                />
-                <CustomButton
-                  text="Text"
-                  styles={`${
-                    section === "text" ? "bg-[#3E8ECC]" : ""
-                  } rounded-md text-center xs:text-md text-sm text-white py-[2px] px-4 hover:bg-[#377eb5]`}
-                  onClick={() => {
-                    setSection("text");
-                  }}
-                  type={"button"}
-                />
+                {projectDetails.Status !== StatusEnum.CompleteNoSubmissionByLancer
+                && projectDetails.Status !== StatusEnum.PayInAdvance && (
+                  <CustomButton
+                    text="Files"
+                    styles={`${
+                      section === "files" ? "bg-[#3E8ECC]" : ""
+                    } rounded-md text-center xs:text-base text-sm text-white py-[2px] px-4 hover:bg-[#377eb5]`}
+                    onClick={() => {
+                      setSection("files");
+                    }}
+                    type={"button"}
+                  />
+                )}
+                {projectDetails.Status !== StatusEnum.CompleteNoSubmissionByLancer
+                && projectDetails.Status !== StatusEnum.PayInAdvance && (
+                  <CustomButton
+                    text="Text"
+                    styles={`${
+                      section === "text" ? "bg-[#3E8ECC]" : ""
+                    } rounded-md text-center xs:text-md text-sm text-white py-[2px] px-4 hover:bg-[#377eb5]`}
+                    onClick={() => {
+                      setSection("text");
+                    }}
+                    type={"button"}
+                  />
+                )}
               </div>
               {/* Separator Line */}
               <div className="w-full py-[0.6px] mt-4 bg-[#1E1E1E]"></div>
@@ -180,7 +219,8 @@ const ProjectDetails = ({ projectId }: { projectId: string }): JSX.Element => {
                 isAssigned={isAssigned}
                 openConnectModal={openConnectModal}
                 signTypedDataAsync={signTypedDataAsync}
-                nftOwnerAddress={address}
+                // nftOwnerAddress={address}
+                freelancerAddress={address}
                 setFileDeliverables={setFileDeliverables}
                 projectId={projectId}
                 setIsAssigned={setIsAssigned}

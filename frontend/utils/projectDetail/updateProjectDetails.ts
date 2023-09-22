@@ -66,7 +66,7 @@ export const updateProjectDetails = async (
   updatedSubset: Partial<StoreProjectDetailsInterface>
 ) => {
   try {
-    const databaseRef = doc(database, "project-details", projectId);
+    const databaseRef = doc(database, "projects", projectId);
     await updateDoc(databaseRef, updatedSubset);
     return true;
   } catch (error) {

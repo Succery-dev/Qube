@@ -36,6 +36,8 @@ import {
 // StatusEnum Import
 import { StatusEnum } from "../../enums";
 
+import { useAccount } from "wagmi";
+
 const SectionWrapper: React.FC<SectionWrapperPropsInterface> = ({
   children,
   bgColor,
@@ -55,20 +57,20 @@ const SectionWrapper: React.FC<SectionWrapperPropsInterface> = ({
 
 const Dashboard: NextPage = () => {
   const router = useRouter();
+  const { address, isDisconnected } = useAccount();
   const [data, setData] = useState({} as ProjectDataInterface);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        console.log("Fetching project data...");
-        const res = await axios.get(`/api/project/${router.query.walletAddress}`);
+        const res = await axios.get(`/api/project/${address}`);
         const projects: ProjectDetailInterface[] = [];
         res.data.map((project: any) => {
           projects.push({
             project: project["Title"],
             deadline: project["Deadline(UTC)"],
             amount: parseInt(project["Reward(USDC)"]),  // string -> number
-            status: Object.entries(StatusEnum).find(([key, value]) => value === project["Status"])[1] as StatusEnum,
+            status: Object.entries(StatusEnum).find(([key, value]) => value == project["Status"])[1] as StatusEnum,
             id: project["id"],
           });
         });
@@ -81,6 +83,12 @@ const Dashboard: NextPage = () => {
   
     fetchData();
   }, []);
+
+  useEffect(() => {
+    if (isDisconnected) {
+      router.push("/");
+    }
+  }, [isDisconnected]);
 
   if (!data) {
     return null;

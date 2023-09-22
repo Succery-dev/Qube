@@ -16,7 +16,7 @@ const Notification = (): JSX.Element | null => {
   useEffect(() => {
     const timeOut = setTimeout(() => {
       setShowNotification(false);
-    }, 4000);
+    }, 15000);
 
     return () => {
       clearTimeout(timeOut);
@@ -47,10 +47,10 @@ const Notification = (): JSX.Element | null => {
             <div>
               {/* Notification Message */}
               <div className="flex flex-col">
-                <h3 className="font-bold text-xl">
+                <h3 className="font-bold text-2xl">
                   {notificationConfiguration.title}
                 </h3>
-                <p className="font-normal text-secondary text-base">
+                <p className="font-normal text-secondary text-xl">
                   {notificationConfiguration.message}
                 </p>
               </div>

@@ -1,70 +1,116 @@
-# Controller Contract
+# Controller Contract Features
 
-This is a sample Controller contract that manages workers, clients and projects.
+The Controller contract provides the following features:
 
-## General Configuration
+# Managing Clients
 
-The contract uses OpenZeppelin's SafeERC20 library to safely interact with ERC20 tokens. 
+- call `registerAsClient` to add a client passing the client's name as an argument.
+- you can query a list of all clients address by calling `clientAddress` function.
+- after, you can get info about each client querying the map `clientInfo` by client address.
 
-It also uses the Ownable and ReentrancyGuard modifiers for access control and reentrancy protection.
+# Managing Workers
+- call `registerAsWorker` to add a worker passing the worker's name as an argument.
+- you can query a list of all workers address by calling `workerByAddress` function.
+- after, you can get info about each worker querying the map `workerInfo` by worker address.
 
-The Counters library is used to keep track of work IDs and worker IDs.
+# Managing Projects
+- call `createProject` to create a project passing the project's description, budget, deadline.
+- we detect the client owner of the project being added by msg.sender.
+- you can query a list of all projects id by owner calling `projectsByOwner(address _owner)` function.
+- after, you can get info about each project querying the map `projects` by project ID.
+- after a project is added, any worker can bid to the project calling `bidToProject` function passing the project ID, proposed budget and proposed deadline.
 
-The depositToken variable holds the address of the ERC20 token used to pay workers.
+# Managing Bids
 
-## Worker Management
+# Bidding on a Project
 
-Workers can register by calling the registerAsWorker function with their name. 
-This will emit a WorkerRegistered event and store the worker's info.
+To bid on a project, a worker should call the bidOnProject function with the project ID and the bid amount as arguments.
 
-Workers have a name, payment address, registration timestamp, and number of completed projects.
+To accept a bid, the project owner should call the acceptBid function with the project ID and the worker's address as arguments.
+- to accept bids, a project mus be in `OpenToBids` stage.
+- a proposed deadline and budget must be lower than max budget and deadline when a project is added.
+- after a bid is added, you can query a list of all bids by project ID calling `bidsByProjectId(uint256 _projectId)` function.
+- and then check the map `bidsById` by bid id to get bidInfo.
 
-Mappings are used to lookup workers by name, ID and address. 
-An array also stores all worker addresses.
+# Accepting a Bid
+- after bids are added to a project, the project owner can accept a bid calling `acceptBid` function passing the bid id.
+- only project owner can call this function.
+- after a bid is accepted, the project stage is changed to `BidAccepted`, this indicates to the worker that his bid is accepted.
+- when a bid is accepted, we transfer the payment to our contract to pay woker when the project is finished.
+- worker must call `startWork` to the project stage to `InProgress` and allow time tracking.
 
-## Client Management
+# Managing time/budget requests
 
-Clients can register by calling the `registerAsClient` function with their name. 
+## Proposing a Deadline/Budget Extension
+- after a bid is accepted, the worker can request a deadline or budget extension calling `proposeExtension` function passing the project ID, the new deadline or budget, and a reason as arguments.
+- both max deadline and max budget should be lower than max deadline and max budget when a project is added.
+- a project to accept a budget/deadline extension, must be in `InProgress` stage.
+- only the worker assigned to the project can propose a deadline/budget extension.
 
-This will emit a `ClientRegistered` event and store the client's info.
+## Accepting a Deadline/Budget Extension
+- after a request is added, the project owner can accept the request calling `acceptProposal` function passing the project ID.
+- only project owner can accept a deadline/budget extension.
+- a project to accept a budget/deadline extension, must be in `InProgress` stage.
+- after a request is accepted, the project budget and deadline are updated.
+- if client accept a new budget that is bigger than the accepted bid, the difference is transfered to the contract.
+- or if the budget is lower than the accepted bid, the difference is transfered to the client back.
 
+# Proposing a Delivery
+- to propose a delivery, a worker should call the `proposeDelivery` function with the project ID.
+- only worker assigned to the project can propose a delivery.
+- a project must be in state `InProgress` to propose a delivery.
+- after a delivery is proposed, the project stage is changed to `DeliveryProposed`, this indicates to the client that a delivery is proposed.
 
-## Project Management
+# Accepting a Delivery and Paying the Worker
+- to accept a delivery and pay the worker, the client should call the `acceptDeliveryAndPay` function with the project ID as the argument.
+- only project owner can call this function.
+- a project must be in state `DeliveryProposed` to accept a delivery.
+- after a delivery is accepted, the project stage is changed to `DeliveryAccepted`, this indicates to the worker that the project is completed.
+- then the worker is paid and the contract is closed.
 
-Anyone can create a project by calling the `createProject` function, passing the maximum budget, deadline and description. 
+# Declining a Delivery
+- to decline a delivery, the client should call the `declineDelivery` function with the project ID and the reason of the rejection.
+- only project owner can call this function.
+- project must be in state `DeliveryProposed` to decline a delivery.
+- then, the project is set stage to `DeliveryRejected` and the worker can propose a new delivery.
+- if the client decline a delivery, the worker must call `startWork` to set the project stage to `InProgress` and allow time tracking.
 
-Asset to pay worker is transferred to the contract to make sure worker get paid.
+# Opening a Dispute
 
-This will emit a ProjectCreated event and store the new project's info.
+- after a delivery is rejected, the worker can open a dispute calling the `openDispute` function with the project ID and a reason as arguments.
+- only the worker assigned to the project can open a dispute.
+- a project must be in state `DeliveryRejected` to open a dispute.
+- after, the project stage is changed to `DisputeOpened`, this indicates to the client that a dispute is opened.
 
-Projects have an ID, creator address, maximum/accepted budget, maximum deadline, description and stage (either open for bids or bid accepted).
+# Resolve dispute in worker favor
+- after a dispute is opened, the arbitrator can resolve the dispute in worker favor calling the `resolveDisputeInWorkerFavor` function with the project ID and a reason.
+- only users in the mapping `arbitrators` can call this function.
+- use the function `setArbitrator` to add/remove arbitrators.
+- a project must be in state `DisputeOpened` to resolve a dispute.
+- after, worker get paid.
+- then, the project is set stage to `DisputeResolved` and the contract is closed.
 
-Workers can bid on open projects by calling the `bidToProject` function. 
+# Resolve dispute in client favor
+- after a dispute is opened, the arbitrator can resolve the dispute in client favor calling the `resolveDisputeInClientFavor` function with the project ID and a reason.
+- only users in the mapping `arbitrators` can call this function.
+- use the function `setArbitrator` to add/remove arbitrators.
+- a project must be in state `DisputeOpened` to resolve a dispute.
+- after, the client get funds back.
+- then, the project is set stage to `DisputeResolved` and the contract is closed.
 
-This will emit a `BidToProject` event and store the bid info, which includes the proposed budget and deadline.
+# Views
 
-Project owners can accept a bid by calling the `acceptBid` function, passing the bid ID. 
-
-This will set the project stage to "bid accepted", store the accepted bid info and emit a `BidAccepted` event.
-
-## Views
+----------------------------------------------------------
 
 Vies to be used by frontend team to manage projects:
 
-- `getCurrentWorkId() external view returns (uint256)` - Returns the current work ID. No parameters.
-- `getCurrentWorkerId() external view returns (uint256) `- Returns the current worker ID. No parameters.
-- `getWorkerByAddress(address _workerAddress) external view returns (Worker memory)` - Returns the worker info for a given address.
-    - `_workerAddress` - The address of the worker to lookup.
-- `getWorkerByName(string _name) external view returns (Worker memory)` - Returns the worker info for a given name.
-    - `_name` - The name of the worker to lookup.
-- `getClientByAddress(address _clientAddress) external view returns (Client memory)` - Returns the client info for a given address.
-    - `_clientAddress` - The address of the client to lookup.
-- `getClientByName(string _name) external view returns (Client memory)` - Returns the client info for a given name.
-    - `_name` - The name of the client to lookup.
-- `getMyProjects(address owner) external view returns (Project[] memory)` - Returns an array of projects created by owner argument.
-- `getProjectById(uint256 _projectId) external view returns (Project memory)` - Returns a project info for a given ID.
-    - `_projectId` - The ID of the project to lookup.
-- `getProjectBids(uint256 _projectId) external view returns (BidInfo[] memory)` - Returns an array of bids for a given project ID.
-    - `_projectId` - The ID of the project to get bids for.
-- `getAcceptedBidInfo(uint256 _projectId) external view returns (BidInfo memory)` - Returns the info for the accepted bid for a given project ID.
-    - `_projectId` - The ID of the project to get the accepted bid info for.
+- `getWorkerInfoByAddress(address _workerAddress)` return WorkerInfo struct by address.
+- `getClientInfoByAddress(address _clientAddress)` return ClientInfo struct by address.
+- `getProjectInfoById(uint256 _projectId)` return ProjectInfo struct by project ID.
+- `getBidInfoById(uint256 _bidId)` return BidInfo struct by bid ID.
+- `getProjectIdsByOwner(address owner)` return a list of projects id by client address.
+- `getProjectBids(uint256 projectId)` return a list of projects bid id by project id.
+- `getAcceptedBidInfo(uint256 projectId)` return BidInfo struct accepted for this project.
+
+# Admin functions
+- `setArbitrator(address _arbitrator, bool _isArbitrator)` add/remove arbitrators.

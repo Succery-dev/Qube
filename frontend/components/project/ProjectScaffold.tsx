@@ -49,15 +49,15 @@ const ProjectScaffold = ({
   const form = context.form;
   const setForm = context.setForm;
 
-  const [nftAddressDetails, setnftAddressDetails]: [
-    nftAddressDetails: NftAddressDetailsInterface,
-    setnftAddressDetails: React.Dispatch<
-      React.SetStateAction<NftAddressDetailsInterface>
-    >
-  ] = useState({
-    isNftAddress: false,
-    nftCollectionImageUrl: "",
-  });
+  // const [nftAddressDetails, setnftAddressDetails]: [
+  //   nftAddressDetails: NftAddressDetailsInterface,
+  //   setnftAddressDetails: React.Dispatch<
+  //     React.SetStateAction<NftAddressDetailsInterface>
+  //   >
+  // ] = useState({
+  //   isNftAddress: false,
+  //   nftCollectionImageUrl: "",
+  // });
 
   const [projectDetailLink, setProjectDetailLink]: [
     projectDetailLink: string,
@@ -82,8 +82,8 @@ const ProjectScaffold = ({
           <CreateProjectForm
             form={form}
             setForm={setForm}
-            nftAddressDetails={nftAddressDetails}
-            setnftAddressDetails={setnftAddressDetails}
+            // nftAddressDetails={nftAddressDetails}
+            // setnftAddressDetails={setnftAddressDetails}
             setShowProjectModal={setShowProjectModal}
             setProjectDetailLink={setProjectDetailLink}
             // setShowSubmitModal={setShowSubmitModal}
@@ -92,7 +92,7 @@ const ProjectScaffold = ({
           {/* 3D Logo */}
           <div className="w-1/2 h-[500px] lg:block hidden">
             <LogoCanvas
-              nftCollectionImageUrl={nftAddressDetails.nftCollectionImageUrl}
+              // nftCollectionImageUrl={nftAddressDetails.nftCollectionImageUrl}
             />
           </div>
         </div>

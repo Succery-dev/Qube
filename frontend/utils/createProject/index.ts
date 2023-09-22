@@ -1,6 +1,6 @@
-import {
-  isValidEthereumContractAddress,
-  isNftContract,
-} from "./verifyNftAddress";
+// import {
+//   isValidEthereumContractAddress,
+//   isNftContract,
+// } from "./verifyNftAddress";
 
-export { isValidEthereumContractAddress, isNftContract };
+// export { isValidEthereumContractAddress, isNftContract };

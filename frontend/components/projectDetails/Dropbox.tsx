@@ -20,6 +20,7 @@ import {
   populateStates,
   storage,
   updateProjectDetails,
+  getDataFromFireStore,
 } from "../../utils";
 import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
 
@@ -30,8 +31,10 @@ import {
   DisplayTextDeliverableInterface,
   NotificationConfigurationInterface,
   StoreFileDeliverableInterface,
+  StoreProjectDetailsInterface,
 } from "../../interfaces";
 import Link from "next/link";
+import { StatusEnum } from "../../enums";
 
 const Dropbox = ({
   fileDeliverables,
@@ -78,6 +81,19 @@ const Dropbox = ({
           return;
         }
 
+        // Update the status to "Waiting for Payment"
+        if (projectDetails.fileDeliverable === undefined && projectDetails.textDeliverable === undefined) {
+          const updatedSubsetProjectDetail: Partial<StoreProjectDetailsInterface> =
+            {
+              "Status": StatusEnum.WaitingForPayment,
+            };
+          await updateProjectDetails(projectId, updatedSubsetProjectDetail);
+          const [_, updatedProjectDetails] = await getDataFromFireStore(
+            projectId
+          );
+          setProjectDetails(updatedProjectDetails);
+        }
+
         setIsDropable(false);
         let updatedFileDeliverables: StoreFileDeliverableInterface[] =
           fileDeliverables.map((fileDeliverable) => {
@@ -92,7 +108,7 @@ const Dropbox = ({
           acceptedFiles.map((file, acceptedFileIndex) => {
             const index = fileDeliverables.length + acceptedFileIndex;
             // const index = acceptedFileIndex;
-            const storageRef = ref(storage, `file/${file.name}`);
+            const storageRef = ref(storage, `${projectId}/${file.name}`);
             const uploadTask = uploadBytesResumable(storageRef, file);
 
             return new Promise((resolve, reject) => {
@@ -171,8 +187,8 @@ const Dropbox = ({
         );
         setNotificationConfiguration({
           modalColor: "#62d140",
-          title: "Success",
-          message: "Submitted the files",
+          title: "Submitted the submissions",
+          message: "Well done! Wait till your submissions get approved by the client.",
           icon: IconNotificationSuccess,
         });
         setIsDropable(true);
@@ -193,6 +209,7 @@ const Dropbox = ({
           });
         }
       } finally {
+        setShowNotification(true);
       }
     },
 

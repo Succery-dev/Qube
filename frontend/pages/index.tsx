@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 // Components Imports
 import {
@@ -10,7 +10,8 @@ import {
   FAQ,
   Support,
   Glow,
-  CustomButton
+  CustomButton,
+  Notification,
 } from "../components";
 
 // Framer-Motion Imports
@@ -21,6 +22,12 @@ import { aesthetics, waitlistUrl } from "../constants";
 
 // Inteface Imports
 import { SectionWrapperPropsInterface } from "../interfaces";
+
+import { useAccount, useDisconnect } from "wagmi";
+import { useRouter } from "next/router";
+import { useNotificationContext } from "../context";
+import { IconNotificationWarning } from "../assets";
+import { whitelist } from "../constants/whitelist";
 
 const SectionWrapper: React.FC<SectionWrapperPropsInterface> = ({
   children,
@@ -40,8 +47,35 @@ const SectionWrapper: React.FC<SectionWrapperPropsInterface> = ({
 };
 
 export default function Home() {
+  const router = useRouter();
+  const { address, isConnected } = useAccount();
+  const { disconnect } = useDisconnect()
+
+  // Notification Context
+  const context = useNotificationContext();
+  const setShowNotification = context.setShowNotification;
+  const setNotificationConfiguration = context.setNotificationConfiguration;
+
+  useEffect(() => {
+    // TODO: Fix this whitelist feature
+    if (isConnected && whitelist.includes(address)) {
+      router.push(`/dashboard/${address}`);
+    } else if (isConnected && !whitelist.includes(address)) {
+      disconnect();
+      setNotificationConfiguration({
+        modalColor: "#d1d140",
+        title: "Access Denied",
+        message: "You're not on the whitelist.",
+        icon: IconNotificationWarning,
+      });
+      setShowNotification(true);
+    }
+  }, [isConnected]);
+
   return (
     <div className="font-nunito text-secondary">
+      {/* Notification */}
+      <Notification />
       {/* IntroSection */}
       <SectionWrapper
         bgColor="bg-bg_primary"

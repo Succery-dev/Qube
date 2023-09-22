@@ -5,7 +5,7 @@ import { convertSeconds } from "./convertSeconds";
  * @todo use this app for production
  */
 // import { firebaseApp } from "./firebase";
-import { app, database, storage } from "./firebase";
+import { firebaseApp, database, storage } from "./firebase";
 
 import { formatBytes } from "./formatBytes";
 
@@ -20,18 +20,21 @@ import {
   fadeIn,
 } from "./motion";
 
-import { isValidEthereumContractAddress, isNftContract } from "./createProject";
+// import { isValidEthereumContractAddress, isNftContract } from "./createProject";
 
 import {
-  checkNftOwnership,
+  // checkNftOwnership,
   approveProjectDetails,
   updateProjectDetails,
   getDataFromFireStore,
-  assingProject,
+  assignProject,
   populateStates,
 } from "./projectDetail";
 
 import { uploadDeliverables } from "./project/uploadDeliverables";
+
+import { convertState } from "./convertState";
+import { activeUserByStatus } from "./activeUserByStatus";
 
 export {
   convertSeconds,
@@ -45,19 +48,22 @@ export {
   fadeIn,
   
   // firebaseApp,
-  app,
+  firebaseApp,
   database,
   storage,
-  isValidEthereumContractAddress,
-  isNftContract,
-  checkNftOwnership,
+  // isValidEthereumContractAddress,
+  // isNftContract,
+  // checkNftOwnership,
   approveProjectDetails,
   updateProjectDetails,
   getDataFromFireStore,
-  assingProject,
+  assignProject,
   populateStates,
   formatBytes,
 
   // firebaseApp,
   uploadDeliverables,
+
+  convertState,
+  activeUserByStatus,
 };

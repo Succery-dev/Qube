@@ -67,7 +67,7 @@ export const assignProject = async (
       //   throw new Error("Not Approved for the project");
       // }
     } catch (error) {
-      console.log("hello: ", error);
+      console.log("Error: ", error);
       setNotificationConfiguration({
         modalColor: "#d14040",
         title: "Error",

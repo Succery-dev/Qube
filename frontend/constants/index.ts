@@ -471,9 +471,11 @@ export const createProjectFields: CreateProjectFieldInterface[] = [
 export const signProjectEip712: TypeDataDomainInterface = {
   domain: {
     name: "Qube-Sign-Project",
+    // TODO: Softcoding
     // chainId: 137,
     // chainId: 31337, // Hardhat Network ChainID
-    chainId: 80001,
+    // chainId: 80001,
+    chainId: 137,
   },
   types: {
     ProjectDetail: [

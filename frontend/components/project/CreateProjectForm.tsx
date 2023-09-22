@@ -71,7 +71,8 @@ const FormFields = ({
       key={`createProject-${formField.title}`}
     >
       <h2 className="text-lg font-semibold text-secondary">
-        {formField.title}*
+        {/* TODO: fix */}
+        {formField.title === "Deadline(UTC)" ? "Submission Date (UTC)" : formField.title}*
       </h2>
       <div className="grid place-items-center w-full blue-transparent-green-gradient lg:p-[1.5px] p-[1px] rounded-sm">
         {formField.type === "textArea" ? (
@@ -203,8 +204,8 @@ const CreateProjectForm = ({
 
         setNotificationConfiguration({
           modalColor: "#62d140",
-          title: "Success",
-          message: "Sucessfully created the project",
+          title: "Successfully created the project",
+          message: "Share the link and wait till the freelancer signs to the project!",
           icon: IconNotificationSuccess,
         });
 

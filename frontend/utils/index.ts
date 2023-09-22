@@ -33,6 +33,9 @@ import {
 
 import { uploadDeliverables } from "./project/uploadDeliverables";
 
+import { convertState } from "./convertState";
+import { activeUserByStatus } from "./activeUserByStatus";
+
 export {
   convertSeconds,
   getDoughnutChartConfig,
@@ -60,4 +63,7 @@ export {
 
   // firebaseApp,
   uploadDeliverables,
+
+  convertState,
+  activeUserByStatus,
 };

@@ -1,8 +1,7 @@
 import { HardhatUserConfig, task } from "hardhat/config";
 import "@nomicfoundation/hardhat-toolbox";
-// add dotenv
-import { config as dotenvConfig } from "dotenv";
-dotenvConfig();
+import dotenv from "dotenv";
+dotenv.config();
 require("@nomiclabs/hardhat-etherscan");
 import "@typechain/hardhat";
 import "solidity-coverage";
@@ -17,6 +16,7 @@ task("balance", "Prints an account's balance")
 
 const config: HardhatUserConfig = {
     defaultNetwork: "hardhat",
+    solidity: "0.8.18",
     networks: {
         // mainnet: {
         //     url: "https://eth.llamarpc.com",
@@ -35,33 +35,41 @@ const config: HardhatUserConfig = {
         // localhost: {
         //     url: "http://127.0.0.1:8545"
         // },
+        mainnet: {
+            url: `https://polygon-mainnet.g.alchemy.com/v2/${process.env.ALCHEMY_API_KEY_PRODUCTION}`,
+            accounts: [process.env.PRIVATE_KEY_PRODUCTION as string],
+        },
+        mumbai: {
+            url: `https://polygon-mumbai.g.alchemy.com/v2/${process.env.ALCHEMY_API_KEY}`,
+            accounts: [process.env.PRIVATE_KEY as string],
+        },
         hardhat: {
             chainId: 31337,
             initialBaseFeePerGas: 0,
         }
     },
-    solidity: {
-        compilers: [
-            {
-                version: '0.8.18',
-                settings: {
-                    optimizer: {
-                        enabled: true,
-                        runs: 200
-                    },
-                },
-            },
-            {
-                version: '0.6.6',
-                settings: {
-                    optimizer: {
-                        enabled: true,
-                        runs: 200
-                    },
-                },
-            }
-        ],
-    },
+    // solidity: {
+    //     compilers: [
+    //         {
+    //             version: '0.8.18',
+    //             settings: {
+    //                 optimizer: {
+    //                     enabled: true,
+    //                     runs: 200
+    //                 },
+    //             },
+    //         },
+    //         {
+    //             version: '0.6.6',
+    //             settings: {
+    //                 optimizer: {
+    //                     enabled: true,
+    //                     runs: 200
+    //                 },
+    //             },
+    //         }
+    //     ],
+    // },
     etherscan: {
         apiKey: { // npx hardhat verify --list-networks
             goerli: `${process.env.ETHERSCAN}`,

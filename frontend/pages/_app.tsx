@@ -24,7 +24,7 @@ import {
   polygonZkEvm,
   polygonZkEvmTestnet,
 } from "wagmi/chains";
-// import { alchemyProvider } from "wagmi/providers/alchemy";
+import { alchemyProvider } from "wagmi/providers/alchemy";
 import { publicProvider } from "wagmi/providers/public";
 import MainLayout from "../layout/mainLayout";
 import { useRouter } from "next/router";
@@ -52,17 +52,17 @@ const localhost8545 = {
 
 const { chains, provider } = configureChains(
   [
-    mainnet,
-    goerli,
+    // mainnet,
+    // goerli,
     polygon,
     polygonMumbai,
-    optimism,
-    optimismGoerli,
-    arbitrum,
-    arbitrumGoerli,
-    polygonZkEvm,
-    polygonZkEvmTestnet,
-    localhost8545,
+    // optimism,
+    // optimismGoerli,
+    // arbitrum,
+    // arbitrumGoerli,
+    // polygonZkEvm,
+    // polygonZkEvmTestnet,
+    // localhost8545,
   ],
 
   // TODO: remove the below comment for production => use Alchemy Provider for production for enhanced performance
@@ -70,8 +70,8 @@ const { chains, provider } = configureChains(
    * @dev providing alchemyProvider for development can cause various hinderances like unexpected errors due to limited FREE API calls and separate APIs for each network. Public providers connects to freely available public Ethereum nodes without any API keys.
    */
   [
-    // alchemyProvider({ apiKey: process.env.ALCHEMY_API_KEY }),
-    publicProvider(),
+    alchemyProvider({ apiKey: process.env.NEXT_PUBLIC_ALCHEMY_API_KEY }),
+    // publicProvider(),
   ]
 );
 

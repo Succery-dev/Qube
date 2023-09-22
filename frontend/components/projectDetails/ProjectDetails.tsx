@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import Image from "next/image";
+import { useRouter } from "next/router";
 
 // Interface Imports
 import {
@@ -34,9 +36,9 @@ import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { useNotificationContext } from "../../context";
 
 // utils Imports
-import { getDataFromFireStore } from "../../utils";
+import { getDataFromFireStore, activeUserByStatus } from "../../utils";
 import { assignProject, populateStates } from "../../utils/projectDetail";
-import { IconNotificationWarning } from "../../assets";
+import { IconNotificationWarning, IconCopy, IconNotificationSuccess } from "../../assets";
 import { StatusEnum } from "../../enums";
 
 const SectionWrapper: React.FC<SectionWrapperPropsInterface> = ({
@@ -85,7 +87,7 @@ const ProjectDetails = ({ projectId }: { projectId: string }): JSX.Element => {
       "Deadline(UTC)": projectDetails["Deadline(UTC)"],
       "Reward(USDC)": projectDetails["Reward(USDC)"],
       "Client's Wallet Address": projectDetails["Client's Wallet Address"],
-      "Lancer's Wallet Address": address,
+      "Freelancer's Wallet Address": address,
     },
   });
 
@@ -103,6 +105,23 @@ const ProjectDetails = ({ projectId }: { projectId: string }): JSX.Element => {
     }
   }, [projectId]);
 
+  const router = useRouter();
+
+  async function handleCopyToClipboard() {
+    try {
+      const textToCopy = `http://${window.location.host}/${router.asPath}`;
+      await navigator.clipboard.writeText(textToCopy);
+      setNotificationConfiguration({
+        modalColor: "#62d140",
+        title: "Copy the link",
+        message: "Successfully copied the link to the clipboard",
+        icon: IconNotificationSuccess,
+      });
+
+      setShowNotification(true);
+    } catch (error) {}
+  };
+
   return (
     <SectionWrapper
       bgColor="bg-bg_primary"
@@ -114,16 +133,30 @@ const ProjectDetails = ({ projectId }: { projectId: string }): JSX.Element => {
             {/* Header */}
             <div className="w-full text-white">
               {section === "description" && (
-                <h1 className="sm:text-4xl xs:text-3xl text-3xl">
-                  Project for{" "}
-                  {projectDetails["Client's Wallet Address"] != undefined
-                    ? `${projectDetails["Client's Wallet Address"].slice(
-                        0,
-                        7
-                      )}...${projectDetails["Client's Wallet Address"].slice(
-                        -4
-                      )}`
-                    : ""}
+                <h1 className="flex flex-row items-center gap-5 sm:text-4xl xs:text-3xl text-3xl">
+                  <Image
+                    src={IconCopy}
+                    alt="copy"
+                    className="h-6 w-auto cursor-pointer"
+                    onClick={() => handleCopyToClipboard()}
+                  />
+                  Project for {projectDetails.Title}
+                  {/* TODO: fix this, change this button to a block */}
+                  {projectDetails.Status !== StatusEnum.CompleteNoSubmissionByLancer
+                  && projectDetails.Status !== StatusEnum.CompleteNoContactByClient
+                  && projectDetails.Status !== StatusEnum.CompleteApproval
+                  && projectDetails.Status !== StatusEnum.CompleteDisapproval
+                  && projectDetails.Status !== StatusEnum.CompleteDispute
+                  && projectDetails.Status !== StatusEnum.InDispute
+                  && projectDetails.Status !== StatusEnum.Cancel
+                  &&
+                    <button
+                      onClick={() => {}}
+                      className="bg-green-500 text-white font-bold py-2 px-4 rounded ml-auto"
+                    >
+                      {activeUserByStatus(projectDetails)}
+                    </button>
+                  }
                 </h1>
               )}
 
@@ -150,7 +183,8 @@ const ProjectDetails = ({ projectId }: { projectId: string }): JSX.Element => {
                   }}
                   type={"button"}
                 />
-                {projectDetails.Status !== StatusEnum.CompleteNoSubmissionByLancer && (
+                {projectDetails.Status !== StatusEnum.CompleteNoSubmissionByLancer
+                && projectDetails.Status !== StatusEnum.PayInAdvance && (
                   <CustomButton
                     text="Files"
                     styles={`${
@@ -162,7 +196,8 @@ const ProjectDetails = ({ projectId }: { projectId: string }): JSX.Element => {
                     type={"button"}
                   />
                 )}
-                {projectDetails.Status !== StatusEnum.CompleteNoSubmissionByLancer && (
+                {projectDetails.Status !== StatusEnum.CompleteNoSubmissionByLancer
+                && projectDetails.Status !== StatusEnum.PayInAdvance && (
                   <CustomButton
                     text="Text"
                     styles={`${

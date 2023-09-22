@@ -471,8 +471,11 @@ export const createProjectFields: CreateProjectFieldInterface[] = [
 export const signProjectEip712: TypeDataDomainInterface = {
   domain: {
     name: "Qube-Sign-Project",
+    // TODO: Softcoding
     // chainId: 137,
-    chainId: 31337, // Hardhat Network ChainID
+    // chainId: 31337, // Hardhat Network ChainID
+    // chainId: 80001,
+    chainId: 137,
   },
   types: {
     ProjectDetail: [
@@ -482,13 +485,9 @@ export const signProjectEip712: TypeDataDomainInterface = {
       { name: "Reward(USDC)", type: "uint256" },
       // { name: "NFT(Contract Address)", type: "address" },
       { name: "Client's Wallet Address", type: "address" },
-      { name: "Lancer's Wallet Address", type: "address" },
+      { name: "Freelancer's Wallet Address", type: "address" },
     ],
   },
 };
-
-// export const whitelist: string[] = [
-//   "0x329980D088Ba66B3d459AE3d396a722437801689",
-// ]
 
 export const addressZero = "0x0000000000000000000000000000000000000000";

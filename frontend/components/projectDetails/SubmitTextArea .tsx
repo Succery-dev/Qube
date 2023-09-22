@@ -18,6 +18,7 @@ import {
   StoreProjectDetailsInterface,
 } from "../../interfaces";
 import { StatusEnum } from "../../enums";
+import Modal from "./Modal";
 
 const SubmitTextArea = ({
   textDeliverables,
@@ -50,6 +51,14 @@ const SubmitTextArea = ({
   >;
   isAssigned: boolean;
 }) => {
+  // TODO: fix, these are for the modal
+  const [showModal, setShowModal]: [
+    showModal: boolean,
+    setShowModal: React.Dispatch<React.SetStateAction<boolean>>
+  ] = useState(false);
+  const title = "Submit Text";
+  const description = "Are your submissions appropriate? If it’s not appropriate then you may not get the rewards. If you are sure press the OK button.";
+
   // States
   const [text, setText] = useState<string>();
   const [isUploading, setIsUploading] = useState<boolean>(false);
@@ -109,8 +118,8 @@ const SubmitTextArea = ({
 
         setNotificationConfiguration({
           modalColor: "#62d140",
-          title: "Success",
-          message: "Submitted the Text",
+          title: "Submitted the submissions",
+          message: "Well done! Wait till your submissions get approved by the client.",
           icon: IconNotificationSuccess,
         });
 
@@ -166,7 +175,7 @@ const SubmitTextArea = ({
           type="submit"
           onClick={(e) => {
             e.preventDefault();
-            submitText(text);
+            setShowModal(true);
           }}
         />
       </form>
@@ -229,6 +238,13 @@ const SubmitTextArea = ({
             );
           })}
       </aside>
+      <Modal
+        showModal={showModal}
+        setShowModal={setShowModal}
+        title={title}
+        description={description}
+        onConfirm={() => submitText(text)}
+      />
     </div>
   );
 };

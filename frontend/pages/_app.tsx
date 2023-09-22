@@ -55,7 +55,7 @@ const { chains, provider } = configureChains(
     // mainnet,
     // goerli,
     polygon,
-    polygonMumbai,
+    // polygonMumbai,
     // optimism,
     // optimismGoerli,
     // arbitrum,

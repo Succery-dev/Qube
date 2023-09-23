@@ -9,7 +9,7 @@ import "../Controller.sol";
 // Uncomment this line to use console.log
 // import "hardhat/console.sol";
 
-contract MockController is Controller {
-    constructor(address payable _depositToken) Controller(_depositToken) {
+contract MockController is ControllerLite {
+    constructor(address payable _depositToken) ControllerLite(_depositToken) {
     }
 }

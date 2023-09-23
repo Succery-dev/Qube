@@ -1,7 +1,6 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import Tilt from "react-parallax-tilt";
 
 // Asset Imports
 import { CrossIcon, IconCopy, arrow } from "../../assets";
@@ -13,22 +12,29 @@ import { modalVariant } from "../../utils";
 const CreateProjectModal = ({
   showProjectModal,
   setShowProjectModal,
-  projectDetailLink,
 }: {
-  showProjectModal: boolean;
-  setShowProjectModal: React.Dispatch<React.SetStateAction<boolean>>;
-  projectDetailLink: string;
+  showProjectModal: {
+    display: boolean;
+    projectLink: string;
+  };
+  setShowProjectModal: React.Dispatch<
+    React.SetStateAction<{
+      display: boolean;
+      projectLink: string;
+      collectionImageUrl: string;
+    }>
+  >;
 }) => {
   const handleCopyToClipboard = async () => {
     try {
-      const textToCopy = projectDetailLink;
+      const textToCopy = showProjectModal.projectLink;
       await navigator.clipboard.writeText(textToCopy);
     } catch (error) {}
   };
 
   return (
     <AnimatePresence>
-      {showProjectModal && (
+      {showProjectModal.display && showProjectModal.projectLink.length > 0 && (
         <motion.div
           variants={modalVariant()}
           initial="hidden"
@@ -50,7 +56,13 @@ const CreateProjectModal = ({
                       alt="cross"
                       className="h-4 w-auto cursor-pointer"
                       onClick={() => {
-                        setShowProjectModal(false);
+                        setShowProjectModal((prevShowProjectModal) => {
+                          const updatedShowProjectModal = {
+                            ...prevShowProjectModal,
+                          };
+                          updatedShowProjectModal.display = false;
+                          return updatedShowProjectModal;
+                        });
                       }}
                     />
                   </div>
@@ -61,11 +73,11 @@ const CreateProjectModal = ({
                     </p>
                     <div className="flex flex-row items-center justify-between gap-2 bg-bg_primary py-4 px-4 rounded-lg">
                       <Link
-                        href={projectDetailLink}
+                        href={showProjectModal.projectLink}
                         className="cursor-pointer w-4/5"
                       >
                         <p className="text-[#3e8ecc] underline break-words">
-                          {projectDetailLink}
+                          {showProjectModal.projectLink}
                         </p>
                       </Link>
                       <Image

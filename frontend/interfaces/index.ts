@@ -17,7 +17,6 @@ import {
   CreateProjectFormInterface,
   CreateProjectFormContextInterface,
   TypeDataDomainInterface,
-  NftAddressDetailsInterface,
   SubmitDeliverablesInterface,
   SumbitFileInterface,
 } from "./project";
@@ -26,7 +25,7 @@ import {
 import {
   StoreProjectDetailsInterface,
   DisplayProjectDetailsInterface,
-  StoreFileDeliverableInterface,
+  // StoreFileDeliverableInterface,
   DisplayFileDeliverableInterface,
   DescriptionProjectDetailsInterface,
   DisplayTextDeliverableInterface,
@@ -39,11 +38,17 @@ import {
 } from "./notificationContextInterface";
 
 // Lighthouse
+import { ProgressDataInterface } from "./lighthouse";
+
+// Firestore Interfaces
 import {
-  ProgressDataInterface,
-  UploadFileEncryptedResponseInterface,
-  ShareFileEncryptedResponseInterface,
-} from "./lighthouse";
+  // Projects Collection
+  StoreFileDeliverableInterface,
+  ProjectDisplayInterface,
+  ProjectsCollectionInterface,
+  // Users Collection
+  UsersCollectionIterface,
+} from "./Firestore";
 
 export type {
   ProjectDataInterface,
@@ -59,16 +64,19 @@ export type {
   TypeDataDomainInterface,
   NotificationContextInterface,
   NotificationConfigurationInterface,
-  NftAddressDetailsInterface,
   StoreProjectDetailsInterface,
   DisplayProjectDetailsInterface,
-  StoreFileDeliverableInterface,
+  // StoreFileDeliverableInterface,
   DisplayFileDeliverableInterface,
   DescriptionProjectDetailsInterface,
   DisplayTextDeliverableInterface,
   SubmitDeliverablesInterface,
   SumbitFileInterface,
   ProgressDataInterface,
-  UploadFileEncryptedResponseInterface,
-  ShareFileEncryptedResponseInterface,
+  // Projects Collection
+  StoreFileDeliverableInterface,
+  ProjectDisplayInterface,
+  ProjectsCollectionInterface,
+  // Users Collection
+  UsersCollectionIterface,
 };

@@ -48,7 +48,7 @@ const CurrentSystemProblemsCard = ({
 
 const CurrentSystemProblems = (): JSX.Element => {
   return (
-    <div id="product">
+    <div id="whyqube" className="flex flex-col h-full">
       <motion.h1
         variants={textVariant()}
         initial="hidden"
@@ -56,10 +56,26 @@ const CurrentSystemProblems = (): JSX.Element => {
         viewport={{ once: true, amount: 0.25 }}
         className="xl:text-7xl lg:text-6xl md:text-4xl sm:text-4xl text-4xl font-extrabold"
       >
-        With Qube
+        Why use Qube?
       </motion.h1>
-      <div className="sm:flex sm:flex-row justify-between lg:mt-32 sm:mt-16">
-        {currentSystemProblems.map(
+      <div className="flex flex-col flex-1 items-center justify-evenly md:space-y-36 space-y-12 mt-10">
+        <div className="md:space-y-36 space-y-12">
+          <div className="md:w-2/3">
+            <h3 className="text-green-400 xl:text-5xl lg:text-4xl sm:text-3xl text-[1.5rem]">An NFT Gaming Company</h3>
+            <p className="xl:text-5xl lg:text-4xl sm:text-3xl text-[1.3rem]">Tried to negotiate with NFT promoters to collaborate for a giveaway but most of them want to be prepaid…</p>
+          </div>
+          <div className="md:w-2/3 ml-auto text-right">
+            <h3 className="text-blue-400 xl:text-5xl lg:text-4xl sm:text-3xl text-[1.5rem]">But Influencers</h3>
+            <p className="xl:text-5xl lg:text-4xl sm:text-3xl text-[1.3rem]">Want to get paid before executing the giveaway but the company doesn’t pay because they are pseudonymous…</p>
+          </div>
+        </div>
+
+        <div className="text-center w-3/4">
+          <h2 className="linear-green-blue-gradient xl:text-7xl lg:text-6xl sm:text-5xl text-[1.7rem]">We got your back!</h2>
+          <p className="xl:text-5xl lg:text-4xl sm:text-3xl text-[1.3rem]">Qube eliminates these concerns by using Escrow based payment system so that everyone can collaborate without any fear!</p>
+        </div>
+
+        {/* {currentSystemProblems.map(
           (problem: ProblemsInterface, index: number) => {
             return (
               <CurrentSystemProblemsCard
@@ -69,7 +85,7 @@ const CurrentSystemProblems = (): JSX.Element => {
               />
             );
           }
-        )}
+        )} */}
       </div>
     </div>
   );

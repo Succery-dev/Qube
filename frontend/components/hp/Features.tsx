@@ -1,6 +1,7 @@
 import React from "react";
 import Image from "next/image";
 import Tilt from "react-parallax-tilt";
+import Link from "next/link";
 
 // Content Imports
 import { features } from "../../constants";
@@ -48,6 +49,11 @@ const Features = () => {
                   {/* Card Description */}
                   <p className="mt-8 px-6 font-normal xl:text-2xl lg:text-xl sm:text-sm text-xl">
                     {feature.description}
+                    {
+                      feature.title === "Arbitration"
+                        ? <span> visit our <a href="https://qube-1.gitbook.io/qube-whitepaper/" className="underline">[whitepaper]</a>, for more!</span>
+                        : null
+                    }
                   </p>
                 </div>
               </motion.div>

@@ -1,106 +1,102 @@
 import { motion } from "framer-motion";
-import React, { useEffect, useState } from "react";
-import { fadeIn, populateStates, updateProjectDetails } from "../../utils";
+import React, { useState } from "react";
+import { fadeIn, populateStates } from "../../utils";
 import { CustomButton } from "..";
 import Image from "next/image";
-import {
-  IconCopy,
-  IconDropdown,
-  IconNotificationError,
-  IconNotificationSuccess,
-  IconNotificationWarning,
-} from "../../assets";
+import { IconCopy, IconDropdown, IconNotificationError } from "../../assets";
 import {
   DisplayFileDeliverableInterface,
-  DisplayProjectDetailsInterface,
   DisplayTextDeliverableInterface,
   NotificationConfigurationInterface,
+  ProjectDisplayInterface,
 } from "../../interfaces";
+import { httpsCallable } from "firebase/functions";
+import { functions } from "../../utils/firebase";
+
+// Lighthouse Imports
+import lighthouse from "@lighthouse-web3/sdk";
 
 const SubmitTextArea = ({
   textDeliverables,
   setFileDeliverables,
   projectId,
-  setIsAssigned,
   setProjectDetails,
   setNotificationConfiguration,
   setShowNotification,
   projectDetails,
   setTextDeliverables,
-  isAssigned,
 }: {
-  textDeliverables: DisplayTextDeliverableInterface[];
+  textDeliverables: DisplayTextDeliverableInterface[] | undefined;
   setFileDeliverables: React.Dispatch<
-    React.SetStateAction<DisplayFileDeliverableInterface[]>
+    React.SetStateAction<DisplayFileDeliverableInterface[] | undefined>
   >;
   projectId: string;
-  setIsAssigned: React.Dispatch<React.SetStateAction<boolean>>;
   setProjectDetails: React.Dispatch<
-    React.SetStateAction<DisplayProjectDetailsInterface>
+    React.SetStateAction<ProjectDisplayInterface>
   >;
   setNotificationConfiguration: React.Dispatch<
     React.SetStateAction<NotificationConfigurationInterface>
   >;
   setShowNotification: React.Dispatch<React.SetStateAction<boolean>>;
-  projectDetails: DisplayProjectDetailsInterface;
+  projectDetails: ProjectDisplayInterface;
   setTextDeliverables: React.Dispatch<
-    React.SetStateAction<DisplayTextDeliverableInterface[]>
+    React.SetStateAction<DisplayTextDeliverableInterface[] | undefined>
   >;
-  isAssigned: boolean;
 }) => {
   // States
-  const [text, setText] = useState<string>();
+  const [text, setText] = useState<string>("");
   const [isUploading, setIsUploading] = useState<boolean>(false);
 
   const renderDropMenu = (index: number) => {
     setTextDeliverables((prevTextDeliverables) => {
-      const updatedTextDeliverables: DisplayTextDeliverableInterface[] = [
-        ...prevTextDeliverables,
-      ];
+      if (prevTextDeliverables) {
+        const updatedTextDeliverables: DisplayTextDeliverableInterface[] = [
+          ...prevTextDeliverables,
+        ];
 
-      updatedTextDeliverables[index] = {
-        text: updatedTextDeliverables[index].text,
-        showText: !updatedTextDeliverables[index].showText,
-      };
+        updatedTextDeliverables[index] = {
+          text: updatedTextDeliverables[index].text,
+          showText: !updatedTextDeliverables[index].showText,
+        };
 
-      return updatedTextDeliverables;
+        return updatedTextDeliverables;
+      }
     });
   };
 
   const submitText = async (text: string) => {
     if (!isUploading && text) {
       try {
-        if (!isAssigned) {
-          throw new Error("Not Approved for the project");
-        }
         setIsUploading(true);
-        const prevTextDeliverableStorage = textDeliverables.map(
-          (textDeliverable) => textDeliverable.text
+
+        const response = await lighthouse.upload(
+          [text],
+          "ba2eb9ed.bc5b618732274d51a2262957031957fe",
+          false,
+          undefined
         );
-        const updatedTextDeliverables = [...prevTextDeliverableStorage, text];
-        await updateProjectDetails(projectId, {
-          textDeliverable: updatedTextDeliverables,
+
+        const submitTextDeliverables = httpsCallable(
+          functions,
+          "submitTextDeliverables"
+        );
+
+        const submitTextDeliverablesCall = await submitTextDeliverables({
+          projectId: projectId,
+          textDeliverable: `https://gateway.lighthouse.storage/ipfs/${response.data.Hash}`,
         });
+
         await populateStates(
           projectId,
-          setIsAssigned,
           setProjectDetails,
           setFileDeliverables,
           setNotificationConfiguration,
           setShowNotification,
           setTextDeliverables
         );
-
-        setNotificationConfiguration({
-          modalColor: "#62d140",
-          title: "Success",
-          message: "Submitted the Text",
-          icon: IconNotificationSuccess,
-        });
-
         setIsUploading(false);
       } catch (error) {
-        if (error.message === "Not Approved for the project") {
+        if (`${error}`.includes("Not Approved for the project")) {
           setNotificationConfiguration({
             modalColor: "#d14040",
             title: "Not Approved",

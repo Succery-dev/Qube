@@ -33,19 +33,9 @@ const Dropbox = ({
       return updatedDeliverable;
     });
     acceptedFiles.map(async (file) => {
-      console.log("final file::: ", file);
-
       const newFile = Object.assign(file, { progress: 0 });
 
-      console.log("newFile::: ", newFile);
-
       setDeliverables((prevDeliverables) => {
-        console.log(
-          "prevFiles::: ",
-          prevDeliverables.files,
-          "IsArray::: ",
-          Array.isArray(prevDeliverables.files)
-        );
         let updatedDeliverables: SubmitDeliverablesInterface;
         if (Array.isArray(prevDeliverables.files)) {
           updatedDeliverables = {

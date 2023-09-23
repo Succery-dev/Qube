@@ -7,6 +7,7 @@ import {
   Community,
   API,
   NftGateway,
+  Gasless,
 } from "../assets";
 
 // Interfaces Imports
@@ -36,20 +37,20 @@ export const waitlistUrl: string =
 
 export const navLinks = [
   {
-    id: "product",
-    title: "Product",
+    id: "whyqube",
+    title: "Why Qube",
   },
   {
-    id: "walkthrough",
-    title: "Walkthrough",
+    id: "howtouse",
+    title: "How to use",
   },
   {
     id: "features",
     title: "Features",
   },
   {
-    id: "support",
-    title: "Support",
+    id: "faq",
+    title: "FAQ",
   },
 ];
 
@@ -102,32 +103,32 @@ export const walkthrough: WalkthroughInterface[] = [
 
 export const features: FeaturesInterface[] = [
   {
-    id: "Escrow",
-    title: "Escrow",
+    id: "NoThirdParty",
+    title: "No Third Party",
     image: EscrowIcon,
     description:
-      "Qube will hold the hiring company’s money until the company get satisfied with the work and pay the freelancer using smart contract.",
+      "Smart contract-based escrow will work as a middleman so that both parties don’t need to be worried about anything without a third party!",
+  },
+  {
+    id: "LinkBased",
+    title: "Link-based",
+    image: LinkIcon,
+    description:
+      "Generate a direct link to a contract to share on any platform with anybody you want to collaborate with!",
+  },
+  {
+    id: "GasFree",
+    title: "Gas Free",
+    image: Gasless,
+    description:
+      "Sometimes gas fees can be quite burdensome…But with Qube, both parties don't have to worry about gas fees for their transactions!",
   },
   {
     id: "Arbitration",
     title: "Arbitration",
     image: JuryIcon,
     description:
-      "If there is any disagreement between the hiring party and freelancers, we will provide dispute resolution.",
-  },
-  {
-    id: "LinkBased",
-    title: "Link based",
-    image: LinkIcon,
-    description:
-      "Generate a direct link of a contract describing the project and its payment details to share on any platform.",
-  },
-  {
-    id: "NFTGateway",
-    title: "NFT Gateway",
-    image: NftGateway,
-    description:
-      "With the gateway function provided by nfts, only specific individuals, such as NFT holder, can undertake the tasks.",
+      "If there is any disagreement, we will provide dispute resolution powered by Kleros, a decentralized court.",
   },
 ];
 

@@ -49,13 +49,14 @@ const NftCube = ({
     camera.position.set(0, 4.5, 8.9);
     camera.lookAt(0, 0, 0);
 
-    directionalLight_1.position.set(-3.3, -1.9, 0.6);
-    directionalLight_1.lookAt(0, 0, 0);
+    directionalLight_1?.position.set(-3.3, -1.9, 0.6);
+    directionalLight_1?.lookAt(0, 0, 0);
 
-    directionalLight_2.position.set(3.3, -1.9, 0.6);
-    directionalLight_2.lookAt(0, 0, 0);
+    directionalLight_2?.position.set(3.3, -1.9, 0.6);
+    directionalLight_2?.lookAt(0, 0, 0);
 
     if (image) {
+      // @ts-ignore
       image.position.z = Math.sin(elapsedTime) / 20;
     }
 
@@ -71,6 +72,7 @@ const NftCube = ({
           <RenderTexture
             attach="map"
             anisotropy={16}
+            // @ts-ignore
             sourceFile={undefined as unknown as string}
           >
             <PerspectiveCamera
@@ -167,12 +169,12 @@ const LogoCanvas = ({
       </Suspense>
 
       <OrbitControls
-      // enableZoom={false}
-      // target={[2.5, 0, 3]}
-      // minPolarAngle={Math.PI / 4}
-      // maxPolarAngle={(3 * Math.PI) / 4}
-      // minAzimuthAngle={Math.PI / 4}
-      // maxAzimuthAngle={(3 * Math.PI) / 4}
+        enableZoom={false}
+        target={[2.5, 0, 3]}
+        minPolarAngle={Math.PI / 4}
+        maxPolarAngle={(3 * Math.PI) / 4}
+        minAzimuthAngle={Math.PI / 4}
+        maxAzimuthAngle={(3 * Math.PI) / 4}
       />
     </Canvas>
   );

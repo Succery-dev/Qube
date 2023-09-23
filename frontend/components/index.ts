@@ -12,6 +12,7 @@ import {
   Walkthrough,
   Support,
   CurrentSystemProblems,
+  FAQ,
   Footer,
 } from "./hp";
 
@@ -22,9 +23,7 @@ import { DoughnutChart, LineChart, Table } from "./dashboard";
 import {
   ProjectScaffold,
   // Dropbox,
-  SubmitProjectModal,
   LogoCanvas,
-  CreateProjectModal,
 } from "./project";
 
 // ProjectDetails Imports
@@ -40,6 +39,7 @@ export {
   Footer,
   Features,
   Walkthrough,
+  FAQ,
   Support,
   CurrentSystemProblems,
   Glow,
@@ -53,7 +53,6 @@ export {
   ProjectDetails,
   ProjectDetailsDescription,
   Dropbox,
-  SubmitProjectModal,
   LogoCanvas,
   SubmitTextArea,
 };

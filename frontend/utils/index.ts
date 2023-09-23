@@ -5,7 +5,7 @@ import { convertSeconds } from "./convertSeconds";
  * @todo use this app for production
  */
 // import { firebaseApp } from "./firebase";
-import { app, database, storage, auth } from "./firebase";
+import { firebaseApp, database, storage } from "./firebase";
 
 import { formatBytes } from "./formatBytes";
 
@@ -20,27 +20,7 @@ import {
   fadeIn,
 } from "./motion";
 
-import { isValidEthereumContractAddress, isNftContract } from "./createProject";
-
-import {
-  checkNftOwnership,
-  approveProjectDetails,
-  updateProjectDetails,
-  getDataFromFireStore,
-  assingProject,
-  populateStates,
-} from "./projectDetail";
-
-import { uploadDeliverables } from "./project/uploadDeliverables";
-
-// Lighthouse
-import {
-  encryptionSignature,
-  progressCallback,
-  progressCallbackHelper,
-  uploadFileEncrypted,
-  shareFileEncrypted,
-} from "./lighthouse";
+import { populateStates, assingProject } from "./projectDetail";
 
 export {
   convertSeconds,
@@ -54,27 +34,10 @@ export {
   fadeIn,
 
   // firebaseApp,
-  app,
+  firebaseApp,
   database,
   storage,
-  auth,
-  isValidEthereumContractAddress,
-  isNftContract,
-  checkNftOwnership,
-  approveProjectDetails,
-  updateProjectDetails,
-  getDataFromFireStore,
-  assingProject,
   populateStates,
+  assingProject,
   formatBytes,
-
-  // firebaseApp,
-  uploadDeliverables,
-
-  // Lighthouse
-  encryptionSignature,
-  progressCallback,
-  progressCallbackHelper,
-  uploadFileEncrypted,
-  shareFileEncrypted,
 };

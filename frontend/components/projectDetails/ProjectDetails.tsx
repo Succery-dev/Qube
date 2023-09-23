@@ -3,10 +3,9 @@ import React, { useState, useEffect } from "react";
 // Interface Imports
 import {
   DisplayFileDeliverableInterface,
-  DisplayProjectDetailsInterface,
   DisplayTextDeliverableInterface,
+  ProjectDisplayInterface,
   SectionWrapperPropsInterface,
-  StoreFileDeliverableInterface,
 } from "../../interfaces";
 
 // Framer-Motion Imports
@@ -22,33 +21,40 @@ import {
 } from "../index";
 
 // Constant Imports
-import { aesthetics, signProjectEip712 } from "../../constants";
+import { aesthetics } from "../../constants";
 
 // Wagmi Imports
-import { useAccount, useSignMessage, useSignTypedData } from "wagmi";
+import { useAccount } from "wagmi";
 
 // Rainbowkit Imports
-import { useConnectModal } from "@rainbow-me/rainbowkit";
+import { ConnectButton, useConnectModal } from "@rainbow-me/rainbowkit";
 
 // Context Imports
 import { useNotificationContext } from "../../context";
 
 // utils Imports
-import { checkNftOwnership, getDataFromFireStore } from "../../utils";
-import { assingProject, populateStates } from "../../utils/projectDetail";
-import { IconNotificationWarning } from "../../assets";
+import { populateStates } from "../../utils";
 
-const SectionWrapper: React.FC<SectionWrapperPropsInterface> = ({
-  children,
-  bgColor,
-  glowStyles,
-}): JSX.Element => {
+// Firebase Imports
+import { auth } from "../../utils/firebase";
+
+const SectionWrapper: React.FC<
+  SectionWrapperPropsInterface & { isValidUser: boolean }
+> = ({ children, bgColor, glowStyles, isValidUser }): JSX.Element => {
   return (
     <motion.div
-      className={`w-full grid grid-cols-12 ${bgColor} xl:py-40 lg:py-32 py-28 overflow-hidden relative min-h-screen font-nunito`}
+      className={`w-full ${
+        isValidUser ? "grid grid-cols-12" : "flex justify-center items-center"
+      } ${bgColor} xl:py-40 lg:py-32 py-28 overflow-hidden relative min-h-screen font-nunito`}
     >
       {glowStyles && <Glow styles={glowStyles} />}
-      <div className="col-start-2 lg:col-end-10 col-end-12 font-semibold relative flex flex-col justify-center">
+      <div
+        className={`${
+          isValidUser
+            ? "col-start-2 lg:col-end-10 col-end-12"
+            : "max-w-2xl min-w-[312px] lg:w-1/2 w-2/3"
+        } font-semibold relative flex flex-col justify-center`}
+      >
         {children}
       </div>
     </motion.div>
@@ -64,9 +70,8 @@ const ProjectDetails = ({ projectId }: { projectId: string }): JSX.Element => {
   // States
   const [section, setSection] = useState("description");
   const [projectDetails, setProjectDetails] = useState(
-    {} as DisplayProjectDetailsInterface
+    {} as ProjectDisplayInterface
   );
-  const [isAssigned, setIsAssigned] = useState(false);
   const [fileDeliverables, setFileDeliverables] =
     useState<DisplayFileDeliverableInterface[]>();
   const [textDeliverables, setTextDeliverables] =
@@ -74,38 +79,39 @@ const ProjectDetails = ({ projectId }: { projectId: string }): JSX.Element => {
 
   // Wagmi
   const { address } = useAccount();
-  const { openConnectModal } = useConnectModal();
-  const { signTypedDataAsync } = useSignTypedData({
-    domain: signProjectEip712.domain,
-    types: signProjectEip712.types,
-    value: {
-      Title: projectDetails.Title,
-      Detail: projectDetails.Detail,
-      "Deadline(UTC)": projectDetails["Deadline(UTC)"],
-      "Reward(USDC)": projectDetails["Reward(USDC)"],
-      "NFT(Contract Address)": projectDetails["NFT(Contract Address)"],
-      "Lancer's Wallet Address": address,
-    },
-  });
 
+  // States
+  const [isValidUser, setIsValidUser] = useState(false);
+
+  // Effects
   useEffect(() => {
     if (projectId) {
-      populateStates(
-        projectId,
-        setIsAssigned,
-        setProjectDetails,
-        setFileDeliverables,
-        setNotificationConfiguration,
-        setShowNotification,
-        setTextDeliverables
-      );
-    }
-  }, [projectId]);
+      if (address) {
+        auth.onAuthStateChanged(async (user) => {
+          if (user) {
+            const validUserStatus = await populateStates(
+              projectId,
+              setProjectDetails,
+              setFileDeliverables,
+              setNotificationConfiguration,
+              setShowNotification,
+              setTextDeliverables
+            );
 
-  return (
+            setIsValidUser(validUserStatus);
+          }
+        });
+      } else {
+        setIsValidUser(false);
+      }
+    }
+  }, [projectId, address]);
+
+  return isValidUser ? (
     <SectionWrapper
       bgColor="bg-bg_primary"
       glowStyles={aesthetics.glow.createProjectGlowStyles}
+      isValidUser={isValidUser}
     >
       <div className="w-full lg:p-[3px] p-[2px] rounded-lg blue-transparent-green-gradient-vertical">
         <div className="w-full h-full rounded-lg bg-black">
@@ -146,29 +152,34 @@ const ProjectDetails = ({ projectId }: { projectId: string }): JSX.Element => {
                   } rounded-md text-center xs:text-base text-sm text-white py-[2px] px-4 hover:bg-[#377eb5]`}
                   onClick={() => {
                     setSection("description");
+                    // populateStates(address, projectId);
                   }}
                   type={"button"}
                 />
-                <CustomButton
-                  text="Files"
-                  styles={`${
-                    section === "files" ? "bg-[#3E8ECC]" : ""
-                  } rounded-md text-center xs:text-base text-sm text-white py-[2px] px-4 hover:bg-[#377eb5]`}
-                  onClick={() => {
-                    setSection("files");
-                  }}
-                  type={"button"}
-                />
-                <CustomButton
-                  text="Text"
-                  styles={`${
-                    section === "text" ? "bg-[#3E8ECC]" : ""
-                  } rounded-md text-center xs:text-md text-sm text-white py-[2px] px-4 hover:bg-[#377eb5]`}
-                  onClick={() => {
-                    setSection("text");
-                  }}
-                  type={"button"}
-                />
+                {projectDetails["Lancer's Wallet Address"] === address && (
+                  <CustomButton
+                    text="Files"
+                    styles={`${
+                      section === "files" ? "bg-[#3E8ECC]" : ""
+                    } rounded-md text-center xs:text-base text-sm text-white py-[2px] px-4 hover:bg-[#377eb5]`}
+                    onClick={() => {
+                      setSection("files");
+                    }}
+                    type={"button"}
+                  />
+                )}
+                {projectDetails["Lancer's Wallet Address"] === address && (
+                  <CustomButton
+                    text="Text"
+                    styles={`${
+                      section === "text" ? "bg-[#3E8ECC]" : ""
+                    } rounded-md text-center xs:text-md text-sm text-white py-[2px] px-4 hover:bg-[#377eb5]`}
+                    onClick={() => {
+                      setSection("text");
+                    }}
+                    type={"button"}
+                  />
+                )}
               </div>
               {/* Separator Line */}
               <div className="w-full py-[0.6px] mt-4 bg-[#1E1E1E]"></div>
@@ -176,13 +187,8 @@ const ProjectDetails = ({ projectId }: { projectId: string }): JSX.Element => {
             {/* Main */}
             {section === "description" && (
               <ProjectDetailsDescription
-                isAssigned={isAssigned}
-                openConnectModal={openConnectModal}
-                signTypedDataAsync={signTypedDataAsync}
-                nftOwnerAddress={address}
                 setFileDeliverables={setFileDeliverables}
                 projectId={projectId}
-                setIsAssigned={setIsAssigned}
                 setProjectDetails={setProjectDetails}
                 setNotificationConfiguration={setNotificationConfiguration}
                 setShowNotification={setShowNotification}
@@ -195,16 +201,11 @@ const ProjectDetails = ({ projectId }: { projectId: string }): JSX.Element => {
                 fileDeliverables={fileDeliverables}
                 setFileDeliverables={setFileDeliverables}
                 projectId={projectId}
-                setIsAssigned={setIsAssigned}
-                isAssigned={isAssigned}
                 setProjectDetails={setProjectDetails}
                 setNotificationConfiguration={setNotificationConfiguration}
                 setShowNotification={setShowNotification}
                 projectDetails={projectDetails}
                 setTextDeliverables={setTextDeliverables}
-                address={address}
-                clientAddress={projectDetails["Client's Wallet Address"]}
-                freelancerAddress={projectDetails["Lancer's Wallet Address"]}
               />
             )}
             {section === "text" && (
@@ -212,8 +213,6 @@ const ProjectDetails = ({ projectId }: { projectId: string }): JSX.Element => {
                 textDeliverables={textDeliverables}
                 setFileDeliverables={setFileDeliverables}
                 projectId={projectId}
-                setIsAssigned={setIsAssigned}
-                isAssigned={isAssigned}
                 setProjectDetails={setProjectDetails}
                 setNotificationConfiguration={setNotificationConfiguration}
                 setShowNotification={setShowNotification}
@@ -221,6 +220,29 @@ const ProjectDetails = ({ projectId }: { projectId: string }): JSX.Element => {
                 setTextDeliverables={setTextDeliverables}
               />
             )}
+          </div>
+        </div>
+      </div>
+    </SectionWrapper>
+  ) : (
+    <SectionWrapper
+      bgColor="bg-bg_primary"
+      glowStyles={aesthetics.glow.createProjectGlowStyles}
+      isValidUser={isValidUser}
+    >
+      <div className="w-full lg:p-[3px] p-[2px] rounded-lg blue-transparent-green-gradient-vertical">
+        <div className="w-full h-full rounded-lg bg-black">
+          <div className="w-full px-4 md:px-8 py-8 text-[#959595]">
+            {/* Header */}
+            <h2 className="text-white sm:text-3xl xs:text-2xl text-xl">
+              Connect Wallet to Continue
+            </h2>
+            <div className="flex flex-col xs:justify-center items-center gap-8 xl:gap-10 xs:mt-4 mt-2 xl:mt-4 mb-4 xl:mb-6">
+              <p className="px-[2px] text-[#959595] sm:text-lg xs:text-base text-sm font-light self-start">
+                Connecting your wallet is similar to signing in on Web2.
+              </p>
+              <ConnectButton accountStatus={{ smallScreen: "avatar" }} />
+            </div>
           </div>
         </div>
       </div>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 // Components Imports
 import {
@@ -7,18 +7,23 @@ import {
   Footer,
   IntroSection,
   Walkthrough,
+  FAQ,
   Support,
   Glow,
+  CustomButton,
 } from "../components";
 
 // Framer-Motion Imports
 import { motion } from "framer-motion";
 
 // Content Imports
-import { aesthetics } from "../constants";
+import { aesthetics, waitlistUrl } from "../constants";
 
 // Inteface Imports
 import { SectionWrapperPropsInterface } from "../interfaces";
+
+import { useAccount } from "wagmi";
+import { useRouter } from "next/router";
 
 const SectionWrapper: React.FC<SectionWrapperPropsInterface> = ({
   children,
@@ -38,6 +43,15 @@ const SectionWrapper: React.FC<SectionWrapperPropsInterface> = ({
 };
 
 export default function Home() {
+  const router = useRouter();
+  const { address, isConnected } = useAccount();
+
+  useEffect(() => {
+    if (isConnected) {
+      router.push(`/dashboard/${address}`);
+    }
+  }, [isConnected]);
+
   return (
     <div className="font-nunito text-secondary">
       {/* IntroSection */}
@@ -48,12 +62,12 @@ export default function Home() {
         <IntroSection />
       </SectionWrapper>
 
-      {/* With Qube */}
+      {/* Why use Qube? */}
       <SectionWrapper bgColor="bg-black" glowStyles={[]}>
         <CurrentSystemProblems />
       </SectionWrapper>
 
-      {/* User Friendly and Secure */}
+      {/* How to Use */}
       <SectionWrapper
         bgColor="bg-bg_primary"
         glowStyles={aesthetics.glow.walkthroughGlowStyles}
@@ -69,12 +83,35 @@ export default function Home() {
         <Features />
       </SectionWrapper>
 
-      {/* Support */}
-      <SectionWrapper bgColor="bg-bg_primary" glowStyles={[]}>
+      {/* Support & Call To Action */}
+      <SectionWrapper
+        bgColor="bg-bg_primary"
+        glowStyles={aesthetics.glow.walkthroughGlowStyles}
+      >
         <Support />
-        {/* Footer */}
-        <Footer />
+        <div className="bg-gradient-to-r from-green-500 to-blue-500 h-[150px] sm:mt-32 px-5 rounded-lg flex items-center justify-center text-white text-xl gap-x-5">
+          <p className="xl:text-4xl lg:text-3xl sm:text-2xl text-xl">
+            Come and join our waitlist for the best collaboration!
+          </p>
+          <CustomButton
+            text="Join Waitlist"
+            styles="border-none xl:text-2xl lg:text-xl sm:text-lg font-semibold text-primary bg-white lg:px-8 lg:py-4 px-4 py-2 rounded-md"
+            type="button"
+            onClick={(e) => window.open(waitlistUrl, "_blank")}
+          />
+        </div>
       </SectionWrapper>
+
+      {/* FAQ */}
+      <SectionWrapper
+        bgColor="bg-black"
+        glowStyles={aesthetics.glow.featuresGlowStyles}
+      >
+        <FAQ />
+      </SectionWrapper>
+
+      {/* Footer */}
+      <Footer />
     </div>
   );
 }

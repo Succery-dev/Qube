@@ -1,5 +1,4 @@
 // Interface Imports
-import { DisplayFileDeliverableInterface } from "..";
 
 interface ProgressDataInterface {
   total: number;

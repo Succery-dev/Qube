@@ -17,9 +17,12 @@ import { ConnectButton } from "@rainbow-me/rainbowkit";
 
 // This is temporal for the whitelist and will be removed in the future.
 // TODO: Remove this.
-// import { useAccount } from 'wagmi'
-// import { disconnect } from '@wagmi/core'
-// import { whitelist } from "../constants";
+// import { useAccount } from "wagmi";
+// import { auth, functions } from "../utils/firebase";
+// import { signMessage } from "@wagmi/core";
+// // import { whitelist } from "../constants";
+// import { httpsCallable } from "firebase/functions";
+// import { signInWithCustomToken } from "firebase/auth";
 
 const Navbar = (): JSX.Element => {
   const [showMenuModal, setShowMenuModal] = useState(false);

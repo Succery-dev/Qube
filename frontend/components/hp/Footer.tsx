@@ -3,7 +3,7 @@ import Link from "next/link";
 import Image from "next/image";
 
 // Image Imports
-import { TwitterIcon } from "../../assets";
+import { TwitterIcon, MediumIcon } from "../../assets";
 
 // Content Imports
 import { footerLinks } from "../../constants";
@@ -45,16 +45,43 @@ const FooterLegal = (): JSX.Element => {
 
 const Footer = () => {
   return (
-    <motion.footer
-      variants={fadeIn("up", 1.25)}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, amount: 0.25 }}
-      className=" sm:pt-48 sm:pb-24 pt-36 pb-12  flex sm:flex-row flex-col sm:justify-between sm:items-center sm:gap-0 gap-16 col-start-2 col-end-12 xl:text-xl lg:text-lg sm:text-sm text-xl font-medium"
-    >
-      <FooterSocial />
-      <FooterLegal />
-    </motion.footer>
+    <div className="bg-gray-900 px-24 xl:px-52 text-white pt-20 pb-40 grid grid-cols-10 space-y-5 md:space-y-0 text-center md:text-left">
+      <div className="col-span-10 md:col-span-4 space-y-5">
+        <div className="flex justify-center md:justify-start items-center space-x-5">
+          <Image
+            src="/images/logo.png"
+            width="100"
+            height="100"
+            alt="Q"
+            className="rounded-md h-[40px] w-auto shadow-indigo-500/50"
+          />
+          <h1 className="text-2xl text-primary font-extrabold">
+            Qube
+          </h1>
+        </div>
+        <div className="flex justify-center md:justify-start items-center space-x-10">
+            <Link href="https://twitter.com/0xQube">
+              <Image src={TwitterIcon} alt="Twitter" height={30} />
+            </Link>
+            <Link href="https://medium.com/@0xqube">
+              <Image src={MediumIcon} alt="Medium" height={30} />
+            </Link>
+        </div>
+      </div>
+      <div className="col-span-10 md:col-span-3">
+        <h3 className="text-xl font-semibold mb-4">Resources</h3>
+        <ul>
+          <li className="mb-2"><a href="#faq" className="text-white hover:text-gray-500">FAQ's</a></li>
+          <li className="mb-2"><a href="https://qube-1.gitbook.io/qube-whitepaper/" className="text-white hover:text-gray-500">Whitepaper</a></li>
+        </ul>
+      </div>
+      <div className="col-span-10 md:col-span-3">
+        <h3 className="text-xl font-semibold mb-4">Contacts</h3>
+        <ul>
+          <li className="mb-2"><a href="https://docs.google.com/forms/d/e/1FAIpQLSdaRr4b4-XekKneAeAb4_Wx2ELEx_4YgdS-2Gtg0RQvtwWAnA/viewform" className="text-white hover:text-gray-500">Google Form</a></li>
+        </ul>
+      </div>
+    </div>
   );
 };
 

@@ -1,75 +1,70 @@
 // Asset Imports
-import { IconNotificationSuccess, IconNotificationError } from "../../assets";
+import { httpsCallable } from "firebase/functions";
 
 // Interface Imports
-import {
-  DisplayProjectDetailsInterface,
-  NotificationConfigurationInterface,
-  StoreProjectDetailsInterface,
-} from "../../interfaces";
+import { ProjectDisplayInterface } from "../../interfaces";
 
-// Utils Imports
-import {
-  approveProjectDetails,
-  checkNftOwnership,
-  getDataFromFireStore,
-  updateProjectDetails,
-} from "./index";
+// Ethers Imports
+import * as ethers from "ethers";
+import { functions } from "../firebase";
+
+// Wagmi Imports
+import { signTypedData } from "@wagmi/core";
+
+const generateSignature = async (
+  value: Partial<ProjectDisplayInterface>,
+  userAddress: `0x${string}`
+) => {
+  const eip712DomainAndTypes = {
+    domain: {
+      name: "QubePay-Sign-Project",
+      chainId: 80001,
+    },
+    types: {
+      ProjectDetail: [
+        { name: "Title", type: "string" },
+        { name: "Detail", type: "string" },
+        { name: "Deadline(UTC)", type: "string" },
+        { name: "Reward(USDC)", type: "uint256" },
+        { name: "NFT(Contract Address)", type: "address" },
+        { name: "Client's Wallet Address", type: "address" },
+      ],
+    },
+  };
+
+  const approveProof = await signTypedData({
+    domain: eip712DomainAndTypes.domain,
+    message: value,
+    types: eip712DomainAndTypes.types,
+    primaryType: "ProjectDetail",
+  });
+
+  const recoveredAddress = ethers.verifyTypedData(
+    eip712DomainAndTypes.domain,
+    eip712DomainAndTypes.types,
+    value,
+    approveProof
+  );
+
+  return approveProof;
+};
 
 export const assingProject = async (
-  nftOwnerAddress: `0x${string}`,
-  nftAddress: `0x${string}`,
-  openConnectModal,
-  signTypedDataAsync,
   projectId: string,
-  setProjectDetails: React.Dispatch<
-    React.SetStateAction<DisplayProjectDetailsInterface>
-  >,
-  setIsAssigned: React.Dispatch<React.SetStateAction<boolean>>,
-  setNotificationConfiguration: React.Dispatch<
-    React.SetStateAction<NotificationConfigurationInterface>
-  >,
-  setShowNotification: React.Dispatch<React.SetStateAction<boolean>>
+  // approveProof: `0x${string}`
+  value: Partial<ProjectDisplayInterface>,
+  userAddress: `0x${string}`
 ) => {
-  if (nftOwnerAddress) {
-    try {
-      const isOwner = await checkNftOwnership(nftAddress, nftOwnerAddress);
-      if (isOwner) {
-        const approveProof = await approveProjectDetails(signTypedDataAsync);
-        const updatedSubsetProjectDetail: Partial<StoreProjectDetailsInterface> =
-          {
-            approveProof: approveProof,
-            "Lancer's Wallet Address": nftOwnerAddress,
-          };
-        await updateProjectDetails(projectId, updatedSubsetProjectDetail);
-        const [_, updatedProjectDetails] = await getDataFromFireStore(
-          projectId
-        );
+  const approveProject = httpsCallable(functions, "approveProject");
 
-        setProjectDetails(updatedProjectDetails);
-        setIsAssigned(true);
+  const approveProof = await generateSignature(value, userAddress);
 
-        setNotificationConfiguration({
-          modalColor: "#62d140",
-          title: "Sucess",
-          message: "Successfully approved project",
-          icon: IconNotificationSuccess,
-        });
-        setShowNotification(true);
-      } else {
-        throw new Error("Not Approved for the project");
-      }
-    } catch (error) {
-      setNotificationConfiguration({
-        modalColor: "#d14040",
-        title: "Error",
-        message: "Error approving the project.",
-        icon: IconNotificationError,
-      });
-
-      setShowNotification(true);
-    }
-  } else {
-    openConnectModal();
-  }
+  const approveProjectCall = await approveProject({
+    projectId,
+    approveProof,
+  });
+  const approveProjectObj = approveProjectCall.data as {
+    success: true;
+    message: "Project assigned successfully.";
+  };
 };

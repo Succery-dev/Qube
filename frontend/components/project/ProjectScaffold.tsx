@@ -16,10 +16,7 @@ import { aesthetics } from "../../constants";
 import { motion } from "framer-motion";
 
 // Interface Imports
-import {
-  SectionWrapperPropsInterface,
-  NftAddressDetailsInterface,
-} from "../../interfaces";
+import { SectionWrapperPropsInterface } from "../../interfaces";
 
 const SectionWrapper: React.FC<SectionWrapperPropsInterface> = ({
   children,
@@ -38,10 +35,9 @@ const SectionWrapper: React.FC<SectionWrapperPropsInterface> = ({
   );
 };
 
-const ProjectScaffold = ({
-  // setShowSubmitModal,
-  // projectId,
-}: {
+const ProjectScaffold = ({}: // setShowSubmitModal,
+// projectId,
+{
   // setShowSubmitModal: React.Dispatch<React.SetStateAction<boolean>>;
   // projectId?: string;
 }): JSX.Element => {
@@ -49,25 +45,11 @@ const ProjectScaffold = ({
   const form = context.form;
   const setForm = context.setForm;
 
-  const [nftAddressDetails, setnftAddressDetails]: [
-    nftAddressDetails: NftAddressDetailsInterface,
-    setnftAddressDetails: React.Dispatch<
-      React.SetStateAction<NftAddressDetailsInterface>
-    >
-  ] = useState({
-    isNftAddress: false,
-    nftCollectionImageUrl: "",
-  });
-
-  const [projectDetailLink, setProjectDetailLink]: [
-    projectDetailLink: string,
-    setProjectDetailLink: React.Dispatch<React.SetStateAction<string>>
-  ] = useState(undefined as string);
-
-  const [showProjectModal, setShowProjectModal]: [
-    showProjectModal: boolean,
-    setShowProjectModal: React.Dispatch<React.SetStateAction<boolean>>
-  ] = useState(false);
+  const [showProjectModal, setShowProjectModal] = useState<{
+    display: boolean;
+    projectLink: string;
+    collectionImageUrl: string;
+  }>({ display: false, projectLink: "", collectionImageUrl: "" });
 
   return (
     <div className="font-nunito text-secondary">
@@ -82,17 +64,12 @@ const ProjectScaffold = ({
           <CreateProjectForm
             form={form}
             setForm={setForm}
-            nftAddressDetails={nftAddressDetails}
-            setnftAddressDetails={setnftAddressDetails}
             setShowProjectModal={setShowProjectModal}
-            setProjectDetailLink={setProjectDetailLink}
-            // setShowSubmitModal={setShowSubmitModal}
-            // projectId={projectId}
           />
           {/* 3D Logo */}
           <div className="w-1/2 h-[500px] lg:block hidden">
             <LogoCanvas
-              nftCollectionImageUrl={nftAddressDetails.nftCollectionImageUrl}
+              nftCollectionImageUrl={showProjectModal.collectionImageUrl}
             />
           </div>
         </div>
@@ -100,7 +77,6 @@ const ProjectScaffold = ({
         <CreateProjectModal
           showProjectModal={showProjectModal}
           setShowProjectModal={setShowProjectModal}
-          projectDetailLink={projectDetailLink}
         />
       </SectionWrapper>
     </div>

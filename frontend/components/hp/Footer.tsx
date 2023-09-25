@@ -82,7 +82,7 @@ const Footer = () => {
       <div className="col-span-10 md:col-span-3">
         <h3 className="text-xl font-semibold mb-4">Contacts</h3>
         <ul>
-          <li className="mb-2"><a href="https://docs.google.com/forms/d/e/1FAIpQLSdaRr4b4-XekKneAeAb4_Wx2ELEx_4YgdS-2Gtg0RQvtwWAnA/viewform" className="text-white hover:text-gray-500">Google Form</a></li>
+          <li className="mb-2"><a href="https://docs.google.com/forms/d/e/1FAIpQLSdaRr4b4-XekKneAeAb4_Wx2ELEx_4YgdS-2Gtg0RQvtwWAnA/viewform" className="text-white hover:text-gray-500">Form</a></li>
         </ul>
       </div>
     </div>

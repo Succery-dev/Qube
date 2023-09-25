@@ -3,7 +3,7 @@ import Link from "next/link";
 import Image from "next/image";
 
 // Image Imports
-import { TwitterIcon, MediumIcon } from "../../assets";
+import { TwitterIcon, MediumIcon, Discord } from "../../assets";
 
 // Content Imports
 import { footerLinks } from "../../constants";
@@ -62,6 +62,9 @@ const Footer = () => {
         <div className="flex justify-center md:justify-start items-center space-x-10">
             <Link href="https://twitter.com/0xQube">
               <Image src={TwitterIcon} alt="Twitter" height={30} />
+            </Link>
+            <Link href="https://discord.gg/KnhgxwXa">
+              <Image src={Discord} alt="Discord" height={30} />
             </Link>
             <Link href="https://medium.com/@0xqube">
               <Image src={MediumIcon} alt="Medium" height={30} />

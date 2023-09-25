@@ -83,7 +83,7 @@ const CurrentSystemProblems = (): JSX.Element => {
                 initial="hidden"
                 whileInView="visible"
                 viewport={{ once: true, amount: 0.25 }}
-                className="blue-transparent-green-gradient-vertical xl:w-[450px] lg:w-[300px] lg:p-[3px] p-[2px] sm:min-h-0 rounded-2xl grid place-items-center"
+                className="blue-transparent-green-gradient-vertical 2xl:w-[450px] xl:w-[370px] lg:w-[300px] lg:p-[3px] p-[2px] sm:min-h-0 rounded-2xl grid place-items-center"
               >
                 <div className="bg-bg_primary w-full h-full flex flex-col xl:px-8 lg:px-4 sm:px-3 px-4 xl:py-12 lg:py-10 py-8 rounded-2xl">
                   {/* Card Heading */}

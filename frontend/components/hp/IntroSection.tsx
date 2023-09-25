@@ -19,7 +19,7 @@ const IntroHeaderSection = (): JSX.Element => (
     className="xl:text-7xl lg:text-6xl md:text-5xl sm:text-5xl text-4xl font-extrabold"
   >
     <p className="block">
-      Escrow For A <span className="linear-blue-green-gradient">Better Collaboration</span>
+      Redefining Payments of Freelancers with crypto
     </p>
   </motion.h1>
 );
@@ -33,9 +33,9 @@ const IntroFooterSection = (): JSX.Element => (
       viewport={{ once: true, amount: 0.25 }}
       className="xl:text-4xl lg:text-3xl sm:text-2xl text-[1.3rem] leading-[2rem] font-medium"
     >
-      <p className="block">Qube is a payment tool</p>
-      <p className="block">that enables collaboration pseudonymously</p>
-      <p className="block">using blockchain technology.</p>
+      <p className="block">Qube is a payment gateway for</p>
+      <p className="block">freelancers, guaranteeing timely rewards</p>
+      <p className="block">and facilitating seamless transactions.</p>
     </motion.h3>
     <CustomButton
       text="Join Waitlist"

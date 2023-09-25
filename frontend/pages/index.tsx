@@ -89,20 +89,20 @@ export default function Home() {
         <CurrentSystemProblems />
       </SectionWrapper>
 
-      {/* How to Use */}
-      <SectionWrapper
-        bgColor="bg-bg_primary"
-        glowStyles={aesthetics.glow.walkthroughGlowStyles}
-      >
-        <Walkthrough />
-      </SectionWrapper>
-
       {/* Features */}
       <SectionWrapper
         bgColor="bg-black"
         glowStyles={aesthetics.glow.featuresGlowStyles}
       >
         <Features />
+      </SectionWrapper>
+
+      {/* How to Use */}
+      <SectionWrapper
+        bgColor="bg-bg_primary"
+        glowStyles={aesthetics.glow.walkthroughGlowStyles}
+      >
+        <Walkthrough />
       </SectionWrapper>
 
       {/* Support & Call To Action */}

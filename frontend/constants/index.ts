@@ -41,12 +41,12 @@ export const navLinks = [
     title: "Why Qube",
   },
   {
-    id: "howtouse",
-    title: "How to use",
-  },
-  {
     id: "features",
     title: "Features",
+  },
+  {
+    id: "howtouse",
+    title: "How to use",
   },
   {
     id: "faq",

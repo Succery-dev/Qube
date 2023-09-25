@@ -3,7 +3,7 @@ import Link from "next/link";
 import Image from "next/image";
 
 // Image Imports
-import { TwitterIcon, MediumIcon } from "../../assets";
+import { TwitterIcon, MediumIcon, Discord } from "../../assets";
 
 // Content Imports
 import { footerLinks } from "../../constants";
@@ -63,6 +63,9 @@ const Footer = () => {
             <Link href="https://twitter.com/0xQube">
               <Image src={TwitterIcon} alt="Twitter" height={30} />
             </Link>
+            <Link href="https://discord.gg/KnhgxwXa">
+              <Image src={Discord} alt="Discord" height={30} />
+            </Link>
             <Link href="https://medium.com/@0xqube">
               <Image src={MediumIcon} alt="Medium" height={30} />
             </Link>
@@ -72,13 +75,14 @@ const Footer = () => {
         <h3 className="text-xl font-semibold mb-4">Resources</h3>
         <ul>
           <li className="mb-2"><a href="#faq" className="text-white hover:text-gray-500">FAQ's</a></li>
-          <li className="mb-2"><a href="https://qube-1.gitbook.io/qube-whitepaper/" className="text-white hover:text-gray-500">Whitepaper</a></li>
+          <li className="mb-2"><a href="https://qube-1.gitbook.io/qube-whitepaper/" className="text-white hover:text-gray-500">Whitepaper (ENG)</a></li>
+          <li className="mb-2"><a href="https://qube-1.gitbook.io/qube-whitepaper-japanese/" className="text-white hover:text-gray-500">Whitepaper (JAP)</a></li>
         </ul>
       </div>
       <div className="col-span-10 md:col-span-3">
         <h3 className="text-xl font-semibold mb-4">Contacts</h3>
         <ul>
-          <li className="mb-2"><a href="https://docs.google.com/forms/d/e/1FAIpQLSdaRr4b4-XekKneAeAb4_Wx2ELEx_4YgdS-2Gtg0RQvtwWAnA/viewform" className="text-white hover:text-gray-500">Google Form</a></li>
+          <li className="mb-2"><a href="https://docs.google.com/forms/d/e/1FAIpQLSdaRr4b4-XekKneAeAb4_Wx2ELEx_4YgdS-2Gtg0RQvtwWAnA/viewform" className="text-white hover:text-gray-500">Form</a></li>
         </ul>
       </div>
     </div>

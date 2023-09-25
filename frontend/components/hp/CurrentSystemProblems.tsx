@@ -1,5 +1,6 @@
 import React from "react";
 import Image from "next/image";
+import Tilt from "react-parallax-tilt";
 
 // Custom Component Imports
 import { Glow } from "../aesthetics";
@@ -46,47 +47,70 @@ const CurrentSystemProblemsCard = ({
   );
 };
 
+const problems = [
+  {
+    title: "Trust Issue",
+    description: "Lots of freelancers are facing non payment or delayed payment. This is the biggest risk a freelancer always had to take.",
+  },
+  {
+    title: "Risk of Disputes",
+    description: "There is possibility of having problems over the quality of submission. It's very hard to come to a mutual point once this happens.",
+  },
+  {
+    title: "High cost of platforms",
+    description: "Existing platforms provide escrow based payment solution but the platform fee is too expensive. Qube doesn't cost any transaction fee.",
+  },
+];
+
 const CurrentSystemProblems = (): JSX.Element => {
   return (
-    <div id="whyqube" className="flex flex-col h-full">
+    <div id="whyqube" className="flex flex-col h-full gap-y-10">
       <motion.h1
         variants={textVariant()}
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, amount: 0.25 }}
-        className="xl:text-7xl lg:text-6xl md:text-4xl sm:text-4xl text-4xl font-extrabold"
+        className="xl:text-7xl lg:text-6xl md:text-4xl sm:text-4xl text-4xl font-extrabold flex-1"
       >
-        Why use Qube?
+        Freelances face lots of problems..
       </motion.h1>
-      <div className="flex flex-col flex-1 items-center justify-evenly md:space-y-36 space-y-12 mt-10">
-        <div className="md:space-y-36 space-y-12">
-          <div className="md:w-2/3">
-            <h3 className="text-green-400 xl:text-5xl lg:text-4xl sm:text-3xl text-[1.5rem]">An NFT Gaming Company</h3>
-            <p className="xl:text-5xl lg:text-4xl sm:text-3xl text-[1.3rem]">Tried to negotiate with NFT promoters to collaborate for a giveaway but most of them want to be prepaid…</p>
-          </div>
-          <div className="md:w-2/3 ml-auto text-right">
-            <h3 className="text-blue-400 xl:text-5xl lg:text-4xl sm:text-3xl text-[1.5rem]">But Influencers</h3>
-            <p className="xl:text-5xl lg:text-4xl sm:text-3xl text-[1.3rem]">Want to get paid before executing the giveaway but the company doesn’t pay because they are pseudonymous…</p>
-          </div>
-        </div>
-
-        <div className="text-center w-3/4">
-          <h2 className="linear-green-blue-gradient xl:text-7xl lg:text-6xl sm:text-5xl text-[1.7rem]">We got your back!</h2>
-          <p className="xl:text-5xl lg:text-4xl sm:text-3xl text-[1.3rem]">Qube eliminates these concerns by using Escrow based payment system so that everyone can collaborate without any fear!</p>
-        </div>
-
-        {/* {currentSystemProblems.map(
-          (problem: ProblemsInterface, index: number) => {
-            return (
-              <CurrentSystemProblemsCard
-                problem={problem}
-                index={index}
-                key={index}
-              />
-            );
-          }
-        )} */}
+      <div className="flex flex-col lg:flex-row justify-between gap-y-5 md:gap-x-5">
+        {problems.map((problem, index) => {
+          return(
+            <Tilt key={index}>
+              <motion.div
+                variants={fadeIn("right", 1.25, index)}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, amount: 0.25 }}
+                className="blue-transparent-green-gradient-vertical 2xl:w-[450px] xl:w-[370px] lg:w-[300px] lg:p-[3px] p-[2px] sm:min-h-0 rounded-2xl grid place-items-center"
+              >
+                <div className="bg-bg_primary w-full h-full flex flex-col xl:px-8 lg:px-4 sm:px-3 px-4 xl:py-12 lg:py-10 py-8 rounded-2xl">
+                  {/* Card Heading */}
+                  <div className="flex flex-row items-center justify-center lg:gap-8 sm:gap-1 gap-8">
+                    <h2 className="xl:text-4xl text-2xl font-extrabold">
+                      {problem.title}
+                    </h2>
+                  </div>
+                  {/* Card Description */}
+                  <p className="mt-8 px-6 font-normal xl:text-2xl lg:text-xl text-xl">
+                    {problem.description}
+                  </p>
+                </div>
+              </motion.div>
+            </Tilt>
+          );
+        })}
       </div>
+      <motion.h1
+        variants={textVariant()}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.25 }}
+        className="xl:text-7xl lg:text-6xl md:text-4xl sm:text-4xl text-4xl font-extrabold flex items-center justify-center flex-1"
+      >
+        We got your back
+      </motion.h1>
     </div>
   );
 };

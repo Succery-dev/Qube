@@ -45,7 +45,7 @@ const SectionWrapper: React.FC<SectionWrapperPropsInterface> = ({
 }): JSX.Element => {
   return (
     <motion.div
-      className={`w-full grid grid-cols-12 ${bgColor} xl:py-20 sm:py-14 py-14 overflow-hidden relative xl:min-h-[1024px] lg:min-h-[760px] sm:min-h-[500px] min-h-screen`}
+      className={`w-full h-screen grid grid-cols-12 ${bgColor} xl:py-20 sm:py-14 py-14 overflow-hidden relative xl:min-h-[1024px] lg:min-h-[760px] sm:min-h-[500px]`}
     >
       {glowStyles && <Glow styles={glowStyles} />}
       <div className="col-start-2 col-end-12 font-semibold relative">

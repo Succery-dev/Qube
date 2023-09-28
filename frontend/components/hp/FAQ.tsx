@@ -36,7 +36,7 @@ const FAQ = () => {
     },
     {
       question: "Are there any security assurances since the code is not open-source?",
-      answer: "We understand the concerns regarding security as we are in our closed beta phase and cannot open-source the code right now. If you have any specific concerns or need further assurance, we are open to having a conversation. Feel free to reach out to us at [mail address].",
+      answer: "We understand the concerns regarding security as we are in our closed beta phase and cannot open-source the code right now. If you have any specific concerns or need further assurance, we are open to having a conversation. Feel free to reach out to us at ",
     },
     {
       question: "How can I reach out for customer support or any queries?",
@@ -126,7 +126,9 @@ const FAQ = () => {
                     ? <Link href={waitlistUrl} className="underline">[waitlist]</Link> 
                     : faq.question === "Where can I get details of the Arbitration Solution?"
                       ? <Link href="https://qube-1.gitbook.io/qube-whitepaper/" className="underline">[Link]</Link>
-                      : null
+                      : faq.question === "Are there any security assurances since the code is not open-source?"
+                        ? <Link href="mailto:0xqubepay@gmail.com" className="underline">[mail address]</Link>
+                        : null
                 }
               </motion.p>
             )}

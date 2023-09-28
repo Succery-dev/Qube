@@ -1,4 +1,5 @@
 import React from "react";
+import { useRouter } from "next/router";
 
 // Custom Imports
 import CustomButton from "../CustomButton";
@@ -10,19 +11,24 @@ import { textVariant } from "../../utils";
 // Waitlist URL Import
 import { waitlistUrl } from "../../constants";
 
-const IntroHeaderSection = (): JSX.Element => (
-  <motion.h1
-    variants={textVariant()}
-    initial="hidden"
-    whileInView="visible"
-    viewport={{ once: true, amount: 0.25 }}
-    className="xl:text-7xl lg:text-6xl md:text-5xl sm:text-5xl text-4xl font-extrabold"
-  >
-    <p className="block">
-      Redefining Payments of Freelancers with crypto
-    </p>
-  </motion.h1>
-);
+const IntroHeaderSection = (): JSX.Element => {
+  const router = useRouter();
+  const { userType } = router.query;
+
+  return (
+    <motion.h1
+      variants={textVariant()}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, amount: 0.25 }}
+      className="xl:text-7xl lg:text-6xl md:text-5xl sm:text-5xl text-4xl font-extrabold"
+    >
+      <p className="block">
+        {`Redefining Payments ${userType === "CLIENT" ? "to" : "of"} Freelancers with crypto`}
+      </p>
+    </motion.h1>
+  );
+}
 
 const IntroFooterSection = (): JSX.Element => (
   <div className="w-[90%] sm:w-full ">

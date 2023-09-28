@@ -113,7 +113,7 @@ const Dashboard: NextPage = () => {
                 viewport={{ once: true, amount: 0.25 }}
                 className="xl:text-6xl lg:text-5xl md:text-3xl sm:text-3xl text-3xl font-extrabold"
               >
-                Active Projects
+                Projects
               </motion.h1>
               <CustomButton
                 text="+ Create"

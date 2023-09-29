@@ -127,6 +127,10 @@ const ProjectDetails = ({ projectId }: { projectId: string }): JSX.Element => {
       bgColor="bg-bg_primary"
       glowStyles={aesthetics.glow.createProjectGlowStyles}
     >
+      {/* Return to Dashboard Button */}
+      <button className="bg-orange-500 mb-7 mr-auto p-3 text-xl rounded-full text-white" onClick={() => {
+          router.push(`http://${window.location.host}/dashboard/${address}`);
+        }}>{`<- Return to Dashboard`}</button>
       <div className="w-full lg:p-[3px] p-[2px] rounded-lg blue-transparent-green-gradient-vertical">
         <div className="w-full h-full rounded-lg bg-black">
           <div className="w-full xl:px-8 xl:py-12 px-6 sm:py-10 py-6 text-[#959595]">

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import Tilt from "react-parallax-tilt";
@@ -19,21 +19,8 @@ const CreateProjectModal = ({
   setShowProjectModal: React.Dispatch<React.SetStateAction<boolean>>;
   projectDetailLink: string;
 }) => {
-  const [isCopiedPopupVisible, setIsCopiedPopupVisible] = useState(false);
-
-  useEffect(() => {
-    const timeOut = setTimeout(() => {
-      setIsCopiedPopupVisible(false);
-    }, 3000);
-
-    return () => {
-      clearTimeout(timeOut);
-    };
-  }, [isCopiedPopupVisible]);
-
   const handleCopyToClipboard = async () => {
     try {
-      setIsCopiedPopupVisible(true);
       const textToCopy = projectDetailLink;
       await navigator.clipboard.writeText(textToCopy);
     } catch (error) {}
@@ -72,7 +59,7 @@ const CreateProjectModal = ({
                     <p className="text-[#959595]">
                       Share this link to the freelancer
                     </p>
-                    <div className="flex flex-row relative items-center justify-between gap-2 bg-bg_primary py-4 px-4 rounded-lg">
+                    <div className="flex flex-row items-center justify-between gap-2 bg-bg_primary py-4 px-4 rounded-lg">
                       <Link
                         href={projectDetailLink}
                         className="cursor-pointer w-4/5"
@@ -87,7 +74,6 @@ const CreateProjectModal = ({
                         className="h-6 w-auto cursor-pointer"
                         onClick={() => handleCopyToClipboard()}
                       />
-                      {isCopiedPopupVisible && <p className="absolute right-0 bottom-14 bg-slate-500 text-white px-5 rounded-md animate-bounce">Copied</p>}
                     </div>
                   </div>
                 </div>

@@ -3,10 +3,10 @@ import dotenv from "dotenv";
 dotenv.config();
 
 // JSON RPC Provider
-const LOCAL_NODE_URL = "http://127.0.0.1:8545/";
+// const LOCAL_NODE_URL = "http://127.0.0.1:8545/";
 // const MUMBAI_NODE_URL = `https://polygon-mumbai.g.alchemy.com/v2/${process.env.NEXT_PUBLIC_ALCHEMY_API_KEY}`;
-// const POLYGON_NODE_URL = `https://polygon-mainnet.g.alchemy.com/v2/${process.env.NEXT_PUBLIC_ALCHEMY_API_KEY_PRODUCTION}`;
-const jsonRpcProvider = new ethers.providers.JsonRpcProvider(LOCAL_NODE_URL);
+const POLYGON_NODE_URL = `https://polygon-mainnet.g.alchemy.com/v2/${process.env.NEXT_PUBLIC_ALCHEMY_API_KEY_PRODUCTION}`;
+const jsonRpcProvider = new ethers.providers.JsonRpcProvider(POLYGON_NODE_URL);
 
 export function getJsonRpcProvider(): ethers.providers.JsonRpcProvider {
   return jsonRpcProvider;

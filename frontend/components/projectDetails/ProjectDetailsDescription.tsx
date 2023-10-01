@@ -98,13 +98,13 @@ const ProjectDetailsDescription = ({
       try {
         // Prepay amount
         console.log("Reward: %sUSDC", projectDetails["Reward(USDC)"]);
-        const amount = ethers.utils.parseUnits(projectDetails["Reward(USDC)"].toString(), 18);
+        const amount = ethers.utils.parseUnits(projectDetails["Reward(USDC)"].toString(), 6);
 
         // Approve tokens
         const approveResult = await approve(EscrowAddress, amount);
         console.log("Approve Result: ", approveResult);
         const approvedTokens = await allowance(projectDetails["Client's Wallet Address"], EscrowAddress);
-        console.log("USDC Allowance: ", ethers.utils.formatUnits(approvedTokens, 18));
+        console.log("USDC Allowance: ", ethers.utils.formatUnits(approvedTokens, 6));
 
         // Deposit tokens
         console.log("Recipient: %s, ProjectId: %s", projectDetails["Lancer's Wallet Address"], projectId);

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { useRouter } from "next/router";
+import { FileWithPath } from "react-dropzone";
 
 // Interface Imports
 import {
@@ -9,6 +10,7 @@ import {
   DisplayTextDeliverableInterface,
   SectionWrapperPropsInterface,
   StoreFileDeliverableInterface,
+  StoreProjectDetailsInterface,
 } from "../../interfaces";
 
 // Framer-Motion Imports
@@ -36,10 +38,13 @@ import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { useNotificationContext } from "../../context";
 
 // utils Imports
-import { getDataFromFireStore, activeUserByStatus } from "../../utils";
-import { assignProject, populateStates } from "../../utils/projectDetail";
-import { IconNotificationWarning, IconCopy, IconNotificationSuccess } from "../../assets";
+import { getDataFromFireStore, activeUserByStatus, updateProjectDetails, storage } from "../../utils";
+import { populateStates } from "../../utils/projectDetail";
+import { IconNotificationError, IconCopy, IconNotificationSuccess } from "../../assets";
 import { StatusEnum } from "../../enums";
+import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
+
+import Modal from "./Modal";
 
 const SectionWrapper: React.FC<SectionWrapperPropsInterface> = ({
   children,
@@ -71,9 +76,9 @@ const ProjectDetails = ({ projectId }: { projectId: string }): JSX.Element => {
   );
   const [isAssigned, setIsAssigned] = useState(false);
   const [fileDeliverables, setFileDeliverables] =
-    useState<DisplayFileDeliverableInterface[]>();
+    useState<DisplayFileDeliverableInterface[]>([]);
   const [textDeliverables, setTextDeliverables] =
-    useState<DisplayTextDeliverableInterface[]>();
+    useState<DisplayTextDeliverableInterface[]>([]);
 
   // Wagmi
   const { address } = useAccount();
@@ -122,6 +127,197 @@ const ProjectDetails = ({ projectId }: { projectId: string }): JSX.Element => {
     } catch (error) {}
   };
 
+  const [showModal, setShowModal]: [
+    showModal: boolean,
+    setShowModal: React.Dispatch<React.SetStateAction<boolean>>
+  ] = useState(false);
+  const title = "Submit The Deliverables";
+  const description = "Are your deliverables appropriate? If it's not appropriate then you may not get the rewards. If you are sure press the \"Comfirm\" button.";
+
+  const [files, setFiles] = useState([]);
+
+  const [isDropable, setIsDropable] = useState(true);
+
+  const displayFiles = [
+    ...fileDeliverables.map(fileDeliverable => ({ 
+      name: fileDeliverable.fileName, 
+      size: fileDeliverable.fileSize, 
+      state: "uploaded", 
+      downloadUrl: fileDeliverable.downloadUrl,
+      progress: fileDeliverable.progress,
+    })),
+    ...files.map(file => ({ 
+      name: file.name, 
+      size: file.size, 
+      state: "waiting",
+      downloadUrl: "",
+      progress: "", 
+    })),
+  ];
+
+  const uploadFile = async (acceptedFiles: FileWithPath[]) => {
+    if (!isAssigned) {
+      setFiles([]);
+      throw new Error("Not Approved for the project");
+    }
+
+    if (!isDropable) {
+      return;
+    }
+
+    // Update the status to "Waiting for Payment"
+    if (projectDetails.fileDeliverable === undefined && projectDetails.textDeliverable === undefined) {
+      const updatedSubsetProjectDetail: Partial<StoreProjectDetailsInterface> =
+        {
+          "Status": StatusEnum.WaitingForPayment,
+        };
+      await updateProjectDetails(projectId, updatedSubsetProjectDetail);
+      const [_, updatedProjectDetails] = await getDataFromFireStore(
+        projectId
+      );
+      setProjectDetails(updatedProjectDetails);
+    }
+
+    setIsDropable(false);
+
+    let updatedFileDeliverables: StoreFileDeliverableInterface[] =
+      fileDeliverables.map((fileDeliverable) => {
+        return {
+          fileName: fileDeliverable.fileName,
+          fileSize: fileDeliverable.fileSize,
+          downloadUrl: fileDeliverable.downloadUrl,
+        };
+      });
+
+    const uploadPromises: Promise<StoreFileDeliverableInterface>[] =
+      acceptedFiles.map((file, acceptedFileIndex) => {
+        const index = fileDeliverables.length + acceptedFileIndex;
+        // const index = acceptedFileIndex;
+        const storageRef = ref(storage, `${projectId}/${file.name}`);
+        const uploadTask = uploadBytesResumable(storageRef, file);
+
+        setFiles(prevFiles => prevFiles.filter(f => f !== file));
+
+        return new Promise((resolve, reject) => {
+          ((index: number) => {
+            uploadTask.on(
+              "state_changed",
+              (snapshot) => {
+                const progress =
+                  (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+
+                setFileDeliverables((prevFileDeliverableArray) => {
+                  const updatedFileDeliverableArray = [
+                    ...prevFileDeliverableArray,
+                  ];
+
+                  updatedFileDeliverableArray[index] = {
+                    fileName: file.name,
+                    fileSize: `${file.size}`,
+                    progress: `${progress}`,
+                    downloadUrl: undefined as string,
+                  };
+
+                  return updatedFileDeliverableArray;
+                });
+              },
+              (error) => {
+                reject(undefined as StoreFileDeliverableInterface);
+              },
+              () => {
+                getDownloadURL(uploadTask.snapshot.ref).then(
+                  (downloadUrl) => {
+                    setFileDeliverables((prevFileDeliverableArray) => {
+                      const updatedFileDeliverableArray = [
+                        ...prevFileDeliverableArray,
+                      ];
+                      updatedFileDeliverableArray[index] = {
+                        ...updatedFileDeliverableArray[index],
+                        downloadUrl: downloadUrl,
+                      };
+
+                      resolve({
+                        fileName: file.name,
+                        fileSize: `${file.size}`,
+                        downloadUrl: downloadUrl,
+                      } as StoreFileDeliverableInterface);
+
+                      return updatedFileDeliverableArray;
+                    });
+                  }
+                );
+              }
+            );
+          })(index);
+        });
+      });
+
+    const resolvedUploadPromises = await Promise.all(uploadPromises);
+
+    updatedFileDeliverables = [
+      ...updatedFileDeliverables,
+      ...resolvedUploadPromises,
+    ];
+
+    await updateProjectDetails(projectId, {
+      fileDeliverable: updatedFileDeliverables,
+    });
+
+    await populateStates(
+      projectId,
+      setIsAssigned,
+      setProjectDetails,
+      setFileDeliverables,
+      setNotificationConfiguration,
+      setShowNotification,
+      setTextDeliverables
+    );
+    setIsDropable(true);
+  };
+
+  const [text, setText] = useState<string>("");
+
+  const uploadText = async (text: string) => {
+    if (text) {
+      if (!isAssigned) {
+        setText("");
+        throw new Error("Not Approved for the project");
+      }
+
+      // Update the status to "Waiting for Payment"
+      if (projectDetails.fileDeliverable === undefined && projectDetails.textDeliverable === undefined) {
+        const updatedSubsetProjectDetail: Partial<StoreProjectDetailsInterface> =
+          {
+            "Status": StatusEnum.WaitingForPayment,
+          };
+        await updateProjectDetails(projectId, updatedSubsetProjectDetail);
+        const [_, updatedProjectDetails] = await getDataFromFireStore(
+          projectId
+        );
+        setProjectDetails(updatedProjectDetails);
+      }
+
+      const prevTextDeliverableStorage = textDeliverables.map(
+        (textDeliverable) => textDeliverable.text
+      );
+      const updatedTextDeliverables = [...prevTextDeliverableStorage, text];
+      await updateProjectDetails(projectId, {
+        textDeliverable: updatedTextDeliverables,
+      });
+      await populateStates(
+        projectId,
+        setIsAssigned,
+        setProjectDetails,
+        setFileDeliverables,
+        setNotificationConfiguration,
+        setShowNotification,
+        setTextDeliverables
+      );
+
+      setText("");
+    }
+  };
+
   return (
     <SectionWrapper
       bgColor="bg-bg_primary"
@@ -164,14 +360,9 @@ const ProjectDetails = ({ projectId }: { projectId: string }): JSX.Element => {
                 </h1>
               )}
 
-              {section === "files" && (
+              {section === "submission" && (
                 <h1 className="sm:text-4xl xs:text-3xl text-3xl">
-                  Submit Files
-                </h1>
-              )}
-              {section === "text" && (
-                <h1 className="sm:text-4xl xs:text-3xl text-3xl">
-                  Submit Text
+                  Submission
                 </h1>
               )}
 
@@ -190,25 +381,12 @@ const ProjectDetails = ({ projectId }: { projectId: string }): JSX.Element => {
                 {projectDetails.Status !== StatusEnum.CompleteNoSubmissionByLancer
                 && projectDetails.Status !== StatusEnum.PayInAdvance && (
                   <CustomButton
-                    text="Files"
+                    text="Submission"
                     styles={`${
-                      section === "files" ? "bg-[#3E8ECC]" : ""
+                      section === "submission" ? "bg-[#3E8ECC]" : ""
                     } rounded-md text-center xs:text-base text-sm text-white py-[2px] px-4 hover:bg-[#377eb5]`}
                     onClick={() => {
-                      setSection("files");
-                    }}
-                    type={"button"}
-                  />
-                )}
-                {projectDetails.Status !== StatusEnum.CompleteNoSubmissionByLancer
-                && projectDetails.Status !== StatusEnum.PayInAdvance && (
-                  <CustomButton
-                    text="Text"
-                    styles={`${
-                      section === "text" ? "bg-[#3E8ECC]" : ""
-                    } rounded-md text-center xs:text-md text-sm text-white py-[2px] px-4 hover:bg-[#377eb5]`}
-                    onClick={() => {
-                      setSection("text");
+                      setSection("submission");
                     }}
                     type={"button"}
                   />
@@ -235,37 +413,76 @@ const ProjectDetails = ({ projectId }: { projectId: string }): JSX.Element => {
                 setTextDeliverables={setTextDeliverables}
               />
             )}
-            {section === "files" && (
-              <Dropbox
-                fileDeliverables={fileDeliverables}
-                setFileDeliverables={setFileDeliverables}
-                projectId={projectId}
-                setIsAssigned={setIsAssigned}
-                isAssigned={isAssigned}
-                setProjectDetails={setProjectDetails}
-                setNotificationConfiguration={setNotificationConfiguration}
-                setShowNotification={setShowNotification}
-                projectDetails={projectDetails}
-                setTextDeliverables={setTextDeliverables}
-              />
-            )}
-            {section === "text" && (
-              <SubmitTextArea
-                textDeliverables={textDeliverables}
-                setFileDeliverables={setFileDeliverables}
-                projectId={projectId}
-                setIsAssigned={setIsAssigned}
-                isAssigned={isAssigned}
-                setProjectDetails={setProjectDetails}
-                setNotificationConfiguration={setNotificationConfiguration}
-                setShowNotification={setShowNotification}
-                projectDetails={projectDetails}
-                setTextDeliverables={setTextDeliverables}
-              />
+            {section === "submission" && (
+              <div className="w-full md:w-[95%] lg:w-[90%] xl:w-[85%] mx-auto">
+                <Dropbox
+                  setFiles={setFiles}
+                  displayFiles={displayFiles}
+                  isDropable={isDropable}
+                />
+                <SubmitTextArea
+                  textDeliverables={textDeliverables}
+                  setTextDeliverables={setTextDeliverables}
+                  text={text}
+                  setText={setText}
+                />
+                <CustomButton
+                  text={title}
+                  styles={`w-full md:w-[90%] lg:w-[80%] mx-auto block ${
+                    (text !== "" || files.length > 0)
+                    ? "bg-[#3E8ECC] hover:bg-[#377eb5]"
+                    : "bg-slate-400"
+                  } rounded-md text-center text-lg font-semibold text-white py-[4px] px-7 mt-6`}
+                  type="submit"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    if (text !== "" || files.length > 0) {
+                      setShowModal(true);
+                    }
+                  }}
+                />
+              </div>
             )}
           </div>
         </div>
       </div>
+      <Modal
+        showModal={showModal}
+        setShowModal={setShowModal}
+        title={title}
+        description={description}
+        onConfirm={() => 
+          Promise.all([uploadFile(files), uploadText(text)])
+            .then(() => {
+              console.log("Successfully uploaded");
+              setNotificationConfiguration({
+                modalColor: "#62d140",
+                title: "Successfully submitted the deliverables",
+                message: "Well done! Wait till your submissions get approved by the client.",
+                icon: IconNotificationSuccess,
+              });
+            })
+            .catch((error) => {
+              console.log(error);
+              if (error.message === "Not Approved for the project") {
+                setNotificationConfiguration({
+                  modalColor: "#d14040",
+                  title: "Not Approved",
+                  message: "Adddress not Approved for project",
+                  icon: IconNotificationError,
+                });
+              } else {
+                setNotificationConfiguration({
+                  modalColor: "#d14040",
+                  title: "Error",
+                  message: "Error submitting the files",
+                  icon: IconNotificationError,
+                });
+              }
+            })
+            .finally(() => setShowNotification(true))
+        }
+      />
     </SectionWrapper>
   );
 };

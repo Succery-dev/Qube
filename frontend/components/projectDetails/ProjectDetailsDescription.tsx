@@ -277,6 +277,46 @@ const ProjectDetailsDescription = ({
     setShowNotification(true);
   }
 
+  const approveDeliverables = async () => {
+    try {
+      if (projectDetails["Client's Wallet Address"] != address) {
+        throw new Error("Not authorized to either accept or reject the deadline-extension");
+      }
+
+      // ③ Approve The Submission
+      const approveResult = await withdrawTokensToRecipientByDepositor(projectId);
+      console.log("Approve Result: ", approveResult);
+
+      // Update the status to "Waiting for Submission"
+      const updatedSubsetProjectDetail: Partial<StoreProjectDetailsInterface> =
+        {
+          "Status": StatusEnum.CompleteApproval,
+        };
+      await updateProjectDetails(projectId, updatedSubsetProjectDetail);
+      const [_, updatedProjectDetails] = await getDataFromFireStore(
+        projectId
+      );
+
+      setProjectDetails(updatedProjectDetails);
+
+      setNotificationConfiguration({
+        modalColor: "#62d140",
+        title: "Successfully approved the deliverables and paid tokens to the freelancer",
+        message: "Done!",
+        icon: IconNotificationSuccess,
+      });
+    } catch (error) {
+      console.log(error);
+      setNotificationConfiguration({
+        modalColor: "#d14040",
+        title: "Error",
+        message: "Not authorized to approve the deliverables",
+        icon: IconNotificationError,
+      });
+    }
+    setShowNotification(true);
+  }
+
   const disapproveDeliverables = async () => {
     try {
       if (projectDetails["Client's Wallet Address"] != address) {
@@ -404,44 +444,13 @@ const ProjectDetailsDescription = ({
           <CustomButton
             text="Waiting For Approval Of The Deliverables"
             type="button"
-            onClick={async () => {
-              try {
-                if (projectDetails["Client's Wallet Address"] != address) {
-                  throw new Error("Not authorized to either accept or reject the deadline-extension");
-                }
+            onClick={async (e) => {
+              e.preventDefault();
 
-                // ③ Approve The Submission
-                const approveResult = await withdrawTokensToRecipientByDepositor(projectId);
-                console.log("Approve Result: ", approveResult);
-
-                // Update the status to "Waiting for Submission"
-                const updatedSubsetProjectDetail: Partial<StoreProjectDetailsInterface> =
-                  {
-                    "Status": StatusEnum.CompleteApproval,
-                  };
-                await updateProjectDetails(projectId, updatedSubsetProjectDetail);
-                const [_, updatedProjectDetails] = await getDataFromFireStore(
-                  projectId
-                );
-
-                setProjectDetails(updatedProjectDetails);
-
-                setNotificationConfiguration({
-                  modalColor: "#62d140",
-                  title: "Successfully approved the deliverables and paid tokens to the freelancer",
-                  message: "Done!",
-                  icon: IconNotificationSuccess,
-                });
-              } catch (error) {
-                console.log(error);
-                setNotificationConfiguration({
-                  modalColor: "#d14040",
-                  title: "Error",
-                  message: "Not authorized to approve the deliverables",
-                  icon: IconNotificationError,
-                });
-              }
-              setShowNotification(true);
+              setTitle("Approve The Deliverables");
+              setDescription("You will approve the deliverables and the Escrow will pay the reward to the freelancer.");
+              setOnConfirm(() => approveDeliverables);
+              setShowModal(true);
             }}
             styles="w-full mx-auto block bg-[#3E8ECC] hover:bg-[#377eb5] rounded-md text-center text-lg font-semibold text-white py-[4px] px-7 mt-6"
           />

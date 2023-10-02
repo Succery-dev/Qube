@@ -19,6 +19,7 @@ import NftGateway from "./NFT-Gated.svg";
 import Gasless from "./Gasless.svg";
 import MediumIcon from "./Medium-Icon.svg";
 import Discord from "./Discord.svg";
+import Spinner from "./Spinner.svg";
 
 export {
   arrow,
@@ -42,4 +43,5 @@ export {
   Gasless,
   MediumIcon,
   Discord,
+  Spinner,
 };

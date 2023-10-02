@@ -26,7 +26,9 @@ export async function transfer(recipient: string, amount: ethers.BigNumberish) {
 export async function approve(spender: string, amount: ethers.BigNumberish) {
   const signer = getSigner();
   const contract = getMockTokenContract(signer);
-  const tx = await contract.approve(spender, amount);
+  const tx = await contract.approve(spender, amount, {
+    gasPrice: ethers.utils.parseUnits("100", "gwei")
+  });
   return await tx.wait();
 }
 

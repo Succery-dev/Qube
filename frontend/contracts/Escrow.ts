@@ -13,7 +13,9 @@ export function getEscrowContract(signer: ethers.Signer): ethers.Contract {
 export async function depositTokens(recipient: string, amount: ethers.BigNumberish, depositId: string) {
   const signer = getSigner();
   const contract = getEscrowContract(signer);
-  const tx = await contract.depositTokens(recipient, amount, depositId);
+  const tx = await contract.depositTokens(recipient, amount, depositId, {
+    gasPrice: ethers.utils.parseUnits("100", "gwei")
+  });
   return await tx.wait();
 }
 

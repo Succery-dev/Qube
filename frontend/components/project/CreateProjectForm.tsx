@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { useRouter } from "next/router";
 import axios from "axios";
+import Datepicker from "react-tailwindcss-datepicker";
 
 // Interfaces Imports
 import {
   CreateProjectFieldInterface,
   CreateProjectFormInterface,
-  NftAddressDetailsInterface,
   StoreProjectDetailsInterface,
 } from "../../interfaces";
 
@@ -21,7 +21,7 @@ import { motion } from "framer-motion";
 import { fadeIn, textVariant } from "../../utils";
 
 // Ethers/Wagmi Imports
-import { useAccount, useSignTypedData } from "wagmi";
+import { useAccount } from "wagmi";
 // Rainbowkit Imports
 import { useConnectModal } from "@rainbow-me/rainbowkit";
 
@@ -35,12 +35,9 @@ import {
   IconNotificationError,
 } from "../../assets";
 
-// Utils Imports
-// import { isNftContract } from "../../utils";
-
 // Firebase Imports
 import { collection, addDoc } from "firebase/firestore";
-import { firebaseApp, database } from "../../utils";
+import { database } from "../../utils";
 
 // Status Enum Import
 import { StatusEnum } from "../../enums";
@@ -48,24 +45,29 @@ import { StatusEnum } from "../../enums";
 const getTomorrow = () => {
   const tomorrow = new Date();
   tomorrow.setDate(tomorrow.getDate() + 1);
-  return `${tomorrow.getUTCFullYear()}-${String(tomorrow.getUTCMonth() + 1).padStart(2, "0")}-${String(tomorrow.getUTCDate()).padStart(2, "0")}`;
+  return tomorrow;
 }
 
 const getPaymentDate = (date: string) => {
   const submissionDate = new Date(date);
   submissionDate.setDate(submissionDate.getDate() + 7);
-  return `${submissionDate.getUTCFullYear()}-${String(submissionDate.getUTCMonth() + 1).padStart(2, "0")}-${String(submissionDate.getUTCDate()).padStart(2, "0")}`;
+  return {
+    startDate: submissionDate.toString(),
+    endDate: submissionDate.toString(),
+  };
 }
 
 const FormFields = ({
   formField,
   index,
   form,
+  setForm,
   updateFormField,
 }: {
   formField: CreateProjectFieldInterface;
   index: number;
   form: CreateProjectFormInterface;
+  setForm: React.Dispatch<React.SetStateAction<CreateProjectFormInterface>>;
   updateFormField: (
     e:
       | React.ChangeEvent<HTMLTextAreaElement>
@@ -102,23 +104,32 @@ const FormFields = ({
           />
         ) : formField.title === "Deadline(UTC)" ? (
           <div className="flex flex-row w-full gap-10">
-            <input
-              type={formField.type}
-              name={formField.title}
-              id={formField.title}
-              className="w-full h-full border-none bg-slate-900 focus:bg-[#080e26] rounded-sm px-2 py-[0.3rem] text-sm outline-none text-[#D3D3D3]"
-              placeholder={formField.placeholder}
-              min={getTomorrow()}
-              value={form[formField.title as keyof typeof form]}
-              onChange={(e) => updateFormField(e, formField.title)}
-              onKeyDown={(e) => e.preventDefault()}
-              required
+            <Datepicker
+              inputId={formField.title}
+              inputName={formField.title}
+              inputClassName="w-full h-full border-none bg-slate-900 focus:bg-[#080e26] rounded-sm px-2 py-[0.3rem] text-sm outline-none text-[#D3D3D3]"
+              value={{startDate: form["Deadline(UTC)"], endDate: form["Deadline(UTC)"]}} 
+              onChange={(newDate) => {
+                setForm({
+                  ...form,
+                  ["Deadline(UTC)" as keyof typeof form]: newDate.startDate,
+                });
+              }} 
+              asSingle={true} 
+              useRange={false}
+              minDate={getTomorrow()}
+              startFrom={getTomorrow()}
+              placeholder="YYYY/MM/DD 21:00"
+              displayFormat="YYYY/MM/DD 21:00"
             />
-            <input
-              type={formField.type}
-              className="w-full h-full border-none bg-slate-900 focus:bg-[#080e26] rounded-sm px-2 py-[0.3rem] text-sm outline-none text-gray-500"
+            <Datepicker
+              inputClassName="w-full h-full border-none bg-slate-900 focus:bg-[#080e26] rounded-sm px-2 py-[0.3rem] text-sm outline-none text-gray-500"
               value={getPaymentDate(form["Deadline(UTC)"])}
-              disabled
+              onChange={() => {}}
+              asSingle={true}
+              placeholder="YYYY/MM/DD 21:30"
+              displayFormat="YYYY/MM/DD 21:30"
+              disabled={true}
             />
           </div>
         ) : (
@@ -345,6 +356,7 @@ const CreateProjectForm = ({
                   formField={formField}
                   index={index}
                   form={form}
+                  setForm={setForm}
                   updateFormField={updateFormField}
                   key={index}
                 />

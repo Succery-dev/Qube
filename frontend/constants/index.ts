@@ -454,7 +454,7 @@ export const createProjectFields: CreateProjectFieldInterface[] = [
   {
     title: "Deadline(UTC)",
     placeholder: "",
-    type: "datetime-local",
+    type: "date",
   },
   {
     title: "Reward(USDC)",

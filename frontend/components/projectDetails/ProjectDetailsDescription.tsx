@@ -197,8 +197,8 @@ const ProjectDetailsDescription = ({
 
       const submissionDeadline = new Date(projectDetails["Deadline(UTC)"]);
       const paymentDeadline = new Date(projectDetails["Deadline(UTC) For Payment"]);
-      submissionDeadline.setDate(submissionDeadline.getDate() + 14);
-      paymentDeadline.setDate(paymentDeadline.getDate() + 14);
+      submissionDeadline.setUTCDate(submissionDeadline.getUTCDate() + 14);
+      paymentDeadline.setUTCDate(paymentDeadline.getUTCDate() + 14);
       console.log("New Submission Dealine: ", submissionDeadline.toISOString());
       console.log("New Payment Dealine: ", paymentDeadline.toISOString());
 
@@ -242,7 +242,8 @@ const ProjectDetailsDescription = ({
       }
 
       const paymentDeadline = new Date(projectDetails["Deadline(UTC) For Payment"]);
-      paymentDeadline.setMonth(paymentDeadline.getMonth() + 9);
+      paymentDeadline.setUTCMonth(paymentDeadline.getUTCMonth() + 9);
+      paymentDeadline.setUTCHours(22);
       console.log("New Payment Dealine: ", paymentDeadline.toISOString());
 
       const updatedSubsetProjectDetail: Partial<StoreProjectDetailsInterface> =
@@ -325,7 +326,9 @@ const ProjectDetailsDescription = ({
 
       // Set to 9 months later
       const dateObject = new Date(projectDetails["Deadline(UTC) For Payment"]);
-      dateObject.setMonth(dateObject.getMonth() + 9);
+      dateObject.setUTCMonth(dateObject.getUTCMonth() + 9);
+      dateObject.setUTCHours(22);
+      dateObject.setUTCMinutes(0);
 
       // Update "Deadline(UTC) For Payment" to return tokens to clients when disapprove
       const updatedSubsetProjectDetail: Partial<StoreProjectDetailsInterface> =

@@ -45,6 +45,18 @@ import { firebaseApp, database } from "../../utils";
 // Status Enum Import
 import { StatusEnum } from "../../enums";
 
+const getTomorrow = () => {
+  const tomorrow = new Date();
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  return `${tomorrow.getUTCFullYear()}-${String(tomorrow.getUTCMonth() + 1).padStart(2, "0")}-${String(tomorrow.getUTCDate()).padStart(2, "0")}`;
+}
+
+const getPaymentDate = (date: string) => {
+  const submissionDate = new Date(date);
+  submissionDate.setDate(submissionDate.getDate() + 7);
+  return `${submissionDate.getUTCFullYear()}-${String(submissionDate.getUTCMonth() + 1).padStart(2, "0")}-${String(submissionDate.getUTCDate()).padStart(2, "0")}`;
+}
+
 const FormFields = ({
   formField,
   index,
@@ -71,8 +83,12 @@ const FormFields = ({
       key={`createProject-${formField.title}`}
     >
       <h2 className="text-lg font-semibold text-secondary">
-        {/* TODO: fix */}
-        {formField.title === "Deadline(UTC)" ? "Submission Date (UTC)" : formField.title}*
+        {formField.title === "Deadline(UTC)" ? (
+          <div className="flex flex-row gap-5">
+            <p className="w-1/2">Submission Date (UTC)*</p>
+            <p className="text-gray-500">Payment Date (UTC)</p>
+          </div>
+        ) : `${formField.title}*`}
       </h2>
       <div className="grid place-items-center w-full blue-transparent-green-gradient lg:p-[1.5px] p-[1px] rounded-sm">
         {formField.type === "textArea" ? (
@@ -84,6 +100,27 @@ const FormFields = ({
             onChange={(e) => updateFormField(e, formField.title)}
             required
           />
+        ) : formField.title === "Deadline(UTC)" ? (
+          <div className="flex flex-row w-full gap-10">
+            <input
+              type={formField.type}
+              name={formField.title}
+              id={formField.title}
+              className="w-full h-full border-none bg-slate-900 focus:bg-[#080e26] rounded-sm px-2 py-[0.3rem] text-sm outline-none text-[#D3D3D3]"
+              placeholder={formField.placeholder}
+              min={getTomorrow()}
+              value={form[formField.title as keyof typeof form]}
+              onChange={(e) => updateFormField(e, formField.title)}
+              onKeyDown={(e) => e.preventDefault()}
+              required
+            />
+            <input
+              type={formField.type}
+              className="w-full h-full border-none bg-slate-900 focus:bg-[#080e26] rounded-sm px-2 py-[0.3rem] text-sm outline-none text-gray-500"
+              value={getPaymentDate(form["Deadline(UTC)"])}
+              disabled
+            />
+          </div>
         ) : (
           <input
             type={formField.type}

@@ -13,7 +13,7 @@ import {
   withdrawTokensToRecipientByOwner,
 } from "./Escrow";
 
-export const checkSubmissionDeadline = onSchedule("0 0 * * *", async () => {
+export const checkSubmissionDeadline = onSchedule("0 21 * * *", async () => {
   const now = new Date();
   // Filter the projects
   const projects = await getFirestore()
@@ -54,7 +54,7 @@ export const checkSubmissionDeadline = onSchedule("0 0 * * *", async () => {
   });
 });
 
-export const checkPaymentDeadline = onSchedule("30 0 * * *", async () => {
+export const checkPaymentDeadline = onSchedule("30 21 * * *", async () => {
   const now = new Date();
   // Filter the projects
   const projects = await getFirestore()
@@ -81,7 +81,7 @@ export const checkPaymentDeadline = onSchedule("30 0 * * *", async () => {
   });
 });
 
-export const checkDisapproveRefund = onSchedule("0 1 * * *", async () => {
+export const checkDisapproveRefund = onSchedule("0 22 * * *", async () => {
   const now = new Date();
   // Filter the projects
   const projects = await getFirestore()
@@ -101,7 +101,7 @@ export const checkDisapproveRefund = onSchedule("0 1 * * *", async () => {
   });
 });
 
-export const checkDisputeRefund = onSchedule("30 1 * * *", async () => {
+export const checkDisputeRefund = onSchedule("30 22 * * *", async () => {
   const now = new Date();
   // Filter the projects
   const projects = await getFirestore()
@@ -127,7 +127,7 @@ export const checkDisputeRefund = onSchedule("30 1 * * *", async () => {
   });
 });
 
-export const checkInDispute = onSchedule("0 2 * * *", async () => {
+export const checkInDispute = onSchedule("0 23 * * *", async () => {
   const now = new Date();
   const oneWeekAgo = new Date(now);
   oneWeekAgo.setDate(now.getDate() - 7);

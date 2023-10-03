@@ -429,14 +429,14 @@ const ProjectDetails = ({ projectId }: { projectId: string }): JSX.Element => {
                 <CustomButton
                   text={title}
                   styles={`w-full md:w-[90%] lg:w-[80%] mx-auto block ${
-                    (text !== "" || files.length > 0)
+                    (text !== "" || files.length > 0) && (address == projectDetails["Lancer's Wallet Address"])
                     ? "bg-[#3E8ECC] hover:bg-[#377eb5]"
                     : "bg-slate-400"
                   } rounded-md text-center text-lg font-semibold text-white py-[4px] px-7 mt-6`}
                   type="submit"
                   onClick={(e) => {
                     e.preventDefault();
-                    if (text !== "" || files.length > 0) {
+                    if ((text !== "" || files.length > 0) && (address == projectDetails["Lancer's Wallet Address"])) {
                       setShowModal(true);
                     }
                   }}

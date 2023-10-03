@@ -226,10 +226,12 @@ const CreateProjectForm = ({
   const addDataToFirestore = async (form: StoreProjectDetailsInterface) => {
     if (isConnected) {
       try {
-        const submissionDeadline = new Date(form["Deadline(UTC)"] + "Z");
+        const date = new Date(form["Deadline(UTC)"]);
+        const submissionDeadline = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate(), 21, 0, 0, 0));
         form["Deadline(UTC)"] = submissionDeadline.toISOString();
-        submissionDeadline.setDate(submissionDeadline.getDate() + 7);
-        form["Deadline(UTC) For Payment"] = submissionDeadline.toISOString();
+        date.setDate(date.getDate() + 7);
+        const paymentDeadline = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate(), 21, 30, 0, 0));
+        form["Deadline(UTC) For Payment"] = paymentDeadline.toISOString();
         form["Client's Wallet Address"] = address;
         form["Lancer's Wallet Address"] = addressZero;
         form.approveProof = "";
@@ -259,6 +261,7 @@ const CreateProjectForm = ({
 
         setShowProjectModal(true);
       } catch (error) {
+        console.log(error);
         setNotificationConfiguration({
           modalColor: "#d14040",
           title: "Error",

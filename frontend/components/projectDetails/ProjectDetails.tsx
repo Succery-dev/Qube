@@ -112,21 +112,6 @@ const ProjectDetails = ({ projectId }: { projectId: string }): JSX.Element => {
 
   const router = useRouter();
 
-  async function handleCopyToClipboard() {
-    try {
-      const textToCopy = `http://${window.location.host}/${router.asPath}`;
-      await navigator.clipboard.writeText(textToCopy);
-      setNotificationConfiguration({
-        modalColor: "#62d140",
-        title: "Copy the link",
-        message: "Successfully copied the link to the clipboard",
-        icon: IconNotificationSuccess,
-      });
-
-      setShowNotification(true);
-    } catch (error) {}
-  };
-
   const [showModal, setShowModal]: [
     showModal: boolean,
     setShowModal: React.Dispatch<React.SetStateAction<boolean>>
@@ -318,6 +303,28 @@ const ProjectDetails = ({ projectId }: { projectId: string }): JSX.Element => {
     }
   };
 
+  const [isCopiedPopupVisible, setIsCopiedPopupVisible] = useState(false);
+
+  useEffect(() => {
+    const timeOut = setTimeout(() => {
+      setIsCopiedPopupVisible(false);
+    }, 3000);
+
+    return () => {
+      clearTimeout(timeOut);
+    };
+  }, [isCopiedPopupVisible]);
+
+  async function handleCopyToClipboard() {
+    try {
+      setIsCopiedPopupVisible(true);
+      const textToCopy = `http://${window.location.host}/${router.asPath}`;
+      await navigator.clipboard.writeText(textToCopy);
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
   return (
     <SectionWrapper
       bgColor="bg-bg_primary"
@@ -333,13 +340,14 @@ const ProjectDetails = ({ projectId }: { projectId: string }): JSX.Element => {
             {/* Header */}
             <div className="w-full text-white">
               {section === "description" && (
-                <h1 className="flex flex-row items-center gap-5 sm:text-4xl xs:text-3xl text-3xl">
+                <h1 className="flex flex-row relative items-center gap-5 sm:text-4xl xs:text-3xl text-3xl">
                   <Image
                     src={IconCopy}
                     alt="copy"
                     className="h-6 w-auto cursor-pointer"
                     onClick={() => handleCopyToClipboard()}
                   />
+                  {isCopiedPopupVisible && <p className="absolute -left-5 bottom-14 bg-slate-500 text-white text-sm px-5 rounded-md animate-bounce">Copied</p>}
                   Project for {projectDetails.Title}
                   {/* TODO: fix this, change this button to a block */}
                   {projectDetails.Status !== StatusEnum.CompleteNoSubmissionByLancer

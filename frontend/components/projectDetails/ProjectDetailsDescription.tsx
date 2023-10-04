@@ -445,7 +445,7 @@ const ProjectDetailsDescription = ({
       {projectDetails.Status === StatusEnum.WaitingForPayment && !projectDetails.InDispute && (
         <>
           <CustomButton
-            text="Waiting For Approval Of The Deliverables"
+            text="Approve The Deliverables"
             type="button"
             onClick={async (e) => {
               e.preventDefault();

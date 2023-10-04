@@ -63,7 +63,7 @@ const Modal = ({
                           <Image
                             src={Spinner}
                             alt="spinner"
-                            className="animate-spin h-20 w-auto"
+                            className="animate-spin-slow h-20 w-auto"
                           />
                           Processing...
                         </div>

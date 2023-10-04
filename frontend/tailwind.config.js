@@ -24,6 +24,9 @@ module.exports = {
       fontFamily: {
         nunito: ["Nunito", "sans-serif"],
       },
+      animation: {
+        "spin-slow": "spin 2s linear infinite",
+      },
     },
   },
   plugins: [],

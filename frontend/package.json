@@ -23,7 +23,7 @@
 		"firebase": "^9.22.1",
 		"firebase-admin": "^11.10.1",
 		"firebase-functions": "^4.4.1",
-		"framer-motion": "^10.12.12",
+		"framer-motion": "^10.16.4",
 		"lodash.merge": "^4.6.2",
 		"next": "13.1.2",
 		"next-auth": "^4.22.1",
@@ -40,7 +40,7 @@
 	"devDependencies": {
 		"@types/lodash.merge": "^4.6.7",
 		"@types/node": "18.15.11",
-		"@types/react": "18.0.33",
+		"@types/react": "^18.2.24",
 		"@types/react-dom": "18.0.11",
 		"autoprefixer": "^10.4.14",
 		"eslint": "8.36.0",

@@ -348,7 +348,7 @@ const ProjectDetails = ({ projectId }: { projectId: string }): JSX.Element => {
                     onClick={() => handleCopyToClipboard()}
                   />
                   {isCopiedPopupVisible && <p className="absolute -left-5 bottom-14 bg-slate-500 text-white text-sm px-5 rounded-md animate-bounce">Copied</p>}
-                  Project for {projectDetails.Title}
+                  {projectDetails.Title}
                   {/* TODO: fix this, change this button to a block */}
                   {projectDetails.Status !== StatusEnum.CompleteNoSubmissionByLancer
                   && projectDetails.Status !== StatusEnum.CompleteNoContactByClient

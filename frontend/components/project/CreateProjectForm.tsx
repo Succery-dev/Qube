@@ -226,6 +226,11 @@ const CreateProjectForm = ({
   const addDataToFirestore = async (form: StoreProjectDetailsInterface) => {
     if (isConnected) {
       try {
+        const regex = /^[1-9]\d*$/;
+        if (!regex.test(form["Reward(USDC)"].toString())) {
+          throw new Error("Invalid Reward Value. Only natural numbers are allowed.");
+        }
+
         const date = new Date(form["Deadline(UTC)"]);
         const submissionDeadline = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate(), 21, 0, 0, 0));
         form["Deadline(UTC)"] = submissionDeadline.toISOString();
@@ -261,11 +266,10 @@ const CreateProjectForm = ({
 
         setShowProjectModal(true);
       } catch (error) {
-        console.log(error);
         setNotificationConfiguration({
           modalColor: "#d14040",
           title: "Error",
-          message: "Error occured creating the project",
+          message: error.message,
           icon: IconNotificationError,
         });
       } finally {

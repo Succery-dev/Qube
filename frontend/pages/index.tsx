@@ -58,18 +58,20 @@ export default function Home() {
 
   useEffect(() => {
     // TODO: Fix this whitelist feature
-    if (isConnected && whitelist.includes(address)) {
+    // if (isConnected && whitelist.includes(address)) {
+    if (isConnected) {
       router.push(`/dashboard/${address}`);
-    } else if (isConnected && !whitelist.includes(address)) {
-      disconnect();
-      setNotificationConfiguration({
-        modalColor: "#d1d140",
-        title: "Access Denied",
-        message: "You're not on the whitelist.",
-        icon: IconNotificationWarning,
-      });
-      setShowNotification(true);
     }
+    // else if (isConnected && !whitelist.includes(address)) {
+    //   disconnect();
+    //   setNotificationConfiguration({
+    //     modalColor: "#d1d140",
+    //     title: "Access Denied",
+    //     message: "You're not on the whitelist.",
+    //     icon: IconNotificationWarning,
+    //   });
+    //   setShowNotification(true);
+    // }
   }, [isConnected]);
 
   return (

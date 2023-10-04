@@ -7,7 +7,7 @@ import { arrow } from "../../assets";
 import { projectDetailsInterfaceKeys } from "../../constants";
 
 // Helper Function Imports
-import { convertSeconds } from "../../utils";
+import { getFormattedDate } from "../../utils";
 
 // Interface Imports
 import {
@@ -63,8 +63,7 @@ const TableContents = ({
                       ${" "}
                     </span>
                     {projectKey === "deadline"
-                      // ? convertSeconds(project.deadline)
-                      ? project.deadline
+                      ? getFormattedDate(project.deadline)
                       : projectKey === "amount"
                         ? project.amount.toLocaleString()
                         : projectKey === "id"

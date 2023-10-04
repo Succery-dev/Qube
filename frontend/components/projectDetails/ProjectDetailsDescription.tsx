@@ -26,6 +26,7 @@ import {
   convertState,
   populateStates,
   updateProjectDetails,
+  getFormattedDate,
 } from "../../utils";
 
 // Context Imports
@@ -396,7 +397,9 @@ const ProjectDetailsDescription = ({
                   <p className={`xs:text-base text-xs font-normal break-words`}>
                     {descriptionSection === "Status"
                       ? convertState(descriptionText)
-                      : descriptionText
+                      : (descriptionSection === "Deadline(UTC)" || descriptionSection === "Deadline(UTC) For Payment")
+                        ? getFormattedDate(descriptionText as string)
+                        : descriptionText
                     }
                   </p>
                 )}

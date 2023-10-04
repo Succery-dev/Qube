@@ -78,11 +78,6 @@ const SubmitTextArea = ({
                         navigator.clipboard.writeText(textDeliverable.text);
                       }}
                     >
-                      <Image
-                        src={IconCopy}
-                        alt="Copy"
-                        className="cursor-pointer xs:py-4 py-2 px-2 w-8"
-                      />
                       <h3 className="max-w-[90%] text-start whitespace-nowrap text-ellipsis overflow-hidden text-white xs:py-4 py-2">
                         {textDeliverable.text.substring(0, 120)}
                       </h3>

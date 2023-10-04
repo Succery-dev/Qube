@@ -192,7 +192,7 @@ const ProjectDetailsDescription = ({
   const acceptDeadlineExtension = async () => {
     try {
       if (projectDetails["Lancer's Wallet Address"] !== freelancerAddress) {
-        throw new Error("Not authorized to either accept or reject the deadline-extension");
+        throw new Error("This action can be taken by the freelancer. Wait until being accepted");
       }
 
       const submissionDeadline = new Date(projectDetails["Deadline(UTC)"]);
@@ -224,11 +224,11 @@ const ProjectDetailsDescription = ({
       });
       setShowNotification(true);
     } catch (error) {
-      console.log(error);
+      console.log(error.message);
       setNotificationConfiguration({
         modalColor: "#d14040",
         title: "Error",
-        message: "Not authorized to either accept or reject the deadline-extension",
+        message: error.message,
         icon: IconNotificationError,
       });
     }
@@ -238,7 +238,7 @@ const ProjectDetailsDescription = ({
   const rejectDeadlineExtension = async () => {
     try {
       if (projectDetails["Lancer's Wallet Address"] !== freelancerAddress) {
-        throw new Error("Not authorized to either accept or reject the deadline-extension");
+        throw new Error("This action can be taken by the freelancer. Wait until being accepted");
       }
 
       const paymentDeadline = new Date(projectDetails["Deadline(UTC) For Payment"]);
@@ -267,11 +267,11 @@ const ProjectDetailsDescription = ({
       });
       setShowNotification(true);
     } catch (error) {
-      console.log(error);
+      console.log(error.message);
       setNotificationConfiguration({
         modalColor: "#d14040",
         title: "Error",
-        message: "Not authorized to either accept or reject the deadline-extension",
+        message: error.message,
         icon: IconNotificationError,
       });
     }

@@ -90,7 +90,7 @@ const FormFields = ({
             <p className="w-1/2">Submission Date (UTC)*</p>
             <p className="text-gray-500">Payment Date (UTC)</p>
           </div>
-        ) : `${formField.title}*`}
+        ) : formField.title === "Reward(USDC)" ? "Reward*" : `${formField.title}*`}
       </h2>
       <div className="grid place-items-center w-full blue-transparent-green-gradient lg:p-[1.5px] p-[1px] rounded-sm">
         {formField.type === "textArea" ? (
@@ -131,6 +131,21 @@ const FormFields = ({
               displayFormat="YYYY/MM/DD 21:30"
               disabled={true}
             />
+          </div>
+        ) : formField.title === "Reward(USDC)" ? (
+          <div className="flex w-full">
+            <input
+              type={formField.type}
+              name={formField.title}
+              id={formField.title}
+              className="w-full h-full border-none bg-bg_primary focus:bg-[#080e26] rounded-sm px-2 py-[0.3rem] text-sm outline-none text-[#D3D3D3]"
+              placeholder={formField.placeholder}
+              min={0}
+              value={form[formField.title as keyof typeof form]}
+              onChange={(e) => updateFormField(e, formField.title)}
+              required
+            />
+            <p className="px-5 text-lg">USDC</p>
           </div>
         ) : (
           <input

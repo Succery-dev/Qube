@@ -40,7 +40,7 @@ const Modal = ({
                 {/* Header */}
                 <div className="w-full">
                   <div className="flex flex-row w-full justify-between items-center top-0 right-0 z-[100]">
-                    <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-secondary">
+                    <h2 className={`text-2xl sm:text-3xl md:text-4xl font-bold ${title === "Disapprove The Deliverables" ? "text-red-500" : "text-secondary"}`}>
                       {title}
                     </h2>
                     {!isLoading &&
@@ -54,7 +54,7 @@ const Modal = ({
                   </div>
                   {/* Main */}
                   <div className="flex flex-col w-full gap-4 mt-8">
-                    <p className="text-[#959595]">
+                    <p className={title === "Disapprove The Deliverables" ? "text-red-800" : "text-[#959595]"}>
                       {description}
                     </p>
                     {isLoading
@@ -70,7 +70,7 @@ const Modal = ({
                       ) : (
                         <div className="flex flex-row items-center justify-end gap-14 py-4 px-4">
                           <button
-                            className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition duration-150"
+                            className={`${title === "Disapprove The Deliverables" ? "bg-red-500 hover:bg-red-600" : "bg-blue-500 hover:bg-blue-600"} text-white py-2 px-4 rounded transition duration-150`}
                             onClick={async () => {
                               setIsLoading(true);
                               await onConfirm();

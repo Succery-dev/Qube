@@ -49,6 +49,7 @@ const Navbar = (): JSX.Element => {
   }, [isConnected, address]);
 
   const [email, setEmail] = useState("");
+  const [confirmEmail, setConfirmEmail] = useState("");
 
   const [showEmailModal, setShowEmailModal] = useState(false);
 
@@ -56,19 +57,31 @@ const Navbar = (): JSX.Element => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsLoading(true);
-    console.log("Submitted Email: ", email);
 
-    try {
-      const docRef = doc(database, "users", address);
-      await setDoc(docRef, {email: email});
-      setEmail("");
-      setShowEmailModal(false);
-    } catch (error) {
-      console.error("Error setting document: ", error);
-    } finally {
-      setIsLoading(false);
+    if (email !== confirmEmail) {
+      alert("The email addresses you entered do not match. Please ensure they are the same and try again.");
+    } else {
+      setIsLoading(true);
+      console.log("Submitted Email: ", email);
+
+      try {
+        const docRef = doc(database, "users", address);
+        await setDoc(docRef, {email: email});
+        setShowEmailModal(false);
+      } catch (error) {
+        console.error("Error setting document: ", error);
+      } finally {
+        setIsLoading(false);
+      }
     }
+
+    setEmail("");
+    setConfirmEmail("");
+  };
+
+  const handlePaste = (e: React.ClipboardEvent) => {
+    e.preventDefault();
+    alert("Please do not use copy and paste. Enter the email address manually.");
   };
 
   return (
@@ -222,13 +235,22 @@ const Navbar = (): JSX.Element => {
                     }
                   </div>
                   {/* Main */}
-                  <form onSubmit={handleSubmit} className="flex flex-col mt-8">
+                  <form onSubmit={handleSubmit} className="flex flex-col mt-8 gap-5">
                     <input
                       type="email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       className="p-2 border rounded w-full text-black"
-                      placeholder="succery@gmail.com"
+                      placeholder="Enter your email address"
+                      required
+                    />
+                    <input
+                      type="email"
+                      value={confirmEmail}
+                      onChange={(e) => setConfirmEmail(e.target.value)}
+                      className="p-2 border rounded w-full text-black"
+                      placeholder="Confirm your email address"
+                      onPaste={handlePaste}
                       required
                     />
                     {isLoading

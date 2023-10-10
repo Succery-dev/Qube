@@ -1,12 +1,18 @@
 // The Firebase Admin SDK to access Firestore.
 import { initializeApp } from "firebase-admin/app";
 import { getFirestore } from "firebase-admin/firestore";
+import { onDocumentUpdated } from "firebase-functions/v2/firestore";
+import nodemailer from "nodemailer";
 
 initializeApp();
 
 import { onSchedule } from "firebase-functions/v2/scheduler";
 import { logger } from "firebase-functions";
 
+import { StatusEnum } from "./projectStatus";
+
+import dotenv from "dotenv";
+dotenv.config();
 
 import {
   withdrawTokensToDepositorByOwner,
@@ -155,4 +161,234 @@ export const checkInDispute = onSchedule("0 23 * * *", async () => {
         "InDispute": false,
       }, {merge: true});
   });
+});
+
+const transporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: process.env.MAIL_ADDRESS,
+    pass: process.env.MAIL_PASSWORD,
+  }
+});
+
+export const sendEmailNotification = onDocumentUpdated("/projects/{documentId}", async (event) => {
+  const id = event.params.documentId;
+  logger.info("id: ", id);
+
+  const beforeData = event.data?.before;
+  const beforeStatus = beforeData?.get("Status");
+  const beforeInDispute = beforeData?.get("InDispute");
+  const afterData = event.data?.after;
+  const afterStatus = afterData?.get("Status");
+  const afterInDispute = afterData?.get("InDispute");
+  logger.info("before: ", beforeStatus, beforeInDispute);
+  logger.info("after: ", afterStatus, afterInDispute);
+
+  if (beforeStatus == StatusEnum.WaitingForConnectingLancersWallet && afterStatus == StatusEnum.PayInAdvance) {
+    const docRef = getFirestore().collection("users").doc(afterData?.get("Client's Wallet Address"));
+    const doc = await docRef.get();
+
+    const mailOptions = {
+      from: process.env.MAIL_ADDRESS,
+      to: doc.get("email"),
+      subject: 'Project Status Changed',
+      text: `The status of the project has changed to ${afterStatus} from ${beforeStatus}`,
+    };
+    
+    return transporter.sendMail(mailOptions);
+  } else if (beforeStatus == StatusEnum.PayInAdvance && afterStatus == StatusEnum.WaitingForSubmission) {
+    const docRef = getFirestore().collection("users").doc(afterData?.get("Lancer's Wallet Address"));
+    const doc = await docRef.get();
+
+    const mailOptions = {
+      from: process.env.MAIL_ADDRESS,
+      to: doc.get("email"),
+      subject: 'Project Status Changed',
+      text: `The status of the project has changed to ${afterStatus} from ${beforeStatus}`,
+    };
+    
+    return transporter.sendMail(mailOptions);
+  } else if (beforeStatus == StatusEnum.WaitingForSubmission && afterStatus == StatusEnum.WaitingForPayment) {
+    const docRef = getFirestore().collection("users").doc(afterData?.get("Client's Wallet Address"));
+    const doc = await docRef.get();
+
+    const mailOptions = {
+      from: process.env.MAIL_ADDRESS,
+      to: doc.get("email"),
+      subject: 'Project Status Changed',
+      text: `The status of the project has changed to ${afterStatus} from ${beforeStatus}`,
+    };
+    
+    return transporter.sendMail(mailOptions);
+  } else if (beforeStatus == StatusEnum.WaitingForPayment && afterStatus == StatusEnum.CompleteApproval) {
+    const docRef = getFirestore().collection("users").doc(afterData?.get("Client's Wallet Address"));
+    const doc = await docRef.get();
+
+    const mailOptions = {
+      from: process.env.MAIL_ADDRESS,
+      to: doc.get("email"),
+      subject: 'Project Status Changed',
+      text: `The status of the project has changed to ${afterStatus} from ${beforeStatus}`,
+    };
+    
+    transporter.sendMail(mailOptions);
+
+    const docRef2 = getFirestore().collection("users").doc(afterData?.get("Lancer's Wallet Address"));
+    const doc2 = await docRef2.get();
+
+    const mailOptions2 = {
+      from: process.env.MAIL_ADDRESS,
+      to: doc2.get("email"),
+      subject: 'Project Status Changed',
+      text: `The status of the project has changed to ${afterStatus} from ${beforeStatus}`,
+    };
+    
+    return transporter.sendMail(mailOptions2);
+  } else if (beforeStatus == StatusEnum.WaitingForPayment && afterStatus == StatusEnum.CompleteDispute) {
+    const docRef = getFirestore().collection("users").doc(afterData?.get("Client's Wallet Address"));
+    const doc = await docRef.get();
+
+    const mailOptions = {
+      from: process.env.MAIL_ADDRESS,
+      to: doc.get("email"),
+      subject: 'Project Status Changed',
+      text: `The status of the project has changed to ${afterStatus} from ${beforeStatus}`,
+    };
+    
+    transporter.sendMail(mailOptions);
+
+    const docRef2 = getFirestore().collection("users").doc(afterData?.get("Lancer's Wallet Address"));
+    const doc2 = await docRef2.get();
+
+    const mailOptions2 = {
+      from: process.env.MAIL_ADDRESS,
+      to: doc2.get("email"),
+      subject: 'Project Status Changed',
+      text: `The status of the project has changed to ${afterStatus} from ${beforeStatus}`,
+    };
+    
+    return transporter.sendMail(mailOptions2);
+  } else if (beforeStatus == StatusEnum.WaitingForPayment && afterStatus == StatusEnum.WaitingForSubmissionDER) {
+    const docRef = getFirestore().collection("users").doc(afterData?.get("Client's Wallet Address"));
+    const doc = await docRef.get();
+
+    const mailOptions = {
+      from: process.env.MAIL_ADDRESS,
+      to: doc.get("email"),
+      subject: 'Project Status Changed',
+      text: `The status of the project has changed to ${afterStatus} from ${beforeStatus}`,
+    };
+    
+    transporter.sendMail(mailOptions);
+
+    const docRef2 = getFirestore().collection("users").doc(afterData?.get("Lancer's Wallet Address"));
+    const doc2 = await docRef2.get();
+
+    const mailOptions2 = {
+      from: process.env.MAIL_ADDRESS,
+      to: doc2.get("email"),
+      subject: 'Project Status Changed',
+      text: `The status of the project has changed to ${afterStatus} from ${beforeStatus}`,
+    };
+    
+    return transporter.sendMail(mailOptions2);
+  } else if (beforeStatus == StatusEnum.WaitingForSubmissionDER && afterStatus == StatusEnum.WaitingForPayment) {
+    const docRef = getFirestore().collection("users").doc(afterData?.get("Client's Wallet Address"));
+    const doc = await docRef.get();
+
+    const mailOptions = {
+      from: process.env.MAIL_ADDRESS,
+      to: doc.get("email"),
+      subject: 'Project Status Changed',
+      text: `The status of the project has changed to ${afterStatus} from ${beforeStatus}`,
+    };
+    
+    return transporter.sendMail(mailOptions);
+  } else if (beforeStatus == StatusEnum.WaitingForPayment && afterStatus == StatusEnum.CompleteDisapproval) {
+    const docRef = getFirestore().collection("users").doc(afterData?.get("Client's Wallet Address"));
+    const doc = await docRef.get();
+
+    const mailOptions = {
+      from: process.env.MAIL_ADDRESS,
+      to: doc.get("email"),
+      subject: 'Project Status Changed',
+      text: `The status of the project has changed to ${afterStatus} from ${beforeStatus}`,
+    };
+    
+    transporter.sendMail(mailOptions);
+
+    const docRef2 = getFirestore().collection("users").doc(afterData?.get("Lancer's Wallet Address"));
+    const doc2 = await docRef2.get();
+
+    const mailOptions2 = {
+      from: process.env.MAIL_ADDRESS,
+      to: doc2.get("email"),
+      subject: 'Project Status Changed',
+      text: `The status of the project has changed to ${afterStatus} from ${beforeStatus}`,
+    };
+    
+    return transporter.sendMail(mailOptions2);
+  } else if (beforeStatus == StatusEnum.WaitingForPayment && afterStatus == StatusEnum.CompleteNoContactByClient) {
+    const docRef = getFirestore().collection("users").doc(afterData?.get("Client's Wallet Address"));
+    const doc = await docRef.get();
+
+    const mailOptions = {
+      from: process.env.MAIL_ADDRESS,
+      to: doc.get("email"),
+      subject: 'Project Status Changed',
+      text: `The status of the project has changed to ${afterStatus} from ${beforeStatus}`,
+    };
+    
+    transporter.sendMail(mailOptions);
+
+    const docRef2 = getFirestore().collection("users").doc(afterData?.get("Lancer's Wallet Address"));
+    const doc2 = await docRef2.get();
+
+    const mailOptions2 = {
+      from: process.env.MAIL_ADDRESS,
+      to: doc2.get("email"),
+      subject: 'Project Status Changed',
+      text: `The status of the project has changed to ${afterStatus} from ${beforeStatus}`,
+    };
+    
+    return transporter.sendMail(mailOptions2);
+  } else if (beforeStatus == StatusEnum.WaitingForConnectingLancersWallet && afterStatus == StatusEnum.CompleteNoSubmissionByLancer) {
+    const docRef = getFirestore().collection("users").doc(afterData?.get("Client's Wallet Address"));
+    const doc = await docRef.get();
+
+    const mailOptions = {
+      from: process.env.MAIL_ADDRESS,
+      to: doc.get("email"),
+      subject: 'Project Status Changed',
+      text: `The status of the project has changed to ${afterStatus} from ${beforeStatus}`,
+    };
+    
+    transporter.sendMail(mailOptions);
+
+    const docRef2 = getFirestore().collection("users").doc(afterData?.get("Lancer's Wallet Address"));
+    const doc2 = await docRef2.get();
+
+    const mailOptions2 = {
+      from: process.env.MAIL_ADDRESS,
+      to: doc2.get("email"),
+      subject: 'Project Status Changed',
+      text: `The status of the project has changed to ${afterStatus} from ${beforeStatus}`,
+    };
+    
+    return transporter.sendMail(mailOptions2);
+  } else if (!beforeInDispute && afterInDispute) {
+    const docRef = getFirestore().collection("users").doc(afterData?.get("Lancer's Wallet Address"));
+    const doc = await docRef.get();
+
+    const mailOptions = {
+      from: process.env.MAIL_ADDRESS,
+      to: doc.get("email"),
+      subject: 'Project Status Changed',
+      text: `The status of the project has changed to ${afterStatus} from ${beforeStatus}`,
+    };
+    
+    return transporter.sendMail(mailOptions);
+  }
+
+  return null;
 });

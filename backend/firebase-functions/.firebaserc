@@ -1,5 +1,7 @@
 {
   "projects": {
-    "default": "qube-succery"
-  }
+    "default": "qube-mumbai"
+  },
+  "targets": {},
+  "etags": {}
 }

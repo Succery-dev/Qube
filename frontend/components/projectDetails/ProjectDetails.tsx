@@ -388,7 +388,8 @@ const ProjectDetails = ({ projectId }: { projectId: string }): JSX.Element => {
                 />
                 {projectDetails.Status !== StatusEnum.CompleteNoSubmissionByLancer
                 && projectDetails.Status !== StatusEnum.PayInAdvance 
-                && projectDetails.Status !== StatusEnum.WaitingForConnectingLancersWallet && (
+                && projectDetails.Status !== StatusEnum.WaitingForConnectingLancersWallet
+                && projectDetails.Status !== StatusEnum.Cancel && (
                   <CustomButton
                     text="Submission"
                     styles={`${

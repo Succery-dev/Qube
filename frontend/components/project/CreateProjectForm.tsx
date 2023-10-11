@@ -262,6 +262,9 @@ const CreateProjectForm = ({
         form.InDispute = false;
         form.RequestedDeadlineExtension = "";
 
+        const now = new Date();
+        form.createdAt = now.toISOString();
+
         const response = await addDoc(databaseRef, form);
         const projectDetailLink =
           /**

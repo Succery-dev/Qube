@@ -163,6 +163,28 @@ export const checkInDispute = onSchedule("0 23 * * *", async () => {
   });
 });
 
+export const checkSignByFreelancer = onSchedule("30 23 * * *", async () => {
+  const now = new Date();
+  const oneWeekAgo = new Date(now);
+  oneWeekAgo.setDate(now.getDate() - 7);
+  // Filter the projects
+  const projects = await getFirestore()
+    .collection("projects")
+    .where("Status", "==", "Waiting for connecting lancer’s wallet")
+    .where("createdAt", "<=", oneWeekAgo.toISOString())
+    .get();
+
+  // Change the status to "Cancel"
+  projects.forEach(async (doc) => {
+    await getFirestore()
+      .collection("projects")
+      .doc(doc.id)
+      .set({
+        "Status": "Cancel",
+      }, {merge: true});
+  });
+});
+
 const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {

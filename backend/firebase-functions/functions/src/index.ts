@@ -185,6 +185,16 @@ export const checkSignByFreelancer = onSchedule("30 23 * * *", async () => {
   });
 });
 
+const formatDateToUTC = (dateObj: Date) => {
+  const year = dateObj.getUTCFullYear();
+  const month = (dateObj.getUTCMonth() + 1).toString().padStart(2, '0');
+  const day = dateObj.getUTCDate().toString().padStart(2, '0');
+  const hour = dateObj.getUTCHours().toString().padStart(2, '0');
+  const minute = dateObj.getUTCMinutes().toString().padStart(2, '0');
+
+  return `${year}/${month}/${day} ${hour}:${minute}`;
+};
+
 const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
@@ -197,6 +207,8 @@ export const sendEmailNotification = onDocumentUpdated("/projects/{documentId}",
   const id = event.params.documentId;
   logger.info("id: ", id);
 
+  const projectLink = `http://qube-dsph5620m-succery.vercel.app/projectDetails/${id}`;
+
   const beforeData = event.data?.before;
   const beforeStatus = beforeData?.get("Status");
   const beforeInDispute = beforeData?.get("InDispute");
@@ -206,6 +218,20 @@ export const sendEmailNotification = onDocumentUpdated("/projects/{documentId}",
   logger.info("before: ", beforeStatus, beforeInDispute);
   logger.info("after: ", afterStatus, afterInDispute);
 
+  const title = afterData?.get("Title");
+  const now = new Date();
+  const submissionDeadline = new Date(afterData?.get("Deadline(UTC)"));
+  const extendedSubmissionDeadline = new Date(afterData?.get("Deadline(UTC)"));
+  extendedSubmissionDeadline.setUTCDate(extendedSubmissionDeadline.getUTCDate() + 14);
+  const paymentDeadline = new Date(afterData?.get("Deadline(UTC) For Payment"));
+  const extendedPaymentDeadline = new Date(afterData?.get("Deadline(UTC) For Payment"));
+  extendedPaymentDeadline.setUTCDate(extendedPaymentDeadline.getUTCDate() + 14);
+  const formattedNow = formatDateToUTC(now);
+  const formattedSubmissionDeadline = formatDateToUTC(submissionDeadline);
+  const formattedExtendedSubmissionDeadline = formatDateToUTC(extendedSubmissionDeadline);
+  const formattedPaymentDeadline = formatDateToUTC(paymentDeadline);
+  const formattedExtendedPaymentDeadline = formatDateToUTC(extendedPaymentDeadline);
+
   if (beforeStatus == StatusEnum.WaitingForConnectingLancersWallet && afterStatus == StatusEnum.PayInAdvance) {
     const docRef = getFirestore().collection("users").doc(afterData?.get("Client's Wallet Address"));
     const doc = await docRef.get();
@@ -213,8 +239,14 @@ export const sendEmailNotification = onDocumentUpdated("/projects/{documentId}",
     const mailOptions = {
       from: process.env.MAIL_ADDRESS,
       to: doc.get("email"),
-      subject: 'Project Status Changed',
-      text: `The status of the project has changed to ${afterStatus} from ${beforeStatus}`,
+      subject: `Project Name: ${title}`,
+      text: 
+`The contract has been signed. 
+
+Please prepay the reward to Escrow as soon as possible. 
+Make sure that until you don't finish the prepay, the freelancer won't start working and won't be able to submit the work.
+
+${projectLink} to the project`,
     };
     
     return transporter.sendMail(mailOptions);
@@ -225,8 +257,12 @@ export const sendEmailNotification = onDocumentUpdated("/projects/{documentId}",
     const mailOptions = {
       from: process.env.MAIL_ADDRESS,
       to: doc.get("email"),
-      subject: 'Project Status Changed',
-      text: `The status of the project has changed to ${afterStatus} from ${beforeStatus}`,
+      subject: `Project Name: ${title}`,
+      text: 
+`The prepay has been done by the client. Finish your work and submit it before ${formattedSubmissionDeadline}(UTC). 
+If you don't submit it before ${formattedSubmissionDeadline}(UTC), the money in Escrow will be refunded to the client automatically.
+
+${projectLink} to the project`,
     };
     
     return transporter.sendMail(mailOptions);
@@ -237,8 +273,19 @@ export const sendEmailNotification = onDocumentUpdated("/projects/{documentId}",
     const mailOptions = {
       from: process.env.MAIL_ADDRESS,
       to: doc.get("email"),
-      subject: 'Project Status Changed',
-      text: `The status of the project has changed to ${afterStatus} from ${beforeStatus}`,
+      subject: `Project Name: ${title}`,
+      text: 
+`The Submission has been done. Visit the page to check the submissions and take the appropriate action before ${formattedPaymentDeadline}(UTC).
+
+Make sure the following things. 
+1. If you approve the payment will be done right after the approval. 
+
+2. If the submission is inappropriate, discuss it with the opposite person and request a Deadline Extension system. 
+*By doing this, The Payment date will be extended to ${formattedExtendedPaymentDeadline}(UTC) so that the opposite party can redo the task.
+
+*Make sure if you don't take any action of the two mentioned above, the payment will be executed on ${formattedPaymentDeadline}(UTC) automatically. 
+
+${projectLink} to the project`,
     };
     
     return transporter.sendMail(mailOptions);
@@ -249,8 +296,11 @@ export const sendEmailNotification = onDocumentUpdated("/projects/{documentId}",
     const mailOptions = {
       from: process.env.MAIL_ADDRESS,
       to: doc.get("email"),
-      subject: 'Project Status Changed',
-      text: `The status of the project has changed to ${afterStatus} from ${beforeStatus}`,
+      subject: `Project Name: ${title}`,
+      text: 
+`The submission the freelancer made has been approved and the payment has also been executed on ${formattedNow}(UTC).
+
+${projectLink} to the project`,
     };
     
     transporter.sendMail(mailOptions);
@@ -261,20 +311,28 @@ export const sendEmailNotification = onDocumentUpdated("/projects/{documentId}",
     const mailOptions2 = {
       from: process.env.MAIL_ADDRESS,
       to: doc2.get("email"),
-      subject: 'Project Status Changed',
-      text: `The status of the project has changed to ${afterStatus} from ${beforeStatus}`,
+      subject: `Project Name: ${title}`,
+      text: 
+`The submission the freelancer made has been approved and the payment has also been executed on ${formattedNow}(UTC).
+
+${projectLink} to the project`,
     };
     
     return transporter.sendMail(mailOptions2);
-  } else if (beforeStatus == StatusEnum.WaitingForPayment && afterStatus == StatusEnum.CompleteDispute) {
+  } else if (beforeStatus == StatusEnum.WaitingForPayment && afterStatus == StatusEnum.InDispute) {
     const docRef = getFirestore().collection("users").doc(afterData?.get("Client's Wallet Address"));
     const doc = await docRef.get();
 
     const mailOptions = {
       from: process.env.MAIL_ADDRESS,
       to: doc.get("email"),
-      subject: 'Project Status Changed',
-      text: `The status of the project has changed to ${afterStatus} from ${beforeStatus}`,
+      subject: `Project Name: ${title}`,
+      text: 
+`The Deadline Extension Request has been disapproved. The fund has been FROZEN in the Escrow for 9 months. 
+
+After 9 months the fund in the Escrow will be refunded to the client.
+
+${projectLink} to the project`,
     };
     
     transporter.sendMail(mailOptions);
@@ -285,8 +343,13 @@ export const sendEmailNotification = onDocumentUpdated("/projects/{documentId}",
     const mailOptions2 = {
       from: process.env.MAIL_ADDRESS,
       to: doc2.get("email"),
-      subject: 'Project Status Changed',
-      text: `The status of the project has changed to ${afterStatus} from ${beforeStatus}`,
+      subject: `Project Name: ${title}`,
+      text: 
+`The Deadline Extension Request has been disapproved. The fund has been FROZEN in the Escrow for 9 months. 
+
+After 9 months the fund in the Escrow will be refunded to the client.
+
+${projectLink} to the project`,
     };
     
     return transporter.sendMail(mailOptions2);
@@ -297,8 +360,21 @@ export const sendEmailNotification = onDocumentUpdated("/projects/{documentId}",
     const mailOptions = {
       from: process.env.MAIL_ADDRESS,
       to: doc.get("email"),
-      subject: 'Project Status Changed',
-      text: `The status of the project has changed to ${afterStatus} from ${beforeStatus}`,
+      subject: `Project Name: ${title}`,
+      text: 
+`The deadline extension has been accepted! The payment date has been extended to ${formattedPaymentDeadline}(UTC) successfully.
+
+Next required Action
+
+The Freelancer
+
+Make the submission of the new version before ${formattedSubmissionDeadline}(UTC).
+
+The Client
+
+Wait until the new version of the submission is made. The submission will be made before ${formattedSubmissionDeadline}(UTC).
+
+${projectLink} to the project`,
     };
     
     transporter.sendMail(mailOptions);
@@ -309,8 +385,21 @@ export const sendEmailNotification = onDocumentUpdated("/projects/{documentId}",
     const mailOptions2 = {
       from: process.env.MAIL_ADDRESS,
       to: doc2.get("email"),
-      subject: 'Project Status Changed',
-      text: `The status of the project has changed to ${afterStatus} from ${beforeStatus}`,
+      subject: `Project Name: ${title}`,
+      text: 
+`The deadline extension has been accepted! The payment date has been extended to ${formattedPaymentDeadline}(UTC) successfully.
+
+Next required Action
+
+The Freelancer
+
+Make the submission of the new version before ${formattedSubmissionDeadline}(UTC).
+
+The Client
+
+Wait until the new version of the submission is made. The submission will be made before ${formattedSubmissionDeadline}(UTC).
+
+${projectLink} to the project`,
     };
     
     return transporter.sendMail(mailOptions2);
@@ -321,8 +410,16 @@ export const sendEmailNotification = onDocumentUpdated("/projects/{documentId}",
     const mailOptions = {
       from: process.env.MAIL_ADDRESS,
       to: doc.get("email"),
-      subject: 'Project Status Changed',
-      text: `The status of the project has changed to ${afterStatus} from ${beforeStatus}`,
+      subject: `Project Name: ${title}`,
+      text: 
+`The submission deadline has come. Visit the contract to check the submission. 
+
+Make sure the things below before you proceed.
+
+1. If you approve the submission the payment will be done to the freelancer right after that.
+2. If you disapprove the submission, the fund in Escrow will be FROZEN for 9 months.
+
+${projectLink} to the project`,
     };
     
     return transporter.sendMail(mailOptions);
@@ -333,8 +430,12 @@ export const sendEmailNotification = onDocumentUpdated("/projects/{documentId}",
     const mailOptions = {
       from: process.env.MAIL_ADDRESS,
       to: doc.get("email"),
-      subject: 'Project Status Changed',
-      text: `The status of the project has changed to ${afterStatus} from ${beforeStatus}`,
+      subject: `Project Name: ${title}`,
+      text: 
+`As the submission was disapproved even after Extending the timeline, the fund in Escrow has been FROZEN. 
+The fund will be released to the client after 9 months. 
+
+${projectLink} to the project`,
     };
     
     transporter.sendMail(mailOptions);
@@ -345,8 +446,12 @@ export const sendEmailNotification = onDocumentUpdated("/projects/{documentId}",
     const mailOptions2 = {
       from: process.env.MAIL_ADDRESS,
       to: doc2.get("email"),
-      subject: 'Project Status Changed',
-      text: `The status of the project has changed to ${afterStatus} from ${beforeStatus}`,
+      subject: `Project Name: ${title}`,
+      text: 
+`As the submission was disapproved even after Extending the timeline, the fund in Escrow has been FROZEN. 
+The fund will be released to the client after 9 months. 
+
+${projectLink} to the project`,
     };
     
     return transporter.sendMail(mailOptions2);
@@ -357,8 +462,11 @@ export const sendEmailNotification = onDocumentUpdated("/projects/{documentId}",
     const mailOptions = {
       from: process.env.MAIL_ADDRESS,
       to: doc.get("email"),
-      subject: 'Project Status Changed',
-      text: `The status of the project has changed to ${afterStatus} from ${beforeStatus}`,
+      subject: `Project Name: ${title}`,
+      text: 
+`Due to not having any action by the client against the submission, the payment has been executed automatically.
+
+${projectLink} to the project`,
     };
     
     transporter.sendMail(mailOptions);
@@ -369,35 +477,29 @@ export const sendEmailNotification = onDocumentUpdated("/projects/{documentId}",
     const mailOptions2 = {
       from: process.env.MAIL_ADDRESS,
       to: doc2.get("email"),
-      subject: 'Project Status Changed',
-      text: `The status of the project has changed to ${afterStatus} from ${beforeStatus}`,
+      subject: `Project Name: ${title}`,
+      text: 
+`Due to not having any action by the client against the submission, the payment has been executed automatically.
+
+${projectLink} to the project`,
     };
     
     return transporter.sendMail(mailOptions2);
-  } else if (beforeStatus == StatusEnum.WaitingForConnectingLancersWallet && afterStatus == StatusEnum.CompleteNoSubmissionByLancer) {
+  } else if (beforeStatus == StatusEnum.WaitingForConnectingLancersWallet && afterStatus == StatusEnum.Cancel) {
     const docRef = getFirestore().collection("users").doc(afterData?.get("Client's Wallet Address"));
     const doc = await docRef.get();
 
     const mailOptions = {
       from: process.env.MAIL_ADDRESS,
       to: doc.get("email"),
-      subject: 'Project Status Changed',
-      text: `The status of the project has changed to ${afterStatus} from ${beforeStatus}`,
+      subject: `Project Name: ${title}`,
+      text: 
+`As there was no action, the contract has been dismissed.
+
+${projectLink} to the project`,
     };
     
-    transporter.sendMail(mailOptions);
-
-    const docRef2 = getFirestore().collection("users").doc(afterData?.get("Lancer's Wallet Address"));
-    const doc2 = await docRef2.get();
-
-    const mailOptions2 = {
-      from: process.env.MAIL_ADDRESS,
-      to: doc2.get("email"),
-      subject: 'Project Status Changed',
-      text: `The status of the project has changed to ${afterStatus} from ${beforeStatus}`,
-    };
-    
-    return transporter.sendMail(mailOptions2);
+    return transporter.sendMail(mailOptions);
   } else if (!beforeInDispute && afterInDispute) {
     const docRef = getFirestore().collection("users").doc(afterData?.get("Lancer's Wallet Address"));
     const doc = await docRef.get();
@@ -405,8 +507,15 @@ export const sendEmailNotification = onDocumentUpdated("/projects/{documentId}",
     const mailOptions = {
       from: process.env.MAIL_ADDRESS,
       to: doc.get("email"),
-      subject: 'Project Status Changed',
-      text: `The status of the project has changed to ${afterStatus} from ${beforeStatus}`,
+      subject: `Project Name: ${title}`,
+      text: 
+`The client has made a Deadline Extension Request. 
+
+Accept the request if you agree. By doing so, the payment date will be extended to ${formattedExtendedPaymentDeadline}(UTC) and you will be required to submit the new version of the task before ${formattedExtendedSubmissionDeadline}(UTC). 
+
+Make sure if you disagree with this, the fund in the Escrow will be FROZEN and will be released to the client after 9 months.
+
+${projectLink} to the project`,
     };
     
     return transporter.sendMail(mailOptions);

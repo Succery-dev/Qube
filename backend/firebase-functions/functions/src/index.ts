@@ -246,7 +246,8 @@ export const sendEmailNotification = onDocumentUpdated("/projects/{documentId}",
 Please prepay the reward to Escrow as soon as possible. 
 Make sure that until you don't finish the prepay, the freelancer won't start working and won't be able to submit the work.
 
-${projectLink} to the project`,
+To go to the project: ${projectLink}
+If you have any questions feel free to reply to this mail. Don't forget to explain the issue you are having.`,
     };
     
     return transporter.sendMail(mailOptions);
@@ -262,7 +263,8 @@ ${projectLink} to the project`,
 `The prepay has been done by the client. Finish your work and submit it before ${formattedSubmissionDeadline}(UTC). 
 If you don't submit it before ${formattedSubmissionDeadline}(UTC), the money in Escrow will be refunded to the client automatically.
 
-${projectLink} to the project`,
+To go to the project: ${projectLink}
+If you have any questions feel free to reply to this mail. Don't forget to explain the issue you are having.`,
     };
     
     return transporter.sendMail(mailOptions);
@@ -285,7 +287,8 @@ Make sure the following things.
 
 *Make sure if you don't take any action of the two mentioned above, the payment will be executed on ${formattedPaymentDeadline}(UTC) automatically. 
 
-${projectLink} to the project`,
+To go to the project: ${projectLink}
+If you have any questions feel free to reply to this mail. Don't forget to explain the issue you are having.`,
     };
     
     return transporter.sendMail(mailOptions);
@@ -300,7 +303,8 @@ ${projectLink} to the project`,
       text: 
 `The submission the freelancer made has been approved and the payment has also been executed on ${formattedNow}(UTC).
 
-${projectLink} to the project`,
+To go to the project: ${projectLink}
+If you have any questions feel free to reply to this mail. Don't forget to explain the issue you are having.`,
     };
     
     transporter.sendMail(mailOptions);
@@ -315,7 +319,8 @@ ${projectLink} to the project`,
       text: 
 `The submission the freelancer made has been approved and the payment has also been executed on ${formattedNow}(UTC).
 
-${projectLink} to the project`,
+To go to the project: ${projectLink}
+If you have any questions feel free to reply to this mail. Don't forget to explain the issue you are having.`,
     };
     
     return transporter.sendMail(mailOptions2);
@@ -332,7 +337,8 @@ ${projectLink} to the project`,
 
 After 9 months the fund in the Escrow will be refunded to the client.
 
-${projectLink} to the project`,
+To go to the project: ${projectLink}
+If you have any questions feel free to reply to this mail. Don't forget to explain the issue you are having.`,
     };
     
     transporter.sendMail(mailOptions);
@@ -349,7 +355,8 @@ ${projectLink} to the project`,
 
 After 9 months the fund in the Escrow will be refunded to the client.
 
-${projectLink} to the project`,
+To go to the project: ${projectLink}
+If you have any questions feel free to reply to this mail. Don't forget to explain the issue you are having.`,
     };
     
     return transporter.sendMail(mailOptions2);
@@ -374,7 +381,8 @@ The Client
 
 Wait until the new version of the submission is made. The submission will be made before ${formattedSubmissionDeadline}(UTC).
 
-${projectLink} to the project`,
+To go to the project: ${projectLink}
+If you have any questions feel free to reply to this mail. Don't forget to explain the issue you are having.`,
     };
     
     transporter.sendMail(mailOptions);
@@ -399,7 +407,8 @@ The Client
 
 Wait until the new version of the submission is made. The submission will be made before ${formattedSubmissionDeadline}(UTC).
 
-${projectLink} to the project`,
+To go to the project: ${projectLink}
+If you have any questions feel free to reply to this mail. Don't forget to explain the issue you are having.`,
     };
     
     return transporter.sendMail(mailOptions2);
@@ -419,7 +428,8 @@ Make sure the things below before you proceed.
 1. If you approve the submission the payment will be done to the freelancer right after that.
 2. If you disapprove the submission, the fund in Escrow will be FROZEN for 9 months.
 
-${projectLink} to the project`,
+To go to the project: ${projectLink}
+If you have any questions feel free to reply to this mail. Don't forget to explain the issue you are having.`,
     };
     
     return transporter.sendMail(mailOptions);
@@ -435,7 +445,8 @@ ${projectLink} to the project`,
 `As the submission was disapproved even after Extending the timeline, the fund in Escrow has been FROZEN. 
 The fund will be released to the client after 9 months. 
 
-${projectLink} to the project`,
+To go to the project: ${projectLink}
+If you have any questions feel free to reply to this mail. Don't forget to explain the issue you are having.`,
     };
     
     transporter.sendMail(mailOptions);
@@ -451,7 +462,8 @@ ${projectLink} to the project`,
 `As the submission was disapproved even after Extending the timeline, the fund in Escrow has been FROZEN. 
 The fund will be released to the client after 9 months. 
 
-${projectLink} to the project`,
+To go to the project: ${projectLink}
+If you have any questions feel free to reply to this mail. Don't forget to explain the issue you are having.`,
     };
     
     return transporter.sendMail(mailOptions2);
@@ -466,7 +478,8 @@ ${projectLink} to the project`,
       text: 
 `Due to not having any action by the client against the submission, the payment has been executed automatically.
 
-${projectLink} to the project`,
+To go to the project: ${projectLink}
+If you have any questions feel free to reply to this mail. Don't forget to explain the issue you are having.`,
     };
     
     transporter.sendMail(mailOptions);
@@ -481,7 +494,8 @@ ${projectLink} to the project`,
       text: 
 `Due to not having any action by the client against the submission, the payment has been executed automatically.
 
-${projectLink} to the project`,
+To go to the project: ${projectLink}
+If you have any questions feel free to reply to this mail. Don't forget to explain the issue you are having.`,
     };
     
     return transporter.sendMail(mailOptions2);
@@ -496,7 +510,8 @@ ${projectLink} to the project`,
       text: 
 `As there was no action, the contract has been dismissed.
 
-${projectLink} to the project`,
+To go to the project: ${projectLink}
+If you have any questions feel free to reply to this mail. Don't forget to explain the issue you are having.`,
     };
     
     return transporter.sendMail(mailOptions);
@@ -515,7 +530,8 @@ Accept the request if you agree. By doing so, the payment date will be extended 
 
 Make sure if you disagree with this, the fund in the Escrow will be FROZEN and will be released to the client after 9 months.
 
-${projectLink} to the project`,
+To go to the project: ${projectLink}
+If you have any questions feel free to reply to this mail. Don't forget to explain the issue you are having.`,
     };
     
     return transporter.sendMail(mailOptions);

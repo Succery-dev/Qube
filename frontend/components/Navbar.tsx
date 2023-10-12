@@ -24,9 +24,22 @@ const Navbar = (): JSX.Element => {
   const { data: session } = useSession();
   const router = useRouter();
 
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [userType, setUserType] = useState("CLIENT");
+
+  useEffect(() => {
+    if (router.asPath === '/') {
+      router.push("/?userType=CLIENT");
+      setUserType("CLIENT");
+    } else {
+      const { userType } = router.query;
+      setUserType(userType as string);
+    }
+  }, [router.asPath, router.query]);
+
   return (
     <nav className="w-full grid grid-cols-12 absolute text-secondary z-50">
-      <div className="top-0 col-start-2 col-end-12 xl:h-20 sm:h-14 h-20 flex flex-row xl:gap-40 lg:gap-20 sm:gap-16 w-full justify-between items-center bg-transparent">
+      <div className="top-0 col-start-1 lg:col-start-2 col-end-13 lg:col-end-12 px-5 lg:px-0 xl:h-20 sm:h-14 h-20 flex flex-row xl:gap-20 lg:gap-10 sm:gap-5 w-full justify-between items-center bg-transparent">
         {/* Logo/Icon */}
         <motion.div variants={hoverVariant()} whileHover={"hover"}>
           <div className="flex items-center sm:gap-2 gap-4">
@@ -45,8 +58,8 @@ const Navbar = (): JSX.Element => {
 
         {/* Navbar Links */}
         <ul
-          className={`list-none flex-row sm:gap-6 md:gap-10 lg:gap-24 grow ${
-            router.pathname === "/" ? "hidden sm:flex" : "hidden"
+          className={`list-none flex-row grow ${
+            router.pathname === "/" ? "hidden md:flex" : "hidden"
           }`}
         >
           {navLinks.map((link) => {
@@ -55,7 +68,7 @@ const Navbar = (): JSX.Element => {
                 variants={hoverVariant()}
                 whileHover={"hover"}
                 key={link.id}
-                className={`xl:text-xl lg:text-lg sm:text-sm font-medium cursor-pointer`}
+                className="xl:text-xl lg:text-md sm:text-sm font-medium cursor-pointer grow"
               >
                 <Link href={`#${link.id}`}>
                   <p>
@@ -72,6 +85,30 @@ const Navbar = (): JSX.Element => {
           })}
         </ul>
 
+        {/* User Type Select Dropdown Button */}
+        <div className={`relative grow max-w-[200px] ${router.pathname === "/" ? "hidden md:block": "hidden"}`}>
+          <button type="button" className="relative w-full rounded-md cursor-default bg-slate-800 py-1.5 pl-3 pr-10 text-left shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 sm:text-sm sm:leading-6" aria-haspopup="listbox" aria-expanded="true" aria-labelledby="listbox-label" onClick={() => setIsDropdownOpen(!isDropdownOpen)}>
+            <span className="ml-3 block truncate font-bold">{userType}</span>
+            <span className="pointer-events-none absolute inset-y-0 right-0 ml-3 flex items-center pr-2">
+              <svg className="h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                <path fill-rule="evenodd" d="M10 3a.75.75 0 01.55.24l3.25 3.5a.75.75 0 11-1.1 1.02L10 4.852 7.3 7.76a.75.75 0 01-1.1-1.02l3.25-3.5A.75.75 0 0110 3zm-3.76 9.2a.75.75 0 011.06.04l2.7 2.908 2.7-2.908a.75.75 0 111.1 1.02l-3.25 3.5a.75.75 0 01-1.1 0l-3.25-3.5a.75.75 0 01.04-1.06z" clip-rule="evenodd" />
+              </svg>
+            </span>
+          </button>
+          {isDropdownOpen &&
+            <ul className="absolute z-10 mt-1 max-h-56 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm" role="listbox" aria-labelledby="listbox-label" aria-activedescendant="listbox-option-3">
+              <li className="text-gray-900 relative cursor-default select-none py-2 pl-3 pr-9" id="listbox-option-0" role="option" onClick={() => {
+                const selectedType = userType === "CLIENT" ? "FREELANCER" : "CLIENT";
+                router.push(`/?userType=${selectedType}`);
+                setUserType(selectedType);
+                setIsDropdownOpen(false);
+              }}>
+                <p className="ml-3 block truncate font-bold">{userType === "CLIENT" ? "FREELANCER" : "CLIENT"}</p>
+              </li>
+            </ul>
+          }
+        </div>
+
         {/* Small/Medium Devices Navbar */}
         <AnimatePresence>
           {showMenuModal && (
@@ -81,7 +118,7 @@ const Navbar = (): JSX.Element => {
               animate="visible"
               exit="hidden"
               className={`fixed w-screen h-screen top-0 left-0 backdrop-blur-md z-50 grid-cols-12 ${
-                router.pathname === "/" ? "sm:hidden grid" : "hidden"
+                router.pathname === "/" ? "md:hidden grid" : "hidden"
               }`}
             >
               <div className="col-start-2 col-end-12 grid place-items-center">
@@ -119,6 +156,28 @@ const Navbar = (): JSX.Element => {
                             </motion.li>
                           );
                         })}
+                        <div className="relative grow">
+                          <button type="button" className="relative w-full rounded-md cursor-default bg-slate-800 py-1.5 pl-3 pr-10 text-left shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 sm:text-sm sm:leading-6" aria-haspopup="listbox" aria-expanded="true" aria-labelledby="listbox-label" onClick={() => setIsDropdownOpen(!isDropdownOpen)}>
+                            <span className="ml-3 block truncate font-bold">{userType}</span>
+                            <span className="pointer-events-none absolute inset-y-0 right-0 ml-3 flex items-center pr-2">
+                              <svg className="h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                <path fill-rule="evenodd" d="M10 3a.75.75 0 01.55.24l3.25 3.5a.75.75 0 11-1.1 1.02L10 4.852 7.3 7.76a.75.75 0 01-1.1-1.02l3.25-3.5A.75.75 0 0110 3zm-3.76 9.2a.75.75 0 011.06.04l2.7 2.908 2.7-2.908a.75.75 0 111.1 1.02l-3.25 3.5a.75.75 0 01-1.1 0l-3.25-3.5a.75.75 0 01.04-1.06z" clip-rule="evenodd" />
+                              </svg>
+                            </span>
+                          </button>
+                          {isDropdownOpen &&
+                            <ul className="absolute z-10 mt-1 max-h-56 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm" role="listbox" aria-labelledby="listbox-label" aria-activedescendant="listbox-option-3" tabIndex={-1}>
+                              <li className="text-gray-900 relative cursor-default select-none py-2 pl-3 pr-9" id="listbox-option-0" role="option" onClick={() => {
+                                const selectedType = userType === "CLIENT" ? "FREELANCER" : "CLIENT";
+                                router.push(`/?userType=${selectedType}`);
+                                setUserType(selectedType);
+                                setIsDropdownOpen(false);
+                              }}>
+                                <p className="ml-3 block truncate font-bold">{userType === "CLIENT" ? "FREELANCER" : "CLIENT"}</p>
+                              </li>
+                            </ul>
+                          }
+                        </div>
                       </ul>
                     </div>
                   </div>
@@ -133,7 +192,7 @@ const Navbar = (): JSX.Element => {
           src={MenuIcon}
           alt="Menu"
           className={`w-auto h-[20px] cursor-pointer ${
-            router.pathname === "/" ? "block sm:hidden" : "hidden"
+            router.pathname === "/" ? "block md:hidden" : "hidden"
           }`}
           onClick={toggleMobileNav}
         />

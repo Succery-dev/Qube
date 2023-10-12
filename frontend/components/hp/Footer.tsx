@@ -70,6 +70,7 @@ const Footer = () => {
               <Image src={MediumIcon} alt="Medium" height={30} />
             </Link>
         </div>
+        <p>&copy; SUCCERY FZCO</p>
       </div>
       <div className="col-span-10 md:col-span-3">
         <h3 className="text-xl font-semibold mb-4">Resources</h3>

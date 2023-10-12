@@ -101,34 +101,65 @@ export const walkthrough: WalkthroughInterface[] = [
   },
 ];
 
-export const features: FeaturesInterface[] = [
+export const featuresForClients: FeaturesInterface[] = [
   {
-    id: "NoThirdParty",
-    title: "No Third Party",
+    id: "NoMismatchInPayment!",
+    title: "No mismatch in Payment!",
+    image: "",
+    description:
+      "Qube's smart contract-based escrow works as a middleman and solves the mismatch of payment. The best solution for the mismatch of timing.",
+  },
+  {
+    id: "NoConcernAboutTheScams!",
+    title: "No concern about the scams!",
+    image: "",
+    description:
+      "Qube holds the fund until the task is done and approved by you. So there is no chance of scams. All you have to do is make a contract using Qube.",
+  },
+  {
+    id: "NoStressInCollaborating!",
+    title: "No stress in collaborating!",
+    image: "",
+    description:
+      "After making the contract in Qube, everything goes along Qube's system so that you don't have to think anything. Just wait for the submission!",
+  },
+  {
+    id: "NoHighFees",
+    title: "No high fees",
+    image: "",
+    description:
+      "Qube doesn't cost as other platforms or tools. Moreover, currently, Qube is in the closed beta phase. So Qube doesn't cost you at all. It's totally free.",
+  },
+];
+
+export const featuresForFreelancers: FeaturesInterface[] = [
+  {
+    id: "Escrow",
+    title: "Escrow",
     image: EscrowIcon,
     description:
-      "Smart contract-based escrow will work as a middleman so that both parties don’t need to be worried about anything without a third party!",
-  },
-  {
-    id: "LinkBased",
-    title: "Link-based",
-    image: LinkIcon,
-    description:
-      "Generate a direct link to a contract to share on any platform with anybody you want to collaborate with!",
-  },
-  {
-    id: "GasFree",
-    title: "Gas Free",
-    image: Gasless,
-    description:
-      "Sometimes gas fees can be quite burdensome…But with Qube, both parties don't have to worry about gas fees for their transactions!",
+      "Qube will hold the hiring company's money until the company get satisfied with the work and pay the freelancer ",
   },
   {
     id: "Arbitration",
     title: "Arbitration",
     image: JuryIcon,
     description:
-      "If there is any disagreement, we will provide dispute resolution powered by Kleros, a decentralized court.",
+      "If there is any disagreement between hiring party and lancers, we will provide dispute resolution",
+  },
+  {
+    id: "LinkBased",
+    title: "Link Based",
+    image: LinkIcon,
+    description:
+      "Generate direct link of a contract describing project and it's payment details to share in any platform",
+  },
+  {
+    id: "SmartContract",
+    title: "Smart Contract",
+    image: Gasless,
+    description:
+      "Qube has protocol stored in blockchain. Thus its transparent, trustworthy.No middle man is involved",
   },
 ];
 

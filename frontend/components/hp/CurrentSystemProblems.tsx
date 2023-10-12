@@ -1,6 +1,7 @@
 import React from "react";
 import Image from "next/image";
 import Tilt from "react-parallax-tilt";
+import { useRouter } from "next/router";
 
 // Custom Component Imports
 import { Glow } from "../aesthetics";
@@ -47,7 +48,22 @@ const CurrentSystemProblemsCard = ({
   );
 };
 
-const problems = [
+const problemsForClients = [
+  {
+    title: "Demanding Prepay",
+    description: "Freelancers sometimes demand prepayment before beginning work, which many companies find uncomfortable.",
+  },
+  {
+    title: "Scams",
+    description: "The prevalence of scams poses a significant challenge. Those in charge of collaborations have to expend considerable effort in vetting potential freelancers.",
+  },
+  {
+    title: "Risk of Disputes",
+    description: "Disputes regarding the quality of work can arise, making it challenging to reach a resolution that satisfies both parties.",
+  },
+];
+
+const problemsForFreelancers = [
   {
     title: "Trust Issue",
     description: "Lots of freelancers are facing non payment or delayed payment. This is the biggest risk a freelancer always had to take.",
@@ -63,6 +79,9 @@ const problems = [
 ];
 
 const CurrentSystemProblems = (): JSX.Element => {
+  const router = useRouter();
+  const { userType } = router.query;
+
   return (
     <div id="whyqube" className="flex flex-col h-full gap-y-10">
       <motion.h1
@@ -72,10 +91,10 @@ const CurrentSystemProblems = (): JSX.Element => {
         viewport={{ once: true, amount: 0.25 }}
         className="xl:text-7xl lg:text-6xl md:text-4xl sm:text-4xl text-4xl font-extrabold flex-1"
       >
-        Freelances face lots of problems..
+        {userType === "CLIENT" ? "Problems Clients face while outsourcing" : "Freelances face lots of problems.."}
       </motion.h1>
       <div className="flex flex-col lg:flex-row justify-between gap-y-5 md:gap-x-5">
-        {problems.map((problem, index) => {
+        {(userType === "CLIENT" ? problemsForClients : problemsForFreelancers).map((problem, index) => {
           return(
             <Tilt key={index}>
               <motion.div
@@ -83,7 +102,7 @@ const CurrentSystemProblems = (): JSX.Element => {
                 initial="hidden"
                 whileInView="visible"
                 viewport={{ once: true, amount: 0.25 }}
-                className="blue-transparent-green-gradient-vertical 2xl:w-[450px] xl:w-[370px] lg:w-[300px] lg:p-[3px] p-[2px] sm:min-h-0 rounded-2xl grid place-items-center"
+                className="blue-transparent-green-gradient-vertical 2xl:w-[450px] xl:w-[370px] lg:w-[300px] lg:p-[3px] p-[2px] sm:min-h-0 rounded-2xl grid place-items-center h-full"
               >
                 <div className="bg-bg_primary w-full h-full flex flex-col xl:px-8 lg:px-4 sm:px-3 px-4 xl:py-12 lg:py-10 py-8 rounded-2xl">
                   {/* Card Heading */}
@@ -109,7 +128,7 @@ const CurrentSystemProblems = (): JSX.Element => {
         viewport={{ once: true, amount: 0.25 }}
         className="xl:text-7xl lg:text-6xl md:text-4xl sm:text-4xl text-4xl font-extrabold flex items-center justify-center flex-1"
       >
-        We got your back
+        {userType === "CLIENT" ? "Use Qube and save your TIME!" : "We got your back"}
       </motion.h1>
     </div>
   );

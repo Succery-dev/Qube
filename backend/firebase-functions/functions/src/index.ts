@@ -208,6 +208,7 @@ export const sendEmailNotification = onDocumentUpdated("/projects/{documentId}",
   logger.info("id: ", id);
 
   const projectLink = `http://qube-dsph5620m-succery.vercel.app/projectDetails/${id}`;
+  const qubeMailAddress = '"Qube" <official@0xqube.xyz>';
 
   const beforeData = event.data?.before;
   const beforeStatus = beforeData?.get("Status");
@@ -237,7 +238,7 @@ export const sendEmailNotification = onDocumentUpdated("/projects/{documentId}",
     const doc = await docRef.get();
 
     const mailOptions = {
-      from: process.env.MAIL_ADDRESS,
+      from: qubeMailAddress,
       to: doc.get("email"),
       subject: `Project Name: ${title}`,
       text: 
@@ -256,7 +257,7 @@ If you have any questions feel free to reply to this mail. Don't forget to expla
     const doc = await docRef.get();
 
     const mailOptions = {
-      from: process.env.MAIL_ADDRESS,
+      from: qubeMailAddress,
       to: doc.get("email"),
       subject: `Project Name: ${title}`,
       text: 
@@ -273,7 +274,7 @@ If you have any questions feel free to reply to this mail. Don't forget to expla
     const doc = await docRef.get();
 
     const mailOptions = {
-      from: process.env.MAIL_ADDRESS,
+      from: qubeMailAddress,
       to: doc.get("email"),
       subject: `Project Name: ${title}`,
       text: 
@@ -297,7 +298,7 @@ If you have any questions feel free to reply to this mail. Don't forget to expla
     const doc = await docRef.get();
 
     const mailOptions = {
-      from: process.env.MAIL_ADDRESS,
+      from: qubeMailAddress,
       to: doc.get("email"),
       subject: `Project Name: ${title}`,
       text: 
@@ -313,7 +314,7 @@ If you have any questions feel free to reply to this mail. Don't forget to expla
     const doc2 = await docRef2.get();
 
     const mailOptions2 = {
-      from: process.env.MAIL_ADDRESS,
+      from: qubeMailAddress,
       to: doc2.get("email"),
       subject: `Project Name: ${title}`,
       text: 
@@ -329,7 +330,7 @@ If you have any questions feel free to reply to this mail. Don't forget to expla
     const doc = await docRef.get();
 
     const mailOptions = {
-      from: process.env.MAIL_ADDRESS,
+      from: qubeMailAddress,
       to: doc.get("email"),
       subject: `Project Name: ${title}`,
       text: 
@@ -347,7 +348,7 @@ If you have any questions feel free to reply to this mail. Don't forget to expla
     const doc2 = await docRef2.get();
 
     const mailOptions2 = {
-      from: process.env.MAIL_ADDRESS,
+      from: qubeMailAddress,
       to: doc2.get("email"),
       subject: `Project Name: ${title}`,
       text: 
@@ -365,7 +366,7 @@ If you have any questions feel free to reply to this mail. Don't forget to expla
     const doc = await docRef.get();
 
     const mailOptions = {
-      from: process.env.MAIL_ADDRESS,
+      from: qubeMailAddress,
       to: doc.get("email"),
       subject: `Project Name: ${title}`,
       text: 
@@ -391,7 +392,7 @@ If you have any questions feel free to reply to this mail. Don't forget to expla
     const doc2 = await docRef2.get();
 
     const mailOptions2 = {
-      from: process.env.MAIL_ADDRESS,
+      from: qubeMailAddress,
       to: doc2.get("email"),
       subject: `Project Name: ${title}`,
       text: 
@@ -417,7 +418,7 @@ If you have any questions feel free to reply to this mail. Don't forget to expla
     const doc = await docRef.get();
 
     const mailOptions = {
-      from: process.env.MAIL_ADDRESS,
+      from: qubeMailAddress,
       to: doc.get("email"),
       subject: `Project Name: ${title}`,
       text: 
@@ -438,7 +439,7 @@ If you have any questions feel free to reply to this mail. Don't forget to expla
     const doc = await docRef.get();
 
     const mailOptions = {
-      from: process.env.MAIL_ADDRESS,
+      from: qubeMailAddress,
       to: doc.get("email"),
       subject: `Project Name: ${title}`,
       text: 
@@ -455,7 +456,7 @@ If you have any questions feel free to reply to this mail. Don't forget to expla
     const doc2 = await docRef2.get();
 
     const mailOptions2 = {
-      from: process.env.MAIL_ADDRESS,
+      from: qubeMailAddress,
       to: doc2.get("email"),
       subject: `Project Name: ${title}`,
       text: 
@@ -472,7 +473,7 @@ If you have any questions feel free to reply to this mail. Don't forget to expla
     const doc = await docRef.get();
 
     const mailOptions = {
-      from: process.env.MAIL_ADDRESS,
+      from: qubeMailAddress,
       to: doc.get("email"),
       subject: `Project Name: ${title}`,
       text: 
@@ -488,7 +489,7 @@ If you have any questions feel free to reply to this mail. Don't forget to expla
     const doc2 = await docRef2.get();
 
     const mailOptions2 = {
-      from: process.env.MAIL_ADDRESS,
+      from: qubeMailAddress,
       to: doc2.get("email"),
       subject: `Project Name: ${title}`,
       text: 
@@ -504,7 +505,7 @@ If you have any questions feel free to reply to this mail. Don't forget to expla
     const doc = await docRef.get();
 
     const mailOptions = {
-      from: process.env.MAIL_ADDRESS,
+      from: qubeMailAddress,
       to: doc.get("email"),
       subject: `Project Name: ${title}`,
       text: 
@@ -520,7 +521,7 @@ If you have any questions feel free to reply to this mail. Don't forget to expla
     const doc = await docRef.get();
 
     const mailOptions = {
-      from: process.env.MAIL_ADDRESS,
+      from: qubeMailAddress,
       to: doc.get("email"),
       subject: `Project Name: ${title}`,
       text: 

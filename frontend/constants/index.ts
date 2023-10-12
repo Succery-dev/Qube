@@ -485,7 +485,7 @@ export const createProjectFields: CreateProjectFieldInterface[] = [
   {
     title: "Deadline(UTC)",
     placeholder: "",
-    type: "datetime-local",
+    type: "date",
   },
   {
     title: "Reward(USDC)",
@@ -505,8 +505,8 @@ export const signProjectEip712: TypeDataDomainInterface = {
     // TODO: Softcoding
     // chainId: 137,
     // chainId: 31337, // Hardhat Network ChainID
-    // chainId: 80001,
-    chainId: 137,
+    chainId: 80001,
+    // chainId: 137,
   },
   types: {
     ProjectDetail: [

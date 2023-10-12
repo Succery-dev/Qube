@@ -45,7 +45,7 @@ const SectionWrapper: React.FC<SectionWrapperPropsInterface> = ({
 }): JSX.Element => {
   return (
     <motion.div
-      className={`w-full grid grid-cols-12 ${bgColor} xl:py-20 sm:py-14 py-14 overflow-hidden relative xl:min-h-[1024px] lg:min-h-[760px] sm:min-h-[500px] min-h-screen`}
+      className={`w-full h-screen grid grid-cols-12 ${bgColor} xl:py-20 sm:py-14 py-14 overflow-hidden relative xl:min-h-[1024px] lg:min-h-[760px] sm:min-h-[500px]`}
     >
       {glowStyles && <Glow styles={glowStyles} />}
       <div className="col-start-2 col-end-12 font-semibold relative">
@@ -105,7 +105,7 @@ const Dashboard: NextPage = () => {
           {/* Heading and Charts */}
           <div className="lg:col-start-2 lg:col-end-12 col-start-1 col-end-13">
             {/* Heading */}
-            <div className="flex flex-row xs:gap-28 gap-8 items-center xs:justify-normal justify-between py-12 pb-6">
+            <div className="flex flex-row xs:gap-28 gap-8 items-center justify-between py-12 pb-6">
               <motion.h1
                 variants={textVariant()}
                 initial="hidden"
@@ -113,10 +113,10 @@ const Dashboard: NextPage = () => {
                 viewport={{ once: true, amount: 0.25 }}
                 className="xl:text-6xl lg:text-5xl md:text-3xl sm:text-3xl text-3xl font-extrabold"
               >
-                Active Projects
+                Projects
               </motion.h1>
               <CustomButton
-                text="+ Create"
+                text="+ Create Project"
                 styles="bg-[#3E8ECC] lg:text-2xl sm:text-lg rounded-md text-center text-white px-3 py-2 md:px-6 md:py-3"
                 type="button"
                 onClick={() => router.push("/createProject")}

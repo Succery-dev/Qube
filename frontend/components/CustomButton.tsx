@@ -17,7 +17,7 @@ const CustomButton = ({
   styles: string;
   onClick: (e: React.MouseEvent<HTMLElement>) => void;
   type: buttonType;
-}): JSX.Element => {
+}) => {
   return (
     <motion.button
       variants={fadeIn("down", 1.25)}

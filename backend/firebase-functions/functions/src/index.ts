@@ -207,7 +207,7 @@ export const sendEmailNotification = onDocumentUpdated("/projects/{documentId}",
   const id = event.params.documentId;
   logger.info("id: ", id);
 
-  const projectLink = `http://qube-dsph5620m-succery.vercel.app/projectDetails/${id}`;
+  const projectLink = `${process.env.BASE_URL}/projectDetails/${id}`;
   const qubeMailAddress = '"Qube" <official@0xqube.xyz>';
 
   const beforeData = event.data?.before;

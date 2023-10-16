@@ -30,6 +30,9 @@ module.exports = {
       backgroundImage: {
         "custom-background": "url('/images/background.jpg')",
       },
+      boxShadow: {
+        "custom-pink": "0px 0px 20px 0px rgba(223, 87, 234, 1)",
+      },
     },
   },
   plugins: [],

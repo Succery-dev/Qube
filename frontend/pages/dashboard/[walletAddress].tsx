@@ -111,13 +111,13 @@ const Dashboard: NextPage = () => {
                 initial="hidden"
                 whileInView="visible"
                 viewport={{ once: true, amount: 0.25 }}
-                className="xl:text-6xl lg:text-5xl md:text-3xl sm:text-3xl text-3xl font-extrabold"
+                className="xl:text-6xl lg:text-5xl md:text-3xl sm:text-3xl text-3xl font-extrabold text-[#DF57EA]"
               >
                 Projects
               </motion.h1>
               <CustomButton
                 text="+ Create Project"
-                styles="bg-[#3E8ECC] lg:text-2xl sm:text-lg rounded-md text-center text-white px-3 py-2 md:px-6 md:py-3"
+                styles="bg-[#DF57EA] lg:text-2xl sm:text-lg rounded-md text-center text-white px-3 py-2 md:px-6 md:py-3"
                 type="button"
                 onClick={() => router.push("/createProject")}
               />
@@ -137,7 +137,7 @@ const Dashboard: NextPage = () => {
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.25 }}
-            className="lg:col-start-2 lg:col-end-12 col-start-1 col-end-13 my-8 bg-black rounded-lg xs:grid grid-rows-10 lg:p-[3px] p-[2px] blue-transparent-green-gradient-vertical"
+            className="lg:col-start-2 lg:col-end-12 col-start-1 col-end-13 my-8 bg-black rounded-lg xs:grid grid-rows-10 lg:p-[3px] p-[2px] border border-[#DF57EA] shadow-custom-pink"
           >
             {
               data.data?.length > 0 

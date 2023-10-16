@@ -48,14 +48,14 @@ import Modal from "./Modal";
 
 const SectionWrapper: React.FC<SectionWrapperPropsInterface> = ({
   children,
-  bgColor,
-  glowStyles,
+  // bgColor,
+  // glowStyles,
 }): JSX.Element => {
   return (
     <motion.div
-      className={`w-full grid grid-cols-12 ${bgColor} xl:py-40 lg:py-32 py-28 overflow-hidden relative min-h-screen font-nunito`}
+      className={`w-full grid grid-cols-12 xl:py-40 lg:py-32 py-28 overflow-hidden relative min-h-screen font-nunito bg-custom-background bg-contain`}
     >
-      {glowStyles && <Glow styles={glowStyles} />}
+      {/* {glowStyles && <Glow styles={glowStyles} />} */}
       <div className="col-start-2 lg:col-end-10 col-end-12 font-semibold relative flex flex-col justify-center">
         {children}
       </div>

@@ -25,14 +25,14 @@ import {
 
 const SectionWrapper: React.FC<SectionWrapperPropsInterface> = ({
   children,
-  bgColor,
-  glowStyles,
+  // bgColor,
+  // glowStyles,
 }): JSX.Element => {
   return (
     <motion.div
-      className={`w-full grid grid-cols-12 ${bgColor} py-28 overflow-hidden relative min-h-screen`}
+      className={`w-full grid grid-cols-12 py-28 overflow-hidden relative min-h-screen bg-custom-background bg-contain`}
     >
-      {glowStyles && <Glow styles={glowStyles} />}
+      {/* {glowStyles && <Glow styles={glowStyles} />} */}
       <div className="col-start-2 col-end-12 font-semibold relative flex flex-col justify-center">
         {children}
       </div>

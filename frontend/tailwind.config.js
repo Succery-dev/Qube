@@ -27,6 +27,9 @@ module.exports = {
       animation: {
         "spin-slow": "spin 2s linear infinite",
       },
+      backgroundImage: {
+        "custom-background": "url('/images/background.jpg')",
+      },
     },
   },
   plugins: [],

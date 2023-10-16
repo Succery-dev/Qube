@@ -334,7 +334,7 @@ const ProjectDetails = ({ projectId }: { projectId: string }): JSX.Element => {
       <button className="bg-orange-500 mb-7 mr-auto p-3 text-xl rounded-full text-white" onClick={() => {
           router.push(`http://${window.location.host}/dashboard/${address}`);
         }}>{`<- Return to Dashboard`}</button>
-      <div className="w-full lg:p-[3px] p-[2px] rounded-lg blue-transparent-green-gradient-vertical">
+      <div className="w-full lg:p-[3px] p-[2px] rounded-lg border border-[#DF57EA] shadow-custom-pink">
         <div className="w-full h-full rounded-lg bg-black">
           <div className="w-full xl:px-8 xl:py-12 px-6 sm:py-10 py-6 text-[#959595]">
             {/* Header */}
@@ -379,8 +379,8 @@ const ProjectDetails = ({ projectId }: { projectId: string }): JSX.Element => {
                 <CustomButton
                   text="Description"
                   styles={`${
-                    section === "description" ? "bg-[#3E8ECC]" : ""
-                  } rounded-md text-center xs:text-base text-sm text-white py-[2px] px-4 hover:bg-[#377eb5]`}
+                    section === "description" ? "bg-[#DF57EA]" : ""
+                  } rounded-md text-center xs:text-base text-sm text-white py-[2px] px-4 hover:bg-[#A9209C]`}
                   onClick={() => {
                     setSection("description");
                   }}
@@ -393,8 +393,8 @@ const ProjectDetails = ({ projectId }: { projectId: string }): JSX.Element => {
                   <CustomButton
                     text="Submission"
                     styles={`${
-                      section === "submission" ? "bg-[#3E8ECC]" : ""
-                    } rounded-md text-center xs:text-base text-sm text-white py-[2px] px-4 hover:bg-[#377eb5]`}
+                      section === "submission" ? "bg-[#DF57EA]" : ""
+                    } rounded-md text-center xs:text-base text-sm text-white py-[2px] px-4 hover:bg-[#A9209C]`}
                     onClick={() => {
                       setSection("submission");
                     }}
@@ -440,7 +440,7 @@ const ProjectDetails = ({ projectId }: { projectId: string }): JSX.Element => {
                   text={title}
                   styles={`w-full md:w-[90%] lg:w-[80%] mx-auto block ${
                     (text !== "" || files.length > 0) && (address == projectDetails["Lancer's Wallet Address"])
-                    ? "bg-[#3E8ECC] hover:bg-[#377eb5]"
+                    ? "bg-[#DF57EA] hover:bg-[#A9209C]"
                     : "bg-slate-400"
                   } rounded-md text-center text-lg font-semibold text-white py-[4px] px-7 mt-6`}
                   type="submit"

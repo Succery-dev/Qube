@@ -329,7 +329,7 @@ const CreateProjectForm = ({
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, amount: 0.25 }}
-      className="lg:w-1/2 lg:max-w-auto lg:mx-0 md:max-w-[70vw] mx-auto rounded-lg lg:p-[3px] p-[2px] blue-transparent-green-gradient"
+      className="lg:w-1/2 lg:max-w-auto lg:mx-0 md:max-w-[70vw] mx-auto rounded-lg lg:p-[3px] p-[2px] border border-[#DF57EA] shadow-custom-pink"
     >
       <div className="w-full h-full rounded-lg bg-black px-6 py-14">
         {/* Heading */}
@@ -338,7 +338,7 @@ const CreateProjectForm = ({
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.25 }}
-          className="xl:text-4xl lg:text-3xl md:text-4xl sm:text-xl text-3xl font-extrabold"
+          className="xl:text-4xl lg:text-3xl md:text-4xl sm:text-xl text-3xl font-extrabold text-[#DF57EA]"
         >
           Create Project
 
@@ -400,7 +400,7 @@ const CreateProjectForm = ({
                 "Create Project"
                 // : "1/2 Verify NFT Address"
             }
-            styles="w-full bg-[#3E8ECC] rounded-md text-center text-lg font-semibold text-white py-[4px] px-7 hover:bg-[#377eb5] mt-12"
+            styles="w-full bg-[#DF57EA] rounded-md text-center text-lg font-semibold text-white py-[4px] px-7 hover:bg-[#377eb5] mt-12"
             type="button"
             onClick={(e) => {
               e.preventDefault();

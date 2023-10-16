@@ -400,7 +400,7 @@ const CreateProjectForm = ({
                 "Create Project"
                 // : "1/2 Verify NFT Address"
             }
-            styles="w-full bg-[#DF57EA] rounded-md text-center text-lg font-semibold text-white py-[4px] px-7 hover:bg-[#377eb5] mt-12"
+            styles="w-full bg-[#DF57EA] rounded-md text-center text-lg font-semibold text-white py-[4px] px-7 hover:bg-[#A9209C] mt-12"
             type="button"
             onClick={(e) => {
               e.preventDefault();

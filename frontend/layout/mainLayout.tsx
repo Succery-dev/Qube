@@ -11,7 +11,7 @@ export default function MainLayout({ children }) {
           name="description"
           content="Empowering relation between Freelancers and Organizations"
         />
-        <link rel="icon" href="/images/logo.png" />
+        <link rel="icon" href="/images/Qube.jpg" />
       </Head>
       <Navbar />
       {children}

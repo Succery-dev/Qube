@@ -105,7 +105,7 @@ const Navbar = (): JSX.Element => {
           <motion.div variants={hoverVariant()} whileHover={"hover"}>
             <div className="flex items-center sm:gap-2 gap-4">
               <Image
-                src="/images/logo.png"
+                src="/images/Qube.jpg"
                 width="100"
                 height="100"
                 alt="Q"

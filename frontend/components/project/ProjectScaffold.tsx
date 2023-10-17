@@ -99,11 +99,11 @@ const ProjectScaffold = ({
             // projectId={projectId}
           />
           {/* 3D Logo */}
-          <div className="w-1/2 h-[500px] lg:block hidden">
+          {/* <div className="w-1/2 h-[500px] lg:block hidden">
             <LogoCanvas
               // nftCollectionImageUrl={nftAddressDetails.nftCollectionImageUrl}
             />
-          </div>
+          </div> */}
         </div>
 
         <CreateProjectModal

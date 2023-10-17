@@ -131,14 +131,7 @@ const Navbar = (): JSX.Element => {
                   className="xl:text-xl lg:text-md sm:text-sm font-medium cursor-pointer grow"
                 >
                   <Link href={`#${link.id}`}>
-                    <p>
-                      {link.title}
-                      <Image
-                        src={arrow}
-                        alt="▼"
-                        className="inline lg:ml-2 sm:ml-[2px] lg:h-[9px] sm:h-[6px]"
-                      />
-                    </p>
+                    <p>{link.title}</p>
                   </Link>
                 </motion.li>
               );

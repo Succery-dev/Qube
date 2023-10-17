@@ -41,20 +41,20 @@ export const waitlistUrl: string =
 
 export const navLinks = [
   {
-    id: "whyqube",
-    title: "Why Qube",
+    id: "whyus",
+    title: "WHY US ?",
   },
   {
     id: "features",
-    title: "Features",
+    title: "FEATURES",
   },
   {
-    id: "howtouse",
-    title: "How to use",
+    id: "howto",
+    title: "HOW TO ?",
   },
   {
-    id: "faq",
-    title: "FAQ",
+    id: "faqs",
+    title: "FAQs",
   },
 ];
 

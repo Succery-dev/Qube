@@ -62,7 +62,7 @@ const Walkthrough = (): JSX.Element => {
   const [activeTab, setActiveTab] = useState("enterprise");
 
   return (
-    <div id="howtouse">
+    <div id="howto">
       <motion.h1
         variants={textVariant()}
         initial="hidden"

@@ -90,7 +90,7 @@ const FAQ = () => {
   };
 
   return (
-    <div id="faq" className="h-full flex flex-col">
+    <div id="faqs" className="h-full flex flex-col">
       <motion.h1
         variants={textVariant()}
         initial="hidden"

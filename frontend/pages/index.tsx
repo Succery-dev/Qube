@@ -108,7 +108,7 @@ export default function Home() {
       </SectionWrapper>
 
       {/* Support & Call To Action */}
-      <SectionWrapper bgColor="bg-black" glowStyles={aesthetics.glow.walkthroughGlowStyles}>
+      {/* <SectionWrapper bgColor="bg-black" glowStyles={aesthetics.glow.walkthroughGlowStyles}>
         <Support />
         <div className="bg-gradient-to-r from-green-500 to-blue-500 h-[150px] sm:mt-32 px-5 rounded-lg flex items-center justify-center text-white text-xl gap-x-5">
           <p className="xl:text-4xl lg:text-3xl sm:text-2xl text-xl">
@@ -123,7 +123,7 @@ export default function Home() {
             }
           />
         </div>
-      </SectionWrapper>
+      </SectionWrapper> */}
 
       {/* FAQ */}
       <SectionWrapper bgColor="bg-black" glowStyles={aesthetics.glow.featuresGlowStyles}>

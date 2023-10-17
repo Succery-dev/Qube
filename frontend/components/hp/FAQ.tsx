@@ -96,7 +96,7 @@ const FAQ = () => {
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, amount: 0.25 }}
-        className="xl:text-7xl lg:text-6xl md:text-4xl sm:text-4xl text-4xl font-extrabold"
+        className="lg:text-6xl text-4xl text-center mb-10"
       >
         FAQs
       </motion.h1>
@@ -123,11 +123,11 @@ const FAQ = () => {
                 {faq.answer}
                 {
                   faq.question === "How much does it Cost?" 
-                    ? <Link href={waitlistUrl} className="underline">[waitlist]</Link> 
+                    ? <Link href={waitlistUrl} className="underline" target="_blank">[waitlist]</Link> 
                     : faq.question === "Where can I get details of the Arbitration Solution?"
-                      ? <Link href="https://qube-1.gitbook.io/qube-whitepaper/" className="underline">[Link]</Link>
+                      ? <Link href="https://qube-1.gitbook.io/qube-whitepaper/" className="underline" target="_blank">[Link]</Link>
                       : faq.question === "Are there any security assurances since the code is not open-source?"
-                        ? <Link href="mailto:0xqubepay@gmail.com" className="underline">[mail address]</Link>
+                        ? <Link href="mailto:official@0xqube.xyz" className="underline" target="_blank">[mail address]</Link>
                         : null
                 }
               </motion.p>

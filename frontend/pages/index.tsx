@@ -32,13 +32,13 @@ import { whitelist } from "../constants/whitelist";
 const SectionWrapper: React.FC<SectionWrapperPropsInterface> = ({
   children,
   bgColor,
-  glowStyles,
+  // glowStyles,
 }): JSX.Element => {
   return (
     <motion.div
-      className={`w-full grid grid-cols-12 ${bgColor} xl:py-20 sm:py-14 py-14 overflow-hidden relative xl:min-h-[1024px] lg:min-h-[760px] sm:min-h-[500px] min-h-screen`}
+      className={`w-full h-screen grid grid-cols-12 xl:py-20 sm:py-14 py-14 overflow-hidden relative xl:min-h-[1024px] lg:min-h-[760px] sm:min-h-[500px] ${bgColor || "bg-custom-background bg-contain"}`}
     >
-      {glowStyles && <Glow styles={glowStyles} />}
+      {/* {glowStyles && <Glow styles={glowStyles} />} */}
       <div className="col-start-2 col-end-12 font-semibold relative">
         {children}
       </div>
@@ -80,7 +80,7 @@ export default function Home() {
       <Notification />
       {/* IntroSection */}
       <SectionWrapper
-        bgColor="bg-bg_primary"
+        bgColor=""
         glowStyles={aesthetics.glow.introSectionGlowStyles}
       >
         <IntroSection />
@@ -101,14 +101,14 @@ export default function Home() {
 
       {/* How to Use */}
       <SectionWrapper
-        bgColor="bg-bg_primary"
+        bgColor="bg-black"
         glowStyles={aesthetics.glow.walkthroughGlowStyles}
       >
         <Walkthrough />
       </SectionWrapper>
 
       {/* Support & Call To Action */}
-      <SectionWrapper bgColor="bg-bg_primary" glowStyles={aesthetics.glow.walkthroughGlowStyles}>
+      <SectionWrapper bgColor="bg-black" glowStyles={aesthetics.glow.walkthroughGlowStyles}>
         <Support />
         <div className="bg-gradient-to-r from-green-500 to-blue-500 h-[150px] sm:mt-32 px-5 rounded-lg flex items-center justify-center text-white text-xl gap-x-5">
           <p className="xl:text-4xl lg:text-3xl sm:text-2xl text-xl">

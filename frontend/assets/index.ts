@@ -20,6 +20,7 @@ import Gasless from "./Gasless.svg";
 import MediumIcon from "./Medium-Icon.svg";
 import Discord from "./Discord.svg";
 import Spinner from "./Spinner.svg";
+import Game from "./Game.svg";
 
 export {
   arrow,
@@ -44,4 +45,5 @@ export {
   MediumIcon,
   Discord,
   Spinner,
+  Game,
 };

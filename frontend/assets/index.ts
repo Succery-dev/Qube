@@ -26,6 +26,7 @@ import Arbitration from "./Arbitration.svg";
 import GasFree from "./GasFree.svg";
 import LinkBased from "./LinkBased.svg";
 import OnChainResume from "./OnChainResume.svg";
+import Howto from "./Howto.svg";
 
 export {
   arrow,
@@ -56,4 +57,5 @@ export {
   GasFree,
   LinkBased,
   OnChainResume,
+  Howto,
 };

@@ -259,7 +259,7 @@ const Navbar = (): JSX.Element => {
           />
 
           {/* Connect Button */}
-          <ConnectButton accountStatus={{ smallScreen: "avatar" }} label="Launch App" />
+          <ConnectButton accountStatus={{ smallScreen: "avatar" }} label="LAUNCH APP" />
         </div>
       </nav>
 

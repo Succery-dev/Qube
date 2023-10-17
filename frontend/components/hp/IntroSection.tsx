@@ -19,7 +19,7 @@ const IntroSection = (): JSX.Element => {
   const { userType } = router.query;
 
   return (
-    <div className="relative h-full flex flex-col items-center justify-center lg:gap-12 sm:gap-8 gap-16">
+    <div className="relative h-full flex flex-col items-center justify-center lg:gap-12 sm:gap-8 gap-16 mt-5 md:mt-0">
       <h1 className="lg:text-6xl text-4xl">MAKE COLLABORATION</h1>
       <h2 className="lg:text-6xl text-4xl text-[#E220CF]">STRESS FREE</h2>
       <p className="lg:text-2xl text-xl text-center font-extralight">
@@ -38,7 +38,7 @@ const IntroSection = (): JSX.Element => {
       <Image
         src={Game}
         alt="Game"
-        className="absolute md:-right-20 -right-10 bottom-14 w-auto xl:h-[350px] lg:h-[300px] sm:h-[250px] h-[180px]"
+        className="absolute md:-right-20 -right-10 lg:bottom-14 -bottom-10 w-auto xl:h-[350px] lg:h-[250px] sm:h-[200px] h-[130px]"
       />
     </div>
   );

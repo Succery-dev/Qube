@@ -427,13 +427,13 @@ const ProjectDetailsDescription = ({
               setShowNotification
             );
           }}
-          styles="w-full mx-auto block bg-[#3E8ECC] hover:bg-[#377eb5] rounded-md text-center text-lg font-semibold text-white py-[4px] px-7 mt-6"
+          styles="w-full mx-auto block bg-[#DF57EA] hover:bg-[#A9209C] rounded-md text-center text-lg font-semibold text-white py-[4px] px-7 mt-6"
         />
       )}
       {projectDetails.Status === StatusEnum.PayInAdvance && (
         <CustomButton
           text="Waiting For Prepay"
-          styles="w-full mx-auto block bg-[#3E8ECC] hover:bg-[#377eb5] rounded-md text-center text-lg font-semibold text-white py-[4px] px-7 mt-6"
+          styles="w-full mx-auto block bg-[#DF57EA] hover:bg-[#A9209C] rounded-md text-center text-lg font-semibold text-white py-[4px] px-7 mt-6"
           type="submit"
           onClick={async (e) => {
             e.preventDefault();
@@ -458,7 +458,7 @@ const ProjectDetailsDescription = ({
               setOnConfirm(() => approveDeliverables);
               setShowModal(true);
             }}
-            styles="w-full mx-auto block bg-[#3E8ECC] hover:bg-[#377eb5] rounded-md text-center text-lg font-semibold text-white py-[4px] px-7 mt-6"
+            styles="w-full mx-auto block bg-[#DF57EA] hover:bg-[#A9209C] rounded-md text-center text-lg font-semibold text-white py-[4px] px-7 mt-6"
           />
           {projectDetails.DeadlineExtensionRequest ? (
             <CustomButton
@@ -472,7 +472,7 @@ const ProjectDetailsDescription = ({
                 setOnConfirm(() => disapproveDeliverables);
                 setShowModal(true);
               }}
-              styles="w-full mx-auto block bg-[#3E8ECC] hover:bg-[#377eb5] rounded-md text-center text-lg font-semibold text-white py-[4px] px-7 mt-6"
+              styles="w-full mx-auto block bg-[#FF4B4B] hover:bg-[#E43F3F] rounded-md text-center text-lg font-semibold text-white py-[4px] px-7 mt-6"
             />
           ) : (
             <CustomButton
@@ -486,7 +486,7 @@ const ProjectDetailsDescription = ({
                 setOnConfirm(() => requestDeadlineExtension);
                 setShowModal(true);
               }}
-              styles="w-full mx-auto block bg-[#3E8ECC] hover:bg-[#377eb5] rounded-md text-center text-lg font-semibold text-white py-[4px] px-7 mt-6"
+              styles="w-full mx-auto block bg-[#DF57EA] hover:bg-[#A9209C] rounded-md text-center text-lg font-semibold text-white py-[4px] px-7 mt-6"
             />
           )}
         </>
@@ -504,7 +504,7 @@ const ProjectDetailsDescription = ({
               setOnConfirm(() => acceptDeadlineExtension);
               setShowModal(true);
             }}
-            styles="w-full mx-auto block bg-[#3E8ECC] hover:bg-[#377eb5] rounded-md text-center text-lg font-semibold text-white py-[4px] px-7 mt-6"
+            styles="w-full mx-auto block bg-[#DF57EA] hover:bg-[#A9209C] rounded-md text-center text-lg font-semibold text-white py-[4px] px-7 mt-6"
           />
           <CustomButton
             text="Reject Deadline-Extension"

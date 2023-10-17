@@ -25,14 +25,14 @@ import {
 
 const SectionWrapper: React.FC<SectionWrapperPropsInterface> = ({
   children,
-  bgColor,
-  glowStyles,
+  // bgColor,
+  // glowStyles,
 }): JSX.Element => {
   return (
     <motion.div
-      className={`w-full grid grid-cols-12 ${bgColor} py-28 overflow-hidden relative min-h-screen`}
+      className={`w-full grid grid-cols-12 py-28 overflow-hidden relative min-h-screen bg-custom-background bg-contain`}
     >
-      {glowStyles && <Glow styles={glowStyles} />}
+      {/* {glowStyles && <Glow styles={glowStyles} />} */}
       <div className="col-start-2 col-end-12 font-semibold relative flex flex-col justify-center">
         {children}
       </div>
@@ -82,9 +82,9 @@ const ProjectScaffold = ({
         glowStyles={aesthetics.glow.createProjectGlowStyles}
       >
         {/* Return to Dashboard Button */}
-        <button className="bg-orange-500 mb-7 mr-auto p-3 text-xl rounded-full text-white" onClick={() => {
+        <button className="bg-gradient-to-r from-[#DF57EA] to-slate-200 mb-7 mr-auto px-7 py-3 rounded-full text-black" onClick={() => {
           router.push(`http://${window.location.host}/dashboard/${address}`);
-        }}>{`<- Return to Dashboard`}</button>
+        }}>{`DASHBOARD`}</button>
         {/* Create Project Form */}
         <div className="block lg:flex flex-row items-center gap-16">
           {/* Form */}

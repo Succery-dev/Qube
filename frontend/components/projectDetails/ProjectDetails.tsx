@@ -48,14 +48,14 @@ import Modal from "./Modal";
 
 const SectionWrapper: React.FC<SectionWrapperPropsInterface> = ({
   children,
-  bgColor,
-  glowStyles,
+  // bgColor,
+  // glowStyles,
 }): JSX.Element => {
   return (
     <motion.div
-      className={`w-full grid grid-cols-12 ${bgColor} xl:py-40 lg:py-32 py-28 overflow-hidden relative min-h-screen font-nunito`}
+      className={`w-full grid grid-cols-12 xl:py-40 lg:py-32 py-28 overflow-hidden relative min-h-screen font-nunito bg-custom-background bg-contain`}
     >
-      {glowStyles && <Glow styles={glowStyles} />}
+      {/* {glowStyles && <Glow styles={glowStyles} />} */}
       <div className="col-start-2 lg:col-end-10 col-end-12 font-semibold relative flex flex-col justify-center">
         {children}
       </div>
@@ -331,10 +331,22 @@ const ProjectDetails = ({ projectId }: { projectId: string }): JSX.Element => {
       glowStyles={aesthetics.glow.createProjectGlowStyles}
     >
       {/* Return to Dashboard Button */}
-      <button className="bg-orange-500 mb-7 mr-auto p-3 text-xl rounded-full text-white" onClick={() => {
-          router.push(`http://${window.location.host}/dashboard/${address}`);
-        }}>{`<- Return to Dashboard`}</button>
-      <div className="w-full lg:p-[3px] p-[2px] rounded-lg blue-transparent-green-gradient-vertical">
+      <button className="bg-gradient-to-r from-[#DF57EA] to-slate-200 mb-7 mr-auto px-7 py-3 rounded-full text-black" onClick={() => {
+        router.push(`http://${window.location.host}/dashboard/${address}`);
+      }}>{`DASHBOARD`}</button>
+      <p className="text-white text-4xl mx-auto mb-5">
+        Time to take action for
+        {projectDetails.Status !== StatusEnum.CompleteNoSubmissionByLancer
+          && projectDetails.Status !== StatusEnum.CompleteNoContactByClient
+          && projectDetails.Status !== StatusEnum.CompleteApproval
+          && projectDetails.Status !== StatusEnum.CompleteDisapproval
+          && projectDetails.Status !== StatusEnum.CompleteDispute
+          && projectDetails.Status !== StatusEnum.InDispute
+          && projectDetails.Status !== StatusEnum.Cancel
+          && <span className="text-5xl bg-gradient-to-r from-[#DF57EA] to-slate-200 bg-clip-text text-transparent"> {activeUserByStatus(projectDetails)}</span>
+        }
+      </p>
+      <div className="w-full lg:p-[3px] p-[2px] rounded-lg border border-[#DF57EA] shadow-custom-pink">
         <div className="w-full h-full rounded-lg bg-black">
           <div className="w-full xl:px-8 xl:py-12 px-6 sm:py-10 py-6 text-[#959595]">
             {/* Header */}
@@ -349,22 +361,6 @@ const ProjectDetails = ({ projectId }: { projectId: string }): JSX.Element => {
                   />
                   {isCopiedPopupVisible && <p className="absolute -left-5 bottom-14 bg-slate-500 text-white text-sm px-5 rounded-md animate-bounce">Copied</p>}
                   {projectDetails.Title}
-                  {/* TODO: fix this, change this button to a block */}
-                  {projectDetails.Status !== StatusEnum.CompleteNoSubmissionByLancer
-                  && projectDetails.Status !== StatusEnum.CompleteNoContactByClient
-                  && projectDetails.Status !== StatusEnum.CompleteApproval
-                  && projectDetails.Status !== StatusEnum.CompleteDisapproval
-                  && projectDetails.Status !== StatusEnum.CompleteDispute
-                  && projectDetails.Status !== StatusEnum.InDispute
-                  && projectDetails.Status !== StatusEnum.Cancel
-                  &&
-                    <button
-                      onClick={() => {}}
-                      className="bg-green-500 text-white font-bold py-2 px-4 rounded ml-auto"
-                    >
-                      {activeUserByStatus(projectDetails)}
-                    </button>
-                  }
                 </h1>
               )}
 
@@ -379,8 +375,8 @@ const ProjectDetails = ({ projectId }: { projectId: string }): JSX.Element => {
                 <CustomButton
                   text="Description"
                   styles={`${
-                    section === "description" ? "bg-[#3E8ECC]" : ""
-                  } rounded-md text-center xs:text-base text-sm text-white py-[2px] px-4 hover:bg-[#377eb5]`}
+                    section === "description" ? "bg-[#DF57EA]" : ""
+                  } rounded-md text-center xs:text-base text-sm text-white py-[2px] px-4 hover:bg-[#A9209C]`}
                   onClick={() => {
                     setSection("description");
                   }}
@@ -393,8 +389,8 @@ const ProjectDetails = ({ projectId }: { projectId: string }): JSX.Element => {
                   <CustomButton
                     text="Submission"
                     styles={`${
-                      section === "submission" ? "bg-[#3E8ECC]" : ""
-                    } rounded-md text-center xs:text-base text-sm text-white py-[2px] px-4 hover:bg-[#377eb5]`}
+                      section === "submission" ? "bg-[#DF57EA]" : ""
+                    } rounded-md text-center xs:text-base text-sm text-white py-[2px] px-4 hover:bg-[#A9209C]`}
                     onClick={() => {
                       setSection("submission");
                     }}
@@ -440,7 +436,7 @@ const ProjectDetails = ({ projectId }: { projectId: string }): JSX.Element => {
                   text={title}
                   styles={`w-full md:w-[90%] lg:w-[80%] mx-auto block ${
                     (text !== "" || files.length > 0) && (address == projectDetails["Lancer's Wallet Address"])
-                    ? "bg-[#3E8ECC] hover:bg-[#377eb5]"
+                    ? "bg-[#DF57EA] hover:bg-[#A9209C]"
                     : "bg-slate-400"
                   } rounded-md text-center text-lg font-semibold text-white py-[4px] px-7 mt-6`}
                   type="submit"

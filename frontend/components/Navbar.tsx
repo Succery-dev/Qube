@@ -102,19 +102,18 @@ const Navbar = (): JSX.Element => {
       <nav className="w-full grid grid-cols-12 absolute text-secondary z-50">
         <div className="top-0 col-start-1 lg:col-start-2 col-end-13 lg:col-end-12 px-5 lg:px-0 xl:h-20 sm:h-14 h-20 flex flex-row xl:gap-20 lg:gap-10 sm:gap-5 w-full justify-between items-center bg-transparent">
           {/* Logo/Icon */}
-          <motion.div variants={hoverVariant()} whileHover={"hover"}>
-            <div className="flex items-center sm:gap-2 gap-4">
-              <Image
-                src="/images/logo.png"
-                width="100"
-                height="100"
-                alt="Q"
-                className="rounded-md xl:h-[50px] lg:h-[45px] sm:h-[40px] h-[40px] w-auto"
-              />
-              <h1 className="xl:text-2xl lg:text-xl sm:text-lg text-2xl text-primary font-extrabold lg:ml-4 sm:ml-0">
-                Qube
-              </h1>
-            </div>
+          <motion.div
+            variants={hoverVariant()} 
+            whileHover={"hover"}
+            className="flex items-center sm:gap-2 gap-4"
+          >
+            <Image
+              src="/images/Qube.jpg"
+              width="100"
+              height="100"
+              alt="Q"
+              className="rounded-md xl:h-[50px] lg:h-[45px] sm:h-[40px] h-[40px] w-auto"
+            />
           </motion.div>
 
           {/* Navbar Links */}
@@ -132,44 +131,13 @@ const Navbar = (): JSX.Element => {
                   className="xl:text-xl lg:text-md sm:text-sm font-medium cursor-pointer grow"
                 >
                   <Link href={`#${link.id}`}>
-                    <p>
-                      {link.title}
-                      <Image
-                        src={arrow}
-                        alt="▼"
-                        className="inline lg:ml-2 sm:ml-[2px] lg:h-[9px] sm:h-[6px]"
-                      />
-                    </p>
+                    <p>{link.title}</p>
                   </Link>
                 </motion.li>
               );
             })}
           </ul>
           
-          {/* User Type Select Dropdown Button */}
-          <div className={`relative grow max-w-[200px] ${router.pathname === "/" ? "hidden md:block": "hidden"}`}>
-            <button type="button" className="relative w-full rounded-md cursor-default bg-slate-800 py-1.5 pl-3 pr-10 text-left shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 sm:text-sm sm:leading-6" aria-haspopup="listbox" aria-expanded="true" aria-labelledby="listbox-label" onClick={() => setIsDropdownOpen(!isDropdownOpen)}>
-              <span className="ml-3 block truncate font-bold">{userType}</span>
-              <span className="pointer-events-none absolute inset-y-0 right-0 ml-3 flex items-center pr-2">
-                <svg className="h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                  <path fill-rule="evenodd" d="M10 3a.75.75 0 01.55.24l3.25 3.5a.75.75 0 11-1.1 1.02L10 4.852 7.3 7.76a.75.75 0 01-1.1-1.02l3.25-3.5A.75.75 0 0110 3zm-3.76 9.2a.75.75 0 011.06.04l2.7 2.908 2.7-2.908a.75.75 0 111.1 1.02l-3.25 3.5a.75.75 0 01-1.1 0l-3.25-3.5a.75.75 0 01.04-1.06z" clip-rule="evenodd" />
-                </svg>
-              </span>
-            </button>
-            {isDropdownOpen &&
-              <ul className="absolute z-10 mt-1 max-h-56 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm" role="listbox" aria-labelledby="listbox-label" aria-activedescendant="listbox-option-3">
-                <li className="text-gray-900 relative cursor-default select-none py-2 pl-3 pr-9" id="listbox-option-0" role="option" onClick={() => {
-                  const selectedType = userType === "CLIENT" ? "FREELANCER" : "CLIENT";
-                  router.push(`/?userType=${selectedType}`);
-                  setUserType(selectedType);
-                  setIsDropdownOpen(false);
-                }}>
-                  <p className="ml-3 block truncate font-bold">{userType === "CLIENT" ? "FREELANCER" : "CLIENT"}</p>
-                </li>
-              </ul>
-            }
-          </div>
-
           {/* Small/Medium Devices Navbar */}
           <AnimatePresence>
             {showMenuModal && (
@@ -258,8 +226,41 @@ const Navbar = (): JSX.Element => {
             onClick={toggleMobileNav}
           />
 
+          {/* Join Discord Button */}
+          <Link 
+            href="https://discord.gg/KnhgxwXa"
+            target="_blank"
+            className={`border border-white hover:bg-purple-500 ease-in duration-300 rounded-full px-5 py-2 ${router.pathname === "/" ? "hidden md:block": "hidden"}`}
+          >
+            JOIN DISCORD
+          </Link>
+
           {/* Connect Button */}
-          <ConnectButton accountStatus={{ smallScreen: "avatar" }} label="Launch App" />
+          <ConnectButton accountStatus={{ smallScreen: "avatar" }} label="LAUNCH APP" />
+
+          {/* User Type Select Dropdown Button */}
+          <div className={`relative grow max-w-[200px] ${router.pathname === "/" ? "hidden md:block": "hidden"}`}>
+            <button type="button" className="relative w-full rounded-md cursor-default bg-slate-800 py-1.5 pl-3 pr-10 text-left shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 sm:text-sm sm:leading-6" aria-haspopup="listbox" aria-expanded="true" aria-labelledby="listbox-label" onClick={() => setIsDropdownOpen(!isDropdownOpen)}>
+              <span className="ml-3 block truncate font-bold">{userType}</span>
+              <span className="pointer-events-none absolute inset-y-0 right-0 ml-3 flex items-center pr-2">
+                <svg className="h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                  <path fill-rule="evenodd" d="M10 3a.75.75 0 01.55.24l3.25 3.5a.75.75 0 11-1.1 1.02L10 4.852 7.3 7.76a.75.75 0 01-1.1-1.02l3.25-3.5A.75.75 0 0110 3zm-3.76 9.2a.75.75 0 011.06.04l2.7 2.908 2.7-2.908a.75.75 0 111.1 1.02l-3.25 3.5a.75.75 0 01-1.1 0l-3.25-3.5a.75.75 0 01.04-1.06z" clip-rule="evenodd" />
+                </svg>
+              </span>
+            </button>
+            {isDropdownOpen &&
+              <ul className="absolute z-10 mt-1 max-h-56 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm" role="listbox" aria-labelledby="listbox-label" aria-activedescendant="listbox-option-3">
+                <li className="text-gray-900 relative cursor-default select-none py-2 pl-3 pr-9" id="listbox-option-0" role="option" onClick={() => {
+                  const selectedType = userType === "CLIENT" ? "FREELANCER" : "CLIENT";
+                  router.push(`/?userType=${selectedType}`);
+                  setUserType(selectedType);
+                  setIsDropdownOpen(false);
+                }}>
+                  <p className="ml-3 block truncate font-bold">{userType === "CLIENT" ? "FREELANCER" : "CLIENT"}</p>
+                </li>
+              </ul>
+            }
+          </div>
         </div>
       </nav>
 

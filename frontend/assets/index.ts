@@ -20,6 +20,13 @@ import Gasless from "./Gasless.svg";
 import MediumIcon from "./Medium-Icon.svg";
 import Discord from "./Discord.svg";
 import Spinner from "./Spinner.svg";
+import Game from "./Game.svg";
+import WhyUs from "./WhyUs.svg";
+import Arbitration from "./Arbitration.svg";
+import GasFree from "./GasFree.svg";
+import LinkBased from "./LinkBased.svg";
+import OnChainResume from "./OnChainResume.svg";
+import Howto from "./Howto.svg";
 
 export {
   arrow,
@@ -44,4 +51,11 @@ export {
   MediumIcon,
   Discord,
   Spinner,
+  Game,
+  WhyUs,
+  Arbitration,
+  GasFree,
+  LinkBased,
+  OnChainResume,
+  Howto,
 };

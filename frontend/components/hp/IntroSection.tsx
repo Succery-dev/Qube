@@ -1,5 +1,6 @@
 import React from "react";
 import { useRouter } from "next/router";
+import Image from "next/image";
 
 // Custom Imports
 import CustomButton from "../CustomButton";
@@ -11,54 +12,34 @@ import { textVariant } from "../../utils";
 // Waitlist URL Import
 import { waitlistUrl } from "../../constants";
 
-const IntroHeaderSection = (): JSX.Element => {
+import { Game } from "../../assets";
+
+const IntroSection = (): JSX.Element => {
   const router = useRouter();
   const { userType } = router.query;
 
   return (
-    <motion.h1
-      variants={textVariant()}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, amount: 0.25 }}
-      className="xl:text-7xl lg:text-6xl md:text-5xl sm:text-5xl text-4xl font-extrabold"
-    >
-      <p className="block">
-        {`Redefining Payments ${userType === "CLIENT" ? "to" : "of"} Freelancers with crypto`}
+    <div className="relative h-full flex flex-col items-center justify-center lg:gap-12 sm:gap-8 gap-16 mt-5 md:mt-0">
+      <h1 className="lg:text-6xl text-4xl">MAKE COLLABORATION</h1>
+      <h2 className="lg:text-6xl text-4xl text-[#E220CF]">STRESS FREE</h2>
+      <p className="lg:text-2xl text-xl text-center font-extralight">
+        Qube is an escrow-based payment tool that
+        <br />
+        bridges trust between P2P payments.
       </p>
-    </motion.h1>
-  );
-}
-
-const IntroFooterSection = (): JSX.Element => (
-  <div className="w-[90%] sm:w-full ">
-    <motion.h3
-      variants={textVariant()}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, amount: 0.25 }}
-      className="xl:text-4xl lg:text-3xl sm:text-2xl text-[1.3rem] leading-[2rem] font-medium"
-    >
-      <p className="block">Qube is a payment gateway for</p>
-      <p className="block">freelancers, guaranteeing timely rewards</p>
-      <p className="block">and facilitating seamless transactions.</p>
-    </motion.h3>
-    <CustomButton
-      text="Join Waitlist"
-      styles="border-none xs:text-lg sm:text-xl lg:text-xl xl:text-2xl sm:text-sm text-xl font-semibold text-primary bg-white lg:px-8 lg:py-4 px-4 py-2 rounded-md lg:mt-12 sm:mt-8 mt-16"
-      type="button"
-      onClick={(e) => 
-        window.open(waitlistUrl, "_blank")
-      }
-    />
-  </div>
-);
-
-const IntroSection = (): JSX.Element => {
-  return (
-    <div className="h-full flex flex-col justify-center lg:gap-12 sm:gap-8 sm:pt-20 lg:pt-0 gap-16 sm:mt-0 py-12">
-      <IntroHeaderSection />
-      <IntroFooterSection />
+      <CustomButton
+        text="JOIN WAITLIST"
+        styles="border-none xs:text-sm sm:text-xl lg:text-2xl font-semibold text-black bg-gradient-to-b from-slate-200 to-[#E220CF] lg:px-8 lg:py-4 px-4 py-2 rounded-full lg:mt-12 sm:mt-8 mt-16"
+        type="button"
+        onClick={(e) => 
+          window.open(waitlistUrl, "_blank")
+        }
+      />
+      <Image
+        src={Game}
+        alt="Game"
+        className="absolute md:-right-20 -right-10 lg:bottom-14 -bottom-10 w-auto xl:h-[350px] lg:h-[250px] sm:h-[200px] h-[130px]"
+      />
     </div>
   );
 };

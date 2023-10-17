@@ -1,5 +1,6 @@
 import React from "react";
 import Image from "next/image";
+import Link from "next/link";
 import Tilt from "react-parallax-tilt";
 import { useRouter } from "next/router";
 
@@ -15,6 +16,8 @@ import { currentSystemProblems, aesthetics } from "../../constants";
 
 // Interface Imports
 import { ProblemsInterface } from "../../interfaces";
+
+import { WhyUs } from "../../assets";
 
 const CurrentSystemProblemsCard = ({
   problem,
@@ -78,59 +81,107 @@ const problemsForFreelancers = [
   },
 ];
 
+const whyUs = [
+  {
+    title: "NO / DELAYED PAYMENTS",
+    description: "The payment mismatch is a long-lasting problem in collaboration in web3. Qube secures the payment using a Smart Contract-based escrow service to ensure that both parties may have a hassle-free collaboration.",
+  },
+  {
+    title: "RISK OF DISPUTES",
+    description: "There is a possibility of having problems with the quality of submission. It's very hard to come to a mutual point once this happens.",
+  },
+  {
+    title: "HIGH PLATFORM FEES",
+    description: "Existing platforms provide escrow-based payment solutions but the platform fee is too expensive. Qube doesn't cost any transaction fee.",
+  },
+];
+
 const CurrentSystemProblems = (): JSX.Element => {
   const router = useRouter();
   const { userType } = router.query;
 
   return (
-    <div id="whyqube" className="flex flex-col h-full gap-y-10">
-      <motion.h1
-        variants={textVariant()}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.25 }}
-        className="xl:text-7xl lg:text-6xl md:text-4xl sm:text-4xl text-4xl font-extrabold flex-1"
+    <>
+      <motion.p
+          variants={textVariant()}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.25 }}
+          className="text-xl mb-5"
       >
-        {userType === "CLIENT" ? "Problems Clients face while outsourcing" : "Freelances face lots of problems.."}
-      </motion.h1>
-      <div className="flex flex-col lg:flex-row justify-between gap-y-5 md:gap-x-5">
-        {(userType === "CLIENT" ? problemsForClients : problemsForFreelancers).map((problem, index) => {
-          return(
-            <Tilt key={index}>
-              <motion.div
-                variants={fadeIn("right", 1.25, index)}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, amount: 0.25 }}
-                className="blue-transparent-green-gradient-vertical 2xl:w-[450px] xl:w-[370px] lg:w-[300px] lg:p-[3px] p-[2px] sm:min-h-0 rounded-2xl grid place-items-center h-full"
-              >
-                <div className="bg-bg_primary w-full h-full flex flex-col xl:px-8 lg:px-4 sm:px-3 px-4 xl:py-12 lg:py-10 py-8 rounded-2xl">
-                  {/* Card Heading */}
-                  <div className="flex flex-row items-center justify-center lg:gap-8 sm:gap-1 gap-8">
-                    <h2 className="xl:text-4xl text-2xl font-extrabold">
-                      {problem.title}
-                    </h2>
-                  </div>
-                  {/* Card Description */}
-                  <p className="mt-8 px-6 font-normal xl:text-2xl lg:text-xl text-xl">
-                    {problem.description}
-                  </p>
-                </div>
-              </motion.div>
-            </Tilt>
-          );
-        })}
+        Powered By
+      </motion.p>
+      <motion.div
+          variants={textVariant()}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.25 }}
+          className="flex gap-5 mb-20"
+      >
+        <Link href="https://www.doublejump.tokyo/en" target="_blank">
+          <Image
+            src="/images/djt.jpg"
+            width="150"
+            height="50"
+            alt="djt"
+          />
+        </Link>
+        <Link href="https://gu3.co.jp/en/" target="_blank">
+          <Image
+            src="/images/gumi.jpg"
+            width="150"
+            height="50"
+            alt="gumi"
+          />
+        </Link>
+      </motion.div>
+      <div id="whyus">
+        <motion.h1
+          variants={textVariant()}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.25 }}
+          className="lg:text-6xl text-4xl text-center mb-10"
+        >
+          WHY US ?
+        </motion.h1>
+        <div className="flex flex-col xl:flex-row gap-10">
+          <Image
+            src={WhyUs}
+            width="500"
+            height="500"
+            alt="WhyUs"
+            className="flex-1 mx-auto"
+          />
+          <div className="flex-1">
+            {whyUs.map((why, index) => {
+              return (
+                <>
+                  <motion.p
+                    variants={fadeIn("right", 1.25, index)}
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{ once: true, amount: 0.25 }}
+                    className="text-2xl my-5"
+                  >
+                    {why.title}
+                  </motion.p>
+                  <motion.p
+                    variants={fadeIn("right", 1.25, index)}
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{ once: true, amount: 0.25 }}
+                    className="border-2 border-[#613D5D] shadow-custom-pink-rb rounded-2xl p-5 text-lg"
+                  >
+                    {why.description}
+                  </motion.p>
+                </>
+              );
+            })}
+          </div>
+        </div>
       </div>
-      <motion.h1
-        variants={textVariant()}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.25 }}
-        className="xl:text-7xl lg:text-6xl md:text-4xl sm:text-4xl text-4xl font-extrabold flex items-center justify-center flex-1"
-      >
-        {userType === "CLIENT" ? "Use Qube and save your TIME!" : "We got your back"}
-      </motion.h1>
-    </div>
+    </>
   );
 };
 

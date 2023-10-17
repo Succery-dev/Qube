@@ -32,6 +32,7 @@ module.exports = {
       },
       boxShadow: {
         "custom-pink": "0px 0px 20px 0px rgba(223, 87, 234, 1)",
+        "custom-pink-rb": "5px 5px 20px 0px rgba(223, 87, 234, 1)",
       },
     },
   },

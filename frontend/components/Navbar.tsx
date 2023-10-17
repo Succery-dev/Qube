@@ -102,19 +102,18 @@ const Navbar = (): JSX.Element => {
       <nav className="w-full grid grid-cols-12 absolute text-secondary z-50">
         <div className="top-0 col-start-1 lg:col-start-2 col-end-13 lg:col-end-12 px-5 lg:px-0 xl:h-20 sm:h-14 h-20 flex flex-row xl:gap-20 lg:gap-10 sm:gap-5 w-full justify-between items-center bg-transparent">
           {/* Logo/Icon */}
-          <motion.div variants={hoverVariant()} whileHover={"hover"}>
-            <div className="flex items-center sm:gap-2 gap-4">
-              <Image
-                src="/images/Qube.jpg"
-                width="100"
-                height="100"
-                alt="Q"
-                className="rounded-md xl:h-[50px] lg:h-[45px] sm:h-[40px] h-[40px] w-auto"
-              />
-              <h1 className="xl:text-2xl lg:text-xl sm:text-lg text-2xl text-primary font-extrabold lg:ml-4 sm:ml-0">
-                Qube
-              </h1>
-            </div>
+          <motion.div
+            variants={hoverVariant()} 
+            whileHover={"hover"}
+            className="flex items-center sm:gap-2 gap-4"
+          >
+            <Image
+              src="/images/Qube.jpg"
+              width="100"
+              height="100"
+              alt="Q"
+              className="rounded-md xl:h-[50px] lg:h-[45px] sm:h-[40px] h-[40px] w-auto"
+            />
           </motion.div>
 
           {/* Navbar Links */}

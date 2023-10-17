@@ -8,6 +8,10 @@ import {
   API,
   NftGateway,
   Gasless,
+  Arbitration,
+  GasFree,
+  LinkBased,
+  OnChainResume,
 } from "../assets";
 
 // Interfaces Imports
@@ -103,32 +107,32 @@ export const walkthrough: WalkthroughInterface[] = [
 
 export const featuresForClients: FeaturesInterface[] = [
   {
-    id: "NoMismatchInPayment!",
-    title: "No mismatch in Payment!",
-    image: "",
+    id: "Arbitration",
+    title: "Arbitration",
+    image: Arbitration,
     description:
-      "Qube's smart contract-based escrow works as a middleman and solves the mismatch of payment. The best solution for the mismatch of timing.",
+      "If there is any disagreement, we will provide dispute resolution powered by Kleros, a decentralized court.",
   },
   {
-    id: "NoConcernAboutTheScams!",
-    title: "No concern about the scams!",
-    image: "",
+    id: "LinkBased",
+    title: "Link Based",
+    image: LinkBased,
     description:
-      "Qube holds the fund until the task is done and approved by you. So there is no chance of scams. All you have to do is make a contract using Qube.",
+      "Qube is a totally link-based service so you can use it anywhere. All you need to do is share the link!",
   },
   {
-    id: "NoStressInCollaborating!",
-    title: "No stress in collaborating!",
-    image: "",
+    id: "GasFree",
+    title: "Gas Free",
+    image: GasFree,
     description:
-      "After making the contract in Qube, everything goes along Qube's system so that you don't have to think anything. Just wait for the submission!",
+      "Sometimes gas fees can be quite burdensome... But with Qube, both parties don't have to worry about gas fees for their transactions!",
   },
   {
-    id: "NoHighFees",
-    title: "No high fees",
-    image: "",
+    id: "On-ChainResume",
+    title: "On-Chain Resume",
+    image: OnChainResume,
     description:
-      "Qube doesn't cost as other platforms or tools. Moreover, currently, Qube is in the closed beta phase. So Qube doesn't cost you at all. It's totally free.",
+      "Qube also provides a resume service where all the transactions you made or going to make will be the proof of your experience that belongs only to you.",
   },
 ];
 

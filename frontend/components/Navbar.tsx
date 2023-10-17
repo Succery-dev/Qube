@@ -145,30 +145,6 @@ const Navbar = (): JSX.Element => {
             })}
           </ul>
           
-          {/* User Type Select Dropdown Button */}
-          <div className={`relative grow max-w-[200px] ${router.pathname === "/" ? "hidden md:block": "hidden"}`}>
-            <button type="button" className="relative w-full rounded-md cursor-default bg-slate-800 py-1.5 pl-3 pr-10 text-left shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 sm:text-sm sm:leading-6" aria-haspopup="listbox" aria-expanded="true" aria-labelledby="listbox-label" onClick={() => setIsDropdownOpen(!isDropdownOpen)}>
-              <span className="ml-3 block truncate font-bold">{userType}</span>
-              <span className="pointer-events-none absolute inset-y-0 right-0 ml-3 flex items-center pr-2">
-                <svg className="h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                  <path fill-rule="evenodd" d="M10 3a.75.75 0 01.55.24l3.25 3.5a.75.75 0 11-1.1 1.02L10 4.852 7.3 7.76a.75.75 0 01-1.1-1.02l3.25-3.5A.75.75 0 0110 3zm-3.76 9.2a.75.75 0 011.06.04l2.7 2.908 2.7-2.908a.75.75 0 111.1 1.02l-3.25 3.5a.75.75 0 01-1.1 0l-3.25-3.5a.75.75 0 01.04-1.06z" clip-rule="evenodd" />
-                </svg>
-              </span>
-            </button>
-            {isDropdownOpen &&
-              <ul className="absolute z-10 mt-1 max-h-56 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm" role="listbox" aria-labelledby="listbox-label" aria-activedescendant="listbox-option-3">
-                <li className="text-gray-900 relative cursor-default select-none py-2 pl-3 pr-9" id="listbox-option-0" role="option" onClick={() => {
-                  const selectedType = userType === "CLIENT" ? "FREELANCER" : "CLIENT";
-                  router.push(`/?userType=${selectedType}`);
-                  setUserType(selectedType);
-                  setIsDropdownOpen(false);
-                }}>
-                  <p className="ml-3 block truncate font-bold">{userType === "CLIENT" ? "FREELANCER" : "CLIENT"}</p>
-                </li>
-              </ul>
-            }
-          </div>
-
           {/* Small/Medium Devices Navbar */}
           <AnimatePresence>
             {showMenuModal && (
@@ -259,6 +235,30 @@ const Navbar = (): JSX.Element => {
 
           {/* Connect Button */}
           <ConnectButton accountStatus={{ smallScreen: "avatar" }} label="LAUNCH APP" />
+
+          {/* User Type Select Dropdown Button */}
+          <div className={`relative grow max-w-[200px] ${router.pathname === "/" ? "hidden md:block": "hidden"}`}>
+            <button type="button" className="relative w-full rounded-md cursor-default bg-slate-800 py-1.5 pl-3 pr-10 text-left shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 sm:text-sm sm:leading-6" aria-haspopup="listbox" aria-expanded="true" aria-labelledby="listbox-label" onClick={() => setIsDropdownOpen(!isDropdownOpen)}>
+              <span className="ml-3 block truncate font-bold">{userType}</span>
+              <span className="pointer-events-none absolute inset-y-0 right-0 ml-3 flex items-center pr-2">
+                <svg className="h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                  <path fill-rule="evenodd" d="M10 3a.75.75 0 01.55.24l3.25 3.5a.75.75 0 11-1.1 1.02L10 4.852 7.3 7.76a.75.75 0 01-1.1-1.02l3.25-3.5A.75.75 0 0110 3zm-3.76 9.2a.75.75 0 011.06.04l2.7 2.908 2.7-2.908a.75.75 0 111.1 1.02l-3.25 3.5a.75.75 0 01-1.1 0l-3.25-3.5a.75.75 0 01.04-1.06z" clip-rule="evenodd" />
+                </svg>
+              </span>
+            </button>
+            {isDropdownOpen &&
+              <ul className="absolute z-10 mt-1 max-h-56 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm" role="listbox" aria-labelledby="listbox-label" aria-activedescendant="listbox-option-3">
+                <li className="text-gray-900 relative cursor-default select-none py-2 pl-3 pr-9" id="listbox-option-0" role="option" onClick={() => {
+                  const selectedType = userType === "CLIENT" ? "FREELANCER" : "CLIENT";
+                  router.push(`/?userType=${selectedType}`);
+                  setUserType(selectedType);
+                  setIsDropdownOpen(false);
+                }}>
+                  <p className="ml-3 block truncate font-bold">{userType === "CLIENT" ? "FREELANCER" : "CLIENT"}</p>
+                </li>
+              </ul>
+            }
+          </div>
         </div>
       </nav>
 

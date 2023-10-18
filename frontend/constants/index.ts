@@ -121,28 +121,28 @@ export const featuresForClients: FeaturesInterface[] = [
       "While collaborating with several creators Gas fee is huge. Using Qube, every transaction becomes gas free.",
   },
   {
+    id: "Arbitration",
+    title: "Arbitration",
+    image: Arbitration,
+    description:
+      "If there is any disagreement, we will provide dispute resolution powered by Kleros, a decentralized court.",
+  },
+  {
     id: "On-chainResume",
     title: "On-chain Resume",
     image: OnChainResume,
     description:
       "Qube's on-chain data based resume of creators will help you to find the best creator for your work!",
   },
-  {
-    id: "Arbitration",
-    title: "Arbitration",
-    image: Arbitration,
-    description:
-      "If there is any disagreement, we will provide dispute resolution powered by Kleros, a decentralized court.",
-  },
 ];
 
 export const featuresForFreelancers: FeaturesInterface[] = [
   {
-    id: "Arbitration",
-    title: "Arbitration",
-    image: Arbitration,
+    id: "On-chainResume",
+    title: "On-chain Resume",
+    image: OnChainResume,
     description:
-      "If there is any disagreement, we will provide dispute resolution powered by Kleros, a decentralized court.",
+      "Qube also provides a resume service where all the transactions you made or going to make will be the proof of your experience that belongs only to you.",
   },
   {
     id: "LinkBased",
@@ -159,11 +159,11 @@ export const featuresForFreelancers: FeaturesInterface[] = [
       "Smart contract-based escrow will work as a middleman so that both parties don't need to be worried about anything without a third party!",
   },
   {
-    id: "On-chainResume",
-    title: "On-chain Resume",
-    image: OnChainResume,
+    id: "Arbitration",
+    title: "Arbitration",
+    image: Arbitration,
     description:
-      "Qube also provides a resume service where all the transactions you made or going to make will be the proof of your experience that belongs only to you.",
+      "If there is any disagreement, we will provide dispute resolution powered by Kleros, a decentralized court.",
   },
 ];
 

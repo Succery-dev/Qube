@@ -1,6 +1,7 @@
 import React from "react";
 import { useRouter } from "next/router";
 import Image from "next/image";
+import Link from "next/link";
 
 // Custom Imports
 import CustomButton from "../CustomButton";
@@ -19,7 +20,7 @@ const IntroSection = (): JSX.Element => {
   const { userType } = router.query;
 
   return (
-    <div className="relative h-full flex flex-col items-center justify-center lg:gap-12 sm:gap-8 gap-16 mt-5 md:mt-0">
+    <div className="relative h-full flex flex-col items-center justify-center lg:gap-12 sm:gap-8 gap-16 mt-5 md:mt-0 pb-40">
       <h1 className="lg:text-6xl text-4xl">{userType === "COMPANY" ? "MAKE  Payments to Creators" : "Get paid on TIME"}</h1>
       <h2 className="lg:text-6xl text-4xl text-[#E220CF]">{userType === "COMPANY" ? "SECURE & EASY" : "STRESS FREE"}</h2>
       <p className="lg:text-2xl text-xl text-center font-extralight">
@@ -38,8 +39,43 @@ const IntroSection = (): JSX.Element => {
       <Image
         src={Game}
         alt="Game"
-        className="absolute md:-right-20 -right-10 lg:bottom-14 -bottom-10 w-auto xl:h-[350px] lg:h-[250px] sm:h-[200px] h-[130px]"
+        className="absolute md:-right-20 -right-10 lg:bottom-28 -bottom-12 w-auto xl:h-[350px] lg:h-[250px] sm:h-[200px] h-[130px]"
       />
+      <div className="absolute md:-left-20 -left-10 lg:bottom-28 -bottom-12">
+        <motion.p
+            variants={textVariant()}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.25 }}
+            className="text-xl mb-5"
+        >
+          Powered By
+        </motion.p>
+        <motion.div
+            variants={textVariant()}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.25 }}
+            className="flex gap-5 mb-20"
+        >
+          <Link href="https://www.doublejump.tokyo/en" target="_blank">
+            <Image
+              src="/images/djt.jpg"
+              width="150"
+              height="50"
+              alt="djt"
+            />
+          </Link>
+          <Link href="https://gu3.co.jp/en/" target="_blank">
+            <Image
+              src="/images/gumi.jpg"
+              width="150"
+              height="50"
+              alt="gumi"
+            />
+          </Link>
+        </motion.div>
+      </div>
     </div>
   );
 };

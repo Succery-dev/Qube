@@ -36,6 +36,8 @@ import { uploadDeliverables } from "./project/uploadDeliverables";
 import { convertState } from "./convertState";
 import { activeUserByStatus } from "./activeUserByStatus";
 
+import { getFormattedDate } from "./getFormattedDate";
+
 export {
   convertSeconds,
   getDoughnutChartConfig,
@@ -66,4 +68,6 @@ export {
 
   convertState,
   activeUserByStatus,
+
+  getFormattedDate,
 };

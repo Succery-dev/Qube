@@ -8,6 +8,10 @@ import {
   API,
   NftGateway,
   Gasless,
+  Arbitration,
+  GasFree,
+  LinkBased,
+  OnChainResume,
 } from "../assets";
 
 // Interfaces Imports
@@ -37,20 +41,20 @@ export const waitlistUrl: string =
 
 export const navLinks = [
   {
-    id: "whyqube",
-    title: "Why Qube",
+    id: "whyus",
+    title: "WHY US ?",
   },
   {
     id: "features",
-    title: "Features",
+    title: "FEATURES",
   },
   {
-    id: "howtouse",
-    title: "How to use",
+    id: "howto",
+    title: "HOW TO ?",
   },
   {
-    id: "faq",
-    title: "FAQ",
+    id: "faqs",
+    title: "FAQs",
   },
 ];
 
@@ -101,32 +105,63 @@ export const walkthrough: WalkthroughInterface[] = [
   },
 ];
 
-export const features: FeaturesInterface[] = [
-  {
-    id: "NoThirdParty",
-    title: "No Third Party",
-    image: EscrowIcon,
-    description:
-      "Smart contract-based escrow will work as a middleman so that both parties don’t need to be worried about anything without a third party!",
-  },
+export const featuresForClients: FeaturesInterface[] = [
   {
     id: "LinkBased",
-    title: "Link-based",
-    image: LinkIcon,
+    title: "Link Based",
+    image: LinkBased,
     description:
-      "Generate a direct link to a contract to share on any platform with anybody you want to collaborate with!",
+      "Qube is a totally link-based service so you can use it anywhere. All you need to do is share the link!",
   },
   {
     id: "GasFree",
     title: "Gas Free",
-    image: Gasless,
+    image: GasFree,
     description:
-      "Sometimes gas fees can be quite burdensome…But with Qube, both parties don't have to worry about gas fees for their transactions!",
+      "While collaborating with several creators Gas fee is huge. Using Qube, every transaction becomes gas free.",
   },
   {
     id: "Arbitration",
     title: "Arbitration",
-    image: JuryIcon,
+    image: Arbitration,
+    description:
+      "If there is any disagreement, we will provide dispute resolution powered by Kleros, a decentralized court.",
+  },
+  {
+    id: "On-chainResume",
+    title: "On-chain Resume",
+    image: OnChainResume,
+    description:
+      "Qube's on-chain data based resume of creators will help you to find the best creator for your work!",
+  },
+];
+
+export const featuresForFreelancers: FeaturesInterface[] = [
+  {
+    id: "On-chainResume",
+    title: "On-chain Resume",
+    image: OnChainResume,
+    description:
+      "Qube also provides a resume service where all the transactions you made or going to make will be the proof of your experience that belongs only to you.",
+  },
+  {
+    id: "LinkBased",
+    title: "Link Based",
+    image: LinkBased,
+    description:
+      "Qube is a totally link-based service so you can use it anywhere. All you need to do is share the link!",
+  },
+  {
+    id: "NoThirdParty",
+    title: "No Third Party",
+    image: GasFree,
+    description:
+      "Smart contract-based escrow will work as a middleman so that both parties don't need to be worried about anything without a third party!",
+  },
+  {
+    id: "Arbitration",
+    title: "Arbitration",
+    image: Arbitration,
     description:
       "If there is any disagreement, we will provide dispute resolution powered by Kleros, a decentralized court.",
   },
@@ -454,7 +489,7 @@ export const createProjectFields: CreateProjectFieldInterface[] = [
   {
     title: "Deadline(UTC)",
     placeholder: "",
-    type: "datetime-local",
+    type: "date",
   },
   {
     title: "Reward(USDC)",
@@ -474,8 +509,8 @@ export const signProjectEip712: TypeDataDomainInterface = {
     // TODO: Softcoding
     // chainId: 137,
     // chainId: 31337, // Hardhat Network ChainID
-    // chainId: 80001,
-    chainId: 137,
+    chainId: 80001,
+    // chainId: 137,
   },
   types: {
     ProjectDetail: [

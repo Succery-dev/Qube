@@ -2,15 +2,19 @@ import React from "react";
 import Image from "next/image";
 import Tilt from "react-parallax-tilt";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 // Content Imports
-import { features } from "../../constants";
+import { featuresForClients, featuresForFreelancers } from "../../constants";
 
 // Framer-Motion Imports
 import { motion } from "framer-motion";
 import { fadeIn, textVariant } from "../../utils";
 
 const Features = () => {
+  const router = useRouter();
+  const { userType } = router.query;
+
   return (
     <div id="features">
       <motion.h1
@@ -18,49 +22,42 @@ const Features = () => {
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, amount: 0.25 }}
-        className="xl:text-7xl lg:text-6xl md:text-4xl sm:text-3xl text-4xl font-extrabold"
+        className="lg:text-6xl text-4xl text-center mb-10"
       >
-        Features
+        FEATURES
       </motion.h1>
-      <div className="sm:grid flex flex-col grid-cols-2 sm:gap-16 gap-32 place-items-center sm:mt-24 mt-16">
-        {features.map((feature, index) => {
+      <div className="grid lg:grid-cols-2 grid-cols-1 lg:gap-20 gap-10">
+        {(userType === "COMPANY" ? featuresForClients : featuresForFreelancers).map((feature, index) => {
           return (
             // Card
-            <Tilt key={index}>
-              <motion.div
-                variants={fadeIn("right", 1.25, index)}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, amount: 0.25 }}
-                className="blue-transparent-green-gradient-vertical xl:w-[450px] lg:w-[350px] lg:p-[3px] p-[2px] sm:min-h-0 min-h-[300px] rounded-2xl grid place-items-center"
-              >
-                <div className="bg-bg_primary w-full h-full flex flex-col xl:px-8 lg:px-6 sm:px-3 px-4 xl:py-12 lg:py-10 py-8 rounded-2xl">
-                  {/* Card Heading */}
-                  <div className="flex flex-row items-center lg:gap-8 sm:gap-1 gap-8">
-                    <Image
-                      src={feature.image}
-                      alt={feature.title}
-                      className="w-auto xl:h-[70px] lg:h-[50px] sm:h-[40px] h-[60px]"
-                    />
-                    <h2 className="xl:text-4xl lg:text-3xl sm:text-xl text-2xl font-extrabold">
-                      {feature.title}
-                    </h2>
-                  </div>
-                  {/* Card Description */}
-                  <p className="mt-8 px-6 font-normal xl:text-2xl lg:text-xl sm:text-sm text-xl">
-                    {feature.description}
-                    {
-                      feature.title === "Arbitration"
-                        ? <span> visit our <a href="https://qube-1.gitbook.io/qube-whitepaper/" className="underline">[whitepaper]</a>, for more!</span>
-                        : null
-                    }
-                  </p>
-                </div>
-              </motion.div>
-            </Tilt>
+            <motion.div
+              variants={fadeIn("right", 1.25, index)}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.25 }}
+              className="border-2 border-[#613D5D] shadow-custom-pink-rb rounded-2xl text-lg flex flex-row lg:h-[300px] h-[230px] items-center"
+            >
+              {/* Image */}
+              <Image
+                src={feature.image}
+                alt={feature.title}
+                className="w-1/3 h-[100px] mx-10"
+              />
+              <div>
+                {/* Card Heading */}
+                <h1 className="xl:text-4xl lg:text-3xl sm:text-xl text-2xl font-extrabold">
+                  {feature.title}
+                </h1>
+                {/* Card Description */}
+                <p className="font-normal xl:text-2xl lg:text-lg text-md mr-10">
+                  {feature.description}
+                </p>
+              </div>
+            </motion.div>
           );
         })}
       </div>
+      <p className="text-6xl text-center mt-20">Qube's Premium Features, Now at Zero Cost! Don't Miss Out - Join Today!</p>
     </div>
   );
 };

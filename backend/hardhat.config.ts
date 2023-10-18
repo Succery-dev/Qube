@@ -77,9 +77,14 @@ const config: HardhatUserConfig = {
         }
     },
     gasReporter: {
-        enabled: true,
-        currency: 'USD',
-        gasPrice: 21
+        enabled: process.env.REPORT_GAS === "true" ? true : false,
+        currency: "JPY",
+        coinmarketcap: process.env.COINMARKETCAP_API_KEY,
+        token: "MATIC",
+        gasPriceApi: "https://api.polygonscan.com/api?module=proxy&action=eth_gasPrice",
+        // outputFile: "gas-report-polygon.txt",
+        showTimeSpent: true,
+        url: `https://polygon-mainnet.g.alchemy.com/v2/${process.env.ALCHEMY_API_KEY_PRODUCTION}`,
     }
 };
 

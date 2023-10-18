@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { useRouter } from "next/router";
 import axios from "axios";
+import Datepicker from "react-tailwindcss-datepicker";
 
 // Interfaces Imports
 import {
   CreateProjectFieldInterface,
   CreateProjectFormInterface,
-  NftAddressDetailsInterface,
   StoreProjectDetailsInterface,
 } from "../../interfaces";
 
@@ -21,7 +21,7 @@ import { motion } from "framer-motion";
 import { fadeIn, textVariant } from "../../utils";
 
 // Ethers/Wagmi Imports
-import { useAccount, useSignTypedData } from "wagmi";
+import { useAccount } from "wagmi";
 // Rainbowkit Imports
 import { useConnectModal } from "@rainbow-me/rainbowkit";
 
@@ -35,25 +35,39 @@ import {
   IconNotificationError,
 } from "../../assets";
 
-// Utils Imports
-// import { isNftContract } from "../../utils";
-
 // Firebase Imports
 import { collection, addDoc } from "firebase/firestore";
-import { firebaseApp, database } from "../../utils";
+import { database } from "../../utils";
 
 // Status Enum Import
 import { StatusEnum } from "../../enums";
+
+const getTomorrow = () => {
+  const tomorrow = new Date();
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  return tomorrow;
+}
+
+const getPaymentDate = (date: string) => {
+  const submissionDate = new Date(date);
+  submissionDate.setDate(submissionDate.getDate() + 7);
+  return {
+    startDate: submissionDate.toString(),
+    endDate: submissionDate.toString(),
+  };
+}
 
 const FormFields = ({
   formField,
   index,
   form,
+  setForm,
   updateFormField,
 }: {
   formField: CreateProjectFieldInterface;
   index: number;
   form: CreateProjectFormInterface;
+  setForm: React.Dispatch<React.SetStateAction<CreateProjectFormInterface>>;
   updateFormField: (
     e:
       | React.ChangeEvent<HTMLTextAreaElement>
@@ -71,8 +85,12 @@ const FormFields = ({
       key={`createProject-${formField.title}`}
     >
       <h2 className="text-lg font-semibold text-secondary">
-        {/* TODO: fix */}
-        {formField.title === "Deadline(UTC)" ? "Submission Date (UTC)" : formField.title}*
+        {formField.title === "Deadline(UTC)" ? (
+          <div className="flex flex-row gap-5">
+            <p className="w-1/2">Submission Date (UTC)*</p>
+            <p className="text-gray-500">Payment Date (UTC)</p>
+          </div>
+        ) : formField.title === "Reward(USDC)" ? "Reward*" : `${formField.title}*`}
       </h2>
       <div className="grid place-items-center w-full blue-transparent-green-gradient lg:p-[1.5px] p-[1px] rounded-sm">
         {formField.type === "textArea" ? (
@@ -84,6 +102,51 @@ const FormFields = ({
             onChange={(e) => updateFormField(e, formField.title)}
             required
           />
+        ) : formField.title === "Deadline(UTC)" ? (
+          <div className="flex flex-row w-full gap-10">
+            <Datepicker
+              inputId={formField.title}
+              inputName={formField.title}
+              inputClassName="w-full h-full border-none bg-slate-900 focus:bg-[#080e26] rounded-sm px-2 py-[0.3rem] text-sm outline-none text-[#D3D3D3]"
+              value={{startDate: form["Deadline(UTC)"], endDate: form["Deadline(UTC)"]}} 
+              onChange={(newDate) => {
+                setForm({
+                  ...form,
+                  ["Deadline(UTC)" as keyof typeof form]: newDate.startDate,
+                });
+              }} 
+              asSingle={true} 
+              useRange={false}
+              minDate={getTomorrow()}
+              startFrom={getTomorrow()}
+              placeholder="YYYY/MM/DD 21:00"
+              displayFormat="YYYY/MM/DD 21:00"
+            />
+            <Datepicker
+              inputClassName="w-full h-full border-none bg-slate-900 focus:bg-[#080e26] rounded-sm px-2 py-[0.3rem] text-sm outline-none text-gray-500"
+              value={getPaymentDate(form["Deadline(UTC)"])}
+              onChange={() => {}}
+              asSingle={true}
+              placeholder="YYYY/MM/DD 21:30"
+              displayFormat="YYYY/MM/DD 21:30"
+              disabled={true}
+            />
+          </div>
+        ) : formField.title === "Reward(USDC)" ? (
+          <div className="flex w-full">
+            <input
+              type={formField.type}
+              name={formField.title}
+              id={formField.title}
+              className="w-full h-full border-none bg-bg_primary focus:bg-[#080e26] rounded-sm px-2 py-[0.3rem] text-sm outline-none text-[#D3D3D3]"
+              placeholder={formField.placeholder}
+              min={0}
+              value={form[formField.title as keyof typeof form]}
+              onChange={(e) => updateFormField(e, formField.title)}
+              required
+            />
+            <p className="px-5 text-lg">USDC</p>
+          </div>
         ) : (
           <input
             type={formField.type}
@@ -178,10 +241,17 @@ const CreateProjectForm = ({
   const addDataToFirestore = async (form: StoreProjectDetailsInterface) => {
     if (isConnected) {
       try {
-        const submissionDeadline = new Date(form["Deadline(UTC)"] + "Z");
+        const regex = /^[1-9]\d*$/;
+        if (!regex.test(form["Reward(USDC)"].toString())) {
+          throw new Error("Invalid Reward Value. Only natural numbers are allowed.");
+        }
+
+        const date = new Date(form["Deadline(UTC)"]);
+        const submissionDeadline = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate(), 21, 0, 0, 0));
         form["Deadline(UTC)"] = submissionDeadline.toISOString();
-        submissionDeadline.setDate(submissionDeadline.getDate() + 7);
-        form["Deadline(UTC) For Payment"] = submissionDeadline.toISOString();
+        date.setDate(date.getDate() + 7);
+        const paymentDeadline = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate(), 21, 30, 0, 0));
+        form["Deadline(UTC) For Payment"] = paymentDeadline.toISOString();
         form["Client's Wallet Address"] = address;
         form["Lancer's Wallet Address"] = addressZero;
         form.approveProof = "";
@@ -191,6 +261,10 @@ const CreateProjectForm = ({
         form.DeadlineExtensionRequest = false;
         form.InDispute = false;
         form.RequestedDeadlineExtension = "";
+        form.prepayTxHash = "";
+
+        const now = new Date();
+        form.createdAt = now.toISOString();
 
         const response = await addDoc(databaseRef, form);
         const projectDetailLink =
@@ -214,7 +288,7 @@ const CreateProjectForm = ({
         setNotificationConfiguration({
           modalColor: "#d14040",
           title: "Error",
-          message: "Error occured creating the project",
+          message: error.message,
           icon: IconNotificationError,
         });
       } finally {
@@ -256,7 +330,7 @@ const CreateProjectForm = ({
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, amount: 0.25 }}
-      className="lg:w-1/2 lg:max-w-auto lg:mx-0 md:max-w-[70vw] mx-auto rounded-lg lg:p-[3px] p-[2px] blue-transparent-green-gradient"
+      className="lg:w-1/2 lg:max-w-auto lg:mx-0 md:max-w-[70vw] mx-auto rounded-lg lg:p-[3px] p-[2px] border border-[#DF57EA] shadow-custom-pink"
     >
       <div className="w-full h-full rounded-lg bg-black px-6 py-14">
         {/* Heading */}
@@ -265,7 +339,7 @@ const CreateProjectForm = ({
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.25 }}
-          className="xl:text-4xl lg:text-3xl md:text-4xl sm:text-xl text-3xl font-extrabold"
+          className="xl:text-4xl lg:text-3xl md:text-4xl sm:text-xl text-3xl font-extrabold text-[#DF57EA]"
         >
           Create Project
 
@@ -308,6 +382,7 @@ const CreateProjectForm = ({
                   formField={formField}
                   index={index}
                   form={form}
+                  setForm={setForm}
                   updateFormField={updateFormField}
                   key={index}
                 />
@@ -326,7 +401,7 @@ const CreateProjectForm = ({
                 "Create Project"
                 // : "1/2 Verify NFT Address"
             }
-            styles="w-full bg-[#3E8ECC] rounded-md text-center text-lg font-semibold text-white py-[4px] px-7 hover:bg-[#377eb5] mt-12"
+            styles="w-full bg-[#DF57EA] rounded-md text-center text-lg font-semibold text-white py-[4px] px-7 hover:bg-[#A9209C] mt-12"
             type="button"
             onClick={(e) => {
               e.preventDefault();

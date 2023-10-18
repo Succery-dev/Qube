@@ -3,7 +3,7 @@ import Link from "next/link";
 import Image from "next/image";
 
 // Image Imports
-import { TwitterIcon, MediumIcon, Discord } from "../../assets";
+import { TwitterIcon, MediumIcon, Discord, Game } from "../../assets";
 
 // Content Imports
 import { footerLinks } from "../../constants";
@@ -45,46 +45,77 @@ const FooterLegal = (): JSX.Element => {
 
 const Footer = () => {
   return (
-    <div className="bg-gray-900 px-24 xl:px-52 text-white pt-20 pb-40 grid grid-cols-10 space-y-5 md:space-y-0 text-center md:text-left">
-      <div className="col-span-10 md:col-span-4 space-y-5">
-        <div className="flex justify-center md:justify-start items-center space-x-5">
-          <Image
-            src="/images/logo.png"
-            width="100"
-            height="100"
-            alt="Q"
-            className="rounded-md h-[40px] w-auto shadow-indigo-500/50"
-          />
-          <h1 className="text-2xl text-primary font-extrabold">
-            Qube
-          </h1>
+    <div className="bg-gray-900">
+      <div className="flex lg:flex-row flex-col pt-10 px-20 lg:gap-0 gap-10">
+        <Image
+          src={Game}
+          alt="Game"
+          className="lg:h-[200px] mx-auto flex-1 p-5"
+        />
+        <div className="w-1 h-[200px] bg-gradient-to-b from-transparent via-[#E220CF] to-transparent lg:block hidden"></div>
+        <div className="flex-1 flex flex-col items-center">
+          <p className="text-2xl font-bold mb-3">RESOURCES</p>
+          <ul className="list-disc list-inside">
+            <li className="text-xl hover:underline">
+              <Link href="https://github.com/Succery-dev/Qube" target="_blank">
+                Github
+              </Link>
+            </li>
+            <li className="text-xl hover:underline">
+              <Link href="https://qube-1.gitbook.io/qube-whitepaper-japanese/" target="_blank">
+                Whitepaper Jap
+              </Link>
+            </li>
+            <li className="text-xl hover:underline">
+              <Link href="https://qube-1.gitbook.io/qube-whitepaper/" target="_blank">
+                Whitepaper Eng
+              </Link>
+            </li>
+            <li className="text-xl hover:underline">
+              <Link href="https://immunefi.com/" target="_blank">
+                Bug Bounty
+              </Link>
+            </li>
+          </ul>
         </div>
-        <div className="flex justify-center md:justify-start items-center space-x-10">
-            <Link href="https://twitter.com/0xQube">
-              <Image src={TwitterIcon} alt="Twitter" height={30} />
+        <div className="w-1 h-[200px] bg-gradient-to-b from-transparent via-[#E220CF] to-transparent lg:block hidden"></div>
+        <div className="flex-1 flex flex-col items-center">
+          <p className="text-2xl font-bold mb-3">CONTACT</p>
+          <ul className="list-disc list-inside">
+            <li className="text-xl hover:underline">
+              <Link href="mailto:official@0xqube.xyz" target="_blank">
+                Mail Address
+              </Link>
+            </li>
+            <li className="text-xl hover:underline">
+              <Link href="https://docs.google.com/forms/d/e/1FAIpQLSdaRr4b4-XekKneAeAb4_Wx2ELEx_4YgdS-2Gtg0RQvtwWAnA/viewform" target="_blank">
+                Contract form
+              </Link>
+            </li>
+          </ul>
+        </div>
+        <div className="w-1 h-[200px] bg-gradient-to-b from-transparent via-[#E220CF] to-transparent lg:block hidden"></div>
+        <div className="flex-1 flex flex-col items-center">
+          <p className="text-2xl font-bold mb-3">SOCIAL ACCOUNTS</p>
+          <div className="flex flex-row gap-5">
+            <Link href="https://twitter.com/0xQube" target="_blank">
+              <Image src={TwitterIcon} alt="Twitter" height={30} className="bg-[#613D5D] hover:bg-[#E220CF] ease-in duration-300 rounded-full h-[50px] w-[50px] p-1 border border-[#E220CF]" />
             </Link>
-            <Link href="https://discord.gg/KnhgxwXa">
-              <Image src={Discord} alt="Discord" height={30} />
+            <Link href="https://discord.com/invite/947wAFmwbZ" target="_blank">
+              <Image src={Discord} alt="Discord" height={30} className="bg-[#613D5D] hover:bg-[#E220CF] ease-in duration-300 rounded-full h-[50px] w-[50px] p-1 border border-[#E220CF]" />
             </Link>
-            <Link href="https://medium.com/@0xqube">
-              <Image src={MediumIcon} alt="Medium" height={30} />
+            <Link href="https://medium.com/@0xqube" target="_blank">
+              <Image src={MediumIcon} alt="Medium" height={30} className="bg-[#613D5D] hover:bg-[#E220CF] ease-in duration-300 rounded-full h-[50px] w-[50px] p-1 border border-[#E220CF]" />
             </Link>
+          </div>
         </div>
       </div>
-      <div className="col-span-10 md:col-span-3">
-        <h3 className="text-xl font-semibold mb-4">Resources</h3>
-        <ul>
-          <li className="mb-2"><a href="#faq" className="text-white hover:text-gray-500">FAQ's</a></li>
-          <li className="mb-2"><a href="https://qube-1.gitbook.io/qube-whitepaper/" className="text-white hover:text-gray-500">Whitepaper (ENG)</a></li>
-          <li className="mb-2"><a href="https://qube-1.gitbook.io/qube-whitepaper-japanese/" className="text-white hover:text-gray-500">Whitepaper (JAP)</a></li>
-        </ul>
-      </div>
-      <div className="col-span-10 md:col-span-3">
-        <h3 className="text-xl font-semibold mb-4">Contacts</h3>
-        <ul>
-          <li className="mb-2"><a href="https://docs.google.com/forms/d/e/1FAIpQLSdaRr4b4-XekKneAeAb4_Wx2ELEx_4YgdS-2Gtg0RQvtwWAnA/viewform" className="text-white hover:text-gray-500">Form</a></li>
-        </ul>
-      </div>
+      <hr className="w-2/3 h-[1px] bg-gradient-to-r from-transparent via-[#E220CF] to-transparent border-none mx-auto my-16" />
+      <p className="text-center pb-16 hover:underline">
+        <Link href="/">
+          2023 © SUCCERY FZCO - ALL RIGHTS RESERVED
+        </Link>
+      </p>
     </div>
   );
 };

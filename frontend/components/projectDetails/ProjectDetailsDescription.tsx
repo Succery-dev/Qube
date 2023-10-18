@@ -26,6 +26,7 @@ import {
   convertState,
   populateStates,
   updateProjectDetails,
+  getFormattedDate,
 } from "../../utils";
 
 // Context Imports
@@ -115,6 +116,7 @@ const ProjectDetailsDescription = ({
         const updatedSubsetProjectDetail: Partial<StoreProjectDetailsInterface> =
           {
             "Status": StatusEnum.WaitingForSubmission,
+            "prepayTxHash": depositResult.transactionHash,
           };
         await updateProjectDetails(projectId, updatedSubsetProjectDetail);
         const [_, updatedProjectDetails] = await getDataFromFireStore(
@@ -192,13 +194,13 @@ const ProjectDetailsDescription = ({
   const acceptDeadlineExtension = async () => {
     try {
       if (projectDetails["Lancer's Wallet Address"] !== freelancerAddress) {
-        throw new Error("Not authorized to either accept or reject the deadline-extension");
+        throw new Error("This action can be taken by the freelancer. Wait until being accepted");
       }
 
       const submissionDeadline = new Date(projectDetails["Deadline(UTC)"]);
       const paymentDeadline = new Date(projectDetails["Deadline(UTC) For Payment"]);
-      submissionDeadline.setDate(submissionDeadline.getDate() + 14);
-      paymentDeadline.setDate(paymentDeadline.getDate() + 14);
+      submissionDeadline.setUTCDate(submissionDeadline.getUTCDate() + 14);
+      paymentDeadline.setUTCDate(paymentDeadline.getUTCDate() + 14);
       console.log("New Submission Dealine: ", submissionDeadline.toISOString());
       console.log("New Payment Dealine: ", paymentDeadline.toISOString());
 
@@ -224,11 +226,11 @@ const ProjectDetailsDescription = ({
       });
       setShowNotification(true);
     } catch (error) {
-      console.log(error);
+      console.log(error.message);
       setNotificationConfiguration({
         modalColor: "#d14040",
         title: "Error",
-        message: "Not authorized to either accept or reject the deadline-extension",
+        message: error.message,
         icon: IconNotificationError,
       });
     }
@@ -238,11 +240,12 @@ const ProjectDetailsDescription = ({
   const rejectDeadlineExtension = async () => {
     try {
       if (projectDetails["Lancer's Wallet Address"] !== freelancerAddress) {
-        throw new Error("Not authorized to either accept or reject the deadline-extension");
+        throw new Error("This action can be taken by the freelancer. Wait until being accepted");
       }
 
       const paymentDeadline = new Date(projectDetails["Deadline(UTC) For Payment"]);
-      paymentDeadline.setMonth(paymentDeadline.getMonth() + 9);
+      paymentDeadline.setUTCMonth(paymentDeadline.getUTCMonth() + 9);
+      paymentDeadline.setUTCHours(22);
       console.log("New Payment Dealine: ", paymentDeadline.toISOString());
 
       const updatedSubsetProjectDetail: Partial<StoreProjectDetailsInterface> =
@@ -266,11 +269,51 @@ const ProjectDetailsDescription = ({
       });
       setShowNotification(true);
     } catch (error) {
+      console.log(error.message);
+      setNotificationConfiguration({
+        modalColor: "#d14040",
+        title: "Error",
+        message: error.message,
+        icon: IconNotificationError,
+      });
+    }
+    setShowNotification(true);
+  }
+
+  const approveDeliverables = async () => {
+    try {
+      if (projectDetails["Client's Wallet Address"] != address) {
+        throw new Error("Not authorized to either accept or reject the deadline-extension");
+      }
+
+      // ③ Approve The Submission
+      const approveResult = await withdrawTokensToRecipientByDepositor(projectId);
+      console.log("Approve Result: ", approveResult);
+
+      // Update the status to "Waiting for Submission"
+      const updatedSubsetProjectDetail: Partial<StoreProjectDetailsInterface> =
+        {
+          "Status": StatusEnum.CompleteApproval,
+        };
+      await updateProjectDetails(projectId, updatedSubsetProjectDetail);
+      const [_, updatedProjectDetails] = await getDataFromFireStore(
+        projectId
+      );
+
+      setProjectDetails(updatedProjectDetails);
+
+      setNotificationConfiguration({
+        modalColor: "#62d140",
+        title: "Successfully approved the deliverables and paid tokens to the freelancer",
+        message: "Done!",
+        icon: IconNotificationSuccess,
+      });
+    } catch (error) {
       console.log(error);
       setNotificationConfiguration({
         modalColor: "#d14040",
         title: "Error",
-        message: "Not authorized to either accept or reject the deadline-extension",
+        message: "Not authorized to approve the deliverables",
         icon: IconNotificationError,
       });
     }
@@ -285,7 +328,9 @@ const ProjectDetailsDescription = ({
 
       // Set to 9 months later
       const dateObject = new Date(projectDetails["Deadline(UTC) For Payment"]);
-      dateObject.setMonth(dateObject.getMonth() + 9);
+      dateObject.setUTCMonth(dateObject.getUTCMonth() + 9);
+      dateObject.setUTCHours(22);
+      dateObject.setUTCMinutes(0);
 
       // Update "Deadline(UTC) For Payment" to return tokens to clients when disapprove
       const updatedSubsetProjectDetail: Partial<StoreProjectDetailsInterface> =
@@ -353,7 +398,9 @@ const ProjectDetailsDescription = ({
                   <p className={`xs:text-base text-xs font-normal break-words`}>
                     {descriptionSection === "Status"
                       ? convertState(descriptionText)
-                      : descriptionText
+                      : (descriptionSection === "Deadline(UTC)" || descriptionSection === "Deadline(UTC) For Payment")
+                        ? getFormattedDate(descriptionText as string)
+                        : descriptionText
                     }
                   </p>
                 )}
@@ -381,13 +428,13 @@ const ProjectDetailsDescription = ({
               setShowNotification
             );
           }}
-          styles="w-full mx-auto block bg-[#3E8ECC] hover:bg-[#377eb5] rounded-md text-center text-lg font-semibold text-white py-[4px] px-7 mt-6"
+          styles="w-full mx-auto block bg-[#DF57EA] hover:bg-[#A9209C] rounded-md text-center text-lg font-semibold text-white py-[4px] px-7 mt-6"
         />
       )}
       {projectDetails.Status === StatusEnum.PayInAdvance && (
         <CustomButton
           text="Waiting For Prepay"
-          styles="w-full mx-auto block bg-[#3E8ECC] hover:bg-[#377eb5] rounded-md text-center text-lg font-semibold text-white py-[4px] px-7 mt-6"
+          styles="w-full mx-auto block bg-[#DF57EA] hover:bg-[#A9209C] rounded-md text-center text-lg font-semibold text-white py-[4px] px-7 mt-6"
           type="submit"
           onClick={async (e) => {
             e.preventDefault();
@@ -402,48 +449,17 @@ const ProjectDetailsDescription = ({
       {projectDetails.Status === StatusEnum.WaitingForPayment && !projectDetails.InDispute && (
         <>
           <CustomButton
-            text="Waiting For Approval Of The Deliverables"
+            text="Approve The Deliverables"
             type="button"
-            onClick={async () => {
-              try {
-                if (projectDetails["Client's Wallet Address"] != address) {
-                  throw new Error("Not authorized to either accept or reject the deadline-extension");
-                }
+            onClick={async (e) => {
+              e.preventDefault();
 
-                // ③ Approve The Submission
-                const approveResult = await withdrawTokensToRecipientByDepositor(projectId);
-                console.log("Approve Result: ", approveResult);
-
-                // Update the status to "Waiting for Submission"
-                const updatedSubsetProjectDetail: Partial<StoreProjectDetailsInterface> =
-                  {
-                    "Status": StatusEnum.CompleteApproval,
-                  };
-                await updateProjectDetails(projectId, updatedSubsetProjectDetail);
-                const [_, updatedProjectDetails] = await getDataFromFireStore(
-                  projectId
-                );
-
-                setProjectDetails(updatedProjectDetails);
-
-                setNotificationConfiguration({
-                  modalColor: "#62d140",
-                  title: "Successfully approved the deliverables and paid tokens to the freelancer",
-                  message: "Done!",
-                  icon: IconNotificationSuccess,
-                });
-              } catch (error) {
-                console.log(error);
-                setNotificationConfiguration({
-                  modalColor: "#d14040",
-                  title: "Error",
-                  message: "Not authorized to approve the deliverables",
-                  icon: IconNotificationError,
-                });
-              }
-              setShowNotification(true);
+              setTitle("Approve The Deliverables");
+              setDescription("You will approve the deliverables and the Escrow will pay the reward to the freelancer.");
+              setOnConfirm(() => approveDeliverables);
+              setShowModal(true);
             }}
-            styles="w-full mx-auto block bg-[#3E8ECC] hover:bg-[#377eb5] rounded-md text-center text-lg font-semibold text-white py-[4px] px-7 mt-6"
+            styles="w-full mx-auto block bg-[#DF57EA] hover:bg-[#A9209C] rounded-md text-center text-lg font-semibold text-white py-[4px] px-7 mt-6"
           />
           {projectDetails.DeadlineExtensionRequest ? (
             <CustomButton
@@ -457,7 +473,7 @@ const ProjectDetailsDescription = ({
                 setOnConfirm(() => disapproveDeliverables);
                 setShowModal(true);
               }}
-              styles="w-full mx-auto block bg-[#3E8ECC] hover:bg-[#377eb5] rounded-md text-center text-lg font-semibold text-white py-[4px] px-7 mt-6"
+              styles="w-full mx-auto block bg-[#FF4B4B] hover:bg-[#E43F3F] rounded-md text-center text-lg font-semibold text-white py-[4px] px-7 mt-6"
             />
           ) : (
             <CustomButton
@@ -471,7 +487,7 @@ const ProjectDetailsDescription = ({
                 setOnConfirm(() => requestDeadlineExtension);
                 setShowModal(true);
               }}
-              styles="w-full mx-auto block bg-[#3E8ECC] hover:bg-[#377eb5] rounded-md text-center text-lg font-semibold text-white py-[4px] px-7 mt-6"
+              styles="w-full mx-auto block bg-[#DF57EA] hover:bg-[#A9209C] rounded-md text-center text-lg font-semibold text-white py-[4px] px-7 mt-6"
             />
           )}
         </>
@@ -489,7 +505,7 @@ const ProjectDetailsDescription = ({
               setOnConfirm(() => acceptDeadlineExtension);
               setShowModal(true);
             }}
-            styles="w-full mx-auto block bg-[#3E8ECC] hover:bg-[#377eb5] rounded-md text-center text-lg font-semibold text-white py-[4px] px-7 mt-6"
+            styles="w-full mx-auto block bg-[#DF57EA] hover:bg-[#A9209C] rounded-md text-center text-lg font-semibold text-white py-[4px] px-7 mt-6"
           />
           <CustomButton
             text="Reject Deadline-Extension"

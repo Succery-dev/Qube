@@ -54,8 +54,8 @@ const { chains, provider } = configureChains(
   [
     // mainnet,
     // goerli,
-    polygon,
-    // polygonMumbai,
+    // polygon,
+    polygonMumbai,
     // optimism,
     // optimismGoerli,
     // arbitrum,
@@ -92,12 +92,16 @@ export { WagmiConfig, RainbowKitProvider };
 // Ref: https://www.rainbowkit.com/docs/custom-theme#extending-a-built-in-theme
 const customWalletTheme: Theme = merge(darkTheme(), {
   colors: {
-    accentColor: "#3E8EEC",
+    accentColor: "linear-gradient(to right, #E220CF, #FFFFFF)",
+    accentColorForeground: "black",
     connectButtonBackground: "black",
     connectButtonBackgroundError: "black",
     connectButtonInnerBackground: "black",
     modalBackground: "black",
   },
+  radii: {
+    connectButton: "20px",
+  }
 } as Theme);
 
 function MyApp({

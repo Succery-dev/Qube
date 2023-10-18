@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { useRouter } from "next/router";
+import { useAccount } from "wagmi";
 
 // Custom components Imports
 import { Glow } from "../";
@@ -23,14 +25,14 @@ import {
 
 const SectionWrapper: React.FC<SectionWrapperPropsInterface> = ({
   children,
-  bgColor,
-  glowStyles,
+  // bgColor,
+  // glowStyles,
 }): JSX.Element => {
   return (
     <motion.div
-      className={`w-full grid grid-cols-12 ${bgColor} py-28 overflow-hidden relative min-h-screen`}
+      className={`w-full grid grid-cols-12 py-28 overflow-hidden relative min-h-screen bg-custom-background bg-contain`}
     >
-      {glowStyles && <Glow styles={glowStyles} />}
+      {/* {glowStyles && <Glow styles={glowStyles} />} */}
       <div className="col-start-2 col-end-12 font-semibold relative flex flex-col justify-center">
         {children}
       </div>
@@ -48,6 +50,9 @@ const ProjectScaffold = ({
   const context = useProjectContext();
   const form = context.form;
   const setForm = context.setForm;
+
+  const router = useRouter();
+  const { address } = useAccount();
 
   // const [nftAddressDetails, setnftAddressDetails]: [
   //   nftAddressDetails: NftAddressDetailsInterface,
@@ -76,6 +81,10 @@ const ProjectScaffold = ({
         bgColor="bg-bg_primary"
         glowStyles={aesthetics.glow.createProjectGlowStyles}
       >
+        {/* Return to Dashboard Button */}
+        <button className="bg-gradient-to-r from-[#DF57EA] to-slate-200 mb-7 mr-auto px-7 py-3 rounded-full text-black" onClick={() => {
+          router.push(`http://${window.location.host}/dashboard/${address}`);
+        }}>{`DASHBOARD`}</button>
         {/* Create Project Form */}
         <div className="block lg:flex flex-row items-center gap-16">
           {/* Form */}
@@ -90,11 +99,11 @@ const ProjectScaffold = ({
             // projectId={projectId}
           />
           {/* 3D Logo */}
-          <div className="w-1/2 h-[500px] lg:block hidden">
+          {/* <div className="w-1/2 h-[500px] lg:block hidden">
             <LogoCanvas
               // nftCollectionImageUrl={nftAddressDetails.nftCollectionImageUrl}
             />
-          </div>
+          </div> */}
         </div>
 
         <CreateProjectModal

@@ -4,6 +4,7 @@ module.exports = {
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
+    "./node_modules/react-tailwindcss-datepicker/dist/index.esm.js",
   ],
   theme: {
     extend: {
@@ -22,6 +23,16 @@ module.exports = {
       },
       fontFamily: {
         nunito: ["Nunito", "sans-serif"],
+      },
+      animation: {
+        "spin-slow": "spin 2s linear infinite",
+      },
+      backgroundImage: {
+        "custom-background": "url('/images/background.jpg')",
+      },
+      boxShadow: {
+        "custom-pink": "0px 0px 20px 0px rgba(223, 87, 234, 1)",
+        "custom-pink-rb": "5px 5px 20px 0px rgba(223, 87, 234, 1)",
       },
     },
   },

@@ -87,11 +87,11 @@ const whyUsForClient = [
     description: "Clients often experience delayed delivery or inappropriate deliveries. Qube's Escrow payment and arbitration will free you form these concerns.",
   },
   {
-    title: "Complexity in management",
+    title: "Complexity in Management",
     description: "While clients collaborate with several creators it's quite confusing managing all of those. Qube make it way easier to manage payments to influencers.",
   },
   {
-    title: "HIGH PLATFORM FEES",
+    title: "High Platform Fees",
     description: "Existing platforms provide escrow-based payment solutions but the platform fee is too expensive. Qube doesn't cost any transaction fee.",
   },
 ];

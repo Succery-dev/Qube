@@ -81,18 +81,33 @@ const problemsForFreelancers = [
   },
 ];
 
-const whyUs = [
+const whyUsForClient = [
   {
-    title: "NO / DELAYED PAYMENTS",
-    description: "The payment mismatch is a long-lasting problem in collaboration in web3. Qube secures the payment using a Smart Contract-based escrow service to ensure that both parties may have a hassle-free collaboration.",
+    title: "Delayed Delivery",
+    description: "Clients often experience delayed delivery or inappropriate deliveries. Qube's Escrow payment and arbitration will free you form these concerns.",
   },
   {
-    title: "RISK OF DISPUTES",
-    description: "There is a possibility of having problems with the quality of submission. It's very hard to come to a mutual point once this happens.",
+    title: "Complexity in management",
+    description: "While clients collaborate with several creators it's quite confusing managing all of those. Qube make it way easier to manage payments to influencers.",
   },
   {
     title: "HIGH PLATFORM FEES",
     description: "Existing platforms provide escrow-based payment solutions but the platform fee is too expensive. Qube doesn't cost any transaction fee.",
+  },
+];
+
+const whyUsForFreelancer = [
+  {
+    title: "NO / DELAYED PAYMENTS",
+    description: "Qube secures the payment using a Smart Contract-based escrow service to ensure that creators don't face any Delayed or Non payments in collaboration.",
+  },
+  {
+    title: "NO RISK OF DISPUTES",
+    description: "It's very hard to come to a mutual point once dispute happens. Qube provide a fair resolution process powered by Kleros, an decentralized arbritation.",
+  },
+  {
+    title: "Proof of works",
+    description: "Still it's hard to showcase your experiences using on-chain data.  Qube Provides a on-chain data based resume system which will prove your experience.",
   },
 ];
 
@@ -154,7 +169,7 @@ const CurrentSystemProblems = (): JSX.Element => {
             className="flex-1 mx-auto"
           />
           <div className="flex-1">
-            {whyUs.map((why, index) => {
+            {(userType === "CLIENT" ? whyUsForClient : whyUsForFreelancer).map((why, index) => {
               return (
                 <>
                   <motion.p

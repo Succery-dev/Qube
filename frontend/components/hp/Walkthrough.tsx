@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import Image from "next/image";
+import { useRouter } from "next/router";
 
 // Interfaces Imports
 import { WalkthroughInterface } from "../../interfaces";
 
 // Image Imports
-import { GradientBlueGreenArrow, Howto } from "../../assets";
+import { GradientBlueGreenArrow, HowToForClient, HowToForFreelancer } from "../../assets";
 
 // Content Imports
 import { walkthrough } from "../../constants";
@@ -59,7 +60,8 @@ const DemoVideo = (): JSX.Element => {
 };
 
 const Walkthrough = (): JSX.Element => {
-  const [activeTab, setActiveTab] = useState("enterprise");
+  const router = useRouter();
+  const { userType } = router.query;
 
   return (
     <div id="howto">
@@ -73,8 +75,8 @@ const Walkthrough = (): JSX.Element => {
         HOW TO ?
       </motion.h1>
       <Image
-        src={Howto}
-        alt="Howto"
+        src={userType === "CLIENT" ? HowToForClient : HowToForFreelancer}
+        alt={userType === "CLIENT" ? "HowToForClient" : "HowToForFreelancer"}
         className="mx-auto"
       />
     </div>

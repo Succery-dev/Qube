@@ -2,8 +2,8 @@ import { StatusEnum } from "../enums";
 import { DisplayProjectDetailsInterface } from "../interfaces";
 
 export const activeUserByStatus = (projectDetails: DisplayProjectDetailsInterface) => {
-  const freelancer = "Freelancer";
-  const client = "Client";
+  const freelancer = "Creator";
+  const client = "Company";
 
   if (projectDetails.Status === StatusEnum.WaitingForConnectingLancersWallet) {
     return freelancer;

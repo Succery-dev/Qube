@@ -107,6 +107,37 @@ export const walkthrough: WalkthroughInterface[] = [
 
 export const featuresForClients: FeaturesInterface[] = [
   {
+    id: "LinkBased",
+    title: "Link Based",
+    image: LinkBased,
+    description:
+      "Qube is a totally link-based service so you can use it anywhere. All you need to do is share the link!",
+  },
+  {
+    id: "GasFree",
+    title: "Gas Free",
+    image: GasFree,
+    description:
+      "While collaborating with several creators Gas fee is huge. Using Qube, every transaction becomes gas free.",
+  },
+  {
+    id: "On-chainResume",
+    title: "On-chain Resume",
+    image: OnChainResume,
+    description:
+      "Qube's on-chain data based resume of creators will help you to find the best creator for your work!",
+  },
+  {
+    id: "Arbitration",
+    title: "Arbitration",
+    image: Arbitration,
+    description:
+      "If there is any disagreement, we will provide dispute resolution powered by Kleros, a decentralized court.",
+  },
+];
+
+export const featuresForFreelancers: FeaturesInterface[] = [
+  {
     id: "Arbitration",
     title: "Arbitration",
     image: Arbitration,
@@ -121,49 +152,18 @@ export const featuresForClients: FeaturesInterface[] = [
       "Qube is a totally link-based service so you can use it anywhere. All you need to do is share the link!",
   },
   {
-    id: "GasFree",
-    title: "Gas Free",
+    id: "NoThirdParty",
+    title: "No Third Party",
     image: GasFree,
     description:
-      "Sometimes gas fees can be quite burdensome... But with Qube, both parties don't have to worry about gas fees for their transactions!",
+      "Smart contract-based escrow will work as a middleman so that both parties don't need to be worried about anything without a third party!",
   },
   {
-    id: "On-ChainResume",
-    title: "On-Chain Resume",
+    id: "On-chainResume",
+    title: "On-chain Resume",
     image: OnChainResume,
     description:
       "Qube also provides a resume service where all the transactions you made or going to make will be the proof of your experience that belongs only to you.",
-  },
-];
-
-export const featuresForFreelancers: FeaturesInterface[] = [
-  {
-    id: "Escrow",
-    title: "Escrow",
-    image: EscrowIcon,
-    description:
-      "Qube will hold the hiring company's money until the company get satisfied with the work and pay the freelancer ",
-  },
-  {
-    id: "Arbitration",
-    title: "Arbitration",
-    image: JuryIcon,
-    description:
-      "If there is any disagreement between hiring party and lancers, we will provide dispute resolution",
-  },
-  {
-    id: "LinkBased",
-    title: "Link Based",
-    image: LinkIcon,
-    description:
-      "Generate direct link of a contract describing project and it's payment details to share in any platform",
-  },
-  {
-    id: "SmartContract",
-    title: "Smart Contract",
-    image: Gasless,
-    description:
-      "Qube has protocol stored in blockchain. Thus its transparent, trustworthy.No middle man is involved",
   },
 ];
 

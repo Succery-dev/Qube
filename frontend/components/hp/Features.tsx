@@ -27,7 +27,7 @@ const Features = () => {
         FEATURES
       </motion.h1>
       <div className="grid lg:grid-cols-2 grid-cols-1 lg:gap-20 gap-10">
-        {featuresForClients.map((feature, index) => {
+        {(userType === "CLIENT" ? featuresForClients : featuresForFreelancers).map((feature, index) => {
           return (
             // Card
             <motion.div
@@ -57,6 +57,7 @@ const Features = () => {
           );
         })}
       </div>
+      <p className="text-6xl text-center mt-20">Qube's Premium Features, Now at Zero Cost! Don't Miss Out - Join Today!</p>
     </div>
   );
 };

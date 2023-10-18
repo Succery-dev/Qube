@@ -57,7 +57,7 @@ const Features = () => {
           );
         })}
       </div>
-      <p className="text-6xl text-center mt-20">Qube's Premium Features, Now at Zero Cost! Don't Miss Out - Join Today!</p>
+      <p className="text-6xl text-center mt-20 bg-gradient-to-r from-[#DF57EA] to-slate-200 bg-clip-text text-transparent">Qube's Premium Features, Now at Zero Cost! Don't Miss Out - Join Today!</p>
     </div>
   );
 };

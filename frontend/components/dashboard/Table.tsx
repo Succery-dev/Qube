@@ -46,7 +46,7 @@ const TableContents = ({
         return (
           <Link key={project["id"]} href={`/projectDetails/${project["id"]}`}>
             <div
-              className="grid grid-cols-4 items-center border-t-[1px] border-b-[1px] border-[#CFCFCF] xs:min-h-[60px] min-h-[50px] xs:text-base text-[0.65rem] cursor-pointer bg-bg_primary hover:bg-primary text-[#CFCFCF] font-normal"
+              className="grid grid-cols-4 items-center border-t-[1px] border-b-[1px] border-[#CFCFCF] xs:min-h-[60px] min-h-[50px] xs:text-base text-[0.65rem] cursor-pointer bg-bg_primary hover:bg-[#DF57EA] text-[#CFCFCF] font-normal"
               key={`${project.project}`}
             >
               {Object.keys(project).map((projectKey, index) => {

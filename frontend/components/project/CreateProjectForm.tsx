@@ -92,10 +92,10 @@ const FormFields = ({
           </div>
         ) : formField.title === "Reward(USDC)" ? "Reward*" : `${formField.title}*`}
       </h2>
-      <div className="grid place-items-center w-full blue-transparent-green-gradient lg:p-[1.5px] p-[1px] rounded-sm">
+      <div className="grid place-items-center w-full bg-slate-700 rounded-sm">
         {formField.type === "textArea" ? (
           <textarea
-            className="w-full h-full border-none bg-bg_primary focus:bg-[#080e26] rounded-sm px-2 py-[0.3rem] text-sm outline-none text-[#D3D3D3]"
+            className="w-full h-full border-none bg-slate-800 focus:bg-slate-900 rounded-sm px-2 py-[0.3rem] text-sm outline-none text-white"
             placeholder={formField.placeholder}
             rows={4}
             value={form[formField.title as keyof typeof form]}
@@ -103,11 +103,11 @@ const FormFields = ({
             required
           />
         ) : formField.title === "Deadline(UTC)" ? (
-          <div className="flex flex-row w-full gap-10">
+          <div className="flex flex-row w-full">
             <Datepicker
               inputId={formField.title}
               inputName={formField.title}
-              inputClassName="w-full h-full border-none bg-slate-900 focus:bg-[#080e26] rounded-sm px-2 py-[0.3rem] text-sm outline-none text-[#D3D3D3]"
+              inputClassName="w-full h-full border-none bg-slate-800 focus:bg-slate-900 rounded-sm px-2 py-[0.3rem] text-sm outline-none text-white"
               value={{startDate: form["Deadline(UTC)"], endDate: form["Deadline(UTC)"]}} 
               onChange={(newDate) => {
                 setForm({
@@ -122,8 +122,9 @@ const FormFields = ({
               placeholder="YYYY/MM/DD 21:00"
               displayFormat="YYYY/MM/DD 21:00"
             />
+            <span className="w-[100px] bg-black"></span>
             <Datepicker
-              inputClassName="w-full h-full border-none bg-slate-900 focus:bg-[#080e26] rounded-sm px-2 py-[0.3rem] text-sm outline-none text-gray-500"
+              inputClassName="w-full h-full border-none bg-slate-800 focus:bg-slate-900 rounded-sm px-2 py-[0.3rem] text-sm outline-none text-gray-500"
               value={getPaymentDate(form["Deadline(UTC)"])}
               onChange={() => {}}
               asSingle={true}
@@ -138,7 +139,7 @@ const FormFields = ({
               type={formField.type}
               name={formField.title}
               id={formField.title}
-              className="w-full h-full border-none bg-bg_primary focus:bg-[#080e26] rounded-sm px-2 py-[0.3rem] text-sm outline-none text-[#D3D3D3]"
+              className="w-full h-full border-none bg-slate-800 focus:bg-slate-900 rounded-sm px-2 py-[0.3rem] text-sm outline-none text-white"
               placeholder={formField.placeholder}
               min={0}
               value={form[formField.title as keyof typeof form]}
@@ -152,7 +153,7 @@ const FormFields = ({
             type={formField.type}
             name={formField.title}
             id={formField.title}
-            className="w-full h-full border-none bg-bg_primary focus:bg-[#080e26] rounded-sm px-2 py-[0.3rem] text-sm outline-none text-[#D3D3D3]"
+            className="w-full h-full border-none bg-slate-800 focus:bg-slate-900 rounded-sm px-2 py-[0.3rem] text-sm outline-none text-white"
             placeholder={formField.placeholder}
             min={0}
             value={form[formField.title as keyof typeof form]}

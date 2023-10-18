@@ -44,7 +44,7 @@ const SubmitTextArea = ({
       <form>
         <motion.div
           variants={fadeIn("down", 1.25)}
-          className="w-full h-[150px] sm:h-[200px] md:h-[250px] grid place-items-center blue-transparent-green-gradient lg:p-[1.5px] p-[1px] rounded-lg"
+          className="w-full h-[150px] sm:h-[200px] md:h-[250px] grid place-items-center bg-[#DF57EA] lg:p-[3.5px] p-[3px] rounded-lg"
         >
           <textarea
             className="w-full h-full border-none bg-bg_primary focus:bg-[#080e26] rounded-sm px-2 py-[0.3rem] text-sm sm:text-base md:text-lg outline-none text-[#D3D3D3]"
@@ -91,7 +91,7 @@ const SubmitTextArea = ({
                   </div>
                   {/* Blue Line */}
                   <div
-                    className={`bg-[#3e8ecc] h-[2px] rounded-full w-full mb-2 ${
+                    className={`bg-[#DF57EA] h-[2px] rounded-full w-full mb-2 ${
                       textDeliverables[index].showText === true
                         ? "block"
                         : "hidden"

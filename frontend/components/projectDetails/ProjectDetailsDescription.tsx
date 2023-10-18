@@ -380,12 +380,14 @@ const ProjectDetailsDescription = ({
                 <h2 className="xs:text-base text-sm text-white">
                   {/* TODO: fix */}
                   {descriptionSection === "Lancer's Wallet Address"
-                    ? "Freelancer's Wallet Address"
-                    : descriptionSection === "Deadline(UTC)"
-                      ? "Submission Date (UTC)"
-                      : descriptionSection === "Deadline(UTC) For Payment"
-                        ? "Payment Date (UTC)"
-                        : descriptionSection
+                    ? "Creator's Wallet Address"
+                    : descriptionSection === "Client's Wallet Address"
+                      ? "Company's Wallet Address"
+                        : descriptionSection === "Deadline(UTC)"
+                            ? "Submission Date (UTC)"
+                            : descriptionSection === "Deadline(UTC) For Payment"
+                              ? "Payment Date (UTC)"
+                              : descriptionSection
                   }
                 </h2>
                 {descriptionSection.toLowerCase().includes("address") ? (

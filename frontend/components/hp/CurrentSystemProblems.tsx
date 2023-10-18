@@ -116,87 +116,52 @@ const CurrentSystemProblems = (): JSX.Element => {
   const { userType } = router.query;
 
   return (
-    <>
-      <motion.p
-          variants={textVariant()}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.25 }}
-          className="text-xl mb-5"
+    <div id="whyus">
+      <motion.h1
+        variants={textVariant()}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.25 }}
+        className="lg:text-6xl text-4xl text-center mb-10"
       >
-        Powered By
-      </motion.p>
-      <motion.div
-          variants={textVariant()}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.25 }}
-          className="flex gap-5 mb-20"
-      >
-        <Link href="https://www.doublejump.tokyo/en" target="_blank">
-          <Image
-            src="/images/djt.jpg"
-            width="150"
-            height="50"
-            alt="djt"
-          />
-        </Link>
-        <Link href="https://gu3.co.jp/en/" target="_blank">
-          <Image
-            src="/images/gumi.jpg"
-            width="150"
-            height="50"
-            alt="gumi"
-          />
-        </Link>
-      </motion.div>
-      <div id="whyus">
-        <motion.h1
-          variants={textVariant()}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.25 }}
-          className="lg:text-6xl text-4xl text-center mb-10"
-        >
-          WHY US ?
-        </motion.h1>
-        <div className="flex flex-col xl:flex-row gap-10">
-          <Image
-            src={WhyUs}
-            width="500"
-            height="500"
-            alt="WhyUs"
-            className="flex-1 mx-auto"
-          />
-          <div className="flex-1">
-            {(userType === "COMPANY" ? whyUsForClient : whyUsForFreelancer).map((why, index) => {
-              return (
-                <>
-                  <motion.p
-                    variants={fadeIn("right", 1.25, index)}
-                    initial="hidden"
-                    whileInView="visible"
-                    viewport={{ once: true, amount: 0.25 }}
-                    className="text-2xl my-5"
-                  >
-                    {why.title}
-                  </motion.p>
-                  <motion.p
-                    variants={fadeIn("right", 1.25, index)}
-                    initial="hidden"
-                    whileInView="visible"
-                    viewport={{ once: true, amount: 0.25 }}
-                    className="border-2 border-[#613D5D] shadow-custom-pink-rb rounded-2xl p-5 text-lg"
-                  >
-                    {why.description}
-                  </motion.p>
-                </>
-              );
-            })}
-          </div>
+        WHY US ?
+      </motion.h1>
+      <div className="flex flex-col xl:flex-row gap-10">
+        <Image
+          src={WhyUs}
+          width="500"
+          height="500"
+          alt="WhyUs"
+          className="flex-1 mx-auto"
+        />
+        <div className="flex-1">
+          {(userType === "COMPANY" ? whyUsForClient : whyUsForFreelancer).map((why, index) => {
+            return (
+              <>
+                <motion.p
+                  variants={fadeIn("right", 1.25, index)}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true, amount: 0.25 }}
+                  className="text-2xl my-5"
+                >
+                  {why.title}
+                </motion.p>
+                <motion.p
+                  variants={fadeIn("right", 1.25, index)}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true, amount: 0.25 }}
+                  className="border-2 border-[#613D5D] shadow-custom-pink-rb rounded-2xl p-5 text-lg"
+                >
+                  {why.description}
+                </motion.p>
+              </>
+            );
+          })}
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

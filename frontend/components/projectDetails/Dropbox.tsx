@@ -35,8 +35,8 @@ const Dropbox = ({
         <motion.div
           variants={fadeIn("down", 1.25)}
           className={`grid place-items-center w-full ${
-            isDropable ? "blue-transparent-green-gradient" : "bg-slate-500"
-          } lg:p-[1.5px] p-[1px] rounded-lg cursor-pointer`}
+            isDropable ? "bg-[#DF57EA]" : "bg-slate-500"
+          } lg:p-[3.5px] p-[3px] rounded-lg cursor-pointer`}
         >
           <div
             {...getRootProps({

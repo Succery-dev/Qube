@@ -50,7 +50,7 @@ const CreateProjectModal = ({
           className={`fixed w-screen h-screen top-0 left-0 backdrop-blur-md z-[100] grid grid-cols-12 text-white font-nunito`}
         >
           <div className=" col-start-2 col-end-12 xl:col-start-4 xl:col-end-10 grid place-items-center">
-            <div className=" w-full blue-transparent-green-gradient rounded-xl p-[2px] flex flex-row items-center shadow-lg">
+            <div className=" w-full bg-[#DF57EA] rounded-xl p-[2px] flex flex-row items-center shadow-lg">
               <div className="w-full max-h-[95vh] bg-black rounded-xl px-4 py-6 sm:p-8 md:p-10 lg:p-8 xl:p-10 relative">
                 {/* Header */}
                 <div className="w-full">
@@ -77,7 +77,7 @@ const CreateProjectModal = ({
                         href={projectDetailLink}
                         className="cursor-pointer w-4/5"
                       >
-                        <p className="text-[#3e8ecc] underline break-words">
+                        <p className="text-[#DF57EA] underline break-words">
                           {projectDetailLink}
                         </p>
                       </Link>

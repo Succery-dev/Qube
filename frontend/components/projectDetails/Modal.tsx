@@ -35,7 +35,7 @@ const Modal = ({
           className={`fixed w-screen h-screen top-0 left-0 backdrop-blur-md z-[100] grid grid-cols-12 text-white font-nunito`}
         >
           <div className=" col-start-2 col-end-12 xl:col-start-4 xl:col-end-10 grid place-items-center">
-            <div className=" w-full blue-transparent-green-gradient rounded-xl p-[2px] flex flex-row items-center shadow-lg">
+            <div className=" w-full bg-[#DF57EA] rounded-xl p-[2px] flex flex-row items-center shadow-lg">
               <div className="w-full max-h-[95vh] bg-black rounded-xl px-4 py-6 sm:p-8 md:p-10 lg:p-8 xl:p-10 relative">
                 {/* Header */}
                 <div className="w-full">
@@ -59,7 +59,7 @@ const Modal = ({
                     </p>
                     {isLoading
                       ? (
-                        <div className="flex flex-row items-center justify-center text-2xl text-green-400">
+                        <div className="flex flex-row items-center justify-center text-2xl text-[#DF57EA]">
                           <Image
                             src={Spinner}
                             alt="spinner"
@@ -70,7 +70,7 @@ const Modal = ({
                       ) : (
                         <div className="flex flex-row items-center justify-end gap-14 py-4 px-4">
                           <button
-                            className={`${title === "Disapprove The Deliverables" ? "bg-red-500 hover:bg-red-600" : "bg-blue-500 hover:bg-blue-600"} text-white py-2 px-4 rounded transition duration-150`}
+                            className={`${title === "Disapprove The Deliverables" ? "bg-red-500 hover:bg-red-600" : "bg-pink-400 hover:bg-pink-500"} text-white py-2 px-4 rounded transition duration-150`}
                             onClick={async () => {
                               setIsLoading(true);
                               await onConfirm();

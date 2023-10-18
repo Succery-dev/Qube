@@ -228,7 +228,7 @@ const Navbar = (): JSX.Element => {
 
           {/* Join Discord Button */}
           <Link 
-            href="https://discord.gg/KnhgxwXa"
+            href="https://discord.com/invite/947wAFmwbZ"
             target="_blank"
             className={`border border-white hover:bg-purple-500 ease-in duration-300 rounded-full px-5 py-2 ${router.pathname === "/" ? "hidden md:block": "hidden"}`}
           >

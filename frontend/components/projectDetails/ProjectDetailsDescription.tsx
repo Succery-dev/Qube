@@ -116,6 +116,7 @@ const ProjectDetailsDescription = ({
         const updatedSubsetProjectDetail: Partial<StoreProjectDetailsInterface> =
           {
             "Status": StatusEnum.WaitingForSubmission,
+            "prepayTxHash": depositResult.transactionHash,
           };
         await updateProjectDetails(projectId, updatedSubsetProjectDetail);
         const [_, updatedProjectDetails] = await getDataFromFireStore(

@@ -253,6 +253,9 @@ If you have any questions feel free to reply to this mail. Don't forget to expla
     
     return transporter.sendMail(mailOptions);
   } else if (beforeStatus == StatusEnum.PayInAdvance && afterStatus == StatusEnum.WaitingForSubmission) {
+    const prepayTxHash = afterData?.get("prepayTxHash");
+    const prepayTxUrl = `${process.env.POLYGONSCAN_URL}/tx/${prepayTxHash}`;
+
     const docRef = getFirestore().collection("users").doc(afterData?.get("Lancer's Wallet Address"));
     const doc = await docRef.get();
 
@@ -263,6 +266,9 @@ If you have any questions feel free to reply to this mail. Don't forget to expla
       text: 
 `The prepay has been done by the client. Finish your work and submit it before ${formattedSubmissionDeadline}(UTC). 
 If you don't submit it before ${formattedSubmissionDeadline}(UTC), the money in Escrow will be refunded to the client automatically.
+
+You can review the details and verify the transaction by clicking on the link below:
+${prepayTxUrl}
 
 To go to the project: ${projectLink}
 If you have any questions feel free to reply to this mail. Don't forget to explain the issue you are having.`,

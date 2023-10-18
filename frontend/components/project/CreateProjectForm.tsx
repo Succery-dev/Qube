@@ -261,6 +261,7 @@ const CreateProjectForm = ({
         form.DeadlineExtensionRequest = false;
         form.InDispute = false;
         form.RequestedDeadlineExtension = "";
+        form.prepayTxHash = "";
 
         const now = new Date();
         form.createdAt = now.toISOString();

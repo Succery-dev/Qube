@@ -27,7 +27,7 @@ const Features = () => {
         FEATURES
       </motion.h1>
       <div className="grid lg:grid-cols-2 grid-cols-1 lg:gap-20 gap-10">
-        {(userType === "CLIENT" ? featuresForClients : featuresForFreelancers).map((feature, index) => {
+        {(userType === "COMPANY" ? featuresForClients : featuresForFreelancers).map((feature, index) => {
           return (
             // Card
             <motion.div

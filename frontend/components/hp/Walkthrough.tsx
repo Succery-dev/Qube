@@ -75,8 +75,8 @@ const Walkthrough = (): JSX.Element => {
         HOW TO ?
       </motion.h1>
       <Image
-        src={userType === "CLIENT" ? HowToForClient : HowToForFreelancer}
-        alt={userType === "CLIENT" ? "HowToForClient" : "HowToForFreelancer"}
+        src={userType === "COMPANY" ? HowToForClient : HowToForFreelancer}
+        alt={userType === "COMPANY" ? "HowToForClient" : "HowToForFreelancer"}
         className="mx-auto"
       />
     </div>

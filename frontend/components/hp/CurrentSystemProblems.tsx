@@ -169,7 +169,7 @@ const CurrentSystemProblems = (): JSX.Element => {
             className="flex-1 mx-auto"
           />
           <div className="flex-1">
-            {(userType === "CLIENT" ? whyUsForClient : whyUsForFreelancer).map((why, index) => {
+            {(userType === "COMPANY" ? whyUsForClient : whyUsForFreelancer).map((why, index) => {
               return (
                 <>
                   <motion.p

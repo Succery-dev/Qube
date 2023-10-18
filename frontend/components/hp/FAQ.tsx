@@ -101,7 +101,7 @@ const FAQ = () => {
         FAQs
       </motion.h1>
       <div className="flex flex-col justify-evenly pl-10 h-full">
-        {(userType === "CLIENT" ? faqForClients : faqForFreelancers).map((faq, index) => (
+        {(userType === "COMPANY" ? faqForClients : faqForFreelancers).map((faq, index) => (
           <div key={index}>
             <motion.div
               className="cursor-pointer"

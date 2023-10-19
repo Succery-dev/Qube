@@ -36,7 +36,7 @@ const Navbar = (): JSX.Element => {
           const docRef = doc(database, "users", address);
           const docSnapshot = await getDoc(docRef);
 
-          if (!docSnapshot.exists()) {
+          if (!docSnapshot.exists() && router.asPath !== "/nftClaim") {
             setShowEmailModal(true);
           }
         } catch (error) {

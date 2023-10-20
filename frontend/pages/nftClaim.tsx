@@ -11,8 +11,6 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 
-import Confetti from "react-confetti"
-
 import { useConnectModal } from "@rainbow-me/rainbowkit";
 
 import { useAccount } from "wagmi";
@@ -140,14 +138,13 @@ const Form: React.FC<FormComponentProps> = ({ swiperRef }) => {
   );
 };
 
-const ClaimSuccess: React.FC<{ isActive: boolean }> = ({ isActive }) => {
+const ClaimSuccess: React.FC = () => {
   const message = "NFT Claimしたよ的な文章とClaim PageへのLink";
   const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(message)}`;
 
   return (
     <div className="swiper-slide">
       <div className="h-screen 2xl:mx-80 md:mx-40 mx-20 xl:text-5xl md:text-3xl text-xl font-bold flex flex-col justify-center items-start">
-        {isActive && <Confetti />}
         <p className="mb-3">Successfully claimed!</p>
         <p className="mb-20">We will get to you very soon.</p>
         <p className="mb-3">-{'>'} Till that Join our Discord:</p>
@@ -170,7 +167,6 @@ const ClaimAlreadyDone: React.FC = () => {
 };
 
 const NftClaim: NextPage = () => {
-  const [activeSlide, setActiveSlide] = useState(0);
   const swiperRef = useRef<Swiper | null>(null);
 
   useEffect(() => {
@@ -187,33 +183,29 @@ const NftClaim: NextPage = () => {
 
       autoHeight: true,
     });
-
-    swiperRef.current.on("slideChange", () => {
-      const swiper = swiperRef.current;
-      setActiveSlide(swiper.activeIndex);
-    });
   }, []);
 
   const { address, isConnected } = useAccount();
 
   useEffect(() => {
     const checkIfIdExistsInCollection = async (address: string) => {
-      if (isConnected && address) {
-        try {
-          const docRef = doc(database, "users", address);
-          const docSnapshot = await getDoc(docRef);
+      // if (isConnected && address) {
+      //   try {
+      //     const docRef = doc(database, "users", address);
+      //     const docSnapshot = await getDoc(docRef);
 
-          if (docSnapshot.exists()) {
-            swiperRef.current.slideTo(3, 0);
-          } else {
-            swiperRef.current.slideNext();
-          }
-        } catch (error) {
-          console.error("Error checking document existence: ", error);
-        }
-      } else {
-        swiperRef.current.slideTo(0, 0);
-      }
+      //     if (docSnapshot.exists()) {
+      //       swiperRef.current.slideTo(3, 0);
+      //     } else {
+      //       swiperRef.current.slideNext();
+      //     }
+      //   } catch (error) {
+      //     console.error("Error checking document existence: ", error);
+      //   }
+      // } else {
+      //   swiperRef.current.slideTo(0, 0);
+      // }
+      swiperRef.current.slideTo(2);
     }
 
     checkIfIdExistsInCollection(address);
@@ -224,7 +216,7 @@ const NftClaim: NextPage = () => {
       <div className="swiper-wrapper">
         <Intro />
         <Form swiperRef={swiperRef} />
-        <ClaimSuccess isActive={activeSlide === 2} />
+        <ClaimSuccess />
         <ClaimAlreadyDone />
       </div>
     </div>

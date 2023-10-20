@@ -229,7 +229,12 @@ const Navbar = (): JSX.Element => {
         </Link>
 
         {/* Connect Button */}
-        <ConnectButton accountStatus={{ smallScreen: "avatar" }} label={router.asPath === "/nftClaim" ? "CONNECT WALLET" : "LAUNCH APP"} />
+        {router.pathname !== "/"
+          ? <ConnectButton accountStatus={{ smallScreen: "avatar" }} label={router.asPath === "/nftClaim" ? "CONNECT WALLET" : "LAUNCH APP"} />
+          : router.query.close === "beta"
+            ? <ConnectButton accountStatus={{ smallScreen: "avatar" }} label={router.asPath === "/nftClaim" ? "CONNECT WALLET" : "LAUNCH APP"} />
+            : null
+        }
 
         {/* User Type Select Dropdown Button */}
         <div className={`relative grow max-w-[140px] ${router.pathname === "/" ? "hidden md:block": "hidden"}`}>
@@ -245,7 +250,7 @@ const Navbar = (): JSX.Element => {
             <ul className="absolute z-10 mt-1 max-h-56 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm" role="listbox" aria-labelledby="listbox-label" aria-activedescendant="listbox-option-3">
               <li className="text-gray-900 relative cursor-default select-none py-2 pl-3 pr-9" id="listbox-option-0" role="option" onClick={() => {
                 const selectedType = userType === "COMPANY" ? "CREATOR" : "COMPANY";
-                router.push(`/?userType=${selectedType}`);
+                router.push(`/?userType=${selectedType}${router.query.close !== undefined ? "&close=beta" : ""}`);
                 setUserType(selectedType);
                 setIsDropdownOpen(false);
               }}>

@@ -88,7 +88,7 @@ const whyUsForClient = [
   },
   {
     title: "Complexity in Management",
-    description: "While clients collaborate with several creators it's quite confusing managing all of those. Qube make it way easier to manage payments to influencers.",
+    description: "While companies collaborate with several creators it's quite confusing managing all of those. Qube makes it way easier to manage payments to creators.",
   },
   {
     title: "High Platform Fees",

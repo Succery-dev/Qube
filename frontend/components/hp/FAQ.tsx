@@ -40,7 +40,8 @@ const FAQ = () => {
     },
     {
       question: "How can I reach out for customer support or any queries?",
-      answer: "We are here to assist you with any questions or confusion you might have. You can reach out to us via our Discord channel, contact form, or email us directly at [mail address]. Your concerns are important to us, and we aim to provide prompt and efficient support to resolve them.",
+      answer1: "We are here to assist you with any questions or confusion you might have. You can reach out to us via our Discord channel, contact form, or email us directly at",
+      answer2: "Your concerns are important to us, and we aim to provide prompt and efficient support to resolve them.",
     },
   ];
 
@@ -120,15 +121,26 @@ const FAQ = () => {
                 transition={{ duration: 0.3 }}
                 className="xl:text-2xl lg:text-xl text-lg"
               >
-                {faq.answer}
-                {
-                  faq.question === "How much does it Cost?" 
-                    ? <Link href={waitlistUrl} className="underline" target="_blank">[waitlist]</Link> 
-                    : faq.question === "Where can I get details of the Arbitration Solution?"
-                      ? <Link href="https://qube-1.gitbook.io/qube-whitepaper/" className="underline" target="_blank">[Link]</Link>
-                      : faq.question === "Are there any security assurances since the code is not open-source?"
-                        ? <Link href="mailto:official@0xqube.xyz" className="underline" target="_blank">[mail address]</Link>
-                        : null
+                {faq.question === "How can I reach out for customer support or any queries?"
+                  ? (
+                    <>
+                      {faq.answer1} <Link href="mailto:official@0xqube.xyz" target="_blank" className="underline">[mail address]</Link>. {faq.answer2}
+                    </>
+                  )
+                  : (
+                    <>
+                    {faq.answer}
+                    {
+                      faq.question === "How much does it Cost?" 
+                        ? <Link href={waitlistUrl} className="underline" target="_blank">[waitlist]</Link> 
+                        : faq.question === "Where can I get details of the Arbitration Solution?"
+                          ? <Link href="https://qube-1.gitbook.io/qube-whitepaper/" className="underline" target="_blank">[Link]</Link>
+                          : faq.question === "Are there any security assurances since the code is not open-source?"
+                            ? <Link href="mailto:official@0xqube.xyz" className="underline" target="_blank">[mail address]</Link>
+                            : null
+                    }
+                    </>
+                  )
                 }
               </motion.p>
             )}

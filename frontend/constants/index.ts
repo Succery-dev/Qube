@@ -142,7 +142,7 @@ export const featuresForFreelancers: FeaturesInterface[] = [
     title: "On-chain Resume",
     image: OnChainResume,
     description:
-      "Qube also provides a resume service where all the transactions you made or going to make will be the proof of your experience that belongs only to you.",
+      "All the transactions you make will be the proof of your experience that belongs only to you as an on-chain credential.",
   },
   {
     id: "LinkBased",

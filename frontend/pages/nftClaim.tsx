@@ -18,7 +18,7 @@ import { useAccount } from "wagmi";
 import { doc, setDoc, getDoc } from "firebase/firestore";
 import { database } from "../utils";
 
-import { HowToForClient, Spinner } from "../assets";
+import { Spinner, Checkbox, X, Discord } from "../assets";
 
 const Intro: React.FC = () => {
   const { openConnectModal } = useConnectModal();
@@ -38,9 +38,13 @@ const Intro: React.FC = () => {
 
 type FormComponentProps = {
   swiperRef: React.MutableRefObject<Swiper | null>;
+  setPersonalInfo: React.Dispatch<React.SetStateAction<{
+    email: string;
+    twitterHandle: string;
+  }>>;
 };
 
-const Form: React.FC<FormComponentProps> = ({ swiperRef }) => {
+const Form: React.FC<FormComponentProps> = ({ swiperRef, setPersonalInfo }) => {
   const [isLoading, setIsLoading] = useState(false);
   const { address } = useAccount();
 
@@ -66,6 +70,11 @@ const Form: React.FC<FormComponentProps> = ({ swiperRef }) => {
       twitterHandle: answers.twitterHandle.trim(),
       pastProjects: answers.pastProjects.trim(),
     };
+
+    setPersonalInfo({
+      email: cleanedAnswers.email,
+      twitterHandle: cleanedAnswers.twitterHandle,
+    });
 
     console.log(cleanedAnswers);
     setIsLoading(true);
@@ -138,29 +147,58 @@ const Form: React.FC<FormComponentProps> = ({ swiperRef }) => {
   );
 };
 
-const ClaimSuccess: React.FC = () => {
-  const message = "NFT Claimしたよ的な文章とClaim PageへのLink";
+interface PersonalInfo {
+  email: string;
+  twitterHandle: string;
+}
+
+interface ClaimSuccessProps {
+  host: string;
+  personalInfo: PersonalInfo;
+}
+
+const ClaimSuccess: React.FC<ClaimSuccessProps> = ({ host, personalInfo }) => {
+  const message = 
+`I have claimed my handle on Qube.
+
+Qube is an All in One tool for creators in gaming space. It protects creators from NON or DELAYED payments and make their collaboration woth projects smoother. 
+${host}/nftClaim`;
   const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(message)}`;
 
   return (
     <div className="swiper-slide">
-      <div className="h-screen 2xl:mx-80 md:mx-40 mx-20 xl:text-5xl md:text-3xl text-xl font-bold flex flex-col justify-center items-start">
-        <p className="mb-3">Successfully claimed!</p>
-        <p className="mb-20">We will get to you very soon.</p>
-        <p className="mb-3">-{'>'} Till that Join our Discord:</p>
-        <Link href="https://discord.com/invite/947wAFmwbZ" target="_blank" className="underline mb-20">https://discord.com/invite/947wAFmwbZ</Link>
-        <Link href={twitterUrl} target="_blank" className="bg-gradient-to-r from-[#E220CF] to-white text-black font-bold text-2xl px-8 py-3 rounded-full mx-auto">Go to X</Link>
-      </div>
-    </div>
-  );
-};
-
-const ClaimAlreadyDone: React.FC = () => {
-  return (
-    <div className="swiper-slide">
-      <div className="h-screen xl:text-5xl md:text-3xl text-xl font-bold flex flex-col justify-center items-center">
-        <p className="mb-3">You have already claimed the NFT.</p>
-        <p>you will get onboarded soon!</p>
+      <div className="min-h-screen flex lg:flex-row flex-col xl:p-40 sm:p-20 p-10 md:mt-0 mt-10 gap-10 font-bold xl:text-4xl text-2xl">
+        <div className="bg-black flex-1 flex flex-col shadow-custom-pink-rb rounded-lg">
+          <h1 className="bg-gradient-to-r from-[#E220CF] to-white w-min mx-auto bg-clip-text text-transparent mt-10">claimed!</h1>
+          <div className="h-full flex flex-row items-center mx-10 gap-5">
+            <Image src={Checkbox} height={100} width={100} alt="checkbox" />
+            <div>
+              <p className="mb-10">You will be notified when you're through the list</p>
+              <p>{`e-mail: ${personalInfo.email}`}</p>
+              <p>{`Twitter handle: ${personalInfo.twitterHandle}`}</p>
+            </div>
+          </div>
+        </div>
+        <div className="flex-1 flex flex-col gap-10">
+          <div className="bg-black flex-1 flex items-center rounded-lg shadow-custom-pink-rb">
+            <div className="h-full flex flex-row items-center mx-10 gap-5">
+              <Image src={X} height={100} width={100} alt="X" />
+              <div className="flex flex-col">
+                <p className="mb-10">Tweet about your claiming handle!</p>
+                <Link href={twitterUrl} target="_blank" className="bg-gradient-to-r from-[#E220CF] to-white text-black font-bold lg:px-8 px-5 lg:py-3 py-1 rounded-full mx-auto">Go to X</Link>
+              </div>
+            </div>
+          </div>
+          <div className="bg-black flex-1 flex items-center rounded-lg shadow-custom-pink-rb">
+            <div className="h-full flex flex-row items-center mx-10 gap-5">
+                <Image src={Discord} height={90} width={90} alt="Discord" />
+                <div className="flex flex-col">
+                  <p className="mb-10">Don't forget to join our discord community. </p>
+                  <Link href="https://discord.com/invite/947wAFmwbZ" target="_blank" className="bg-gradient-to-r from-[#E220CF] to-white text-black font-bold lg:px-8 px-5 lg:py-3 py-1 rounded-full mx-auto">Join</Link>
+                </div>
+              </div>
+            </div>
+        </div>
       </div>
     </div>
   );
@@ -168,6 +206,7 @@ const ClaimAlreadyDone: React.FC = () => {
 
 const NftClaim: NextPage = () => {
   const swiperRef = useRef<Swiper | null>(null);
+  const [host, setHost] = useState(""); 
 
   useEffect(() => {
     // init Swiper:
@@ -183,29 +222,41 @@ const NftClaim: NextPage = () => {
 
       autoHeight: true,
     });
+
+    if (typeof window !== "undefined") {
+      setHost(window.location.host);
+    }
   }, []);
 
   const { address, isConnected } = useAccount();
 
+  const [personalInfo, setPersonalInfo] = useState({
+    email: "",
+    twitterHandle: "",
+  });
+
   useEffect(() => {
     const checkIfIdExistsInCollection = async (address: string) => {
-      // if (isConnected && address) {
-      //   try {
-      //     const docRef = doc(database, "users", address);
-      //     const docSnapshot = await getDoc(docRef);
+      if (isConnected && address) {
+        try {
+          const docRef = doc(database, "users", address);
+          const docSnapshot = await getDoc(docRef);
 
-      //     if (docSnapshot.exists()) {
-      //       swiperRef.current.slideTo(3, 0);
-      //     } else {
-      //       swiperRef.current.slideNext();
-      //     }
-      //   } catch (error) {
-      //     console.error("Error checking document existence: ", error);
-      //   }
-      // } else {
-      //   swiperRef.current.slideTo(0, 0);
-      // }
-      swiperRef.current.slideTo(2);
+          if (docSnapshot.exists()) {
+            setPersonalInfo({
+              email: docSnapshot.get("email"),
+              twitterHandle: docSnapshot.get("twitterHandle"),
+            });
+            swiperRef.current.slideTo(2, 0);
+          } else {
+            swiperRef.current.slideNext();
+          }
+        } catch (error) {
+          console.error("Error checking document existence: ", error);
+        }
+      } else {
+        swiperRef.current.slideTo(0, 0);
+      }
     }
 
     checkIfIdExistsInCollection(address);
@@ -215,9 +266,8 @@ const NftClaim: NextPage = () => {
     <div className="swiper-container overflow-y-hidden text-white bg-custom-background bg-contain">
       <div className="swiper-wrapper">
         <Intro />
-        <Form swiperRef={swiperRef} />
-        <ClaimSuccess />
-        <ClaimAlreadyDone />
+        <Form swiperRef={swiperRef} setPersonalInfo={setPersonalInfo} />
+        <ClaimSuccess host={host} personalInfo={personalInfo} />
       </div>
     </div>
   );

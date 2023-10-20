@@ -13,6 +13,8 @@ import "swiper/css/pagination";
 
 import Confetti from "react-confetti"
 
+import { useConnectModal } from "@rainbow-me/rainbowkit";
+
 import { useAccount } from "wagmi";
 
 import { doc, setDoc, getDoc } from "firebase/firestore";
@@ -21,10 +23,17 @@ import { database } from "../utils";
 import { HowToForClient, Spinner } from "../assets";
 
 const Intro: React.FC = () => {
+  const { openConnectModal } = useConnectModal();
+
   return (
-    <div className="swiper-slide p-20">
-      <p className="text-center text-5xl underline font-bold mb-5">仮画像</p>
-      <Image src={HowToForClient} height="600" width="600" alt="howto" className="mx-auto" />
+    <div className="swiper-slide">
+      <div className="h-screen flex flex-col justify-center items-center">
+        <h1 className="lg:text-5xl text-3xl font-bold mb-20">To use Qube, <span className="bg-gradient-to-r from-[#E220CF] to-white text-transparent bg-clip-text">Claim</span> your handle <span className="bg-gradient-to-r from-[#E220CF] to-white text-transparent bg-clip-text">Now</span>.</h1>
+        <p className="lg:text-3xl text-xl mb-2">Get Onchain-data based resume, secure</p>
+        <p className="lg:text-3xl text-xl mb-5">payment, influence analytic, <span className="text-[#E220CF]">all</span> with <span className="text-[#E220CF]">one handle</span></p>
+        <p className="lg:text-2xl text-lg underline mb-5">Onboard before <span className="text-[#E220CF]">December</span> and get your NFT</p>
+        <button type="button" className="bg-gradient-to-r from-[#E220CF] to-white text-black font-bold lg:text-2xl text-lg px-8 py-3 rounded-full mx-auto" onClick={openConnectModal}>Claim Handle</button>
+      </div>
     </div>
   );
 };

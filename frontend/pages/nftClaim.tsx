@@ -140,6 +140,9 @@ const Form: React.FC<FormComponentProps> = ({ swiperRef }) => {
 };
 
 const ClaimSuccess: React.FC<{ isActive: boolean }> = ({ isActive }) => {
+  const message = "NFT Claimしたよ的な文章とClaim PageへのLink";
+  const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(message)}`;
+
   return (
     <div className="swiper-slide">
       <div className="h-screen 2xl:mx-80 md:mx-40 mx-20 xl:text-5xl md:text-3xl text-xl font-bold flex flex-col justify-center items-start">
@@ -147,9 +150,8 @@ const ClaimSuccess: React.FC<{ isActive: boolean }> = ({ isActive }) => {
         <p className="mb-3">Successfully claimed!</p>
         <p className="mb-20">We will get to you very soon.</p>
         <p className="mb-3">-{'>'} Till that Join our Discord:</p>
-        <Link href="https://discord.com/invite/947wAFmwbZ" target="_blank" className="underline">https://discord.com/invite/947wAFmwbZ</Link>
-        <p className="my-20">NFT Claimしたよ的な文章とClaim PageへのLink</p>
-        <Link href="https://twitter.com/0xQube" target="_blank" className="bg-gradient-to-r from-[#E220CF] to-white text-black font-bold text-2xl px-8 py-3 rounded-full mx-auto">Go to X</Link>
+        <Link href="https://discord.com/invite/947wAFmwbZ" target="_blank" className="underline mb-20">https://discord.com/invite/947wAFmwbZ</Link>
+        <Link href={twitterUrl} target="_blank" className="bg-gradient-to-r from-[#E220CF] to-white text-black font-bold text-2xl px-8 py-3 rounded-full mx-auto">Go to X</Link>
       </div>
     </div>
   );

@@ -84,7 +84,7 @@ const problemsForFreelancers = [
 const whyUsForClient = [
   {
     title: "Delayed Delivery",
-    description: "Clients often experience delayed delivery or inappropriate deliveries. Qube's Escrow payment and arbitration will free you form these concerns.",
+    description: "Clients often experience delayed delivery or inappropriate deliveries. Qube's Escrow payment and arbitration will free you from these concerns.",
   },
   {
     title: "Complexity in Management",

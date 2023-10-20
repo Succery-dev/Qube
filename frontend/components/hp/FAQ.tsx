@@ -12,71 +12,72 @@ const FAQ = () => {
   const faqForClients = [
     {
       question: "What is Qube?",
-      answer: "Qube is an escrow-based payment solution designed to enhance collaboration between legal entities and pseudonymous individuals. Its primary goal is to create an environment where anonymity is no longer a hurdle, all while ensuring that legal obligations are uncompromising.",
+      answer: "Qube is an escrow-based payment solution designed to enhance collaboration between projects and creators. Its primary goal is to provide a mutual payment solution, ensuring that both parties can collaborate in a secure and straightforward manner.",
     },
     {
       question: "How much does it Cost?",
-      answer: "We are in our pre-alpha phase yet. So we don't charge for now. Even you don't have to pay Gas fee. Join us now! we are waiting for your feedback to make it better!",
+      answer: "We are still in our pre-alpha phase. Therefore, we don't charge at the moment. Join us now! We eagerly await your feedback to improve our system.",
     },
     {
       question: "Where can I get details of the Arbitration Solution?",
-      answer: "You will get the details on our Whitepaper!",
+      answer1: "You can find the details in our",
+      answer2: "For further information, you can also contact us at",
     },
     {
-      question: "What happens if the freelancer does not do the work?",
-      answer: "If the freelancer fails to complete the work, our system automatically processes a refund to the client, ensuring that your funds are secure and not wasted on incomplete tasks.",
+      question: "What happens if the creator does not do the work?",
+      answer: "If the creator fails to deliver, our system automatically processes a refund to you, ensuring your funds are safe and aren't expended on incomplete tasks.",
     },
     {
-      question: "What if the quality of work is not good?",
-      answer: "In cases where the work quality is unsatisfactory, provisions are available for adjustments. The project timeline can be extended to allow the freelancer to enhance the quality of their work, ensuring that the final output meets your expectations.",
+      question: "What if the quality of work is unsatisfactory?",
+      answer: "If the quality of the work doesn't meet your standards, provisions exist for revisions. The project timeline can be extended, allowing the creator an opportunity to enhance the quality of their work, ensuring the final product aligns with your expectations.",
     },
     {
-      question: "What if the freelancer is malicious?",
-      answer: "If a freelancer exhibits malicious behavior or is uncooperative, you have the option to halt the payment. Qube allows you to initiate refund procedures, ensuring that your funds are returned and not wrongfully appropriated by unscrupulous individuals.",
+      question: "What if the creator behaves maliciously?",
+      answer: "If a creator displays malicious intent or is uncooperative, you can choose to withhold payment. Qube enables you to begin refund procedures, ensuring your funds aren't wrongfully appropriated by unscrupulous individuals.",
     },
     {
-      question: "Are there any security assurances since the code is not open-source?",
-      answer: "We understand the concerns regarding security as we are in our closed beta phase and cannot open-source the code right now. If you have any specific concerns or need further assurance, we are open to having a conversation. Feel free to reach out to us at ",
+      question: "Are there security assurances since the code isn't open-source?",
+      answer: "We recognize the security concerns, especially since we are in our closed beta phase and haven't made our code open-source. However, we've had our code audited by a senior smart contract developer and have also initiated a bug bounty. Should you have any specific concerns or seek additional assurance, we're available for a conversation. Please don't hesitate to contact us at ",
     },
     {
-      question: "How can I reach out for customer support or any queries?",
-      answer1: "We are here to assist you with any questions or confusion you might have. You can reach out to us via our Discord channel, contact form, or email us directly at",
-      answer2: "Your concerns are important to us, and we aim to provide prompt and efficient support to resolve them.",
+      question: "How can I get in touch for customer support or with any questions?",
+      answer: "We are always here to help with any questions or concerns you might have. Feel free to reach out to us via our Discord channel, or you can email us directly at ",
     },
   ];
 
   const faqForFreelancers = [
     {
       question: "What is Escrow?",
-      answer: "Escrow is a safe payment technique in which a neutral third party holds payments until both parties satisfy the requirements agreed upon. It provides secure and transparent transactions for both parties.",
+      answer: "Escrow is a secure payment method where a neutral third party holds funds until both parties fulfill the agreed-upon requirements. This ensures transparent and safe transactions for everyone involved.",
     },
     {
       question: "What is Qube?",
-      answer: "Qube is an escrow-based payment solution designed to enhance collaboration between legal entities and pseudonymous individuals. Its primary goal is to create an environment where anonymity is no longer a hurdle, all while ensuring that legal obligations are uncompromised.",
+      answer: "Qube is an escrow-based payment solution geared towards shielding creators from scams and ensuring they receive timely payments. It offers a seamless and secure payment process for all creators.",
     },
     {
       question: "How much does it Cost?",
-      answer: "We are in our pre-alpha phase yet. So we don't charge for now. Even you don't have to pay Gas fee. Join us now! we are waiting for your feedback to make it better!",
+      answer: "We are currently in our pre-alpha phase. Thus, we aren't charging any fees at the moment. Join us! We eagerly await your feedback to enhance our services.",
     },
     {
       question: "Where can I get details of the Arbitration Solution?",
-      answer: "You will get the details on our Whitepaper!",
+      answer1: "Detailed information is available in our",
+      answer2: "Should you require further insights, you can always reach out to us at",
     },
     {
       question: "What chain does it support?",
-      answer: "As we are in our pre-alpha phase, we only support Polygon for now. Within a few months, we will support other chains too!",
+      answer: "At present, we support only the Polygon chain. However, we plan to extend our support to other chains in the coming months. If there's a specific chain you'd like to see supported, please feel free to inform us.",
     },
     {
       question: "What currency can I use on Qube now?",
-      answer: "For now, USDC, MATIC, and ETH can be used in Qube. Other currencies will be able to be used soon!",
+      answer: "Currently, we accept USDC, USDT, and MATIC. We'll be integrating additional currencies shortly!",
     },
     {
       question: "How can I get access?",
-      answer: "Join our waitlist and we will contact you soon!",
+      answer: "Since we're in our closed beta phase, we're limiting access to Qube. Claim your handle, and join our discord. we'll get in touch with you shortly!",
     },
     {
       question: "What wallet can be used?",
-      answer: "You can use Metamask, Safe, Nsuite, Rainbow, Coinbase, and MyEther wallet for now.",
+      answer: "We currently support Metamask, Safe, Nsuite, Rainbow, Coinbase, and MyEtherWallet.",
     },
   ];
 
@@ -121,25 +122,23 @@ const FAQ = () => {
                 transition={{ duration: 0.3 }}
                 className="xl:text-2xl lg:text-xl text-lg"
               >
-                {faq.question === "How can I reach out for customer support or any queries?"
+                {faq.question === "Where can I get details of the Arbitration Solution?"
                   ? (
                     <>
-                      {faq.answer1} <Link href="mailto:official@0xqube.xyz" target="_blank" className="underline">[mail address]</Link>. {faq.answer2}
+                      {faq.answer1} <Link href="https://qube-1.gitbook.io/qube-whitepaper/" target="_blank" className="underline">Whitepaper</Link>.
+                      <br />
+                      {faq.answer2} <Link href="mailto:official@0xqube.xyz" target="_blank" className="underline">"official@0xqube.xyz"</Link>.
                     </>
                   )
                   : (
                     <>
-                    {faq.answer}
-                    {
-                      faq.question === "How much does it Cost?" 
-                        ? <Link href={waitlistUrl} className="underline" target="_blank">[waitlist]</Link> 
-                        : faq.question === "Where can I get details of the Arbitration Solution?"
-                          ? <Link href="https://qube-1.gitbook.io/qube-whitepaper/" className="underline" target="_blank">[Link]</Link>
-                          : faq.question === "Are there any security assurances since the code is not open-source?"
-                            ? <Link href="mailto:official@0xqube.xyz" className="underline" target="_blank">[mail address]</Link>
-                            : null
-                    }
-                    </>
+                      {faq.answer}
+                      {
+                        faq.question === "Are there security assurances since the code isn't open-source?" || faq.question === "How can I get in touch for customer support or with any questions?"
+                          ? <Link href="mailto:official@0xqube.xyz" target="_blank" className="underline">"official@0xqube.xyz".</Link>
+                          : null
+                      }
+                    </>                       
                   )
                 }
               </motion.p>

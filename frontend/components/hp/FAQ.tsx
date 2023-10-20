@@ -136,7 +136,7 @@ const FAQ = () => {
         ))}
       </div>
       <p className="xl:text-5xl lg:text-3xl sm:text-2xl text-[1.2rem] text-center">
-        Feel free to contact us for more questions! <Link href="https://docs.google.com/forms/d/e/1FAIpQLSdaRr4b4-XekKneAeAb4_Wx2ELEx_4YgdS-2Gtg0RQvtwWAnA/viewform" className="underline">[Contact]</Link>
+        Feel free to contact us through mail for more questions!
       </p>
     </div>
   );

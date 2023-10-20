@@ -36,7 +36,7 @@ const Navbar = (): JSX.Element => {
           const docRef = doc(database, "users", address);
           const docSnapshot = await getDoc(docRef);
 
-          if (!docSnapshot.exists()) {
+          if (!docSnapshot.exists() && router.asPath !== "/nftClaim") {
             setShowEmailModal(true);
           }
         } catch (error) {
@@ -229,7 +229,7 @@ const Navbar = (): JSX.Element => {
         </Link>
 
         {/* Connect Button */}
-        <ConnectButton accountStatus={{ smallScreen: "avatar" }} label="LAUNCH APP" />
+        <ConnectButton accountStatus={{ smallScreen: "avatar" }} label={router.asPath === "/nftClaim" ? "CONNECT WALLET" : "LAUNCH APP"} />
 
         {/* User Type Select Dropdown Button */}
         <div className={`relative grow max-w-[140px] ${router.pathname === "/" ? "hidden md:block": "hidden"}`}>

@@ -87,11 +87,6 @@ const Footer = () => {
                 Mail Address
               </Link>
             </li>
-            <li className="text-xl hover:underline">
-              <Link href="https://docs.google.com/forms/d/e/1FAIpQLSdaRr4b4-XekKneAeAb4_Wx2ELEx_4YgdS-2Gtg0RQvtwWAnA/viewform" target="_blank">
-                Contract form
-              </Link>
-            </li>
           </ul>
         </div>
         <div className="w-1 h-[200px] bg-gradient-to-b from-transparent via-[#E220CF] to-transparent lg:block hidden"></div>

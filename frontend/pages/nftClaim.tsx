@@ -90,51 +90,52 @@ const Form: React.FC<FormComponentProps> = ({ swiperRef }) => {
   };
 
   return (
-    <div className="swiper-slide min-h-screen">
-      <form className="h-screen flex flex-col items-start justify-center 2xl:mx-80 xl:mx-40 mx-20" onSubmit={handleSubmit}>
-        <div className="mb-10 w-full">
-          <label htmlFor="email" className="block mb-2 lg:text-4xl md:text-2xl text-xl font-medium">1. What's your mail address?</label>
-          <input 
-            type="email" 
-            id="email" 
-            name="email" 
-            value={answers.email} 
-            onChange={handleChange} 
-            className="w-full p-2 outline-none bg-black text-xl"
-            required={true}
-            placeholder="official@0xqube.xyz"
-          />
-        </div>
-        <div className="mb-10 w-full">
-          <label htmlFor="twitterHandle" className="block mb-2 lg:text-4xl md:text-2xl text-xl font-medium">2. Your Twitter handle</label>
-          <input 
-            type="text" 
-            id="twitterHandle" 
-            name="twitterHandle" 
-            value={answers.twitterHandle} 
-            onChange={handleChange} 
-            className="w-full p-2 outline-none bg-black text-xl"
-            required={true}
-            placeholder="@0xQube" 
-          />
-        </div>
-        <div className="mb-20 w-full">
-          <label htmlFor="pastProjects" className="block mb-2 lg:text-4xl md:text-2xl text-xl font-medium">3. Give us some project name your worked for (if any)</label>
-          <input 
-            type="text" 
-            id="pastProjects" 
-            name="pastProjects" 
-            value={answers.pastProjects} 
-            onChange={handleChange} 
-            className="w-full p-2 outline-none bg-black text-xl"
-            placeholder="(If any)" 
-          />
-        </div>
-        {isLoading 
-          ? <Image src={Spinner} width={100} height={100} alt="Loading..." className="mx-auto animate-spin-slow" /> 
-          : <button type="submit" className="bg-gradient-to-r from-[#E220CF] to-white text-black font-bold text-2xl px-8 py-3 rounded-full mx-auto">Submit</button>
-        }
-      </form>
+    <div className="swiper-slide">
+      <div className="h-screen pt-40 pb-20">
+        <form className="h-full flex flex-col items-start justify-center 2xl:mx-80 xl:mx-40 md:mx-20 mx-10 bg-black shadow-custom-pink px-10 rounded-lg" onSubmit={handleSubmit}>
+          <h1 className="mx-auto lg:text-6xl text-4xl text-[#E220CF] mb-10">Claim Handle</h1>
+          <div className="mb-10 w-full">
+            <label htmlFor="email" className="block mb-2 lg:text-2xl md:text-xl text-lg text-slate-500">e-mail address</label>
+            <input 
+              type="email" 
+              id="email" 
+              name="email" 
+              value={answers.email} 
+              onChange={handleChange} 
+              className="w-full p-2 outline-none bg-slate-900 text-xl"
+              required={true}
+            />
+          </div>
+          <div className="mb-10 w-full">
+            <label htmlFor="twitterHandle" className="block mb-2 lg:text-2xl md:text-xl text-lg text-slate-500">Twitter Handle</label>
+            <input 
+              type="text" 
+              id="twitterHandle" 
+              name="twitterHandle" 
+              value={answers.twitterHandle} 
+              onChange={handleChange} 
+              className="w-full p-2 outline-none bg-slate-900 text-xl"
+              required={true}
+            />
+          </div>
+          <div className="mb-5 w-full">
+            <label htmlFor="pastProjects" className="block mb-2 lg:text-2xl md:text-xl text-lg text-slate-500">Projects name (if any)</label>
+            <textarea 
+              id="pastProjects" 
+              name="pastProjects" 
+              rows={4}
+              value={answers.pastProjects} 
+              onChange={handleChange} 
+              className="w-full p-2 outline-none bg-slate-900 text-xl"
+              placeholder="Mention projects you worked for ...................." 
+            />
+          </div>
+          {isLoading 
+            ? <Image src={Spinner} width={100} height={100} alt="Loading..." className="mx-auto animate-spin-slow" /> 
+            : <button type="submit" className="bg-[#2D122F] text-[#D225C1] md:text-2xl text-lg py-3 w-full">Submit</button>
+          }
+        </form>
+      </div>
     </div>
   );
 };

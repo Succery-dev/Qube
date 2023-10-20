@@ -85,12 +85,12 @@ const Navbar = (): JSX.Element => {
   };
     
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [userType, setUserType] = useState("COMPANY");
+  const [userType, setUserType] = useState("CREATOR");
 
   useEffect(() => {
     if (router.asPath === '/') {
-      router.push("/?userType=COMPANY");
-      setUserType("COMPANY");
+      router.push("/?userType=CREATOR");
+      setUserType("CREATOR");
     } else {
       const { userType } = router.query;
       setUserType(userType as string);

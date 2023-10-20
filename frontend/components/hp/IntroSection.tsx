@@ -49,7 +49,7 @@ const IntroSection = (): JSX.Element => {
             viewport={{ once: true, amount: 0.25 }}
             className="text-xl mb-5"
         >
-          Powered By
+          Supported By
         </motion.p>
         <motion.div
             variants={textVariant()}

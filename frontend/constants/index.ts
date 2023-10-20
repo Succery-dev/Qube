@@ -142,7 +142,7 @@ export const featuresForFreelancers: FeaturesInterface[] = [
     title: "On-chain Resume",
     image: OnChainResume,
     description:
-      "Qube also provides a resume service where all the transactions you made or going to make will be the proof of your experience that belongs only to you.",
+      "All the transactions you make will be the proof of your experience that belongs only to you as an on-chain credential.",
   },
   {
     id: "LinkBased",
@@ -507,9 +507,9 @@ export const signProjectEip712: TypeDataDomainInterface = {
   domain: {
     name: "Qube-Sign-Project",
     // TODO: Softcoding
-    // chainId: 137,
+    chainId: 137,
     // chainId: 31337, // Hardhat Network ChainID
-    chainId: 80001,
+    // chainId: 80001,
     // chainId: 137,
   },
   types: {

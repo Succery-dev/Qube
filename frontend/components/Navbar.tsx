@@ -9,6 +9,9 @@ import { navLinks, aesthetics } from "../constants";
 import { arrow, MenuIcon, CrossIcon, Spinner } from "../assets";
 import { Glow } from "./aesthetics";
 
+import dotenv from "dotenv";
+dotenv.config();
+
 // Framer-Motion Imports
 import { motion, AnimatePresence } from "framer-motion";
 import { hoverVariant, modalVariant, modalLinksVariant, database } from "../utils";
@@ -221,7 +224,7 @@ const Navbar = (): JSX.Element => {
 
         {/* Join Discord Button */}
         <Link 
-          href="https://discord.com/invite/947wAFmwbZ"
+          href={`${process.env.NEXT_PUBLIC_DISCORD_LINK}`}
           target="_blank"
           className={`border border-white hover:bg-purple-500 ease-in duration-300 rounded-full lg:px-5 px-3 lg:py-2 py-1 ${router.pathname === "/" ? "hidden md:block": "hidden"}`}
         >
@@ -230,9 +233,9 @@ const Navbar = (): JSX.Element => {
 
         {/* Connect Button */}
         {router.pathname !== "/"
-          ? <ConnectButton accountStatus={{ smallScreen: "avatar" }} label={router.asPath === "/nftClaim" ? "CONNECT WALLET" : "LAUNCH APP"} />
+          ? <ConnectButton accountStatus={{ smallScreen: "avatar" }} label="CONNECT WALLET" />
           : router.query.close === "beta"
-            ? <ConnectButton accountStatus={{ smallScreen: "avatar" }} label={router.asPath === "/nftClaim" ? "CONNECT WALLET" : "LAUNCH APP"} />
+            ? <ConnectButton accountStatus={{ smallScreen: "avatar" }} label="LAUNCH APP" />
             : null
         }
 
@@ -272,11 +275,11 @@ const Navbar = (): JSX.Element => {
             className="fixed w-screen h-screen top-0 left-0 backdrop-blur-md z-[100] grid grid-cols-12 text-white font-nunito"
           >
             <div className="col-start-2 col-end-12 xl:col-start-4 xl:col-end-10 grid place-items-center">
-              <div className="w-full blue-transparent-green-gradient rounded-xl p-[2px] flex flex-row items-center shadow-lg">
+              <div className="w-full border border-[#E220CF] shadow-custom-pink rounded-xl p-[2px] flex flex-row items-center">
                 <div className="w-full max-h-[95vh] bg-black rounded-xl px-4 py-6 sm:p-8 md:p-10 lg:p-8 xl:p-10 relative">
                   {/* Header */}
                   <div className="flex flex-row w-full justify-between items-center top-0 right-0 z-[100]">
-                    <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-blue-500">
+                    <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#E220CF]">
                       Email Address
                     </h2>
                     {!isLoading &&
@@ -324,7 +327,7 @@ const Navbar = (): JSX.Element => {
                         <div className="flex flex-row items-center justify-end gap-14 py-4 px-4">
                           <button
                             type="submit"
-                            className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded transition duration-150"
+                            className="bg-[#E220CF] hover:bg-[#e220cf94] text-white py-2 px-4 rounded transition duration-150"
                           >
                             Send
                           </button>

@@ -16,7 +16,7 @@ import "swiper/css/pagination";
 
 import { useConnectModal } from "@rainbow-me/rainbowkit";
 
-import { useAccount } from "wagmi";
+import { useAccount, useDisconnect } from "wagmi";
 
 import { doc, setDoc, getDoc } from "firebase/firestore";
 import { database } from "../utils";
@@ -211,7 +211,7 @@ ${host}/nftClaim`;
 
 const NftClaim: NextPage = () => {
   const swiperRef = useRef<Swiper | null>(null);
-  const [host, setHost] = useState(""); 
+  const [host, setHost] = useState("");
 
   useEffect(() => {
     // init Swiper:
@@ -266,6 +266,21 @@ const NftClaim: NextPage = () => {
 
     checkIfIdExistsInCollection(address);
   }, [isConnected, address]);
+
+  const { disconnect } = useDisconnect();
+
+  useEffect(() => {
+    const handlePopState = (event) => {
+      event.preventDefault();
+      disconnect();
+    };
+
+    window.addEventListener("popstate", handlePopState);
+
+    return () => {
+      window.removeEventListener("popstate", handlePopState);
+    };
+  }, []);
 
   return (
     <div className="swiper-container overflow-y-hidden text-white bg-custom-background bg-contain">

@@ -12,6 +12,9 @@ import { footerLinks } from "../../constants";
 import { motion } from "framer-motion";
 import { fadeIn } from "../../utils";
 
+import dotenv from "dotenv";
+dotenv.config();
+
 const FooterSocial = (): JSX.Element => {
   return (
     <Link
@@ -96,7 +99,7 @@ const Footer = () => {
             <Link href="https://twitter.com/0xQube" target="_blank">
               <Image src={TwitterIcon} alt="Twitter" height={30} className="bg-[#613D5D] hover:bg-[#E220CF] ease-in duration-300 rounded-full h-[50px] w-[50px] p-1 border border-[#E220CF]" />
             </Link>
-            <Link href="https://discord.com/invite/947wAFmwbZ" target="_blank">
+            <Link href={`${process.env.NEXT_PUBLIC_DISCORD_LINK}`} target="_blank">
               <Image src={Discord} alt="Discord" height={30} className="bg-[#613D5D] hover:bg-[#E220CF] ease-in duration-300 rounded-full h-[50px] w-[50px] p-1 border border-[#E220CF]" />
             </Link>
             <Link href="https://medium.com/@0xqube" target="_blank">

@@ -107,7 +107,7 @@ const Dropbox = ({
                     </p>
                     {/* Download */}
                     {displayFile.state === "waiting" ? (
-                      <p className="basis-0 flex-grow text-sm xl:text-base lg:max-w-[30%] lg:block hidden">Waiting to upload...</p>
+                      null
                     ) : displayFile.progress != null ? (
                       <div
                         className="h-4 text-center rounded-sm bg-slate-400 basis-0 flex-grow lg:max-w-[30%] max-w-[30%]"
@@ -124,7 +124,7 @@ const Dropbox = ({
                         key={`downloadUrl-${index}`}
                         className="basis-0 flex-grow text-sm xl:text-base lg:max-w-[30%] max-w-[40%]"
                       >
-                        <p className="bg-[#3E8ECC] text-white text-center rounded-sm text-sm xl:text-base w-full">
+                        <p className="bg-[#E220CF] text-white text-center rounded-sm text-sm xl:text-base w-full">
                           Download
                         </p>
                       </Link>

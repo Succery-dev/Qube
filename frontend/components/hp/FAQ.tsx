@@ -36,8 +36,8 @@ const FAQ = () => {
       answer: "If a creator displays malicious intent or is uncooperative, you can choose to withhold payment. Qube enables you to begin refund procedures, ensuring your funds aren't wrongfully appropriated by unscrupulous individuals.",
     },
     {
-      question: "Are there security assurances since the code isn't open-source?",
-      answer: "We recognize the security concerns, especially since we are in our closed beta phase and haven't made our code open-source. However, we've had our code audited by a senior smart contract developer and have also initiated a bug bounty. Should you have any specific concerns or seek additional assurance, we're available for a conversation. Please don't hesitate to contact us at ",
+      question: "How can I trust Qube?",
+      answer: "Our smart contract source code is open for public review, ensuring transparency and accountability. Additionally, we have subjected our code to a bug bounty program to identify and rectify any vulnerabilities. For more details, please refer to the link at the bottom of our homepage. If you have any further questions or concerns, do not hesitate to reach out to us!",
     },
     {
       question: "How can I get in touch for customer support or with any questions?",
@@ -92,64 +92,64 @@ const FAQ = () => {
   };
 
   return (
-    <div id="faqs" className="h-full flex flex-col">
-      <motion.h1
-        variants={textVariant()}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.25 }}
-        className="lg:text-6xl text-4xl text-center mb-10"
-      >
-        FAQs
-      </motion.h1>
-      <div className="flex flex-col justify-evenly pl-10 h-full">
-        {(userType === "COMPANY" ? faqForClients : faqForFreelancers).map((faq, index) => (
-          <div key={index}>
-            <motion.div
-              className="cursor-pointer"
-              onClick={() => toggleFAQ(index)}
-              initial={{ scale: 1 }}
-              whileHover={{ scale: 1.05 }}
-            >
-              <h3 className="font-medium xl:text-3xl lg:text-2xl text-xl">
-                {faq.question}
-              </h3>
-            </motion.div>
-            {activeIndex === index && (
-              <motion.p
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.3 }}
-                className="xl:text-2xl lg:text-xl text-lg"
+    <>
+      <div id="faqs" className="flex lg:flex-row flex-col items-center">
+        <motion.h1
+          variants={textVariant()}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.25 }}
+          className="lg:text-6xl text-4xl w-1/3 text-center lg:mb-0 mb-10"
+        >
+          FAQs
+        </motion.h1>
+        <div className="flex flex-col lg:ml-20 gap-5">
+          {(userType === "COMPANY" ? faqForClients : faqForFreelancers).map((faq, index) => (
+            <div key={index}>
+              <motion.div
+                className="cursor-pointer xl:text-2xl lg:text-xl text-lg"
+                onClick={() => toggleFAQ(index)}
+                initial={{ scale: 1 }}
+                whileHover={{ scale: 1.05 }}
               >
-                {faq.question === "Where can I get details of the Arbitration Solution?"
-                  ? (
-                    <>
-                      {faq.answer1} <Link href="https://qube-1.gitbook.io/qube-whitepaper/" target="_blank" className="underline">Whitepaper</Link>.
-                      <br />
-                      {faq.answer2} <Link href="mailto:official@0xqube.xyz" target="_blank" className="underline">"official@0xqube.xyz"</Link>.
-                    </>
-                  )
-                  : (
-                    <>
-                      {faq.answer}
-                      {
-                        faq.question === "Are there security assurances since the code isn't open-source?" || faq.question === "How can I get in touch for customer support or with any questions?"
-                          ? <Link href="mailto:official@0xqube.xyz" target="_blank" className="underline">"official@0xqube.xyz".</Link>
-                          : null
-                      }
-                    </>                       
-                  )
-                }
-              </motion.p>
-            )}
-          </div>
-        ))}
+                {faq.question}
+              </motion.div>
+              {activeIndex === index && (
+                <motion.p
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.3 }}
+                  className="xl:text-xl lg:text-lg text-md"
+                >
+                  {faq.question === "Where can I get details of the Arbitration Solution?"
+                    ? (
+                      <>
+                        {faq.answer1} <Link href="https://qube-1.gitbook.io/qube-whitepaper/" target="_blank" className="underline">Whitepaper</Link>.
+                        <br />
+                        {faq.answer2} <Link href="mailto:official@0xqube.xyz" target="_blank" className="underline">"official@0xqube.xyz"</Link>.
+                      </>
+                    )
+                    : (
+                      <>
+                        {faq.answer}
+                        {
+                          faq.question === "How can I get in touch for customer support or with any questions?"
+                            ? <Link href="mailto:official@0xqube.xyz" target="_blank" className="underline">"official@0xqube.xyz".</Link>
+                            : null
+                        }
+                      </>                       
+                    )
+                  }
+                </motion.p>
+              )}
+            </div>
+          ))}
+        </div>
       </div>
-      <p className="xl:text-5xl lg:text-3xl sm:text-2xl text-[1.2rem] text-center">
+      <p className="xl:text-5xl lg:text-3xl sm:text-2xl text-[1.2rem] text-center lg:my-20 my-10">
         Feel free to contact us through mail for more questions!
       </p>
-    </div>
+    </>
   );
 };
 

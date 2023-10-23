@@ -3,6 +3,9 @@ import type { NextPage } from "next";
 import Image from "next/image";
 import Link from "next/link";
 
+import dotenv from "dotenv";
+dotenv.config();
+
 // core version + navigation, pagination modules:
 import Swiper from "swiper";
 import { Navigation, Pagination } from "swiper/modules";
@@ -13,7 +16,7 @@ import "swiper/css/pagination";
 
 import { useConnectModal } from "@rainbow-me/rainbowkit";
 
-import { useAccount } from "wagmi";
+import { useAccount, useDisconnect } from "wagmi";
 
 import { doc, setDoc, getDoc } from "firebase/firestore";
 import { database } from "../utils";
@@ -161,7 +164,7 @@ const ClaimSuccess: React.FC<ClaimSuccessProps> = ({ host, personalInfo }) => {
   const message = 
 `I have claimed my handle on Qube.
 
-Qube is an All in One tool for creators in gaming space. It protects creators from NON or DELAYED payments and make their collaboration woth projects smoother. 
+Qube is an "All in One" tool for creators in the gaming space. It protects creators from NON or DELAYED payments and makes their collaboration with projects smoother.
 ${host}/nftClaim`;
   const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(message)}`;
 
@@ -174,8 +177,10 @@ ${host}/nftClaim`;
             <Image src={Checkbox} height={100} width={100} alt="checkbox" />
             <div>
               <p className="mb-10">You will be notified when you're through the list</p>
-              <p>{`e-mail: ${personalInfo.email}`}</p>
-              <p>{`Twitter handle: ${personalInfo.twitterHandle}`}</p>
+              <p>e-mail:</p>
+              <p className="xl:text-2xl text-lg break-all">{personalInfo.email}</p>
+              <p>Twitter handle:</p>
+              <p className="xl:text-2xl text-lg break-all">{personalInfo.twitterHandle}</p>
             </div>
           </div>
         </div>
@@ -194,7 +199,7 @@ ${host}/nftClaim`;
                 <Image src={Discord} height={90} width={90} alt="Discord" />
                 <div className="flex flex-col">
                   <p className="mb-10">Don't forget to join our discord community. </p>
-                  <Link href="https://discord.com/invite/947wAFmwbZ" target="_blank" className="bg-gradient-to-r from-[#E220CF] to-white text-black font-bold lg:px-8 px-5 lg:py-3 py-1 rounded-full mx-auto">Join</Link>
+                  <Link href={`${process.env.NEXT_PUBLIC_DISCORD_LINK}`} target="_blank" className="bg-gradient-to-r from-[#E220CF] to-white text-black font-bold lg:px-8 px-5 lg:py-3 py-1 rounded-full mx-auto">Join</Link>
                 </div>
               </div>
             </div>
@@ -206,7 +211,7 @@ ${host}/nftClaim`;
 
 const NftClaim: NextPage = () => {
   const swiperRef = useRef<Swiper | null>(null);
-  const [host, setHost] = useState(""); 
+  const [host, setHost] = useState("");
 
   useEffect(() => {
     // init Swiper:
@@ -261,6 +266,21 @@ const NftClaim: NextPage = () => {
 
     checkIfIdExistsInCollection(address);
   }, [isConnected, address]);
+
+  const { disconnect } = useDisconnect();
+
+  useEffect(() => {
+    const handlePopState = (event) => {
+      event.preventDefault();
+      disconnect();
+    };
+
+    window.addEventListener("popstate", handlePopState);
+
+    return () => {
+      window.removeEventListener("popstate", handlePopState);
+    };
+  }, []);
 
   return (
     <div className="swiper-container overflow-y-hidden text-white bg-custom-background bg-contain">

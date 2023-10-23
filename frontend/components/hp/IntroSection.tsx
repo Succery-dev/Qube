@@ -30,7 +30,7 @@ const IntroSection = (): JSX.Element => {
       </p>
       { router.query.close === undefined &&
         <CustomButton
-          text="CLAIM NFT"
+          text="Claim HANDLE"
           styles="border-none xs:text-sm sm:text-xl lg:text-2xl font-semibold text-black bg-gradient-to-b from-slate-200 to-[#E220CF] lg:px-8 lg:py-4 px-4 py-2 rounded-full lg:mt-12 sm:mt-8 mt-16"
           type="button"
           onClick={(e) => router.push("/nftClaim")}

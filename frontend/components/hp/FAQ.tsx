@@ -92,64 +92,64 @@ const FAQ = () => {
   };
 
   return (
-    <div id="faqs" className="h-full flex flex-col">
-      <motion.h1
-        variants={textVariant()}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.25 }}
-        className="lg:text-6xl text-4xl text-center mb-10"
-      >
-        FAQs
-      </motion.h1>
-      <div className="flex flex-col justify-evenly pl-10 h-full">
-        {(userType === "COMPANY" ? faqForClients : faqForFreelancers).map((faq, index) => (
-          <div key={index}>
-            <motion.div
-              className="cursor-pointer"
-              onClick={() => toggleFAQ(index)}
-              initial={{ scale: 1 }}
-              whileHover={{ scale: 1.05 }}
-            >
-              <h3 className="font-medium xl:text-3xl lg:text-2xl text-xl">
-                {faq.question}
-              </h3>
-            </motion.div>
-            {activeIndex === index && (
-              <motion.p
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.3 }}
-                className="xl:text-2xl lg:text-xl text-lg"
+    <>
+      <div id="faqs" className="flex lg:flex-row flex-col items-center">
+        <motion.h1
+          variants={textVariant()}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.25 }}
+          className="lg:text-6xl text-4xl w-1/3 text-center lg:mb-0 mb-10"
+        >
+          FAQs
+        </motion.h1>
+        <div className="flex flex-col lg:ml-20 gap-5">
+          {(userType === "COMPANY" ? faqForClients : faqForFreelancers).map((faq, index) => (
+            <div key={index}>
+              <motion.div
+                className="cursor-pointer xl:text-2xl lg:text-xl text-lg"
+                onClick={() => toggleFAQ(index)}
+                initial={{ scale: 1 }}
+                whileHover={{ scale: 1.05 }}
               >
-                {faq.question === "Where can I get details of the Arbitration Solution?"
-                  ? (
-                    <>
-                      {faq.answer1} <Link href="https://qube-1.gitbook.io/qube-whitepaper/" target="_blank" className="underline">Whitepaper</Link>.
-                      <br />
-                      {faq.answer2} <Link href="mailto:official@0xqube.xyz" target="_blank" className="underline">"official@0xqube.xyz"</Link>.
-                    </>
-                  )
-                  : (
-                    <>
-                      {faq.answer}
-                      {
-                        faq.question === "How can I get in touch for customer support or with any questions?"
-                          ? <Link href="mailto:official@0xqube.xyz" target="_blank" className="underline">"official@0xqube.xyz".</Link>
-                          : null
-                      }
-                    </>                       
-                  )
-                }
-              </motion.p>
-            )}
-          </div>
-        ))}
+                {faq.question}
+              </motion.div>
+              {activeIndex === index && (
+                <motion.p
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.3 }}
+                  className="xl:text-xl lg:text-lg text-md"
+                >
+                  {faq.question === "Where can I get details of the Arbitration Solution?"
+                    ? (
+                      <>
+                        {faq.answer1} <Link href="https://qube-1.gitbook.io/qube-whitepaper/" target="_blank" className="underline">Whitepaper</Link>.
+                        <br />
+                        {faq.answer2} <Link href="mailto:official@0xqube.xyz" target="_blank" className="underline">"official@0xqube.xyz"</Link>.
+                      </>
+                    )
+                    : (
+                      <>
+                        {faq.answer}
+                        {
+                          faq.question === "How can I get in touch for customer support or with any questions?"
+                            ? <Link href="mailto:official@0xqube.xyz" target="_blank" className="underline">"official@0xqube.xyz".</Link>
+                            : null
+                        }
+                      </>                       
+                    )
+                  }
+                </motion.p>
+              )}
+            </div>
+          ))}
+        </div>
       </div>
-      <p className="xl:text-5xl lg:text-3xl sm:text-2xl text-[1.2rem] text-center">
+      <p className="xl:text-5xl lg:text-3xl sm:text-2xl text-[1.2rem] text-center lg:my-20 my-10">
         Feel free to contact us through mail for more questions!
       </p>
-    </div>
+    </>
   );
 };
 

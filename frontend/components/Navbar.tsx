@@ -233,9 +233,9 @@ const Navbar = (): JSX.Element => {
 
         {/* Connect Button */}
         {router.pathname !== "/"
-          ? <ConnectButton accountStatus={{ smallScreen: "avatar" }} label={router.asPath === "/nftClaim" ? "CONNECT WALLET" : "LAUNCH APP"} />
+          ? <ConnectButton accountStatus={{ smallScreen: "avatar" }} label="CONNECT WALLET" />
           : router.query.close === "beta"
-            ? <ConnectButton accountStatus={{ smallScreen: "avatar" }} label={router.asPath === "/nftClaim" ? "CONNECT WALLET" : "LAUNCH APP"} />
+            ? <ConnectButton accountStatus={{ smallScreen: "avatar" }} label="LAUNCH APP" />
             : null
         }
 

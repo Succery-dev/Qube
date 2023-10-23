@@ -2,10 +2,10 @@ import { HardhatUserConfig, task } from "hardhat/config";
 import "@nomicfoundation/hardhat-toolbox";
 import dotenv from "dotenv";
 dotenv.config();
-require("@nomiclabs/hardhat-etherscan");
 import "@typechain/hardhat";
 import "solidity-coverage";
 import "hardhat-gas-reporter";
+import "@nomicfoundation/hardhat-verify";
 
 task("balance", "Prints an account's balance")
     .addParam("account", "The account's address")
@@ -72,8 +72,7 @@ const config: HardhatUserConfig = {
     // },
     etherscan: {
         apiKey: { // npx hardhat verify --list-networks
-            goerli: `${process.env.ETHERSCAN}`,
-            mainnet: `${process.env.ETHERSCAN}`,
+            polygon: `${process.env.POLYGONSCAN_API_KEY}`,
         }
     },
     gasReporter: {

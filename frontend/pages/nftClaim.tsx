@@ -199,7 +199,7 @@ ${host}/nftClaim`;
                 <Image src={Discord} height={90} width={90} alt="Discord" />
                 <div className="flex flex-col">
                   <p className="mb-10">Don't forget to join our discord community. </p>
-                  <Link href={`${process.env.DISCORD_LINK}`} target="_blank" className="bg-gradient-to-r from-[#E220CF] to-white text-black font-bold lg:px-8 px-5 lg:py-3 py-1 rounded-full mx-auto">Join</Link>
+                  <Link href={`${process.env.NEXT_PUBLIC_DISCORD_LINK}`} target="_blank" className="bg-gradient-to-r from-[#E220CF] to-white text-black font-bold lg:px-8 px-5 lg:py-3 py-1 rounded-full mx-auto">Join</Link>
                 </div>
               </div>
             </div>

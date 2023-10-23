@@ -27,6 +27,8 @@ export default class MyDocument extends Document {
             href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap"
             rel="stylesheet"
           />
+          {/* Preloading the background image to improve page load performance */}
+          <link rel="preload" href="/images/background.jpg" as="image" />
         </Head>
         <body>
           <Main />

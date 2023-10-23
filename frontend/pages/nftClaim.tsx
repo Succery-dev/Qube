@@ -164,7 +164,7 @@ const ClaimSuccess: React.FC<ClaimSuccessProps> = ({ host, personalInfo }) => {
   const message = 
 `I have claimed my handle on Qube.
 
-Qube is an All in One tool for creators in gaming space. It protects creators from NON or DELAYED payments and make their collaboration woth projects smoother. 
+Qube is an "All in One" tool for creators in the gaming space. It protects creators from NON or DELAYED payments and makes their collaboration with projects smoother.
 ${host}/nftClaim`;
   const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(message)}`;
 

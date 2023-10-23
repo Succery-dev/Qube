@@ -9,6 +9,9 @@ import { navLinks, aesthetics } from "../constants";
 import { arrow, MenuIcon, CrossIcon, Spinner } from "../assets";
 import { Glow } from "./aesthetics";
 
+import dotenv from "dotenv";
+dotenv.config();
+
 // Framer-Motion Imports
 import { motion, AnimatePresence } from "framer-motion";
 import { hoverVariant, modalVariant, modalLinksVariant, database } from "../utils";
@@ -221,7 +224,7 @@ const Navbar = (): JSX.Element => {
 
         {/* Join Discord Button */}
         <Link 
-          href="https://discord.com/invite/947wAFmwbZ"
+          href={`${process.env.DISCORD_LINK}`}
           target="_blank"
           className={`border border-white hover:bg-purple-500 ease-in duration-300 rounded-full lg:px-5 px-3 lg:py-2 py-1 ${router.pathname === "/" ? "hidden md:block": "hidden"}`}
         >

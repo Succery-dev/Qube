@@ -177,8 +177,10 @@ ${host}/nftClaim`;
             <Image src={Checkbox} height={100} width={100} alt="checkbox" />
             <div>
               <p className="mb-10">You will be notified when you're through the list</p>
-              <p>{`e-mail: ${personalInfo.email}`}</p>
-              <p>{`Twitter handle: ${personalInfo.twitterHandle}`}</p>
+              <p>e-mail:</p>
+              <p className="xl:text-2xl text-lg break-all">{personalInfo.email}</p>
+              <p>Twitter handle:</p>
+              <p className="xl:text-2xl text-lg break-all">{personalInfo.twitterHandle}</p>
             </div>
           </div>
         </div>

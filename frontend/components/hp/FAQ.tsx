@@ -36,8 +36,8 @@ const FAQ = () => {
       answer: "If a creator displays malicious intent or is uncooperative, you can choose to withhold payment. Qube enables you to begin refund procedures, ensuring your funds aren't wrongfully appropriated by unscrupulous individuals.",
     },
     {
-      question: "Are there security assurances since the code isn't open-source?",
-      answer: "We recognize the security concerns, especially since we are in our closed beta phase and haven't made our code open-source. However, we've had our code audited by a senior smart contract developer and have also initiated a bug bounty. Should you have any specific concerns or seek additional assurance, we're available for a conversation. Please don't hesitate to contact us at ",
+      question: "How can I trust Qube?",
+      answer: "Our smart contract source code is open for public review, ensuring transparency and accountability. Additionally, we have subjected our code to a bug bounty program to identify and rectify any vulnerabilities. For more details, please refer to the link at the bottom of our homepage. If you have any further questions or concerns, do not hesitate to reach out to us!",
     },
     {
       question: "How can I get in touch for customer support or with any questions?",
@@ -134,7 +134,7 @@ const FAQ = () => {
                     <>
                       {faq.answer}
                       {
-                        faq.question === "Are there security assurances since the code isn't open-source?" || faq.question === "How can I get in touch for customer support or with any questions?"
+                        faq.question === "How can I get in touch for customer support or with any questions?"
                           ? <Link href="mailto:official@0xqube.xyz" target="_blank" className="underline">"official@0xqube.xyz".</Link>
                           : null
                       }

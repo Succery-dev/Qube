@@ -3,8 +3,8 @@ import { getSigner } from "../utils/ethers";
 import EscrowArtifact from "../../backend/artifacts/contracts/Escrow.sol/Escrow.json";
 
 // export const EscrowAddress = "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512";
-// export const EscrowAddress = "0x99404C0d2dE049111bAE676e9D36Fab4080F4E20";
-export const EscrowAddress = "0xC4b96eF9eeA15e7c05FB429d36Fa6fFfDDB2DF01";
+export const EscrowAddress = "0x99404C0d2dE049111bAE676e9D36Fab4080F4E20";
+// export const EscrowAddress = "0xC4b96eF9eeA15e7c05FB429d36Fa6fFfDDB2DF01";
 
 export function getEscrowContract(signer: ethers.Signer): ethers.Contract {
   return new ethers.Contract(EscrowAddress, EscrowArtifact.abi, signer);

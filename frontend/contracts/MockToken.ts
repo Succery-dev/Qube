@@ -1,13 +1,13 @@
 import { ethers } from "ethers";
 import { getSigner, getJsonRpcProvider } from "../utils/ethers";
 // import MockTokenArtifact from "../../backend/artifacts/contracts/mocks/MockToken.sol/MockToken.json";
-// import USDCMumbai from "./USDC_mumbai.json";
+import USDCMumbai from "./USDC_mumbai.json";
 import USDC from "./USDC.json"
 
-const MockTokenAddress = "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174";
+const MockTokenAddress = "0x0FA8781a83E46826621b3BC094Ea2A0212e71B23";
 
 export function getMockTokenContract(signerOrProvider: ethers.Signer | ethers.providers.Provider): ethers.Contract {
-  return new ethers.Contract(MockTokenAddress, USDC, signerOrProvider);
+  return new ethers.Contract(MockTokenAddress, USDCMumbai, signerOrProvider);
 }
 
 export async function balanceOf(account: string) {

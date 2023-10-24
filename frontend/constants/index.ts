@@ -509,7 +509,7 @@ export const createProjectFields: CreateProjectFieldInterface[] = [
 export const signProjectEip712: TypeDataDomainInterface = {
   domain: {
     name: "Qube-Sign-Project",
-    chainId: parseInt(process.env.CHAIN_ID),
+    chainId: parseInt(process.env.NEXT_PUBLIC_CHAIN_ID),
   },
   types: {
     ProjectDetail: [

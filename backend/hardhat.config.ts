@@ -2,10 +2,6 @@ import { HardhatUserConfig, task } from "hardhat/config";
 import "@nomicfoundation/hardhat-toolbox";
 import dotenv from "dotenv";
 dotenv.config();
-import "@typechain/hardhat";
-import "solidity-coverage";
-import "hardhat-gas-reporter";
-import "@nomicfoundation/hardhat-verify";
 
 task("balance", "Prints an account's balance")
     .addParam("account", "The account's address")

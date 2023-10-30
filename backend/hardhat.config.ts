@@ -1,6 +1,6 @@
 import { HardhatUserConfig, task } from "hardhat/config";
 import "@nomicfoundation/hardhat-toolbox";
-import dotenv from "dotenv";
+import * as dotenv from "dotenv";
 dotenv.config();
 
 task("balance", "Prints an account's balance")

@@ -1,21 +1,36 @@
-import { ethers } from "hardhat";
+import "@nomicfoundation/hardhat-toolbox";
+import { HardhatRuntimeEnvironment } from "hardhat/types";
+import hre from "hardhat";
+import { writeFileSync } from "fs";
+import { Contract } from "ethers";
+import { ContractNames } from "../contractNames";
+import { MumbaiTokenAddresses } from "../tokenAddresses";
 
-async function main() {
-  const [deployer] = await ethers.getSigners();
-
-  console.log("Deploying contracts with the account:", deployer.address);
-
-  const EscrowContractFactory = await ethers.getContractFactory("Escrow");
-  const EscrowContract = await EscrowContractFactory.deploy("0x0FA8781a83E46826621b3BC094Ea2A0212e71B23");
-
-  console.log("Escrow Contract deployed to:", EscrowContract.address); 
-  //0x0A2Dd392CBb168fE2aFe63C85a9cC7FD9b100892 Shungo's Alchemy
-  //0x99404C0d2dE049111bAE676e9D36Fab4080F4E20 Succery's Alchemy
+async function deploy(hre: HardhatRuntimeEnvironment, name: string, ...params: any[]): Promise<Contract> {
+  const Contract = await hre.ethers.getContractFactory(name);
+  const contractInstance = await Contract.deploy(...params);
+  return await contractInstance.deployed();
 }
 
-main()
-  .then(() => process.exit(0))
-  .catch((error) => {
-    console.error(error);
+async function main() {
+  try {
+    const [deployer] = await hre.ethers.getSigners();
+    console.log("Deploying contracts with the account:", deployer.address);
+
+    const forwarder = await deploy(hre, ContractNames.MinimalForwarder);
+    const escrow = await deploy(hre, ContractNames.Escrow, forwarder.address, MumbaiTokenAddresses.USDC);
+
+    writeFileSync("deploy.json", JSON.stringify({
+      MinimalForwarder: forwarder.address,
+      Escrow: escrow.address,
+    }, null, 2));
+
+    console.log(`${ContractNames.MinimalForwarder}: ${forwarder.address}\n${ContractNames.Escrow}: ${escrow.address}`);
+    process.exit(0);
+  } catch (error) {
+    console.error("Error:", error);
     process.exit(1);
-  });
+  }
+}
+
+main();

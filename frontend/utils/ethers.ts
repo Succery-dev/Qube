@@ -28,7 +28,7 @@ export function getWeb3Provider(): ethers.providers.Web3Provider | undefined {
   return web3Provider;
 }
 
-export function getSigner() {
+export function getSigner(): ethers.providers.JsonRpcSigner | undefined {
   if (!web3Provider) {
     throw new Error("Web3 provider is not initialized. Please call initializeWeb3Provider() first.");
   }

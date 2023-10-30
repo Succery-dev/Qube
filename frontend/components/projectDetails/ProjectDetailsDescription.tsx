@@ -35,7 +35,8 @@ import { IconNotificationError, IconNotificationSuccess } from "../../assets";
 
 import { ethers } from "ethers";
 import { approve, allowance } from "../../contracts/MockToken";
-import { EscrowAddress, depositTokens, withdrawTokensToRecipientByDepositor } from "../../contracts/Escrow";
+import { depositTokens, withdrawTokensToRecipientByDepositor } from "../../contracts/Escrow";
+import deployedContracts from "../../../backend/deploy.json";
 import { StatusEnum } from "../../enums";
 import { getDataFromFireStore } from "../../utils";
 import { useAccount } from "wagmi";
@@ -102,9 +103,9 @@ const ProjectDetailsDescription = ({
         const amount = ethers.utils.parseUnits(projectDetails["Reward(USDC)"].toString(), 6);
 
         // Approve tokens
-        const approveResult = await approve(EscrowAddress, amount);
+        const approveResult = await approve(deployedContracts.Escrow, amount);
         console.log("Approve Result: ", approveResult);
-        const approvedTokens = await allowance(projectDetails["Client's Wallet Address"], EscrowAddress);
+        const approvedTokens = await allowance(projectDetails["Client's Wallet Address"], deployedContracts.Escrow);
         console.log("USDC Allowance: ", ethers.utils.formatUnits(approvedTokens, 6));
 
         // Deposit tokens
@@ -116,7 +117,7 @@ const ProjectDetailsDescription = ({
         const updatedSubsetProjectDetail: Partial<StoreProjectDetailsInterface> =
           {
             "Status": StatusEnum.WaitingForSubmission,
-            "prepayTxHash": depositResult.transactionHash,
+            "prepayTxHash": depositResult,
           };
         await updateProjectDetails(projectId, updatedSubsetProjectDetail);
         const [_, updatedProjectDetails] = await getDataFromFireStore(
@@ -136,8 +137,8 @@ const ProjectDetailsDescription = ({
         console.log("Prepay Failed: ", error);
         setNotificationConfiguration({
           modalColor: "#d14040",
-          title: "Error",
-          message: "Error prepaying tokens",
+          title: "Error prepaying tokens",
+          message: error.data.message,
           icon: IconNotificationError,
         });
         setShowNotification(true);
@@ -289,6 +290,7 @@ const ProjectDetailsDescription = ({
       // ③ Approve The Submission
       const approveResult = await withdrawTokensToRecipientByDepositor(projectId);
       console.log("Approve Result: ", approveResult);
+      if (!approveResult) throw new Error("Failed to approve the submission");
 
       // Update the status to "Waiting for Submission"
       const updatedSubsetProjectDetail: Partial<StoreProjectDetailsInterface> =

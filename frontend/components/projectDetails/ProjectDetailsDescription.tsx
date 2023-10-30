@@ -421,7 +421,7 @@ const ProjectDetailsDescription = ({
             assignProject(
               // nftOwnerAddress,
               freelancerAddress,
-              projectDetails["Client's Wallet Address"],
+              projectDetails["Lancer's Wallet Address"],
               // projectDetails["NFT(Contract Address)"],
               openConnectModal,
               signTypedDataAsync,

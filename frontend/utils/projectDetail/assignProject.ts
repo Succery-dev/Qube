@@ -20,8 +20,8 @@ import {
 export const assignProject = async (
   // nftOwnerAddress: `0x${string}`,
   // nftAddress: `0x${string}`,
-  freelancerAddress: `0x${string}`,
-  clientAddress: `0x${string}`,
+  companyAddress: `0x${string}`,
+  creatorAddress: `0x${string}`,
   openConnectModal: any,
   signTypedDataAsync: any,
   projectId: string,
@@ -34,18 +34,18 @@ export const assignProject = async (
   >,
   setShowNotification: React.Dispatch<React.SetStateAction<boolean>>
 ) => {
-  if (freelancerAddress) {
+  if (companyAddress) {
     try {
       // const isOwner = await checkNftOwnership(nftAddress, nftOwnerAddress);
       // if (isOwner) {
-        if (clientAddress === freelancerAddress) {
+        if (creatorAddress === companyAddress) {
           throw new Error("You can't approve this project");
         }
         const approveProof = await approveProjectDetails(signTypedDataAsync);
         const updatedSubsetProjectDetail: Partial<StoreProjectDetailsInterface> =
           {
             approveProof: approveProof,
-            "Lancer's Wallet Address": freelancerAddress,
+            "Client's Wallet Address": companyAddress,
             "Status": StatusEnum.PayInAdvance,
           };
         await updateProjectDetails(projectId, updatedSubsetProjectDetail);
@@ -59,7 +59,7 @@ export const assignProject = async (
         setNotificationConfiguration({
           modalColor: "#62d140",
           title: "Successfully approved project",
-          message: "Submit your work before the deadline!",
+          message: "Please prepay the reward!",
           icon: IconNotificationSuccess,
         });
         setShowNotification(true);

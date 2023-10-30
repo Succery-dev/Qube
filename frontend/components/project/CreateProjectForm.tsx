@@ -253,8 +253,8 @@ const CreateProjectForm = ({
         date.setDate(date.getDate() + 7);
         const paymentDeadline = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate(), 21, 30, 0, 0));
         form["Deadline(UTC) For Payment"] = paymentDeadline.toISOString();
-        form["Client's Wallet Address"] = address;
-        form["Lancer's Wallet Address"] = addressZero;
+        form["Client's Wallet Address"] = addressZero;
+        form["Lancer's Wallet Address"] = address;
         form.approveProof = "";
         form.fileDeliverable = [];
         form.textDeliverable = [];
@@ -280,7 +280,7 @@ const CreateProjectForm = ({
         setNotificationConfiguration({
           modalColor: "#62d140",
           title: "Successfully created the project",
-          message: "Share the link and wait till the freelancer signs to the project!",
+          message: "Share the link and wait till the company signs to the project!",
           icon: IconNotificationSuccess,
         });
 

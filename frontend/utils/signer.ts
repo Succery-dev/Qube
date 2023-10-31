@@ -1,4 +1,5 @@
 import { ethers, Contract } from "ethers";
+import ethSigUtil from "eth-sig-util";
 
 interface EIP712DomainType {
   name: string;
@@ -23,6 +24,7 @@ const ForwardRequest: ForwardRequestType[] = [
   { name: "value", type: "uint256" },
   { name: "gas", type: "uint256" },
   { name: "nonce", type: "uint256" },
+  { name: "deadline", type: "uint48" },
   { name: "data", type: "bytes" },
 ];
 
@@ -48,8 +50,8 @@ function getMetaTxTypeData(chainId: number, verifyingContract: string): MetaTxTy
       ForwardRequest,
     },
     domain: {
-      name: "MinimalForwarder",
-      version: "0.0.1",
+      name: "ERC2771Forwarder",
+      version: "1",
       chainId,
       verifyingContract,
     },
@@ -63,20 +65,27 @@ interface RelayRequestInput {
   value?: number;
   gas?: number;
   nonce?: number;
+  deadline?: number;
   data: string;
 }
 
-async function signTypedData(signer: ethers.providers.JsonRpcSigner, from: string, data: any): Promise<string> {
+async function signTypedData(signer: ethers.providers.JsonRpcSigner | string, from: string, data: any): Promise<string> {
+  if (typeof signer === "string") {
+    const privateKey = Buffer.from(signer.replace(/^0x/, ''), 'hex');
+    return ethSigUtil.signTypedMessage(privateKey, { data });
+  }
+
   const isHardhat = data.domain.chainId === 31337;
   const [method, argData] = isHardhat
     ? ["eth_signTypedData", data]
     : ["eth_signTypedData_v4", JSON.stringify(data)];
-  return await signer.provider.send("eth_signTypedData_v4", [from, argData]);
+  return await signer.provider.send(method, [from, argData]);
 }
 
 async function buildRequest(forwarder: Contract, input: RelayRequestInput): Promise<RelayRequestInput> {
-  const nonce = await forwarder.getNonce(input.from).then((nonce: any) => nonce.toString());
-  return { value: 0, gas: 1e6, nonce, ...input };
+  const deadline = Math.floor(Date.now() / 1000) + 3600; // Add one hour to the current UNIX timestamp
+  const nonce = (await forwarder.nonces(input.from)).toString();
+  return { value: 0, gas: 1e6, deadline, nonce, ...input };
 }
 
 async function buildTypedData(forwarder: Contract, request: RelayRequestInput): Promise<MetaTxTypeData> {
@@ -89,7 +98,11 @@ async function signMetaTxRequest(signer: ethers.providers.JsonRpcSigner, forward
   const request = await buildRequest(forwarder, input);
   const toSign = await buildTypedData(forwarder, request);
   const signature = await signTypedData(signer, input.from, toSign);
-  return { signature, request };
+
+  // Add the 'signature' property to the request object
+  const signedRequest = { ...request, signature };
+  
+  return signedRequest;
 }
 
 export { signMetaTxRequest, buildRequest, buildTypedData };

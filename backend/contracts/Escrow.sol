@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: UNLICENSED
-pragma solidity ^0.8.18;
+pragma solidity ^0.8.19;
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/metatx/ERC2771Context.sol";
-import "@openzeppelin/contracts/metatx/MinimalForwarder.sol";
+import "@openzeppelin/contracts/metatx/ERC2771Forwarder.sol";
 // import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 
 contract Escrow is ERC2771Context, Ownable {
@@ -27,7 +27,10 @@ contract Escrow is ERC2771Context, Ownable {
     // event Deposited(address indexed user, uint256 amount, uint256 timestamp);
     // event Withdrawn(address indexed user, address indexed to, uint256 amount);
 
-    constructor(MinimalForwarder forwarder, address _token) ERC2771Context(address(forwarder)) {
+    constructor(ERC2771Forwarder forwarder, address _token, address initialOwner) 
+        ERC2771Context(address(forwarder))
+        Ownable(initialOwner)
+    {
         token = IERC20(_token);
     }
 

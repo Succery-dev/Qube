@@ -90,9 +90,9 @@ const ProjectDetails = ({ projectId }: { projectId: string }): JSX.Element => {
       "Title": projectDetails.Title,
       "Detail": projectDetails.Detail,
       "Deadline(UTC)": projectDetails["Deadline(UTC)"],
-      "Reward(USDC)": projectDetails["Reward(USDC)"],
-      "Client's Wallet Address": projectDetails["Client's Wallet Address"],
-      "Freelancer's Wallet Address": address,
+      "Reward": projectDetails["Reward(USDC)"],
+      "Company's Wallet Address": address,
+      "Creator's Wallet Address": projectDetails["Lancer's Wallet Address"],
     },
   });
 

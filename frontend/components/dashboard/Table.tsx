@@ -41,7 +41,7 @@ const TableContents = ({
   projectData: ProjectDataInterface;
 }): JSX.Element => {
   return (
-    <div>
+    <div className="max-h-[60vh] overflow-y-auto">
       {projectData.data.map((project: ProjectDetailInterface, index: number) => {
         return (
           <Link key={project["id"]} href={`/projectDetails/${project["id"]}`}>

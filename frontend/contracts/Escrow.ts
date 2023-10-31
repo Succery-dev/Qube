@@ -21,7 +21,7 @@ async function sendMetaTx(contract: Contract, signer: ethers.providers.JsonRpcSi
   const data = contract.interface.encodeFunctionData(methodName, args);
   const to = contract.address;
   
-  const request = await signMetaTxRequest(signer, forwarder, { to, from, data });
+  const signedRequest = await signMetaTxRequest(signer, forwarder, { to, from, data });
 
   try {
     const response = await fetch(url, {
@@ -29,7 +29,7 @@ async function sendMetaTx(contract: Contract, signer: ethers.providers.JsonRpcSi
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(request),
+      body: JSON.stringify(signedRequest),
     });
 
     console.log("response: ", response);

@@ -5,5 +5,5 @@ import ForwarderAbi from "./abi/forwarder.json";
 
 export function getForwarderContract(): Contract {
   const provider = getJsonRpcProvider();
-  return new Contract(deployedContracts.MinimalForwarder, ForwarderAbi, provider);
+  return new Contract(deployedContracts.ERC2771Forwarder, ForwarderAbi, provider);
 }

@@ -17,15 +17,15 @@ async function main() {
     const [deployer] = await hre.ethers.getSigners();
     console.log("Deploying contracts with the account:", deployer.address);
 
-    const forwarder = await deploy(hre, ContractNames.MinimalForwarder);
-    const escrow = await deploy(hre, ContractNames.Escrow, forwarder.address, MumbaiTokenAddresses.USDC);
+    const forwarder = await deploy(hre, ContractNames.ERC2771Forwarder, ContractNames.ERC2771Forwarder);
+    const escrow = await deploy(hre, ContractNames.Escrow, forwarder.address, MumbaiTokenAddresses.USDC, deployer.address);
 
     writeFileSync("deploy.json", JSON.stringify({
-      MinimalForwarder: forwarder.address,
+      ERC2771Forwarder: forwarder.address,
       Escrow: escrow.address,
     }, null, 2));
 
-    console.log(`${ContractNames.MinimalForwarder}: ${forwarder.address}\n${ContractNames.Escrow}: ${escrow.address}`);
+    console.log(`${ContractNames.ERC2771Forwarder}: ${forwarder.address}\n${ContractNames.Escrow}: ${escrow.address}`);
     process.exit(0);
   } catch (error) {
     console.error("Error:", error);

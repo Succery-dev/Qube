@@ -1,4 +1,4 @@
 export enum ContractNames {
-  MinimalForwarder = "MinimalForwarder",
+  ERC2771Forwarder = "ERC2771Forwarder",
   Escrow = "Escrow",
 }

@@ -35,7 +35,7 @@ export const assignProject = async (
   setShowNotification: React.Dispatch<React.SetStateAction<boolean>>
 ) => {
   if (companyAddress) {
-    try {
+    // try {
       // const isOwner = await checkNftOwnership(nftAddress, nftOwnerAddress);
       // if (isOwner) {
         if (creatorAddress === companyAddress) {
@@ -56,27 +56,27 @@ export const assignProject = async (
         setProjectDetails(updatedProjectDetails);
         setIsAssigned(true);
 
-        setNotificationConfiguration({
-          modalColor: "#62d140",
-          title: "Successfully approved project",
-          message: "Please prepay the reward!",
-          icon: IconNotificationSuccess,
-        });
-        setShowNotification(true);
+        // setNotificationConfiguration({
+        //   modalColor: "#62d140",
+        //   title: "Successfully approved project",
+        //   message: "Please prepay the reward!",
+        //   icon: IconNotificationSuccess,
+        // });
+        // setShowNotification(true);
       // } else {
       //   throw new Error("Not Approved for the project");
       // }
-    } catch (error) {
-      console.log("Error: ", error);
-      setNotificationConfiguration({
-        modalColor: "#d14040",
-        title: "Error",
-        message: "Error approving the project.",
-        icon: IconNotificationError,
-      });
+    // } catch (error) {
+    //   console.log("Error: ", error);
+    //   setNotificationConfiguration({
+    //     modalColor: "#d14040",
+    //     title: "Error",
+    //     message: "Error approving the project.",
+    //     icon: IconNotificationError,
+    //   });
 
-      setShowNotification(true);
-    }
+    //   setShowNotification(true);
+    // }
   } else {
     openConnectModal();
   }

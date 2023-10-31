@@ -516,10 +516,10 @@ export const signProjectEip712: TypeDataDomainInterface = {
       { name: "Title", type: "string" },
       { name: "Detail", type: "string" },
       { name: "Deadline(UTC)", type: "string" },
-      { name: "Reward(USDC)", type: "uint256" },
+      { name: "Reward", type: "uint256" },
       // { name: "NFT(Contract Address)", type: "address" },
-      { name: "Client's Wallet Address", type: "address" },
-      { name: "Freelancer's Wallet Address", type: "address" },
+      { name: "Company's Wallet Address", type: "address" },
+      { name: "Creator's Wallet Address", type: "address" },
     ],
   },
 };

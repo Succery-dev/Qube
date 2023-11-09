@@ -69,6 +69,7 @@ const config: HardhatUserConfig = {
     etherscan: {
         apiKey: { // npx hardhat verify --list-networks
             polygon: `${process.env.POLYGONSCAN_API_KEY}`,
+            polygonMumbai: `${process.env.POLYGONSCAN_API_KEY}`,
         }
     },
     gasReporter: {

@@ -100,17 +100,18 @@ contract Escrow is ERC2771Context, Ownable {
         require(deposit.depositor != address(0), "Deposit does not exist");
 
         uint256 amount = deposit.amount;
+        address tokenAddress = deposit.tokenAddress;
 
         // Delete the deposit data
         delete deposits[_depositId];
         _removeDepositId(_depositId);
 
-        if (deposit.tokenAddress == address(0)) {
+        if (tokenAddress == address(0)) {
             (bool sent, ) = _recipient.call{value: amount}("");
             require(sent, "Failed to send native token");
         } else {
             // Transfer the tokens using SafeERC20
-            IERC20 token = IERC20(deposit.tokenAddress);
+            IERC20 token = IERC20(tokenAddress);
             SafeERC20.safeTransfer(token, _recipient, amount);
         }
 

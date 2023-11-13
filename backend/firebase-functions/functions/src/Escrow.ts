@@ -1,5 +1,5 @@
 import {ethers, Wallet} from "ethers";
-import EscrowArtifact from "./Escrow.json";
+import EscrowAbi from "./escrow.json";
 import dotenv from "dotenv";
 dotenv.config();
 
@@ -26,7 +26,7 @@ function getEscrowContract(
   signerOrProvider: ethers.Signer | ethers.providers.Provider
 ): ethers.Contract {
   return new ethers.Contract(
-    EscrowAddress, EscrowArtifact.abi, signerOrProvider
+    EscrowAddress, EscrowAbi, signerOrProvider
   );
 }
 
@@ -37,9 +37,9 @@ function getEscrowContract(
  * @return {Promise<TransactionResponse>}
  *  A promise that resolves to a transaction response.
  */
-export async function withdrawTokensToDepositorByOwner(depositId: string) {
+export async function withdrawToDepositorByOwner(depositId: string) {
   const contract = getEscrowContract(ownerWallet);
-  const tx = await contract.withdrawTokensToDepositorByOwner(depositId, {
+  const tx = await contract.withdrawToDepositorByOwner(depositId, {
     gasPrice: ethers.utils.parseUnits("90", "gwei")
   });
   return await tx.wait();
@@ -52,9 +52,9 @@ export async function withdrawTokensToDepositorByOwner(depositId: string) {
  * @return {Promise<TransactionResponse>}
  *  A promise that resolves to a transaction response.
  */
-export async function withdrawTokensToRecipientByOwner(depositId: string) {
+export async function withdrawToRecipientByOwner(depositId: string) {
   const contract = getEscrowContract(ownerWallet);
-  const tx = await contract.withdrawTokensToRecipientByOwner(depositId, {
+  const tx = await contract.withdrawToRecipientByOwner(depositId, {
     gasPrice: ethers.utils.parseUnits("90", "gwei")
   });
   return await tx.wait();

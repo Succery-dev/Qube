@@ -8,17 +8,39 @@
       },
       {
         "internalType": "address",
-        "name": "_token",
-        "type": "address"
-      },
-      {
-        "internalType": "address",
         "name": "initialOwner",
         "type": "address"
       }
     ],
     "stateMutability": "nonpayable",
     "type": "constructor"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "target",
+        "type": "address"
+      }
+    ],
+    "name": "AddressEmptyCode",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "account",
+        "type": "address"
+      }
+    ],
+    "name": "AddressInsufficientBalance",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "FailedInnerCall",
+    "type": "error"
   },
   {
     "inputs": [
@@ -41,6 +63,123 @@
     ],
     "name": "OwnableUnauthorizedAccount",
     "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "token",
+        "type": "address"
+      }
+    ],
+    "name": "SafeERC20FailedOperation",
+    "type": "error"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "string",
+        "name": "depositId",
+        "type": "string"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "recipient",
+        "type": "address"
+      }
+    ],
+    "name": "DepositWithdrawn",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "string",
+        "name": "depositId",
+        "type": "string"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "depositor",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "recipient",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "tokenAddress",
+        "type": "address"
+      }
+    ],
+    "name": "ERC20TokenDepositCreated",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "string",
+        "name": "depositId",
+        "type": "string"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "depositor",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "recipient",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "NativeTokenDepositCreated",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "string",
+        "name": "action",
+        "type": "string"
+      },
+      {
+        "indexed": true,
+        "internalType": "string",
+        "name": "depositId",
+        "type": "string"
+      }
+    ],
+    "name": "OwnerAction",
+    "type": "event"
   },
   {
     "anonymous": false,
@@ -77,9 +216,14 @@
         "internalType": "string",
         "name": "_depositId",
         "type": "string"
+      },
+      {
+        "internalType": "address",
+        "name": "_tokenAddress",
+        "type": "address"
       }
     ],
-    "name": "depositTokens",
+    "name": "createERC20TokenDeposit",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -87,37 +231,70 @@
   {
     "inputs": [
       {
+        "internalType": "address",
+        "name": "_recipient",
+        "type": "address"
+      },
+      {
         "internalType": "string",
-        "name": "",
+        "name": "_depositId",
         "type": "string"
       }
     ],
-    "name": "deposits",
+    "name": "createNativeTokenDeposit",
+    "outputs": [],
+    "stateMutability": "payable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "string",
+        "name": "_depositId",
+        "type": "string"
+      }
+    ],
+    "name": "getDeposit",
     "outputs": [
       {
-        "internalType": "address",
-        "name": "depositor",
-        "type": "address"
-      },
+        "components": [
+          {
+            "internalType": "address",
+            "name": "depositor",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "recipient",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "tokenAddress",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+          }
+        ],
+        "internalType": "struct Escrow.Deposit",
+        "name": "",
+        "type": "tuple"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getDepositIds",
+    "outputs": [
       {
-        "internalType": "address",
-        "name": "recipient",
-        "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "timestamp",
-        "type": "uint256"
-      },
-      {
-        "internalType": "bool",
-        "name": "withdrawn",
-        "type": "bool"
+        "internalType": "string[]",
+        "name": "",
+        "type": "string[]"
       }
     ],
     "stateMutability": "view",
@@ -163,19 +340,6 @@
     "type": "function"
   },
   {
-    "inputs": [],
-    "name": "token",
-    "outputs": [
-      {
-        "internalType": "contract IERC20",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
     "inputs": [
       {
         "internalType": "address",
@@ -209,7 +373,7 @@
         "type": "string"
       }
     ],
-    "name": "withdrawTokensToDepositorByOwner",
+    "name": "withdrawToDepositorByOwner",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -222,7 +386,7 @@
         "type": "string"
       }
     ],
-    "name": "withdrawTokensToRecipientByDepositor",
+    "name": "withdrawToRecipientByDepositor",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -235,7 +399,7 @@
         "type": "string"
       }
     ],
-    "name": "withdrawTokensToRecipientByOwner",
+    "name": "withdrawToRecipientByOwner",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"

@@ -8,6 +8,7 @@ interface CreateProjectFormInterface {
   "Reward(USDC)": number;
   // "NFT(Contract Address)": `0x${string}`;
   Status: StatusEnum;
+  tokenSymbol: string,
 }
 
 export type { CreateProjectFormInterface };

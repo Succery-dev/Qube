@@ -35,7 +35,7 @@ import { IconNotificationError, IconNotificationSuccess } from "../../assets";
 
 import { ethers } from "ethers";
 import { approve, allowance } from "../../contracts/MockToken";
-import { depositTokens, withdrawTokensToRecipientByDepositor } from "../../contracts/Escrow";
+import { createNativeTokenDeposit, createERC20TokenDeposit, withdrawToRecipientByDepositor } from "../../contracts/Escrow";
 import deployedContracts from "../../../backend/deploy.json";
 import { StatusEnum } from "../../enums";
 import { getDataFromFireStore } from "../../utils";
@@ -97,20 +97,42 @@ const ProjectDetailsDescription = ({
 
   const prepayEscrow = async () => {
     try {
-      // Prepay amount
-      console.log("Reward: %sUSDC", projectDetails["Reward(USDC)"]);
-      const amount = ethers.utils.parseUnits(projectDetails["Reward(USDC)"].toString(), 6);
+      console.log("Reward Type: ", projectDetails.tokenSymbol);
 
-      // Approve tokens
-      const approveResult = await approve(deployedContracts.Escrow, amount);
-      console.log("Approve Result: ", approveResult);
-      const approvedTokens = await allowance(projectDetails["Client's Wallet Address"], deployedContracts.Escrow);
-      console.log("USDC Allowance: ", ethers.utils.formatUnits(approvedTokens, 6));
+      let depositResult;
 
-      // Deposit tokens
-      console.log("Recipient: %s, ProjectId: %s", projectDetails["Lancer's Wallet Address"], projectId);
-      const depositResult = await depositTokens(projectDetails["Lancer's Wallet Address"], amount, projectId);
-      console.log("Deposit Result: ", depositResult);
+      if (projectDetails.tokenSymbol === "MATIC") {
+        const amount = ethers.utils.parseUnits(projectDetails["Reward(USDC)"].toString(), 18);
+        depositResult = await createNativeTokenDeposit(projectDetails["Lancer's Wallet Address"], amount, projectId);
+      } else {
+        let amount;
+        if (projectDetails.tokenSymbol === "JPYC") {
+          // Prepay amount
+          console.log("Reward: %s%s", projectDetails["Reward(USDC)"], projectDetails.tokenSymbol);
+          amount = ethers.utils.parseUnits(projectDetails["Reward(USDC)"].toString(), 18);
+
+          // Approve tokens
+          const approveResult = await approve(deployedContracts.Escrow, amount, projectDetails.tokenAddress);
+          console.log("Approve Result: ", approveResult);
+          const approvedTokens = await allowance(projectDetails["Client's Wallet Address"], deployedContracts.Escrow, projectDetails.tokenAddress);
+          console.log("Allowance: ", ethers.utils.formatUnits(approvedTokens, 18));
+        } else {
+          // Prepay amount
+          console.log("Reward: %s%s", projectDetails["Reward(USDC)"], projectDetails.tokenSymbol);
+          amount = ethers.utils.parseUnits(projectDetails["Reward(USDC)"].toString(), 6);
+
+          // Approve tokens
+          const approveResult = await approve(deployedContracts.Escrow, amount, projectDetails.tokenAddress);
+          console.log("Approve Result: ", approveResult);
+          const approvedTokens = await allowance(projectDetails["Client's Wallet Address"], deployedContracts.Escrow, projectDetails.tokenAddress);
+          console.log("Allowance: ", ethers.utils.formatUnits(approvedTokens, 6));
+        }
+
+        // Deposit tokens
+        console.log("Recipient: %s, ProjectId: %s", projectDetails["Lancer's Wallet Address"], projectId);
+        depositResult = await createERC20TokenDeposit(projectDetails["Lancer's Wallet Address"], amount, projectId, projectDetails.tokenAddress);
+        console.log("Deposit Result: ", depositResult);
+      }
 
       // Update the status to "Waiting for Submission"
       const updatedSubsetProjectDetail: Partial<StoreProjectDetailsInterface> =
@@ -278,7 +300,7 @@ const ProjectDetailsDescription = ({
       }
 
       // ③ Approve The Submission
-      const approveResult = await withdrawTokensToRecipientByDepositor(projectId);
+      const approveResult = await withdrawToRecipientByDepositor(projectId);
       console.log("Approve Result: ", approveResult);
       if (!approveResult) throw new Error("Failed to approve the submission");
 
@@ -379,7 +401,9 @@ const ProjectDetailsDescription = ({
                             ? "Submission Date (UTC)"
                             : descriptionSection === "Deadline(UTC) For Payment"
                               ? "Payment Date (UTC)"
-                              : descriptionSection
+                              : descriptionSection === "Reward(USDC)"
+                                ? `Reward(${descriptionProjectDetails.tokenSymbol})`
+                                : descriptionSection
                   }
                 </h2>
                 {descriptionSection.toLowerCase().includes("address") ? (

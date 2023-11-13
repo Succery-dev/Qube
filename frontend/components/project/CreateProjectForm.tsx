@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/router";
 import axios from "axios";
 import Datepicker from "react-tailwindcss-datepicker";
@@ -40,7 +40,7 @@ import { collection, addDoc } from "firebase/firestore";
 import { database } from "../../utils";
 
 // Status Enum Import
-import { StatusEnum } from "../../enums";
+import { StatusEnum, TokenAddress } from "../../enums";
 
 const getTomorrow = () => {
   const tomorrow = new Date();
@@ -71,10 +71,15 @@ const FormFields = ({
   updateFormField: (
     e:
       | React.ChangeEvent<HTMLTextAreaElement>
-      | React.ChangeEvent<HTMLInputElement>,
+      | React.ChangeEvent<HTMLInputElement>
+      | string,
     formFieldtitle: string
   ) => void;
 }): JSX.Element => {
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const tokenTypes = ["USDC", "USDT", "MATIC", "JPYC"];
+  const [tokenType, setTokenType] = useState("USDC");
+
   return (
     <motion.div
       variants={fadeIn("down", 1.25, index, 0.15)}
@@ -146,7 +151,34 @@ const FormFields = ({
               onChange={(e) => updateFormField(e, formField.title)}
               required
             />
-            <p className="px-5 text-lg">USDC</p>
+            <div className="relative grow">
+              <button type="button" className="relative w-full rounded-md cursor-default bg-slate-800 h-full pr-10 pl-3 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 sm:text-sm sm:leading-6" aria-haspopup="listbox" aria-expanded="true" aria-labelledby="listbox-label" onClick={() => setIsDropdownOpen(!isDropdownOpen)}>
+                <span className="ml-3 block truncate font-bold">{tokenType}</span>
+                <span className="pointer-events-none absolute inset-y-0 right-0 ml-3 flex items-center pr-2">
+                  <svg className="h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                    <path fill-rule="evenodd" d="M10 3a.75.75 0 01.55.24l3.25 3.5a.75.75 0 11-1.1 1.02L10 4.852 7.3 7.76a.75.75 0 01-1.1-1.02l3.25-3.5A.75.75 0 0110 3zm-3.76 9.2a.75.75 0 011.06.04l2.7 2.908 2.7-2.908a.75.75 0 111.1 1.02l-3.25 3.5a.75.75 0 01-1.1 0l-3.25-3.5a.75.75 0 01.04-1.06z" clip-rule="evenodd" />
+                  </svg>
+                </span>
+              </button>
+              {isDropdownOpen &&
+                <ul className="absolute z-10 mt-1 max-h-56 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm" role="listbox" aria-labelledby="listbox-label" aria-activedescendant="listbox-option-3" tabIndex={-1}>
+                  {tokenTypes.filter(type => type !== tokenType).map((type, index) => (
+                    <li 
+                      key={index} 
+                      className="text-gray-900 relative cursor-default select-none py-2" 
+                      role="option"
+                      onClick={(e) => {
+                        setTokenType(type); 
+                        updateFormField(type, "tokenSymbol");
+                        setIsDropdownOpen(false);
+                      }}
+                    >
+                      <p className="block truncate font-bold text-center">{type}</p>
+                    </li>
+                  ))}
+                </ul>
+              }
+            </div>
           </div>
         ) : (
           <input
@@ -226,12 +258,14 @@ const CreateProjectForm = ({
   const updateFormField = (
     e:
       | React.ChangeEvent<HTMLTextAreaElement>
-      | React.ChangeEvent<HTMLInputElement>,
+      | React.ChangeEvent<HTMLInputElement>
+      | string,
     formFieldtitle: string
   ) => {
+    const value = typeof e === "string" ? e : e.target.value;
     setForm({
       ...form,
-      [formFieldtitle as keyof typeof form]: e.target.value,
+      [formFieldtitle as keyof typeof form]: value,
     });
   };
 
@@ -263,6 +297,7 @@ const CreateProjectForm = ({
         form.InDispute = false;
         form.RequestedDeadlineExtension = "";
         form.prepayTxHash = "";
+        form.tokenAddress = TokenAddress[form.tokenSymbol];
 
         const now = new Date();
         form.createdAt = now.toISOString();

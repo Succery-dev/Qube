@@ -1,4 +1,4 @@
-import { ethers, Contract, BigNumber, BigNumberish, utils } from "ethers";
+import { ethers, Contract, BigNumber } from "ethers";
 import { getSigner } from "../utils/ethers";
 import { signMetaTxRequest } from "../utils/signer";
 import deployedContracts from "../../backend/deploy.json";
@@ -49,12 +49,12 @@ async function sendMetaTx(contract: Contract, signer: ethers.providers.JsonRpcSi
   }
 }
 
-export async function depositTokens(recipient: string, amount: BigNumber, depositId: string): Promise<string> {
+export async function createERC20TokenDeposit(recipient: string, amount: BigNumber, depositId: string, tokenAddress: string): Promise<string> {
   const signer = getSigner();
   const contract = getEscrowContract();
 
   try {
-    const txHash = await sendMetaTx(contract, signer, "depositTokens", [recipient, amount, depositId]);
+    const txHash = await sendMetaTx(contract, signer, "createERC20TokenDeposit", [recipient, amount, depositId, tokenAddress]);
     console.log(`Transaction successful: ${txHash}`);
     return txHash;
   } catch (error) {
@@ -62,12 +62,13 @@ export async function depositTokens(recipient: string, amount: BigNumber, deposi
   }
 }
 
-export async function withdrawTokensToRecipientByDepositor(depositId: string) {
-  const signer = getSigner();
+export async function createNativeTokenDeposit(recipient: string, amount: BigNumber, depositId: string): Promise<string> {
   const contract = getEscrowContract();
 
   try {
-    const txHash = await sendMetaTx(contract, signer, "withdrawTokensToRecipientByDepositor", [depositId]);
+    const transactionResponse = await contract.createNativeTokenDeposit(recipient, depositId, { value: amount });
+    console.log(transactionResponse);
+    const txHash = transactionResponse.hash;
     console.log(`Transaction successful: ${txHash}`);
     return txHash;
   } catch (error) {
@@ -75,9 +76,15 @@ export async function withdrawTokensToRecipientByDepositor(depositId: string) {
   }
 }
 
-export async function getDepositedAmount() {
+export async function withdrawToRecipientByDepositor(depositId: string) {
   const signer = getSigner();
   const contract = getEscrowContract();
-  const address = await signer.getAddress();
-  return await contract.deposits(address).then((amount: BigNumberish) => utils.formatEther(amount));
+
+  try {
+    const txHash = await sendMetaTx(contract, signer, "withdrawToRecipientByDepositor", [depositId]);
+    console.log(`Transaction successful: ${txHash}`);
+    return txHash;
+  } catch (error) {
+    console.error(`Transaction failed: ${error}`);
+  }
 }

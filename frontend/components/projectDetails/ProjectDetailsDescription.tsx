@@ -150,7 +150,7 @@ const ProjectDetailsDescription = ({
       setNotificationConfiguration({
         modalColor: "#62d140",
         title: "Successfully prepaid to the escrow",
-        message: "Prepaid is done. Wait for the freelancer's submission! Remind the freelancer to submit before the deadline for a smoother transaction.",
+        message: "The prepaid is done successfully. Wait for the submission.",
         icon: IconNotificationSuccess,
       });
       setShowNotification(true);

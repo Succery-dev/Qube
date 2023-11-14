@@ -15,8 +15,8 @@ import dotenv from "dotenv";
 dotenv.config();
 
 import {
-  withdrawTokensToDepositorByOwner,
-  withdrawTokensToRecipientByOwner,
+  withdrawToDepositorByOwner,
+  withdrawToRecipientByOwner,
 } from "./Escrow";
 
 export const checkSubmissionDeadline = onSchedule("0 21 * * *", async () => {
@@ -33,7 +33,7 @@ export const checkSubmissionDeadline = onSchedule("0 21 * * *", async () => {
     // Log the project ID
     logger.log("② No Submission By Lancer: ", doc.id);
     // Withdraw tokens to depositor by owner
-    const withdrawResult = await withdrawTokensToDepositorByOwner(doc.id);
+    const withdrawResult = await withdrawToDepositorByOwner(doc.id);
     // Log the result
     logger.log("Withdraw Result: ", withdrawResult);
     // Change the status to "Complete (No Submission By Lancer)"
@@ -75,7 +75,7 @@ export const checkPaymentDeadline = onSchedule("30 21 * * *", async () => {
     // Log the project ID
     logger.log("⑦ No Approval ( Ignored By Client): ", doc.id);
     // Withdraw tokens to recipient by owner
-    const withdrawResult = await withdrawTokensToRecipientByOwner(doc.id);
+    const withdrawResult = await withdrawToRecipientByOwner(doc.id);
     // Log the result
     logger.log("Withdraw Result: ", withdrawResult);
     // Change the status to "Complete (No Contact By Client)"
@@ -101,7 +101,7 @@ export const checkDisapproveRefund = onSchedule("0 22 * * *", async () => {
     // Log the project ID
     logger.log("④ Disapprove The Submission: ", doc.id);
     // Withdraw tokens to client by owner
-    const withdrawResult = await withdrawTokensToDepositorByOwner(doc.id);
+    const withdrawResult = await withdrawToDepositorByOwner(doc.id);
     // Log the result
     logger.log("Withdraw Result: ", withdrawResult);
   });
@@ -121,7 +121,7 @@ export const checkDisputeRefund = onSchedule("30 22 * * *", async () => {
     // Log the project ID
     logger.log("⑥ Deadline-Extension Request (Disapproval)", doc.id);
     // Withdraw tokens to client by owner
-    const withdrawResult = await withdrawTokensToDepositorByOwner(doc.id);
+    const withdrawResult = await withdrawToDepositorByOwner(doc.id);
     // Log the result
     logger.log("Withdraw Result: ", withdrawResult);
     // Change the status to "Complete (Dispute)"
@@ -233,29 +233,30 @@ export const sendEmailNotification = onDocumentUpdated("/projects/{documentId}",
   const formattedPaymentDeadline = formatDateToUTC(paymentDeadline);
   const formattedExtendedPaymentDeadline = formatDateToUTC(extendedPaymentDeadline);
 
-  if (beforeStatus == StatusEnum.WaitingForConnectingLancersWallet && afterStatus == StatusEnum.PayInAdvance) {
-    const docRef = getFirestore().collection("users").doc(afterData?.get("Client's Wallet Address"));
-    const doc = await docRef.get();
+  const prepayTxHash = afterData?.get("prepayTxHash");
+  const prepayTxUrl = `${process.env.POLYGONSCAN_URL}/tx/${prepayTxHash}`;
 
-    const mailOptions = {
-      from: qubeMailAddress,
-      to: doc.get("email"),
-      subject: `Project Name: ${title}`,
-      text: 
-`The contract has been signed. 
+//   if (beforeStatus == StatusEnum.WaitingForConnectingLancersWallet && afterStatus == StatusEnum.PayInAdvance) {
+//     const docRef = getFirestore().collection("users").doc(afterData?.get("Client's Wallet Address"));
+//     const doc = await docRef.get();
 
-Please prepay the reward to Escrow as soon as possible. 
-Make sure that until you don't finish the prepay, the freelancer won't start working and won't be able to submit the work.
+//     const mailOptions = {
+//       from: qubeMailAddress,
+//       to: doc.get("email"),
+//       subject: `Project Name: ${title}`,
+//       text: 
+// `The contract has been signed. 
 
-To go to the project: ${projectLink}
-If you have any questions feel free to reply to this mail. Don't forget to explain the issue you are having.`,
-    };
+// Please prepay the reward to Escrow as soon as possible. 
+// Make sure that until you don't finish the prepay, the freelancer won't start working and won't be able to submit the work.
+
+// To go to the project: ${projectLink}
+// If you have any questions feel free to reply to this mail. Don't forget to explain the issue you are having.`,
+//     };
     
-    return transporter.sendMail(mailOptions);
-  } else if (beforeStatus == StatusEnum.PayInAdvance && afterStatus == StatusEnum.WaitingForSubmission) {
-    const prepayTxHash = afterData?.get("prepayTxHash");
-    const prepayTxUrl = `${process.env.POLYGONSCAN_URL}/tx/${prepayTxHash}`;
-
+//     return transporter.sendMail(mailOptions);
+//   } else 
+  if (beforeStatus == StatusEnum.PayInAdvance && afterStatus == StatusEnum.WaitingForSubmission) {
     const docRef = getFirestore().collection("users").doc(afterData?.get("Lancer's Wallet Address"));
     const doc = await docRef.get();
 
@@ -294,6 +295,9 @@ Make sure the following things.
 
 *Make sure if you don't take any action of the two mentioned above, the payment will be executed on ${formattedPaymentDeadline}(UTC) automatically. 
 
+You can review the details and verify the transaction by clicking on the link below:
+${prepayTxUrl}
+
 To go to the project: ${projectLink}
 If you have any questions feel free to reply to this mail. Don't forget to explain the issue you are having.`,
     };
@@ -310,6 +314,9 @@ If you have any questions feel free to reply to this mail. Don't forget to expla
       text: 
 `The submission the freelancer made has been approved and the payment has also been executed on ${formattedNow}(UTC).
 
+You can review the details and verify the transaction by clicking on the link below:
+${prepayTxUrl}
+
 To go to the project: ${projectLink}
 If you have any questions feel free to reply to this mail. Don't forget to explain the issue you are having.`,
     };
@@ -325,6 +332,9 @@ If you have any questions feel free to reply to this mail. Don't forget to expla
       subject: `Project Name: ${title}`,
       text: 
 `The submission the freelancer made has been approved and the payment has also been executed on ${formattedNow}(UTC).
+
+You can review the details and verify the transaction by clicking on the link below:
+${prepayTxUrl}
 
 To go to the project: ${projectLink}
 If you have any questions feel free to reply to this mail. Don't forget to explain the issue you are having.`,
@@ -344,6 +354,9 @@ If you have any questions feel free to reply to this mail. Don't forget to expla
 
 After 9 months the fund in the Escrow will be refunded to the client.
 
+You can review the details and verify the transaction by clicking on the link below:
+${prepayTxUrl}
+
 To go to the project: ${projectLink}
 If you have any questions feel free to reply to this mail. Don't forget to explain the issue you are having.`,
     };
@@ -361,6 +374,9 @@ If you have any questions feel free to reply to this mail. Don't forget to expla
 `The Deadline Extension Request has been disapproved. The fund has been FROZEN in the Escrow for 9 months. 
 
 After 9 months the fund in the Escrow will be refunded to the client.
+
+You can review the details and verify the transaction by clicking on the link below:
+${prepayTxUrl}
 
 To go to the project: ${projectLink}
 If you have any questions feel free to reply to this mail. Don't forget to explain the issue you are having.`,
@@ -388,6 +404,9 @@ The Client
 
 Wait until the new version of the submission is made. The submission will be made before ${formattedSubmissionDeadline}(UTC).
 
+You can review the details and verify the transaction by clicking on the link below:
+${prepayTxUrl}
+
 To go to the project: ${projectLink}
 If you have any questions feel free to reply to this mail. Don't forget to explain the issue you are having.`,
     };
@@ -414,6 +433,9 @@ The Client
 
 Wait until the new version of the submission is made. The submission will be made before ${formattedSubmissionDeadline}(UTC).
 
+You can review the details and verify the transaction by clicking on the link below:
+${prepayTxUrl}
+
 To go to the project: ${projectLink}
 If you have any questions feel free to reply to this mail. Don't forget to explain the issue you are having.`,
     };
@@ -435,6 +457,9 @@ Make sure the things below before you proceed.
 1. If you approve the submission the payment will be done to the freelancer right after that.
 2. If you disapprove the submission, the fund in Escrow will be FROZEN for 9 months.
 
+You can review the details and verify the transaction by clicking on the link below:
+${prepayTxUrl}
+
 To go to the project: ${projectLink}
 If you have any questions feel free to reply to this mail. Don't forget to explain the issue you are having.`,
     };
@@ -452,6 +477,9 @@ If you have any questions feel free to reply to this mail. Don't forget to expla
 `As the submission was disapproved even after Extending the timeline, the fund in Escrow has been FROZEN. 
 The fund will be released to the client after 9 months. 
 
+You can review the details and verify the transaction by clicking on the link below:
+${prepayTxUrl}
+
 To go to the project: ${projectLink}
 If you have any questions feel free to reply to this mail. Don't forget to explain the issue you are having.`,
     };
@@ -469,6 +497,9 @@ If you have any questions feel free to reply to this mail. Don't forget to expla
 `As the submission was disapproved even after Extending the timeline, the fund in Escrow has been FROZEN. 
 The fund will be released to the client after 9 months. 
 
+You can review the details and verify the transaction by clicking on the link below:
+${prepayTxUrl}
+
 To go to the project: ${projectLink}
 If you have any questions feel free to reply to this mail. Don't forget to explain the issue you are having.`,
     };
@@ -484,6 +515,9 @@ If you have any questions feel free to reply to this mail. Don't forget to expla
       subject: `Project Name: ${title}`,
       text: 
 `Due to not having any action by the client against the submission, the payment has been executed automatically.
+
+You can review the details and verify the transaction by clicking on the link below:
+${prepayTxUrl}
 
 To go to the project: ${projectLink}
 If you have any questions feel free to reply to this mail. Don't forget to explain the issue you are having.`,
@@ -501,6 +535,9 @@ If you have any questions feel free to reply to this mail. Don't forget to expla
       text: 
 `Due to not having any action by the client against the submission, the payment has been executed automatically.
 
+You can review the details and verify the transaction by clicking on the link below:
+${prepayTxUrl}
+
 To go to the project: ${projectLink}
 If you have any questions feel free to reply to this mail. Don't forget to explain the issue you are having.`,
     };
@@ -516,6 +553,9 @@ If you have any questions feel free to reply to this mail. Don't forget to expla
       subject: `Project Name: ${title}`,
       text: 
 `As there was no action, the contract has been dismissed.
+
+You can review the details and verify the transaction by clicking on the link below:
+${prepayTxUrl}
 
 To go to the project: ${projectLink}
 If you have any questions feel free to reply to this mail. Don't forget to explain the issue you are having.`,
@@ -536,6 +576,9 @@ If you have any questions feel free to reply to this mail. Don't forget to expla
 Accept the request if you agree. By doing so, the payment date will be extended to ${formattedExtendedPaymentDeadline}(UTC) and you will be required to submit the new version of the task before ${formattedExtendedSubmissionDeadline}(UTC). 
 
 Make sure if you disagree with this, the fund in the Escrow will be FROZEN and will be released to the client after 9 months.
+
+You can review the details and verify the transaction by clicking on the link below:
+${prepayTxUrl}
 
 To go to the project: ${projectLink}
 If you have any questions feel free to reply to this mail. Don't forget to explain the issue you are having.`,

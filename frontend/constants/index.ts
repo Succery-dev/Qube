@@ -1,3 +1,6 @@
+import dotenv from "dotenv";
+dotenv.config();
+
 // Assets Imports
 import {
   EscrowIcon,
@@ -506,21 +509,17 @@ export const createProjectFields: CreateProjectFieldInterface[] = [
 export const signProjectEip712: TypeDataDomainInterface = {
   domain: {
     name: "Qube-Sign-Project",
-    // TODO: Softcoding
-    chainId: 137,
-    // chainId: 31337, // Hardhat Network ChainID
-    // chainId: 80001,
-    // chainId: 137,
+    chainId: parseInt(process.env.NEXT_PUBLIC_CHAIN_ID),
   },
   types: {
     ProjectDetail: [
       { name: "Title", type: "string" },
       { name: "Detail", type: "string" },
       { name: "Deadline(UTC)", type: "string" },
-      { name: "Reward(USDC)", type: "uint256" },
+      { name: "Reward", type: "uint256" },
       // { name: "NFT(Contract Address)", type: "address" },
-      { name: "Client's Wallet Address", type: "address" },
-      { name: "Freelancer's Wallet Address", type: "address" },
+      { name: "Company's Wallet Address", type: "address" },
+      { name: "Creator's Wallet Address", type: "address" },
     ],
   },
 };

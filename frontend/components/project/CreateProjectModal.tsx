@@ -70,7 +70,7 @@ const CreateProjectModal = ({
                   {/* Main */}
                   <div className="flex flex-col w-full gap-4 mt-8">
                     <p className="text-[#959595]">
-                      Share this link to the freelancer
+                      Share this link to the company
                     </p>
                     <div className="flex flex-row relative items-center justify-between gap-2 bg-bg_primary py-4 px-4 rounded-lg">
                       <Link

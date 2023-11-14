@@ -1,11 +1,7 @@
 import { HardhatUserConfig, task } from "hardhat/config";
 import "@nomicfoundation/hardhat-toolbox";
-import dotenv from "dotenv";
+import * as dotenv from "dotenv";
 dotenv.config();
-require("@nomiclabs/hardhat-etherscan");
-import "@typechain/hardhat";
-import "solidity-coverage";
-import "hardhat-gas-reporter";
 
 task("balance", "Prints an account's balance")
     .addParam("account", "The account's address")
@@ -16,7 +12,7 @@ task("balance", "Prints an account's balance")
 
 const config: HardhatUserConfig = {
     defaultNetwork: "hardhat",
-    solidity: "0.8.18",
+    solidity: "0.8.20",
     networks: {
         // mainnet: {
         //     url: "https://eth.llamarpc.com",
@@ -35,7 +31,7 @@ const config: HardhatUserConfig = {
         // localhost: {
         //     url: "http://127.0.0.1:8545"
         // },
-        mainnet: {
+        polygon: {
             url: `https://polygon-mainnet.g.alchemy.com/v2/${process.env.ALCHEMY_API_KEY_PRODUCTION}`,
             accounts: [process.env.PRIVATE_KEY_PRODUCTION as string],
         },
@@ -72,8 +68,8 @@ const config: HardhatUserConfig = {
     // },
     etherscan: {
         apiKey: { // npx hardhat verify --list-networks
-            goerli: `${process.env.ETHERSCAN}`,
-            mainnet: `${process.env.ETHERSCAN}`,
+            polygon: `${process.env.POLYGONSCAN_API_KEY}`,
+            polygonMumbai: `${process.env.POLYGONSCAN_API_KEY}`,
         }
     },
     gasReporter: {

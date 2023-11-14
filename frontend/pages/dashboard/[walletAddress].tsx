@@ -72,6 +72,7 @@ const Dashboard: NextPage = () => {
             amount: parseInt(project["Reward(USDC)"]),  // string -> number
             status: Object.entries(StatusEnum).find(([key, value]) => value == project["Status"])[1] as StatusEnum,
             id: project["id"],
+            tokenSymbol: project["tokenSymbol"],
           });
         });
         mockData.data = projects;

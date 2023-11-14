@@ -41,7 +41,7 @@ const TableContents = ({
   projectData: ProjectDataInterface;
 }): JSX.Element => {
   return (
-    <div>
+    <div className="max-h-[60vh] overflow-y-auto">
       {projectData.data.map((project: ProjectDetailInterface, index: number) => {
         return (
           <Link key={project["id"]} href={`/projectDetails/${project["id"]}`}>
@@ -55,22 +55,24 @@ const TableContents = ({
                     className="lg:mx-5 sm:mx-3 mx-1"
                     key={`table-data-${projectKey}-${index}`}
                   >
-                    <span
-                      className={`${
-                        projectKey === "amount" ? "inline" : "hidden"
-                      }`}
-                    >
-                      ${" "}
-                    </span>
                     {projectKey === "deadline"
                       ? getFormattedDate(project.deadline)
                       : projectKey === "amount"
                         ? project.amount.toLocaleString()
                         : projectKey === "id"
                           ? null
-                          : projectKey == "status"
+                          : projectKey === "status"
                             ? convertState(project.status) // TODO: Fix this
-                            : project[projectKey as keyof typeof project]}
+                            : projectKey === "tokenSymbol"
+                              ? null
+                              : project[projectKey as keyof typeof project]}
+                    <span
+                      className={`${
+                        projectKey === "amount" ? "inline" : "hidden"
+                      }`}
+                    >
+                      {` ${project.tokenSymbol}`}
+                    </span>
                   </p>
                 );
               })}

@@ -35,7 +35,8 @@ import { IconNotificationError, IconNotificationSuccess } from "../../assets";
 
 import { ethers } from "ethers";
 import { approve, allowance } from "../../contracts/MockToken";
-import { EscrowAddress, depositTokens, withdrawTokensToRecipientByDepositor } from "../../contracts/Escrow";
+import { createNativeTokenDeposit, createERC20TokenDeposit, withdrawToRecipientByDepositor } from "../../contracts/Escrow";
+import deployedContracts from "../../../backend/deploy.polygon.json";
 import { StatusEnum } from "../../enums";
 import { getDataFromFireStore } from "../../utils";
 import { useAccount } from "wagmi";
@@ -95,58 +96,70 @@ const ProjectDetailsDescription = ({
   const [onConfirm, setOnConfirm] = useState<() => Promise<void>>(() => Promise.resolve());
 
   const prepayEscrow = async () => {
-    if (isConnected && address == projectDetails["Client's Wallet Address"]) {
-      try {
-        // Prepay amount
-        console.log("Reward: %sUSDC", projectDetails["Reward(USDC)"]);
-        const amount = ethers.utils.parseUnits(projectDetails["Reward(USDC)"].toString(), 6);
+    try {
+      console.log("Reward Type: ", projectDetails.tokenSymbol);
 
-        // Approve tokens
-        const approveResult = await approve(EscrowAddress, amount);
-        console.log("Approve Result: ", approveResult);
-        const approvedTokens = await allowance(projectDetails["Client's Wallet Address"], EscrowAddress);
-        console.log("USDC Allowance: ", ethers.utils.formatUnits(approvedTokens, 6));
+      let depositResult;
+
+      if (projectDetails.tokenSymbol === "MATIC") {
+        const amount = ethers.utils.parseUnits(projectDetails["Reward(USDC)"].toString(), 18);
+        depositResult = await createNativeTokenDeposit(projectDetails["Lancer's Wallet Address"], amount, projectId);
+      } else {
+        let amount;
+        if (projectDetails.tokenSymbol === "JPYC") {
+          // Prepay amount
+          console.log("Reward: %s%s", projectDetails["Reward(USDC)"], projectDetails.tokenSymbol);
+          amount = ethers.utils.parseUnits(projectDetails["Reward(USDC)"].toString(), 18);
+
+          // Approve tokens
+          const approveResult = await approve(deployedContracts.Escrow, amount, projectDetails.tokenAddress);
+          console.log("Approve Result: ", approveResult);
+          const approvedTokens = await allowance(projectDetails["Client's Wallet Address"], deployedContracts.Escrow, projectDetails.tokenAddress);
+          console.log("Allowance: ", ethers.utils.formatUnits(approvedTokens, 18));
+        } else {
+          // Prepay amount
+          console.log("Reward: %s%s", projectDetails["Reward(USDC)"], projectDetails.tokenSymbol);
+          amount = ethers.utils.parseUnits(projectDetails["Reward(USDC)"].toString(), 6);
+
+          // Approve tokens
+          const approveResult = await approve(deployedContracts.Escrow, amount, projectDetails.tokenAddress);
+          console.log("Approve Result: ", approveResult);
+          const approvedTokens = await allowance(projectDetails["Client's Wallet Address"], deployedContracts.Escrow, projectDetails.tokenAddress);
+          console.log("Allowance: ", ethers.utils.formatUnits(approvedTokens, 6));
+        }
 
         // Deposit tokens
         console.log("Recipient: %s, ProjectId: %s", projectDetails["Lancer's Wallet Address"], projectId);
-        const depositResult = await depositTokens(projectDetails["Lancer's Wallet Address"], amount, projectId);
+        depositResult = await createERC20TokenDeposit(projectDetails["Lancer's Wallet Address"], amount, projectId, projectDetails.tokenAddress);
         console.log("Deposit Result: ", depositResult);
-
-        // Update the status to "Waiting for Submission"
-        const updatedSubsetProjectDetail: Partial<StoreProjectDetailsInterface> =
-          {
-            "Status": StatusEnum.WaitingForSubmission,
-            "prepayTxHash": depositResult.transactionHash,
-          };
-        await updateProjectDetails(projectId, updatedSubsetProjectDetail);
-        const [_, updatedProjectDetails] = await getDataFromFireStore(
-          projectId
-        );
-
-        setProjectDetails(updatedProjectDetails);
-
-        setNotificationConfiguration({
-          modalColor: "#62d140",
-          title: "Successfully prepaid to the escrow",
-          message: "Prepaid is done. Wait for the freelancer's submission! Remind the freelancer to submit before the deadline for a smoother transaction.",
-          icon: IconNotificationSuccess,
-        });
-        setShowNotification(true);
-      } catch (error) {
-        console.log("Prepay Failed: ", error);
-        setNotificationConfiguration({
-          modalColor: "#d14040",
-          title: "Error",
-          message: "Error prepaying tokens",
-          icon: IconNotificationError,
-        });
-        setShowNotification(true);
       }
-    } else {
+
+      // Update the status to "Waiting for Submission"
+      const updatedSubsetProjectDetail: Partial<StoreProjectDetailsInterface> =
+        {
+          "Status": StatusEnum.WaitingForSubmission,
+          "prepayTxHash": depositResult,
+        };
+      await updateProjectDetails(projectId, updatedSubsetProjectDetail);
+      const [_, updatedProjectDetails] = await getDataFromFireStore(
+        projectId
+      );
+
+      setProjectDetails(updatedProjectDetails);
+
+      setNotificationConfiguration({
+        modalColor: "#62d140",
+        title: "Successfully prepaid to the escrow",
+        message: "The prepaid is done successfully. Wait for the submission.",
+        icon: IconNotificationSuccess,
+      });
+      setShowNotification(true);
+    } catch (error) {
+      console.log("Prepay Failed: ", error);
       setNotificationConfiguration({
         modalColor: "#d14040",
-        title: "Error",
-        message: "Please connect your right wallet account",
+        title: "Error prepaying tokens",
+        message: error.message,
         icon: IconNotificationError,
       });
       setShowNotification(true);
@@ -287,8 +300,9 @@ const ProjectDetailsDescription = ({
       }
 
       // ③ Approve The Submission
-      const approveResult = await withdrawTokensToRecipientByDepositor(projectId);
+      const approveResult = await withdrawToRecipientByDepositor(projectId);
       console.log("Approve Result: ", approveResult);
+      if (!approveResult) throw new Error("Failed to approve the submission");
 
       // Update the status to "Waiting for Submission"
       const updatedSubsetProjectDetail: Partial<StoreProjectDetailsInterface> =
@@ -387,7 +401,9 @@ const ProjectDetailsDescription = ({
                             ? "Submission Date (UTC)"
                             : descriptionSection === "Deadline(UTC) For Payment"
                               ? "Payment Date (UTC)"
-                              : descriptionSection
+                              : descriptionSection === "Reward(USDC)"
+                                ? `Reward(${descriptionProjectDetails.tokenSymbol})`
+                                : descriptionSection
                   }
                 </h2>
                 {descriptionSection.toLowerCase().includes("address") ? (
@@ -413,24 +429,42 @@ const ProjectDetailsDescription = ({
       </div>
       {projectDetails.Status === StatusEnum.WaitingForConnectingLancersWallet && (
         <CustomButton
-          text="Waiting For Approval"
-          type="button"
-          onClick={() => {
-            assignProject(
-              // nftOwnerAddress,
-              freelancerAddress,
-              projectDetails["Client's Wallet Address"],
-              // projectDetails["NFT(Contract Address)"],
-              openConnectModal,
-              signTypedDataAsync,
-              projectId,
-              setProjectDetails,
-              setIsAssigned,
-              setNotificationConfiguration,
-              setShowNotification
-            );
-          }}
+          text="Waiting For Approval & Prepay"
           styles="w-full mx-auto block bg-[#DF57EA] hover:bg-[#A9209C] rounded-md text-center text-lg font-semibold text-white py-[4px] px-7 mt-6"
+          type="button"
+          onClick={async (e) => {
+            e.preventDefault();
+
+            try {
+              await assignProject(
+                // nftOwnerAddress,
+                freelancerAddress,
+                projectDetails["Lancer's Wallet Address"],
+                // projectDetails["NFT(Contract Address)"],
+                openConnectModal,
+                signTypedDataAsync,
+                projectId,
+                setProjectDetails,
+                setIsAssigned,
+                setNotificationConfiguration,
+                setShowNotification
+              );
+
+              setTitle("Prepay Escrow");
+              setDescription("This is to prepay the money to Qube’s Smart Contract. The money will be held until the submission is approved by you. Do you want to proceed?");
+              setOnConfirm(() => prepayEscrow);
+              setShowModal(true);
+            } catch (error) {
+              console.log(error.message);
+              setNotificationConfiguration({
+                modalColor: "#d14040",
+                title: "Error",
+                message: error.message,
+                icon: IconNotificationError,
+              });
+            }
+            setShowNotification(true);
+          }}
         />
       )}
       {projectDetails.Status === StatusEnum.PayInAdvance && (
@@ -441,10 +475,20 @@ const ProjectDetailsDescription = ({
           onClick={async (e) => {
             e.preventDefault();
 
-            setTitle("Prepay Escrow");
-            setDescription("This is to prepay the money to Qube’s Smart Contract. The money will be held until the submission is approved by you. Do you want to proceed?");
-            setOnConfirm(() => prepayEscrow);
-            setShowModal(true);
+            if (isConnected && address == projectDetails["Client's Wallet Address"]) {
+              setTitle("Prepay Escrow");
+              setDescription("This is to prepay the money to Qube’s Smart Contract. The money will be held until the submission is approved by you. Do you want to proceed?");
+              setOnConfirm(() => prepayEscrow);
+              setShowModal(true);
+            } else {
+              setNotificationConfiguration({
+                modalColor: "#d14040",
+                title: "Error",
+                message: "Please connect your right wallet account",
+                icon: IconNotificationError,
+              });
+              setShowNotification(true);
+            }
           }}
         />
       )}

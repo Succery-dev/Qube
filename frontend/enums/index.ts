@@ -1,3 +1,4 @@
 import { StatusEnum } from "./projectStatus";
+import { TokenAddress } from "./tokenAddresses";
 
-export { StatusEnum };
+export { StatusEnum, TokenAddress };

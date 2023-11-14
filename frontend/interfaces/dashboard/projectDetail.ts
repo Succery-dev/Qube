@@ -6,6 +6,7 @@ interface ProjectDetailInterface {
   deadline: string;
   amount: number;
   status: StatusEnum;
+  tokenSymbol: string;
 }
 
 export type { ProjectDetailInterface };

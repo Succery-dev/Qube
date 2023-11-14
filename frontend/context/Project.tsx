@@ -15,6 +15,7 @@ const initialFormValue = {
   "Reward(USDC)": 0,
   // "NFT(Contract Address)": "" as `0x${string}`,
   Status: StatusEnum.WaitingForConnectingLancersWallet,
+  tokenSymbol: "USDC",
 };
 
 // Create the context

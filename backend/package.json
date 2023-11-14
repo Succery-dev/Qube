@@ -6,7 +6,8 @@
   "scripts": {
     "test": "hardhat test test/Controller.ts",
     "live": "nodemon --watch contracts --watch test --exec yarn test -e sol,js,ts",
-    "deploy:mumbai": "npx hardhat run scripts/deploy.testnet.ts --network mumbai",
+    "deploy:polygon": "npx hardhat run scripts/deploy.polygon.ts --network polygon",
+    "deploy:mumbai": "npx hardhat run scripts/deploy.mumbai.ts --network mumbai",
     "build": "tsc",
     "upload": "npm run build && ts-node scripts/upload.ts"
   },

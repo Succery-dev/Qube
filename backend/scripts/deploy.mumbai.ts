@@ -29,13 +29,15 @@ async function verifyContract(hre: HardhatRuntimeEnvironment, contractAddress: s
 
 async function main() {
   try {
+    console.log("Deploying to mumbai...");
+
     const [deployer] = await hre.ethers.getSigners();
     console.log("Deploying contracts with the account:", deployer.address);
 
     const forwarder = await deploy(hre, ContractNames.ERC2771Forwarder, ContractNames.ERC2771Forwarder);
     const escrow = await deploy(hre, ContractNames.Escrow, forwarder.address, deployer.address);
 
-    writeFileSync("deploy.json", JSON.stringify({
+    writeFileSync("deploy.mumbai.json", JSON.stringify({
       ERC2771Forwarder: forwarder.address,
       Escrow: escrow.address,
     }, null, 2));

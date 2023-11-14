@@ -31,7 +31,7 @@ const config: HardhatUserConfig = {
         // localhost: {
         //     url: "http://127.0.0.1:8545"
         // },
-        mainnet: {
+        polygon: {
             url: `https://polygon-mainnet.g.alchemy.com/v2/${process.env.ALCHEMY_API_KEY_PRODUCTION}`,
             accounts: [process.env.PRIVATE_KEY_PRODUCTION as string],
         },

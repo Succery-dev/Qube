@@ -1,6 +1,6 @@
 import { Contract } from "ethers";
 import { getJsonRpcProvider } from "../utils/ethers";
-import deployedContracts from "../../backend/deploy.json";
+import deployedContracts from "../../backend/deploy.mumbai.json";
 import ForwarderAbi from "./abi/forwarder.json";
 
 export function getForwarderContract(): Contract {

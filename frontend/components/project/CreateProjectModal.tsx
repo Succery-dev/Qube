@@ -14,10 +14,12 @@ const CreateProjectModal = ({
   showProjectModal,
   setShowProjectModal,
   projectDetailLink,
+  userType,
 }: {
   showProjectModal: boolean;
   setShowProjectModal: React.Dispatch<React.SetStateAction<boolean>>;
   projectDetailLink: string;
+  userType: string;
 }) => {
   const [isCopiedPopupVisible, setIsCopiedPopupVisible] = useState(false);
 
@@ -70,7 +72,7 @@ const CreateProjectModal = ({
                   {/* Main */}
                   <div className="flex flex-col w-full gap-4 mt-8">
                     <p className="text-[#959595]">
-                      Share this link to the company
+                      Share this link to the {userType === "depositor" ? "creator" : "company"}
                     </p>
                     <div className="flex flex-row relative items-center justify-between gap-2 bg-bg_primary py-4 px-4 rounded-lg">
                       <Link

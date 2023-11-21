@@ -74,6 +74,8 @@ const ProjectScaffold = ({
     setShowProjectModal: React.Dispatch<React.SetStateAction<boolean>>
   ] = useState(false);
 
+  const [userType, setUserType] = useState("");
+
   return (
     <div className="font-nunito text-secondary">
       {/* Create Project Section */}
@@ -95,6 +97,7 @@ const ProjectScaffold = ({
             // setnftAddressDetails={setnftAddressDetails}
             setShowProjectModal={setShowProjectModal}
             setProjectDetailLink={setProjectDetailLink}
+            setUserType={setUserType}
             // setShowSubmitModal={setShowSubmitModal}
             // projectId={projectId}
           />
@@ -110,6 +113,7 @@ const ProjectScaffold = ({
           showProjectModal={showProjectModal}
           setShowProjectModal={setShowProjectModal}
           projectDetailLink={projectDetailLink}
+          userType={userType}
         />
       </SectionWrapper>
     </div>

@@ -26,10 +26,9 @@ import Arbitration from "./Arbitration.svg";
 import GasFree from "./GasFree.svg";
 import LinkBased from "./LinkBased.svg";
 import OnChainResume from "./OnChainResume.svg";
-import HowToForClient from "./HowToForClient.svg";
-import HowToForFreelancer from "./HowToForFreelancer.svg";
 import X from "./X.svg";
 import Checkbox from "./Checkbox.svg";
+import Workflow from "./Workflow.svg";
 
 export {
   arrow,
@@ -60,8 +59,7 @@ export {
   GasFree,
   LinkBased,
   OnChainResume,
-  HowToForClient,
-  HowToForFreelancer,
   X,
   Checkbox,
+  Workflow,
 };

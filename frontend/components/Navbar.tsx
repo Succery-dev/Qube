@@ -3,7 +3,6 @@ import Link from "next/link";
 import Image from "next/image";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
-import Tilt from "react-parallax-tilt";
 
 import { navLinks, aesthetics } from "../constants";
 import { arrow, MenuIcon, CrossIcon, Spinner } from "../assets";
@@ -14,9 +13,10 @@ dotenv.config();
 
 // Framer-Motion Imports
 import { motion, AnimatePresence } from "framer-motion";
-import { hoverVariant, modalVariant, modalLinksVariant, database } from "../utils";
+import { hoverVariant, modalVariant, modalLinksVariant, database, storage } from "../utils";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { useAccount, useDisconnect } from "wagmi";
+import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
 
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 
@@ -34,12 +34,18 @@ const Navbar = (): JSX.Element => {
 
   useEffect(() => {
     const checkIfIdExistsInCollection = async (address: string) => {
-      if (isConnected && address) {
+      if (isConnected && address && router.asPath !== "/nftClaim") {
         try {
           const docRef = doc(database, "users", address);
           const docSnapshot = await getDoc(docRef);
 
-          if (!docSnapshot.exists() && router.asPath !== "/nftClaim") {
+          if (docSnapshot.exists()) {
+            const docData = docSnapshot.data();
+  
+            if (!docData.profileImageUrl || !docData.username || !docData.email || !docData.userType) {
+              setShowEmailModal(true);
+            }
+          } else {
             setShowEmailModal(true);
           }
         } catch (error) {
@@ -49,10 +55,12 @@ const Navbar = (): JSX.Element => {
     }
 
     checkIfIdExistsInCollection(address);
-  }, [isConnected, address]);
+  }, [isConnected, address, router.asPath]);
 
+  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [confirmEmail, setConfirmEmail] = useState("");
+  const [selectedUserType, setSelectedUserType] = useState("");
 
   const [showEmailModal, setShowEmailModal] = useState(false);
 
@@ -61,25 +69,78 @@ const Navbar = (): JSX.Element => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (email !== confirmEmail) {
-      alert("The email addresses you entered do not match. Please ensure they are the same and try again.");
-    } else {
-      setIsLoading(true);
-      console.log("Submitted Email: ", email);
+    console.log("image: ", imageSrc);
+    console.log("username: ", username);
+    console.log("email: ", email);
+    console.log("confirmEmail: ", confirmEmail);
+    console.log("userType: ", selectedUserType);
 
-      try {
-        const docRef = doc(database, "users", address);
-        await setDoc(docRef, {email: email});
-        setShowEmailModal(false);
-      } catch (error) {
-        console.error("Error setting document: ", error);
-      } finally {
-        setIsLoading(false);
-      }
+    if (!imageSrc || !selectedFile) {
+      alert("Image upload is mandatory. Please select an image.");
+      return;
     }
 
+    if (email !== confirmEmail) {
+      alert("The email addresses you entered do not match. Please ensure they are the same and try again.");
+      return;
+    }
+
+    setIsLoading(true);
+
+    try {
+      // Create a storage ref
+      const timestamp = Date.now();
+      const fileExtension = selectedFile.name.split(".").pop();
+      const storageRef = ref(storage, `users/${address}/profile_images/profile_${timestamp}.${fileExtension}`);
+
+      // Upload file
+      const uploadTask = uploadBytesResumable(storageRef, selectedFile);
+
+      // Listen for state changes, errors, and completion of the upload.
+      await new Promise((resolve, reject) => {
+        uploadTask.on(
+          "state_changed",
+          (snapshot) => {
+            // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+            var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            console.log("Upload is " + progress + "% done");
+            switch (snapshot.state) {
+              case "paused":
+                console.log("Upload is paused");
+                break;
+              case "running":
+                console.log("Upload is running");
+                break;
+            }
+          }, 
+          (error) => reject(error), 
+          () => resolve(uploadTask.snapshot.ref)
+        );
+      });
+
+      const downloadUrl = await getDownloadURL(uploadTask.snapshot.ref);
+      console.log("Upload is complete: ", downloadUrl);
+
+      const docRef = doc(database, "users", address);
+      await setDoc(docRef, {
+        profileImageUrl: downloadUrl,
+        username: username,
+        email: email,
+        userType: selectedUserType,
+      });
+
+      setShowEmailModal(false);
+    } catch (error) {
+      console.error("Error setting document: ", error);
+    } finally {
+      setIsLoading(false);
+    }
+    
+    setImageSrc("");
+    setUsername("");
     setEmail("");
     setConfirmEmail("");
+    setSelectedUserType("");
   };
 
   const handlePaste = (e: React.ClipboardEvent) => {
@@ -99,6 +160,24 @@ const Navbar = (): JSX.Element => {
       setUserType(userType as string);
     }
   }, [router.asPath, router.query]);
+
+  const [imageSrc, setImageSrc] = useState<string | null>(null);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      setSelectedFile(file);
+      const reader = new FileReader();
+      
+      reader.onload = (loadEvent) => {
+        const src = loadEvent.target?.result;
+        setImageSrc(src as string);
+      };
+
+      reader.readAsDataURL(file);
+    }
+  };
 
   return (
     <>
@@ -280,7 +359,7 @@ const Navbar = (): JSX.Element => {
                   {/* Header */}
                   <div className="flex flex-row w-full justify-between items-center top-0 right-0 z-[100]">
                     <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#E220CF]">
-                      Email Address
+                      Onboarding
                     </h2>
                     {!isLoading &&
                       <Image
@@ -296,6 +375,40 @@ const Navbar = (): JSX.Element => {
                   </div>
                   {/* Main */}
                   <form onSubmit={handleSubmit} className="flex flex-col mt-8 gap-5">
+                    <h3 className="text-xl">Photo</h3>
+                    <div className="flex items-center space-x-4">
+                      <div className="w-24 h-24 rounded-full overflow-hidden bg-gray-100">
+                        {imageSrc ? (
+                          <img src={imageSrc} alt="Profile preview" className="w-full h-full object-cover" />
+                        ) : (
+                          <div className="flex items-center justify-center h-full">
+                            {/* Placeholder icon or text */}
+                            <span className="text-gray-300">No image</span>
+                          </div>
+                        )}
+                      </div>
+                      <label className="cursor-pointer bg-blue-500 text-white py-2 px-4 rounded">
+                        Upload Image
+                        <input
+                          type="file"
+                          accept="image/*"
+                          onChange={handleImageChange}
+                          className="hidden"
+                        />
+                      </label>
+                    </div>
+                    <div className="h-[1px] bg-gray-500"></div>
+                    <h3 className="text-xl">Username</h3>
+                    <input 
+                      type="text"
+                      value={username}
+                      onChange={(e) => setUsername(e.target.value)} 
+                      className="p-2 border rounded w-full text-black" 
+                      placeholder="Enter your username" 
+                      required
+                    />
+                    <div className="h-[1px] bg-gray-500"></div>
+                    <h3 className="text-xl">Email</h3>
                     <input
                       type="email"
                       value={email}
@@ -313,6 +426,33 @@ const Navbar = (): JSX.Element => {
                       onPaste={handlePaste}
                       required
                     />
+                    <div className="h-[1px] bg-gray-500"></div>
+                    <h3 className="text-xl">User Type</h3>
+                    <div className="flex items-center gap-x-3">
+                      <input 
+                        id="creator" 
+                        name="userType" 
+                        type="radio" 
+                        className="h-4 w-4 border-gray-300"
+                        value="creator"
+                        checked={selectedUserType === "creator"}
+                        onChange={(e) => setSelectedUserType(e.target.value)}
+                        required 
+                      />
+                      <label htmlFor="creator" className="block leading-6 text-white">Creator</label>
+                    </div>
+                    <div className="flex items-center gap-x-3">
+                      <input 
+                        id="company" 
+                        name="userType" 
+                        type="radio" 
+                        className="h-4 w-4 border-gray-300"
+                        value="company"
+                        checked={selectedUserType === "company"}
+                        onChange={(e) => setSelectedUserType(e.target.value)}
+                      />
+                      <label htmlFor="company" className="text-white">Company</label>
+                    </div>
                     {isLoading
                       ? (
                         <div className="flex flex-row items-center justify-center text-2xl text-green-400">

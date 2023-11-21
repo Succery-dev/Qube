@@ -430,28 +430,28 @@ const Navbar = (): JSX.Element => {
                     <h3 className="text-xl">User Type</h3>
                     <div className="flex items-center gap-x-3">
                       <input 
-                        id="creator" 
+                        id="recipient" 
                         name="userType" 
                         type="radio" 
                         className="h-4 w-4 border-gray-300"
-                        value="creator"
-                        checked={selectedUserType === "creator"}
+                        value="recipient"
+                        checked={selectedUserType === "recipient"}
                         onChange={(e) => setSelectedUserType(e.target.value)}
                         required 
                       />
-                      <label htmlFor="creator" className="block leading-6 text-white">Creator</label>
+                      <label htmlFor="recipient" className="block leading-6 text-white">Creator</label>
                     </div>
                     <div className="flex items-center gap-x-3">
                       <input 
-                        id="company" 
+                        id="depositor" 
                         name="userType" 
                         type="radio" 
                         className="h-4 w-4 border-gray-300"
-                        value="company"
-                        checked={selectedUserType === "company"}
+                        value="depositor"
+                        checked={selectedUserType === "depositor"}
                         onChange={(e) => setSelectedUserType(e.target.value)}
                       />
-                      <label htmlFor="company" className="text-white">Company</label>
+                      <label htmlFor="depositor" className="text-white">Company</label>
                     </div>
                     {isLoading
                       ? (

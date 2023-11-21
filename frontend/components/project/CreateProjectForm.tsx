@@ -36,7 +36,7 @@ import {
 } from "../../assets";
 
 // Firebase Imports
-import { collection, addDoc } from "firebase/firestore";
+import { collection, addDoc, doc, getDoc } from "firebase/firestore";
 import { database } from "../../utils";
 
 // Status Enum Import
@@ -205,6 +205,7 @@ const CreateProjectForm = ({
   // setnftAddressDetails,
   setShowProjectModal,
   setProjectDetailLink,
+  setUserType,
   // setShowSubmitModal,
   // projectId,
 }: {
@@ -214,6 +215,7 @@ const CreateProjectForm = ({
   // setnftAddressDetails: React.Dispatch<React.SetStateAction<NftAddressDetailsInterface>>;
   setShowProjectModal: React.Dispatch<React.SetStateAction<boolean>>;
   setProjectDetailLink: React.Dispatch<React.SetStateAction<string>>;
+  setUserType: React.Dispatch<React.SetStateAction<string>>;
   // setShowSubmitModal: React.Dispatch<React.SetStateAction<boolean>>;
   // projectId?: string;
 }): JSX.Element => {
@@ -281,14 +283,22 @@ const CreateProjectForm = ({
           throw new Error("Invalid Reward Value. Only natural numbers are allowed.");
         }
 
+        const docRef = doc(database, "users", address);
+        const docSnapshot = await getDoc(docRef);
+        const docData = docSnapshot.data();
+        const userType = docData.userType;
+
+        form.createdBy = userType;
+        setUserType(userType);
+
         const date = new Date(form["Deadline(UTC)"]);
         const submissionDeadline = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate(), 21, 0, 0, 0));
         form["Deadline(UTC)"] = submissionDeadline.toISOString();
         date.setDate(date.getDate() + 7);
         const paymentDeadline = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate(), 21, 30, 0, 0));
         form["Deadline(UTC) For Payment"] = paymentDeadline.toISOString();
-        form["Client's Wallet Address"] = addressZero;
-        form["Lancer's Wallet Address"] = address;
+        form["Client's Wallet Address"] = userType === "depositor" ? address : addressZero;
+        form["Lancer's Wallet Address"] = userType === "depositor" ? addressZero : address;
         form.approveProof = "";
         form.fileDeliverable = [];
         form.textDeliverable = [];
@@ -315,7 +325,7 @@ const CreateProjectForm = ({
         setNotificationConfiguration({
           modalColor: "#62d140",
           title: "Successfully created the project",
-          message: "Share the link and wait till the company signs to the project!",
+          message: `Share the link and wait till the ${userType === "depositor" ? "creator" : "company"} signs to the project!`,
           icon: IconNotificationSuccess,
         });
 

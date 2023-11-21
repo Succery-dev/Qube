@@ -6,7 +6,7 @@ import { useRouter } from "next/router";
 import { WalkthroughInterface } from "../../interfaces";
 
 // Image Imports
-import { GradientBlueGreenArrow, HowToForClient, HowToForFreelancer } from "../../assets";
+import { GradientBlueGreenArrow, Workflow } from "../../assets";
 
 // Content Imports
 import { walkthrough } from "../../constants";
@@ -75,8 +75,8 @@ const Walkthrough = (): JSX.Element => {
         HOW TO ?
       </motion.h1>
       <Image
-        src={userType === "COMPANY" ? HowToForClient : HowToForFreelancer}
-        alt={userType === "COMPANY" ? "HowToForClient" : "HowToForFreelancer"}
+        src={Workflow}
+        alt="Workflow"
         className="mx-auto"
       />
     </div>

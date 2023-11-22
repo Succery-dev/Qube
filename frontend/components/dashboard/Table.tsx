@@ -62,8 +62,8 @@ const TableContents = ({
                         : projectKey === "id"
                           ? null
                           : projectKey === "status"
-                            ? convertState(project.status) // TODO: Fix this
-                            : projectKey === "tokenSymbol"
+                            ? convertState(project.status, project.createdBy) // TODO: Fix this
+                            : projectKey === "tokenSymbol" || projectKey === "createdBy"
                               ? null
                               : project[projectKey as keyof typeof project]}
                     <span

@@ -12,6 +12,7 @@ interface DisplayProjectDetailsInterface extends CreateProjectFormInterface {
   InDispute: boolean;
   RequestedDeadlineExtension: string;
   tokenAddress: string;
+  createdBy: string;
 }
 
 export type { DisplayProjectDetailsInterface };

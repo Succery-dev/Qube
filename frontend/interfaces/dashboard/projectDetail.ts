@@ -7,6 +7,7 @@ interface ProjectDetailInterface {
   amount: number;
   status: StatusEnum;
   tokenSymbol: string;
+  createdBy: string;
 }
 
 export type { ProjectDetailInterface };

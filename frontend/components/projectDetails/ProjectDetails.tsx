@@ -91,8 +91,8 @@ const ProjectDetails = ({ projectId }: { projectId: string }): JSX.Element => {
       "Detail": projectDetails.Detail,
       "Deadline(UTC)": projectDetails["Deadline(UTC)"],
       "Reward": projectDetails["Reward(USDC)"],
-      "Company's Wallet Address": address,
-      "Creator's Wallet Address": projectDetails["Lancer's Wallet Address"],
+      "Company's Wallet Address": projectDetails.createdBy === "depositor" ? projectDetails["Client's Wallet Address"] : address,
+      "Creator's Wallet Address": projectDetails.createdBy === "depositor" ? address : projectDetails["Lancer's Wallet Address"],
     },
   });
 
@@ -408,7 +408,6 @@ const ProjectDetails = ({ projectId }: { projectId: string }): JSX.Element => {
                 openConnectModal={openConnectModal}
                 signTypedDataAsync={signTypedDataAsync}
                 // nftOwnerAddress={address}
-                freelancerAddress={address}
                 setFileDeliverables={setFileDeliverables}
                 projectId={projectId}
                 setIsAssigned={setIsAssigned}

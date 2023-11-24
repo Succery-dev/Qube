@@ -73,6 +73,7 @@ const Dashboard: NextPage = () => {
             status: Object.entries(StatusEnum).find(([key, value]) => value == project["Status"])[1] as StatusEnum,
             id: project["id"],
             tokenSymbol: project["tokenSymbol"],
+            createdBy: project["createdBy"],
           });
         });
         mockData.data = projects;

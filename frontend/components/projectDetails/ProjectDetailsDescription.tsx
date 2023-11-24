@@ -47,7 +47,6 @@ const ProjectDetailsDescription = ({
   openConnectModal,
   signTypedDataAsync,
   // nftOwnerAddress,
-  freelancerAddress,
   setFileDeliverables,
   projectId,
   setIsAssigned,
@@ -58,10 +57,9 @@ const ProjectDetailsDescription = ({
   projectDetails,
 }: {
   isAssigned: boolean;
-  openConnectModal: unknown;
+  openConnectModal: any;
   signTypedDataAsync: unknown;
   // nftOwnerAddress: `0x${string}`;
-  freelancerAddress: `0x${string}`;
   setFileDeliverables: React.Dispatch<
     React.SetStateAction<DisplayFileDeliverableInterface[]>
   >;
@@ -206,7 +204,7 @@ const ProjectDetailsDescription = ({
 
   const acceptDeadlineExtension = async () => {
     try {
-      if (projectDetails["Lancer's Wallet Address"] !== freelancerAddress) {
+      if (projectDetails["Lancer's Wallet Address"] !== address) {
         throw new Error("This action can be taken by the freelancer. Wait until being accepted");
       }
 
@@ -252,7 +250,7 @@ const ProjectDetailsDescription = ({
 
   const rejectDeadlineExtension = async () => {
     try {
-      if (projectDetails["Lancer's Wallet Address"] !== freelancerAddress) {
+      if (projectDetails["Lancer's Wallet Address"] !== address) {
         throw new Error("This action can be taken by the freelancer. Wait until being accepted");
       }
 
@@ -415,7 +413,7 @@ const ProjectDetailsDescription = ({
                 ) : (
                   <p className={`xs:text-base text-xs font-normal break-words`}>
                     {descriptionSection === "Status"
-                      ? convertState(descriptionText)
+                      ? convertState(descriptionText as StatusEnum, descriptionProjectDetails.createdBy)
                       : (descriptionSection === "Deadline(UTC)" || descriptionSection === "Deadline(UTC) For Payment")
                         ? getFormattedDate(descriptionText as string)
                         : descriptionText
@@ -429,31 +427,32 @@ const ProjectDetailsDescription = ({
       </div>
       {projectDetails.Status === StatusEnum.WaitingForConnectingLancersWallet && (
         <CustomButton
-          text="Waiting For Approval & Prepay"
+          text={projectDetails.createdBy === "depositor" ? "Waiting For Approval" : "Waiting For Approval & Prepay"}
           styles="w-full mx-auto block bg-[#DF57EA] hover:bg-[#A9209C] rounded-md text-center text-lg font-semibold text-white py-[4px] px-7 mt-6"
           type="button"
           onClick={async (e) => {
             e.preventDefault();
 
             try {
-              await assignProject(
-                // nftOwnerAddress,
-                freelancerAddress,
-                projectDetails["Lancer's Wallet Address"],
-                // projectDetails["NFT(Contract Address)"],
-                openConnectModal,
-                signTypedDataAsync,
-                projectId,
-                setProjectDetails,
-                setIsAssigned,
-                setNotificationConfiguration,
-                setShowNotification
-              );
+              if (isConnected) {
+                await assignProject(
+                  address,
+                  projectDetails,
+                  signTypedDataAsync,
+                  projectId,
+                  setProjectDetails,
+                  setIsAssigned,
+                );
 
-              setTitle("Prepay Escrow");
-              setDescription("This is to prepay the money to Qube’s Smart Contract. The money will be held until the submission is approved by you. Do you want to proceed?");
-              setOnConfirm(() => prepayEscrow);
-              setShowModal(true);
+                if (projectDetails.createdBy === "recipient") {
+                  setTitle("Prepay Escrow");
+                  setDescription("This is to prepay the money to Qube’s Smart Contract. The money will be held until the submission is approved by you. Do you want to proceed?");
+                  setOnConfirm(() => prepayEscrow);
+                  setShowModal(true);
+                }
+              } else {
+                openConnectModal();
+              }
             } catch (error) {
               console.log(error.message);
               setNotificationConfiguration({

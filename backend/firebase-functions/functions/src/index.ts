@@ -213,6 +213,7 @@ export const sendEmailNotification = onDocumentUpdated("/projects/{documentId}",
   const beforeData = event.data?.before;
   const beforeStatus = beforeData?.get("Status");
   const beforeInDispute = beforeData?.get("InDispute");
+  const createdBy = beforeData?.get("createdBy");
   const afterData = event.data?.after;
   const afterStatus = afterData?.get("Status");
   const afterInDispute = afterData?.get("InDispute");
@@ -236,27 +237,26 @@ export const sendEmailNotification = onDocumentUpdated("/projects/{documentId}",
   const prepayTxHash = afterData?.get("prepayTxHash");
   const prepayTxUrl = `${process.env.POLYGONSCAN_URL}/tx/${prepayTxHash}`;
 
-//   if (beforeStatus == StatusEnum.WaitingForConnectingLancersWallet && afterStatus == StatusEnum.PayInAdvance) {
-//     const docRef = getFirestore().collection("users").doc(afterData?.get("Client's Wallet Address"));
-//     const doc = await docRef.get();
+  if (createdBy === "depositor" && beforeStatus == StatusEnum.WaitingForConnectingLancersWallet && afterStatus == StatusEnum.PayInAdvance) {
+    const docRef = getFirestore().collection("users").doc(afterData?.get("Client's Wallet Address"));
+    const doc = await docRef.get();
 
-//     const mailOptions = {
-//       from: qubeMailAddress,
-//       to: doc.get("email"),
-//       subject: `Project Name: ${title}`,
-//       text: 
-// `The contract has been signed. 
+    const mailOptions = {
+      from: qubeMailAddress,
+      to: doc.get("email"),
+      subject: `Project Name: ${title}`,
+      text: 
+`The contract has been signed. 
 
-// Please prepay the reward to Escrow as soon as possible. 
-// Make sure that until you don't finish the prepay, the freelancer won't start working and won't be able to submit the work.
+Please prepay the reward to Escrow as soon as possible. 
+Make sure that until you don't finish the prepay, the freelancer won't start working and won't be able to submit the work.
 
-// To go to the project: ${projectLink}
-// If you have any questions feel free to reply to this mail. Don't forget to explain the issue you are having.`,
-//     };
+To go to the project: ${projectLink}
+If you have any questions feel free to reply to this mail. Don't forget to explain the issue you are having.`,
+    };
     
-//     return transporter.sendMail(mailOptions);
-//   } else 
-  if (beforeStatus == StatusEnum.PayInAdvance && afterStatus == StatusEnum.WaitingForSubmission) {
+    return transporter.sendMail(mailOptions);
+  } else if (beforeStatus == StatusEnum.PayInAdvance && afterStatus == StatusEnum.WaitingForSubmission) {
     const docRef = getFirestore().collection("users").doc(afterData?.get("Lancer's Wallet Address"));
     const doc = await docRef.get();
 

@@ -15,9 +15,13 @@ export function getJsonRpcProvider(): ethers.providers.JsonRpcProvider {
 // Web3 Provider (e.t. Metamask)
 let web3Provider: ethers.providers.Web3Provider | undefined;
 
-export function initializeWeb3Provider() {
+export async function initializeWeb3Provider() {
   if (typeof window !== "undefined" && (window as any).ethereum) {
+    await (window as any).ethereum.enable();
     web3Provider = new ethers.providers.Web3Provider((window as any).ethereum);
+    console.log("web3Provider: ", web3Provider);
+    web3Provider.listAccounts().then(accounts => console.log("Accounts:", accounts));
+    web3Provider.getNetwork().then(network => console.log("Network:", network));
   }
 }
 
@@ -32,5 +36,7 @@ export function getSigner(): ethers.providers.JsonRpcSigner | undefined {
   if (!web3Provider) {
     throw new Error("Web3 provider is not initialized. Please call initializeWeb3Provider() first.");
   }
-  return web3Provider.getSigner();
+  const signer = web3Provider.getSigner();
+  signer.getAddress().then(address => console.log("Signer address:", address));
+  return signer;
 }

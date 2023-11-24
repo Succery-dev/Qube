@@ -6,6 +6,7 @@ interface StoreProjectDetailsInterface extends DisplayProjectDetailsInterface {
   prepayTxHash: string;
   tokenSymbol: string;
   tokenAddress: string;
+  createdBy: string;
 }
 
 export type { StoreProjectDetailsInterface };

@@ -6,7 +6,11 @@ export const activeUserByStatus = (projectDetails: DisplayProjectDetailsInterfac
   const client = "Company";
 
   if (projectDetails.Status === StatusEnum.WaitingForConnectingLancersWallet) {
-    return client;
+    if (projectDetails.createdBy === "depositor") {
+      return freelancer
+    } else {
+      return client;
+    }
   } else if (projectDetails.Status === StatusEnum.PayInAdvance) {
     return client;
   } else if (projectDetails.Status === StatusEnum.WaitingForSubmission) {

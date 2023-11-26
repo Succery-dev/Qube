@@ -14,9 +14,27 @@ export function getMockTokenContract(signerOrProvider: ethers.Signer | ethers.pr
 export async function approve(spender: string, amount: ethers.BigNumberish, tokenAddress: string) {
   const signer = getSigner();
   const contract = getMockTokenContract(signer, tokenAddress);
-  const tx = await contract.approve(spender, amount, {
-    gasPrice: ethers.utils.parseUnits("100", "gwei")
+
+  // 動的にガス価格を取得する
+  const gasPrice = await signer.getGasPrice();
+  console.log(`gasPrice: ${ethers.utils.formatUnits(gasPrice, "gwei")}gwei`);
+
+  // 推定ガスリミットを取得する
+  const estimatedGasLimit = await contract.estimateGas.approve(spender, amount).catch((error) => {
+  console.error("Error estimating gas:", error);
+  return ethers.BigNumber.from("100000"); // フォールバックとしてデフォルト値を設定
   });
+  console.log("estimatedGasLimit: ", estimatedGasLimit.toString());
+
+  // ガスリミットにバッファを加える（例: 推定値の20%を加える）
+  const gasLimitWithBuffer = estimatedGasLimit.mul(120).div(100);
+  console.log("gasLimitWithBuffer: ", gasLimitWithBuffer.toString());
+
+  const tx = await contract.approve(spender, amount, {
+  gasPrice: gasPrice, // 動的に取得したガス価格を使用
+  gasLimit: gasLimitWithBuffer // バッファ付きのガスリミットを設定
+  });
+
   return await tx.wait();
 }
 

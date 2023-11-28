@@ -1,6 +1,7 @@
 // TODO: fix this, based on /QubePay/frontend/components/project/CreateProjectModal.tsx
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
+import ReactStars from "react-stars";
 
 // Asset Imports
 import { CrossIcon, Spinner } from "../../assets";
@@ -9,20 +10,55 @@ import { CrossIcon, Spinner } from "../../assets";
 import { AnimatePresence, motion } from "framer-motion";
 import { modalVariant } from "../../utils";
 
+import { StoreProjectDetailsInterface } from "../../interfaces";
+import { updateProjectDetails } from "../../utils";
+
 const Modal = ({
   showModal,
   setShowModal,
   title,
   description,
   onConfirm,
+  projectId,
 }: {
   showModal: boolean;
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
   title: string;
   description: string;
   onConfirm: () => Promise<void>;
+  projectId: string;
 }) => {
   const [isLoading, setIsLoading] = useState(false);
+
+  const [comment, setComment] = useState("");
+  const [rating, setRating] = useState(0);
+
+  useEffect(() => {
+    console.log("comment: ", comment);
+  }, [comment]);
+
+  useEffect(() => {
+    console.log("rating: ", rating);
+  }, [rating]);
+
+  const handleCommentChange = (event) => {
+    setComment(event.target.value);
+  };
+
+  const handleRatingChange = (newRating) => {
+    setRating(newRating);
+  };
+
+  const uploadCommentAndRating = async () => {
+    console.log(`comment: ${comment}, rating: ${rating}`);
+
+    const updatedSubsetProjectDetail: Partial<StoreProjectDetailsInterface> =
+      {
+        feedbackComment: comment,
+        projectRating: rating,
+      };
+    await updateProjectDetails(projectId, updatedSubsetProjectDetail);
+  }
 
   return (
     <AnimatePresence>
@@ -57,6 +93,33 @@ const Modal = ({
                     <p className={title === "Disapprove The Deliverables" ? "text-red-800" : "text-[#959595]"}>
                       {description}
                     </p>
+                    {title === "Approve The Deliverables" && 
+                      (
+                        <form className="flex flex-col gap-4">
+                          <label className="text-lg font-semibold">
+                            Comment
+                          </label>
+                          <textarea
+                            className="p-2 bg-white text-black rounded border border-gray-300 focus:border-pink-400 focus:outline-none"
+                            placeholder="Your comment"
+                            rows={3}
+                            value={comment}
+                            onChange={handleCommentChange}
+                            disabled={isLoading}
+                          />
+                          <label className="text-lg font-semibold">
+                            Rating
+                          </label>
+                          <ReactStars
+                            count={5}
+                            onChange={handleRatingChange}
+                            size={35}
+                            half={false}
+                            value={rating}
+                          />
+                        </form>
+                      )
+                    }
                     {isLoading
                       ? (
                         <div className="flex flex-row items-center justify-center text-2xl text-[#DF57EA]">
@@ -70,13 +133,25 @@ const Modal = ({
                       ) : (
                         <div className="flex flex-row items-center justify-end gap-14 py-4 px-4">
                           <button
-                            className={`${title === "Disapprove The Deliverables" ? "bg-red-500 hover:bg-red-600" : "bg-pink-400 hover:bg-pink-500"} text-white py-2 px-4 rounded transition duration-150`}
+                            className={`${title === "Disapprove The Deliverables" ? "bg-red-500 hover:bg-red-600" : (title === "Approve The Deliverables" && (comment === "" || rating === 0)) ? "bg-gray-400" : "bg-pink-400 hover:bg-pink-500"} text-white py-2 px-4 rounded transition duration-150`}
                             onClick={async () => {
                               setIsLoading(true);
-                              await onConfirm();
+
+                              try {
+                                if (title === "Approve The Deliverables") {
+                                  await uploadCommentAndRating();
+                                }
+                                await onConfirm();
+                              } catch(error) {
+                                console.log("Error: ", error.message);
+                              }
+                              
                               setIsLoading(false);
                               setShowModal(false);
+                              setComment("");
+                              setRating(0);
                             }}
+                            disabled={(title === "Approve The Deliverables" && (comment === "" || rating === 0)) ? true : false}
                           >
                             Confirm
                           </button>

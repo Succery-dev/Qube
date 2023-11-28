@@ -308,6 +308,8 @@ const CreateProjectForm = ({
         form.RequestedDeadlineExtension = "";
         form.prepayTxHash = "";
         form.tokenAddress = TokenAddress[form.tokenSymbol];
+        form.feedbackComment = "";
+        form.projectRating = 0;
 
         const now = new Date();
         form.createdAt = now.toISOString();

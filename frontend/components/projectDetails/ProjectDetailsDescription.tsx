@@ -302,7 +302,7 @@ const ProjectDetailsDescription = ({
       console.log("Approve Result: ", approveResult);
       if (!approveResult) throw new Error("Failed to approve the submission");
 
-      // Update the status to "Waiting for Submission"
+      // Update the status to "Complete (Approval)"
       const updatedSubsetProjectDetail: Partial<StoreProjectDetailsInterface> =
         {
           "Status": StatusEnum.CompleteApproval,
@@ -573,6 +573,7 @@ const ProjectDetailsDescription = ({
         title={title}
         description={description}
         onConfirm={onConfirm}
+        projectId={projectId}
       />
     </>
   );

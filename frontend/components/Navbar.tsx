@@ -354,7 +354,7 @@ const Navbar = (): JSX.Element => {
             className="fixed w-screen h-screen top-0 left-0 backdrop-blur-md z-[100] grid grid-cols-12 text-white font-nunito"
           >
             <div className="col-start-2 col-end-12 xl:col-start-4 xl:col-end-10 grid place-items-center">
-              <div className="w-full border border-[#E220CF] shadow-custom-pink rounded-xl p-[2px] flex flex-row items-center">
+              <div className="w-full border border-[#E220CF] shadow-custom-pink rounded-xl p-[2px] flex flex-row items-center overflow-y-auto">
                 <div className="w-full max-h-[95vh] bg-black rounded-xl px-4 py-6 sm:p-8 md:p-10 lg:p-8 xl:p-10 relative">
                   {/* Header */}
                   <div className="flex flex-row w-full justify-between items-center top-0 right-0 z-[100]">

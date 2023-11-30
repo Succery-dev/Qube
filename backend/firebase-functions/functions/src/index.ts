@@ -1,8 +1,14 @@
 // The Firebase Admin SDK to access Firestore.
+import admin from "firebase-admin";
 import { initializeApp } from "firebase-admin/app";
 import { getFirestore } from "firebase-admin/firestore";
 import { onDocumentUpdated } from "firebase-functions/v2/firestore";
 import nodemailer from "nodemailer";
+import axios from "axios";
+import sharp from "sharp";
+import { createCanvas, loadImage, CanvasRenderingContext2D } from "canvas";
+import { ThirdwebStorage } from "@thirdweb-dev/storage";
+import { ThirdwebSDK } from "@thirdweb-dev/sdk";
 
 initializeApp();
 
@@ -588,4 +594,281 @@ If you have any questions feel free to reply to this mail. Don't forget to expla
   }
 
   return null;
+});
+
+const storage = new ThirdwebStorage({
+  secretKey: process.env.THIRDWEB_SECRET_KEY,
+});
+
+const sdk = ThirdwebSDK.fromPrivateKey(
+  `${process.env.SECRET_KEY}`,
+  `${process.env.CHAIN}`, 
+  {
+    secretKey: process.env.THIRDWEB_SECRET_KEY,
+  },
+);
+
+async function downloadImage(url: string): Promise<Buffer> {
+  const response = await axios.get(url, {
+    responseType: "arraybuffer"
+  });
+
+  return response.data;
+}
+
+// Function to crop an image into a circle
+async function cropToCircle(inputImagePath: string): Promise<Buffer> {
+  const buffer = await downloadImage(inputImagePath);
+  const image = sharp(buffer);
+  const metadata = await image.metadata();
+
+  // Determine the smallest dimension for a perfect circle
+  const width = metadata.width!;
+  const height = metadata.height!;
+  const diameter = Math.min(width, height);
+
+  // Calculate the top and left offsets to center the circle
+  const top = Math.floor((height - diameter) / 2);
+  const left = Math.floor((width - diameter) / 2);
+
+  // Crop the image into a circle and return the buffer
+  return image
+    .extract({ top: top, left: left, width: diameter, height: diameter })
+    .toBuffer();
+}
+
+// Function to draw text and a circle onto a canvas
+async function drawTextAndCircle(
+  croppedBuffer: Buffer, 
+  creatorName: string, 
+  companyName: string, 
+): Promise<Buffer> {
+    const canvasSize = 350;
+    const canvas = createCanvas(canvasSize, canvasSize);
+    const ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
+
+    // Set the background color to black
+    ctx.fillStyle = "black";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    // Load the cropped image
+    const image = await loadImage(croppedBuffer);
+
+    // Draw the circular profile image
+    const x = canvas.width / 2;
+    const y = canvas.height / 2;
+    const radius = canvasSize / 2 - 5;
+    ctx.save();
+    ctx.beginPath();
+    ctx.arc(x, y, radius, 0, Math.PI * 2, true);
+    ctx.clip();
+    ctx.drawImage(image, x - radius, y - radius, radius * 2, radius * 2);
+    ctx.restore();
+
+    // Add a green border around the circle
+    ctx.strokeStyle = "#11FCCA";
+    ctx.lineWidth = 5;
+    ctx.beginPath();
+    ctx.arc(x, y, radius, 0, Math.PI * 2, true);
+    ctx.stroke();
+
+    // Draw a black inner circle
+    const innerRadius = 20;
+    ctx.fillStyle = "black";
+    ctx.beginPath();
+    ctx.arc(x, y, innerRadius, 0, Math.PI * 2, true);
+    ctx.fill();
+    ctx.strokeStyle = "#11FCCA";
+    ctx.stroke();
+    
+    // Set text style for drawing
+    const fontSize = 13; // フォントサイズ
+    ctx.font = `${fontSize}px sans-serif`;
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    const text = "QUBE";
+    const textWidth = ctx.measureText(text).width;
+
+    // Draw a rounded rectangle banner and its border
+    const bannerHeight = fontSize * 1.7;
+    const bannerWidth = textWidth + 30;
+    const bannerX = 25;
+    const bannerY = radius + 30;
+    const bannerCenterX = bannerX + (bannerWidth / 2);
+    const bannerCenterY = bannerY + (bannerHeight / 2);
+    const borderRadius = 11;
+    const strokeWidth = 2;
+
+    // Draw the rounded rectangle
+    ctx.fillStyle = "black";
+    ctx.strokeStyle = "white";
+    ctx.lineWidth = strokeWidth;
+    ctx.beginPath();
+    // Drawing each corner with arcs
+    ctx.moveTo(bannerX + borderRadius, bannerY);
+    ctx.arcTo(bannerX + bannerWidth, bannerY, bannerX + bannerWidth, bannerY + borderRadius, borderRadius); // top right
+    ctx.arcTo(bannerX + bannerWidth, bannerY + bannerHeight, bannerX + bannerWidth - borderRadius, bannerY + bannerHeight, borderRadius); // bottom right
+    ctx.arcTo(bannerX, bannerY + bannerHeight, bannerX, bannerY + bannerHeight - borderRadius, borderRadius); // bottom left
+    ctx.arcTo(bannerX, bannerY, bannerX + borderRadius, bannerY, borderRadius); // top left
+    ctx.closePath();
+    // Fill and stroke the rectangle
+    ctx.fill();
+    ctx.stroke();
+
+    // Add text to the banner
+    ctx.fillStyle = "white";
+    ctx.fillText(text, bannerCenterX, bannerCenterY);
+
+    // Draw a black shadow area with blur effect
+    const shadowRadius = radius * 0.6;
+    const shadowY = y + radius / 2 + 10;
+    const gradient = ctx.createRadialGradient(x, shadowY, 0, x, shadowY, shadowRadius);
+    gradient.addColorStop(0, "rgba(0,0,0,0.7)");
+    gradient.addColorStop(1, "rgba(0,0,0,0)");
+    ctx.fillStyle = gradient;
+    ctx.fillRect(x - shadowRadius, shadowY - shadowRadius, shadowRadius * 2, shadowRadius * 1.5);
+
+    // Save context state before drawing text
+    ctx.save();
+
+    // Add creator and company names
+    ctx.fillStyle = "#DF57EA";
+    ctx.font = "bold 25px sans-serif";
+    ctx.textAlign = "center";
+    ctx.fillText(creatorName, x, radius + 80);
+    ctx.fillText(companyName, x, radius + 120);
+    ctx.fillStyle = "white";
+    ctx.fillText("x", x, radius + 100);
+
+    // Restore context state
+    ctx.restore();
+
+    // Output the canvas as a PNG image
+    const buffer = canvas.toBuffer("image/png");
+    return buffer;
+}
+
+function getCurrentYearMonth(): string {
+  const now = new Date();
+  const year = now.getFullYear();
+  let month = (now.getMonth() + 1).toString();
+
+  if (month.length === 1) {
+    month = "0" + month;
+  }
+
+  return `${year}/${month}`;
+}
+
+export const mintProjectNFT = onDocumentUpdated("/projects/{documentId}", async (event) => {
+  const beforeData = event.data?.before;
+  const afterData = event.data?.after;
+
+  const beforeStatus = beforeData?.get("Status");
+  const afterStatus = afterData?.get("Status");
+
+  if ((beforeStatus == StatusEnum.WaitingForPayment && afterStatus == StatusEnum.CompleteApproval)
+  || (beforeStatus == StatusEnum.WaitingForPayment && afterStatus == StatusEnum.CompleteNoContactByClient)) {
+    const id = event.params.documentId;
+    logger.info("[mintProjectNFT] Processing...");
+    
+    const name = afterData?.get("Title");
+    const description = afterData?.get("feedbackComment");
+    const rating = afterData?.get("projectRating") as number;
+    const date = getCurrentYearMonth();
+
+    const lancerDocRef = getFirestore().collection("users").doc(afterData?.get("Lancer's Wallet Address"));
+    const lancerDoc = await lancerDocRef.get();
+    const lancerName = lancerDoc.get("username");
+    
+    const clientDocRef = getFirestore().collection("users").doc(afterData?.get("Client's Wallet Address"));
+    const clientDoc = await clientDocRef.get();
+    const clientName = clientDoc.get("username");
+
+    const clientImage = clientDoc.get("profileImageUrl");
+    const croppedBuffer = await cropToCircle(clientImage);
+    const finalImageBuffer = await drawTextAndCircle(croppedBuffer, lancerName, clientName);
+    const imageUri = await storage.upload(finalImageBuffer);
+    const imageUrl = storage.resolveScheme(imageUri);
+
+    logger.info({
+      id: id, 
+      name: name,
+      description: description,
+      rating: rating,
+      date: date,
+      lancerName: lancerName,
+      clientName: clientName,
+      imageUri: imageUri, 
+      imageUrl: imageUrl
+    });
+
+    const contract = await sdk.getContract(`${process.env.NFT_COLLECTION_CONTRACT_ADDRESS}`);
+
+    const recipientAddress = afterData?.get("Lancer's Wallet Address");
+
+    const metadata = {
+      name: name,
+      description: description,
+      image: imageUri,
+      external_url: `${process.env.BASE_URL}/profile/${recipientAddress}`,
+      attributes: [
+        {
+          "trait_type": "CREATOR", 
+          "value": lancerName
+        }, 
+        {
+          "trait_type": "COMPANY", 
+          "value": clientName
+        }, 
+        {
+          "trait_type": "DATE", 
+          "value": date
+        }, 
+        {
+          "trait_type": "RATING", 
+          "value": rating,
+          "max_value": 5
+        },
+      ]
+    };
+
+    const tx = await contract.erc721.mintTo(recipientAddress, metadata);
+    const txHash = tx.receipt.transactionHash;
+    const receipt = tx.receipt;
+    const tokenId = tx.id.toString();
+    
+    logger.info({
+      txHash: txHash,
+      receipt: receipt,
+      tokenId: tokenId,
+    });
+
+    await getFirestore()
+      .collection("projects")
+      .doc(id)
+      .set({
+        projectNftId: tokenId,
+      }, {merge: true});
+    logger.info("[collection: projects] data update complete");
+    
+    const arrayUnion = admin.firestore.FieldValue.arrayUnion;
+    await getFirestore()
+      .collection("users")
+      .doc(recipientAddress)
+      .set({
+        projectNftIds: arrayUnion(tokenId),
+      }, {merge: true});
+    logger.info("[collection: users] data update complete");
+
+    await getFirestore()
+      .collection("projectNfts")
+      .doc(tokenId)
+      .set({
+        owner: recipientAddress,
+        project: id,
+        transactionHash: txHash,
+      }, {merge: true});
+    logger.info("[collection: projectNfts] data update complete");
+  }
 });

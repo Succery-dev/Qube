@@ -40,7 +40,7 @@ const SectionWrapper: React.FC<SectionWrapperPropsInterface> = ({
 };
 
 const Profile: NextPage = () => {
-  const openseaBaseUrl = `${process.env.NEXT_PUBLIC_OPENSEA_URL}/assets/${process.env.NEXT_PUBLIC_CHAIN}/${process.env.NEXT_PUBLIC_NFT_COLLECTION_CONTRACT_ADDRESS}`;
+  const openseaBaseUrl = `${process.env.NEXT_PUBLIC_OPENSEA_URL}/${process.env.NEXT_PUBLIC_NFT_COLLECTION_CONTRACT_ADDRESS}`;
   const router = useRouter();
   const { walletAddress } = router.query;
 

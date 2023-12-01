@@ -503,6 +503,10 @@ const Navbar = (): JSX.Element => {
                       />
                       <label htmlFor="depositor" className="text-white">Company</label>
                     </div>
+                    <p className="text-sm text-center text-gray-400">
+                      By sending your information, you agree to the<br/>
+                      <Link href="https://www.notion.so/veroo/Terms-Conditions-4d914da1b7cc4f959e94f8bf513ca328" target="_blank" className="text-blue-300 hover:underline">Terms and Conditions</Link> and <Link href="https://www.notion.so/veroo/Privacy-and-Policy-0ef230ec7f81439baa1e0d4d6b78cfe8" target="_blank" className="text-blue-300 hover:underline">Privacy Policy</Link>
+                    </p>
                     {isLoading
                       ? (
                         <div className="flex flex-row items-center justify-center text-2xl text-green-400">

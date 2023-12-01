@@ -1,9 +1,12 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
 	reactStrictMode: true,
-};
-
-module.exports = {
+	images: {
+		domains: [
+			"firebasestorage.googleapis.com", 
+			`${process.env.NEXT_PUBLIC_THIRDWEB_CLIENT_ID}.ipfscdn.io`
+		],
+	},
 	env: {
 	},
 };

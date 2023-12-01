@@ -7,6 +7,8 @@ interface StoreProjectDetailsInterface extends DisplayProjectDetailsInterface {
   tokenSymbol: string;
   tokenAddress: string;
   createdBy: string;
+  feedbackComment: string;
+  projectRating: number;
 }
 
 export type { StoreProjectDetailsInterface };

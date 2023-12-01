@@ -29,6 +29,7 @@ import OnChainResume from "./OnChainResume.svg";
 import X from "./X.svg";
 import Checkbox from "./Checkbox.svg";
 import Workflow from "./Workflow.svg";
+import Envelope from "./Envelope.svg";
 
 export {
   arrow,
@@ -62,4 +63,5 @@ export {
   X,
   Checkbox,
   Workflow,
+  Envelope,
 };

@@ -487,6 +487,7 @@ const ProjectDetails = ({ projectId }: { projectId: string }): JSX.Element => {
             })
             .finally(() => setShowNotification(true))
         }
+        projectId={projectId}
       />
     </SectionWrapper>
   );

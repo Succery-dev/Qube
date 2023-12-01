@@ -3,6 +3,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
+import axios from "axios";
 
 import { navLinks, aesthetics } from "../constants";
 import { arrow, MenuIcon, CrossIcon, Spinner } from "../assets";
@@ -32,6 +33,14 @@ const Navbar = (): JSX.Element => {
   const { address, isConnected } = useAccount();
   const { disconnect } = useDisconnect();
 
+  const [userInfo, setUserInfo] = useState({
+    email: "",
+    profileImageUrl: "",
+    userType: "",
+    username: "",
+    projectNftIds: [],
+  });
+
   useEffect(() => {
     const checkIfIdExistsInCollection = async (address: string) => {
       if (isConnected && address && router.asPath !== "/nftClaim") {
@@ -54,7 +63,26 @@ const Navbar = (): JSX.Element => {
       }
     }
 
-    checkIfIdExistsInCollection(address);
+    const fetchUserInfo = async () => {
+      try {
+        const res = await axios.get(`/api/user/${address}`);
+        console.log("userInfo: ", res.data);
+        setUserInfo({
+          email: res.data.email,
+          profileImageUrl: res.data.profileImageUrl,
+          userType: res.data.userType,
+          username: res.data.username,
+          projectNftIds: res.data.projectNftIds == undefined ? [] : res.data.projectNftIds,
+        });
+      } catch (error) {
+        console.log("Error has occured with /api/user/[walletAddress].ts");
+      }
+    };
+
+    if (isConnected && address) {
+      checkIfIdExistsInCollection(address);
+      fetchUserInfo();
+    }
   }, [isConnected, address, router.asPath]);
 
   const [username, setUsername] = useState("");
@@ -312,8 +340,30 @@ const Navbar = (): JSX.Element => {
 
         {/* Connect Button */}
         {router.pathname !== "/"
-          ? <ConnectButton accountStatus={{ smallScreen: "avatar" }} label="CONNECT WALLET" />
-          : router.query.close === "beta"
+          ? (
+              <div className="flex gap-5 items-center">
+                <div className={router.asPath.split("/")[1] === "profile" ? "hidden" : "block"}>
+                  <ConnectButton accountStatus={{ smallScreen: "avatar" }} label="CONNECT WALLET"/>
+                </div>
+                <Image
+                  src={userInfo.profileImageUrl}
+                  alt="Profile Image"
+                  className={`rounded-full bg-black border-2 border-pink-500 transition-transform duration-300 hover:scale-110 ${router.asPath.split("/")[1] === "dashboard" ? "block" : "hidden"}`}
+                  width={50}
+                  height={50}
+                  onClick={() => router.push(`/profile/${address}`)}
+                />
+                {/* Return to Dashboard Button */}
+                <button 
+                  className={`bg-gradient-to-r from-[#DF57EA] to-slate-200 mr-auto px-7 py-3 rounded-full text-black ${(router.asPath.split("/")[1] === "profile" && isConnected) ? "block" : "hidden"}`} 
+                  onClick={() => {
+                    router.push(`/dashboard/${address}`);
+                  }}
+                >
+                  DASHBOARD
+                </button>
+              </div>
+          ) : router.query.close === "beta"
             ? <ConnectButton accountStatus={{ smallScreen: "avatar" }} label="LAUNCH APP" />
             : null
         }
@@ -453,6 +503,11 @@ const Navbar = (): JSX.Element => {
                       />
                       <label htmlFor="depositor" className="text-white">Company</label>
                     </div>
+                    <p className="text-sm text-center text-gray-400">
+                      By sending your information, you agree to the<br/>
+                      <Link href="https://www.notion.so/veroo/Terms-Conditions-4d914da1b7cc4f959e94f8bf513ca328" target="_blank" className="text-blue-300 hover:underline">Terms and Conditions</Link> and <Link href="https://www.notion.so/veroo/Privacy-and-Policy-0ef230ec7f81439baa1e0d4d6b78cfe8" target="_blank" className="text-blue-300 hover:underline">Privacy Policy</Link>
+                    </p>
+                    <p className="text-sm text-center text-gray-400">※Currently, you cannot change the information entered above.</p>
                     {isLoading
                       ? (
                         <div className="flex flex-row items-center justify-center text-2xl text-green-400">

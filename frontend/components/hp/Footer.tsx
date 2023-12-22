@@ -59,11 +59,11 @@ const Footer = () => {
         <div className="flex-1 flex flex-col items-center">
           <p className="text-2xl font-bold mb-3">RESOURCES</p>
           <ul className="list-disc list-inside">
-            <li className="text-xl hover:underline">
+            {/* <li className="text-xl hover:underline">
               <Link href="https://github.com/Succery-dev/Qube" target="_blank">
                 Github
               </Link>
-            </li>
+            </li> */}
             <li className="text-xl hover:underline">
               <Link href="https://qube-1.gitbook.io/qube-whitepaper-japanese/" target="_blank">
                 Whitepaper Jap
